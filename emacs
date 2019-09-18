@@ -12,22 +12,46 @@
 
 
 
-;;-------------------------------
-;; Optimization (initial)
-;;-------------------------------
+;;------------------------------
+;; Package management
+;;------------------------------
 
-;; Disable garbage collection at init
-;(setq gc-cons-threshold 402653184
-;      gc-cons-percentage 0.6)
+;; Enable the package manager
+(require 'package)
+(setq package-enable-at-startup nil
+      package--init-file-ensured t)
+
+;; Enable the ELPA repositories
+(setq package-archives '(("org"   . "http://orgmode.org/elpa/")
+                         ("gnu"   . "http://elpa.gnu.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")))
+
+;; Install the `use-package` wrapper
+(package-initialize)
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+;; Enable the `use-package` wrapper
+(require 'use-package)
+
+;; Autoinstall missing packages
+(setq use-package-always-ensure t)
 
 
+
+;;------------------------------
+;; User interface
+;;------------------------------
 
 ;; Minimalist interface
-(setq inhibit-startup-screen t)
 (scroll-bar-mode -1)
 (tool-bar-mode   -1)
 (tooltip-mode    -1)
 (menu-bar-mode   -1)
+
+;; Turn on line numbers globally
+(global-linum-mode t)
 
 ;; Font and frame size
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -35,78 +59,49 @@
 (add-to-list 'default-frame-alist '(height . 24))
 (add-to-list 'default-frame-alist '(width . 80))
 
-
-
-;; Makes *scratch* empty.
-(setq initial-scratch-message "")
-
-;; Removes *scratch* from buffer after the mode has been set.
-; (defun remove-scratch-buffer ()
-;   (if (get-buffer "*scratch*")
-;       (kill-buffer "*scratch*")))
-; (add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
-
-;; Removes *messages* from the buffer.
-; (setq-default message-log-max nil)
-; (kill-buffer "*Messages*")
-
-;; Removes *Completions* from buffer after you've opened a file.
-;(add-hook 'minibuffer-exit-hook
-;      '(lambda ()
-;         (let ((buffer "*Completions*"))
-;           (and (get-buffer buffer)
-;                (kill-buffer buffer)))))
-
-;; Don't show *Buffer list* when opening multiple files at the same time.
-(setq inhibit-startup-buffer-menu t)
-
-;; Show only one active window when opening multiple files at the same time.
-;(add-hook 'window-setup-hook 'delete-other-windows)
-
-;; No more typing the whole yes or no. Just y or n will do.
-(fset 'yes-or-no-p 'y-or-n-p)
-
-
-(global-linum-mode t) ;; enable line numbers globally
-
-;; Disable backup files
-(setq make-backup-files nil) ; stop creating backup~ files
-(setq auto-save-default nil) ; stop creating #autosave# files
-
-;; Show matching parens
-(setq show-paren-delay 0)
-(show-paren-mode 1)
-
-;; Package configs
-(require 'package)
-(setq package-enable-at-startup nil
-      package--init-file-ensured t)
-(setq package-archives '(("org"   . "http://orgmode.org/elpa/")
-                         ("gnu"   . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")))
-(package-initialize)
-
-;; Bootstrap `use-package`
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(require 'use-package)
-
 ;; Theme
 (use-package doom-themes
-  :ensure t
   :config
-  (load-theme 'doom-one t))
+  (load-theme 'doom-gruvbox t))
 
 ;; Fancy minimal modeline
 (use-package mood-line
-  :ensure t
   :hook
   (after-init . mood-line-mode))
 
+
+
+
+;;------------------------------
+;; User experience
+;;------------------------------
+
+;; Answer questions with 'y' or 'n'
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; Disable unneeded screens
+(setq inhibit-startup-screen t)
+(setq inhibit-startup-buffer-menu t)
+(setq initial-scratch-message "")
+
+;; Don't litter with backup files
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+
+;; Show matching parentheses
+(setq show-paren-delay 0)
+(show-paren-mode 1)
+
+;; Which Key
+(use-package which-key
+  :init
+  (setq which-key-separator " ")
+  (setq which-key-prefix-prefix "+")
+  :config
+  (which-key-mode 1))
+
 ;; Helm (vs. ivy etc)
 (use-package helm
-  :ensure t
   :init
   (setq helm-M-x-fuzzy-match t
         helm-mode-fuzzy-match t
@@ -126,18 +121,8 @@
   (define-key helm-map (kbd "ESC") 'helm-keyboard-quit)
   (helm-mode 1))
 
-;; Which Key
-(use-package which-key
-  :ensure t
-  :init
-  (setq which-key-separator " ")
-  (setq which-key-prefix-prefix "+")
-  :config
-  (which-key-mode 1))
-
 ;; Custom keybinding
 (use-package general
-  :ensure t
   :config
   (general-override-mode)
   (general-define-key
@@ -158,7 +143,6 @@
 
 ;; Projectile
 (use-package projectile
-  :ensure t
   :init
   ;(setq projectile-require-project-root nil)
   :config
@@ -169,7 +153,6 @@
 
 ;; NeoTree
 (use-package neotree
-  :ensure t
   :init
   (setq neo-theme 'arrow)) ;; (if (display-graphic-p) 'icons 'arrow)))
 
@@ -183,7 +166,6 @@
 
 ;; Vim editing keybindings
 (use-package evil
-  :ensure t
   :init
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
@@ -193,13 +175,11 @@
 ;; Evil extension to more modes
 (use-package evil-collection
   :after evil
-  :ensure t
   :config
   (evil-collection-init))
 
 ;; More visual cues when you cut and paste
 (use-package evil-goggles
-  :ensure t
   :config
   (evil-goggles-mode))
   ;(evil-goggles-use-diff-faces))
@@ -222,11 +202,14 @@
 ;; Python mode
 ;;-------------------------------
 
-;; IDE features
+;; Turn on IDE features
 (use-package elpy
-  :ensure t
-  :init
-  (elpy-enable))
+  :config
+  (elpy-enable)
+  (setq python-shell-interpreter "jupyter"
+        python-shell-interpreter-args "console --simple-prompt"
+        python-shell-prompt-detect-failure-warning nil)
+  (add-to-list 'python-shell-completion-native-disabled-interpreters "jupyter"))
 
 
 
@@ -264,6 +247,7 @@
 
 ;; Eshell
 (defalias 'e 'find-file-other-window)
+;(defalias 'o 'xdg-open)
 
 ;; Helm autocomp
 (setq helm-use-frame-when-more-than-two-windows nil)
@@ -274,9 +258,14 @@
 
 ;; Helm projectile
 (use-package helm-projectile
-  :ensure t
   :config
   (helm-projectile-on))
+
+
+
+;; Get rid of window border
+(set-face-background 'vertical-border (face-background 'default))
+(set-face-foreground 'vertical-border (face-background 'vertical-border))
 
 
 
@@ -287,3 +276,17 @@
 (other-window 1)
 (eshell)
 (other-window 1)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (helm-projectile elpy evil-goggles evil-collection evil neotree projectile general which-key helm mood-line doom-themes use-package))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
