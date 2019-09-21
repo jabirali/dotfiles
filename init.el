@@ -4,18 +4,13 @@
 ;; Outline:
 ;;  [ ] Setup auctex/pdftools for LaTeX usage
 ;;  [ ] Setup autocomment
-;;  [ ] Clean up all sections
 ;; TODO:
-;;  * Magit
 ;;  * Auctex (?)
 ;;  * Python mode that is good (goto def etc.) (dumbjump)
 ;;  * Org-mode intro
 ;;
 ;; TODO:
 ;; https://realpython.com/emacs-the-best-python-editor/
-;;
-;; Ivy:
-;; https://sam217pa.github.io/2016/09/13/from-helm-to-ivy/
 
 
 
@@ -50,56 +45,55 @@
 ;; User interface
 ;;------------------------------
 
-;; Minimalist interface
+;; Use a minimalist interface.
 (scroll-bar-mode  -1)
+(menu-bar-mode    -1)
 (tool-bar-mode    -1)
 (tooltip-mode     -1)
-(menu-bar-mode    -1)
 (blink-cursor-mode 0)
 
-;; Turn on line numbers globally
-;(global-linum-mode t)
-
-;; Font and frame size
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
+;; Set the font and frame size.
 (add-to-list 'default-frame-alist '(font . "mononoki-13"))
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(height . 24))
 (add-to-list 'default-frame-alist '(width . 80))
 
-;; Theme
+;; Select color scheme.
 (use-package doom-themes
   :config
   (load-theme 'doom-gruvbox t))
 
-;; Fancy minimal modeline
+;; Select modeline.
 (use-package mood-line
   :hook
   (after-init . mood-line-mode))
 
+;; Remove window border.
+(set-face-background 'vertical-border (face-background 'default))
+(set-face-foreground 'vertical-border (face-background 'vertical-border))
 
+;; Disable unneeded screens.
+(setq inhibit-startup-screen t)
+(setq inhibit-startup-buffer-menu t)
+(setq initial-scratch-message "")
+
+;; Show matching parentheses.
+(setq show-paren-delay 0)
+(show-paren-mode 1)
+
+;; Show line numbers.
+; (global-display-line-numbers-mode)
+
+;; Disable the bell.
+(setq ring-bell-function 'ignore)
 
 
 ;;------------------------------
 ;; User experience
 ;;------------------------------
 
-;; Answer questions with 'y' or 'n'
-(fset 'yes-or-no-p 'y-or-n-p)
-
-;; Disable unneeded screens
-(setq inhibit-startup-screen t)
-(setq inhibit-startup-buffer-menu t)
-(setq initial-scratch-message "")
-
-;; Don't litter with backup files
-(setq make-backup-files nil)
-(setq auto-save-default nil)
-
-;; Show matching parentheses
-(setq show-paren-delay 0)
-(show-paren-mode 1)
-
-;; Interactive help on keyboard shortcuts
+;; Provide pop-up help when starting
+;; typing chorded keyboard shortcuts.
 (use-package which-key
   :init
   (setq which-key-separator " ")
@@ -107,40 +101,52 @@
   :config
   (which-key-mode 1))
 
-;; Use Ivy/Councel/Swiper for autocompletion
+;; Autocompletion via the Ivy framework. To make full
+;; use of the package, we also have to remap default
+;; keyboard shortcuts to use Councel and Swiper.
 (use-package ivy
   :config
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers t)
-  (global-set-key (kbd "C-c C-r") 'ivy-resume))
+  (setq enable-recursive-minibuffers t))
 
-; Use C-o to more efficiently select hit to open via Hydra
+;; Load the Counsel, which provides Ivy integration.
+(use-package counsel
+  :custom
+  (counsel-find-file-ignore-regexp ".git"))
+
+;; This package provides a more efficient mode for
+;; selecting Ivy hits, available when yuo press C-o.
 (use-package ivy-hydra)
 
-
-
-;; Projectile
+;; Project management via Projectile. This package
+;; remembers which version-controlled folders you
+;; visited, and makes it easy to go back to those.
 (use-package projectile
   :init
-  ;(setq projectile-require-project-root nil)
   (setq projectile-completion-system 'ivy)
+  (setq projectile-use-git-grep t)
   :config
   (projectile-mode 1))
 
-;; All The Icons
-;(use-package all-the-icons)
-;(use-package all-the-icons-ivy
-;  :config
-;  (all-the-icons-ivy-setup))
+;; Version control management via Magit. This package
+;; makes it easier to do e.g. status/checkout/commit.
+(use-package magit)
+
+;; Answer questions with `y` or `n`.
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; Don't litter with backup files.
+(setq make-backup-files nil)
+(setq auto-save-default nil)
 
 
 
 ;;-------------------------------
-;; Evil mode
+;; Keyboard shortcuts
 ;;-------------------------------
 
-;; Vim editing keybindings
+;; Provide Vim-like keybindings via the Evil framework.
 (use-package evil
   :init
   (setq evil-want-integration t)
@@ -148,19 +154,19 @@
   :config
   (evil-mode 1))
 
-;; Evil extension to more modes
+;; Integrate the Evil keybindings in more modes.
 (use-package evil-collection
   :after evil
   :config
   (evil-collection-init))
 
-;; More visual cues when you cut and paste
+;; Provide visual cues for editing actions, such
+;; as cut & paste, search & replace, and so on.
 (use-package evil-goggles
   :config
   (evil-goggles-mode))
-  ;(evil-goggles-use-diff-faces))
 
-;; Custom menu with keybindings
+;; Provide a custom "leader-key menu" with my own bindings.
 (use-package general
   :config
   (general-override-mode)
@@ -171,41 +177,38 @@
     :non-normal-prefix "M-SPC"
      "SPC" '(other-window 1 :which-key "window")
      "RET" '(eshell :which-key "shell")
-     ;"TAB" '(helm-mini :which-key "buffer")
-     ;"p"   '(helm-projectile-switch-project :which-key "project")
-     ;"f"   '(helm-projectile-find-file :which-key "file")
-     ;"/"   '(helm-projectile-grep :which-key "search")
-     ;"x"   '(helm-M-x :which-key "exec")
+     "p"   '(projectile-command-map :which-key "projectile")
+     "gs"  '(magit-status :which-key "git status")
+     "gc"  '(magit-status :which-key "git commit")
+     "/"   '(projectile-grep :which-key "grep")
+     "u"   '(counsel-unicode-char :which-key "unicode")
      "v"   '(split-window-right :which-key "split right")
      "h"   '(split-window-below :which-key "split bottom")
      "c"   '(delete-window :which-key "delete window")))
 
-;; Make it easier to escape from weird places
-;(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
-
-;; Swiper
+;; Replace the default Evil forward/backward search
+;; with Swiper, which integrates nicely with Ivy.
 (with-eval-after-load 'evil-maps
-  (define-key evil-motion-state-map (kbd "/") 'swiper))
-(with-eval-after-load 'evil-maps
+  (define-key evil-motion-state-map (kbd "/") 'swiper)
   (define-key evil-motion-state-map (kbd "?") 'swiper-backward))
 
+;; Replace some default Emacs bindings with Ivy.
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 
+;; Replace some default Emacs bindings with Counsel.
 (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-;(global-set-key (kbd "<f1> f") 'counsel-describe-function)
-;(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-;(global-set-key (kbd "<f1> l") 'counsel-find-library)
-;(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-;(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+(global-set-key (kbd "C-x l") 'counsel-locate)
+(global-set-key (kbd "C-h f") 'counsel-describe-function)
+(global-set-key (kbd "C-h v") 'counsel-describe-variable)
 (global-set-key (kbd "C-c b") 'counsel-buffer-or-recentf)
 (global-set-key (kbd "C-c g") 'counsel-git)
 (global-set-key (kbd "C-c j") 'counsel-git-grep)
 (global-set-key (kbd "C-c k") 'counsel-ag)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
 
-;(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+;; Make it easier to escape from weird places.
+(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
 
 
 
@@ -213,21 +216,16 @@
 ;; Org mode
 ;;-------------------------------
 
-;; Use indentation
-(add-hook 'org-mode-hook 'org-indent-mode)
-
-;; Hide emphasis
-(setq org-hide-emphasis-markers t)
-
-;; Heading fancy bullets
-(use-package org-bullets
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-
-;; Org file dir
+;; Set default locations for notes.
 (setq org-agenda-files '("~/Documents/Org"))
 
-;; List bullets
+;; Indent subsections for readability.
+(add-hook 'org-mode-hook 'org-indent-mode)
+
+;; Hide markup around bold/italic/etc.
+(setq org-hide-emphasis-markers t)
+
+;; Symbols used to show lists.
 (font-lock-add-keywords
  'org-mode
  '(("^ *\\([-]\\) "
@@ -271,77 +269,39 @@
 
 
 ;;-------------------------------
-;; Optimization (final)
+;; Eshell mode
 ;;-------------------------------
 
-;; Turn garbage collection on again
-;(add-hook! 'emacs-startup-hook
-;  (setq gc-cons-threshold 16777216
-;        gc-cons-percentage 0.1))
+;; Define aliases for common actions.
+(defalias 'e 'find-file-other-window)
+(defalias 'o 'xdg-open)
 
-
-
-
-
-;; Eshell
-;(defalias 'o 'xdg-open)
-(defalias 'e 'find-file)
-;(use-package bash-completion
-;  ; :if (ohai/is-exec "bash")
-;  :commands bash-completion-dynamic-complete
-;  :init
-;  (add-hook 'shell-dynamic-complete-functions #'bash-completion-dynamic-complete)
-;  (setq fish-completion-fallback-on-bash-p t))
+;; Use the fish shell for completion
+;; if eshell doesn't know what to do.
 (use-package fish-completion
-  ; :if (ohai/is-exec "fish")
   :config
   (global-fish-completion-mode))
 
-;; Eshell
+;; Tab completion via standard means.
 ; Alternative: call complete-symbol, works in any mode with ivy.
 (add-hook 'eshell-mode-hook
   (lambda () 
     (define-key eshell-mode-map (kbd "<tab>")
       (lambda () (interactive) (pcomplete-std-complete)))))
-(defalias 'e 'find-file-other-window)
-;(defalias 'o 'xdg-open)
-
-; Ivy projectile (Counsel)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-
-(use-package counsel
-  :bind*
-  (("M-x" . counsel-M-x)
-   ("C-c C-m" . counsel-M-x)
-   ("C-x C-m" . counsel-M-x)
-   ("C-x m" . counsel-M-x)
-   ("C-x C-f" . counsel-find-file))
-  :custom
-  (counsel-find-file-ignore-regexp "\\.DS_Store\\|.git"))
-
-(use-package counsel-projectile
-  :config
-  (counsel-projectile-mode))
-
-;;;; Magit
-(use-package magit
-  :bind (("C-x g" . magit-status)))
 
 
 
-;; Get rid of window border
-(set-face-background 'vertical-border (face-background 'default))
-(set-face-foreground 'vertical-border (face-background 'vertical-border))
+;;-------------------------------
+;; Startup commands
+;;-------------------------------
 
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Startup layout
+;; Horizontal two-split layout
 (split-window-horizontally)
+
+;; Open notes in the first split
 (find-file "~/TODO.org")
 (other-window 1)
+
+;; Open shell in the other split
 (eshell)
 (other-window 1)
-
-
-
