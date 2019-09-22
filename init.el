@@ -45,6 +45,16 @@
 ;; User interface
 ;;------------------------------
 
+;; Select color scheme.
+(use-package doom-themes
+  :config
+  (load-theme 'doom-gruvbox t))
+
+;; Select modeline.
+(use-package mood-line
+  :hook
+  (after-init . mood-line-mode))
+
 ;; Use a minimalist interface.
 (scroll-bar-mode  -1)
 (menu-bar-mode    -1)
@@ -58,34 +68,37 @@
 (add-to-list 'default-frame-alist '(height . 24))
 (add-to-list 'default-frame-alist '(width . 80))
 
-;; Select color scheme.
-(use-package doom-themes
-  :config
-  (load-theme 'doom-gruvbox t))
-
-;; Select modeline.
-(use-package mood-line
-  :hook
-  (after-init . mood-line-mode))
-
-;; Remove window border.
-(set-face-background 'vertical-border (face-background 'default))
-(set-face-foreground 'vertical-border (face-background 'vertical-border))
+;; Change the background color.
+; (add-to-list 'default-frame-alist '(background-color . "#2b2929"))
 
 ;; Disable unneeded screens.
 (setq inhibit-startup-screen t)
 (setq inhibit-startup-buffer-menu t)
 (setq initial-scratch-message "")
 
+;; Disable the bell.
+(setq ring-bell-function 'ignore)
+
 ;; Show matching parentheses.
 (setq show-paren-delay 0)
 (show-paren-mode 1)
 
 ;; Show line numbers.
-; (global-display-line-numbers-mode)
+(setq-default display-line-numbers 'visual
+	      display-line-numbers-width 4)
+(global-display-line-numbers-mode)
 
-;; Disable the bell.
-(setq ring-bell-function 'ignore)
+;; Don't wrap long lines.
+(set-default 'truncate-lines t)
+
+;; Don't highlight window border.
+(set-face-background 'vertical-border (face-background 'default))
+(set-face-foreground 'vertical-border (face-background 'vertical-border))
+
+;; Don't highlight current line.
+(set-face-foreground 'line-number-current-line (face-foreground 'line-number))
+(set-face-background 'line-number-current-line (face-background 'line-number))
+	      
 
 
 ;;------------------------------
@@ -101,9 +114,9 @@
   :config
   (which-key-mode 1))
 
-;; Autocompletion via the Ivy framework. To make full
-;; use of the package, we also have to remap default
-;; keyboard shortcuts to use Councel and Swiper.
+;; Autocompletion of Emacs actions via the Ivy framework.
+;; To make full use of the package, we also have to remap
+;; default keyboard shortcuts to use Councel and Swiper.
 (use-package ivy
   :config
   (ivy-mode 1)
@@ -112,6 +125,8 @@
 
 ;; Load the Counsel, which provides Ivy integration.
 (use-package counsel
+  :init
+  (setq counsel-find-file-ignore-regexp "\\(?:\\`[.]\\)")
   :custom
   (counsel-find-file-ignore-regexp ".git"))
 
@@ -119,9 +134,39 @@
 ;; selecting Ivy hits, available when yuo press C-o.
 (use-package ivy-hydra)
 
+;; Autocompletion of code via the Company framework.
+;; The TNG option makes it behave like common Vim
+;; plugins: both completion and selection via <tab>,
+;; and then type any text to continue coding.
+(use-package company
+  :diminish "⇥"
+  :config
+  (global-company-mode)
+  (company-tng-configure-default))
+
+;; Don't show hidden files in the Dired file manager.
+(require 'dired-x)
+(setq-default dired-omit-files-p t)
+(setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
+
+;; Answer questions with `y` or `n`.
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; Don't litter with backup files.
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+
+
+
+;;------------------------------
+;; Project management
+;;------------------------------
+
 ;; Project management via Projectile. This package
 ;; remembers which version-controlled folders you
 ;; visited, and makes it easy to go back to those.
+;; It also includes a command to grep through the
+;; entire Git repository to search for stuff.
 (use-package projectile
   :init
   (setq projectile-completion-system 'ivy)
@@ -132,13 +177,6 @@
 ;; Version control management via Magit. This package
 ;; makes it easier to do e.g. status/checkout/commit.
 (use-package magit)
-
-;; Answer questions with `y` or `n`.
-(fset 'yes-or-no-p 'y-or-n-p)
-
-;; Don't litter with backup files.
-(setq make-backup-files nil)
-(setq auto-save-default nil)
 
 
 
@@ -207,8 +245,17 @@
 (global-set-key (kbd "C-c j") 'counsel-git-grep)
 (global-set-key (kbd "C-c k") 'counsel-ag)
 
-;; Make it easier to escape from weird places.
+;; Make it easy to escape from weird places.
 (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+
+;; Autoindent and autocomment code when pressing enter.
+(define-key global-map (kbd "RET") 'comment-indent-new-line)
+
+;; Autocomplete when pressing tab if appropriate.
+(define-key company-mode-map
+  [remap indent-for-tab-command]
+  #'company-indent-or-complete-common)
+
 
 
 
@@ -237,14 +284,17 @@
 ;; Python mode
 ;;-------------------------------
 
-;; Turn on IDE features
-(use-package elpy
-  :config
-  (elpy-enable)
-  (setq python-shell-interpreter "jupyter"
-        python-shell-interpreter-args "console --simple-prompt"
-        python-shell-prompt-detect-failure-warning nil)
-  (add-to-list 'python-shell-completion-native-disabled-interpreters "jupyter"))
+;; Integrate autocompletion with Company.
+(use-package company-jedi)
+
+; ;; Turn on IDE features
+; (use-package elpy
+;   :config
+;   (elpy-enable)
+;   (setq python-shell-interpreter "jupyter"
+;         python-shell-interpreter-args "console --simple-prompt"
+;         python-shell-prompt-detect-failure-warning nil)
+;   (add-to-list 'python-shell-completion-native-disabled-interpreters "jupyter"))
 
 
 
@@ -253,18 +303,19 @@
 ;;-------------------------------
 
 (use-package latex
-    :ensure auctex
-    :mode
-    ("\\.tex\\'" . latex-mode)
-    :config
-    (setq-default TeX-master nil
-                  TeX-PDF-mode t
-                  TeX-engine 'luatex)
-    (setq TeX-auto-save t
-          TeX-save-query nil
-          TeX-parse-self t
-          TeX-show-compilation nil
-          LaTeX-babel-hyphen nil))
+  :defer
+  :ensure auctex
+  :mode
+  ("\\.tex\\'" . latex-mode)
+  :config
+  (setq-default TeX-master nil
+                TeX-PDF-mode t
+                TeX-engine 'luatex)
+  (setq TeX-auto-save t
+        TeX-save-query nil
+        TeX-parse-self t
+        TeX-show-compilation nil
+        LaTeX-babel-hyphen nil))
 
 
 
@@ -305,3 +356,17 @@
 ;; Open shell in the other split
 (eshell)
 (other-window 1)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (company-jedi which-key use-package org-bullets neotree mood-line magit ivy-hydra helm-projectile general fish-completion evil-goggles evil-collection elpy doom-themes counsel-projectile conda auctex all-the-icons-ivy))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
