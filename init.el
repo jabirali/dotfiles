@@ -3,7 +3,6 @@
 ;;
 ;; Outline:
 ;;  [ ] Setup auctex/pdftools for LaTeX usage
-;;  [ ] Setup autocomment
 ;; TODO:
 ;;  * Auctex (?)
 ;;  * Python mode that is good (goto def etc.) (dumbjump)
@@ -69,24 +68,26 @@
 (add-to-list 'default-frame-alist '(width . 80))
 
 ;; Change the background color.
-; (add-to-list 'default-frame-alist '(background-color . "#2b2929"))
+(set-face-background 'default "#2b2929")
+
+;; Disable frame title.
+(setq frame-title-format "")
+
+;; Disable the bell.
+(setq ring-bell-function 'ignore)
 
 ;; Disable unneeded screens.
 (setq inhibit-startup-screen t)
 (setq inhibit-startup-buffer-menu t)
 (setq initial-scratch-message "")
 
-;; Disable the bell.
-(setq ring-bell-function 'ignore)
-
 ;; Show matching parentheses.
 (setq show-paren-delay 0)
 (show-paren-mode 1)
 
-;; Show line numbers.
-(setq-default display-line-numbers 'visual
-	      display-line-numbers-width 4)
-(global-display-line-numbers-mode)
+;; Show line numbers in programming modes.
+(setq-default display-line-numbers-width 4)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 ;; Don't wrap long lines.
 (set-default 'truncate-lines t)
@@ -144,10 +145,13 @@
   (global-company-mode)
   (company-tng-configure-default))
 
-;; Don't show hidden files in the Dired file manager.
-(require 'dired-x)
-(setq-default dired-omit-files-p t)
-(setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
+;; More efficient way to switch between windows.
+(use-package ace-window)
+
+;; Customize how Dired shows lists of folders and files.
+;; This includes hiding hidden files, showing directories
+;; first, and using the ISO date format for timestamps.
+(setq dired-listing-switches "-lGh1v --time-style=long-iso --group-directories-first")
 
 ;; Answer questions with `y` or `n`.
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -177,6 +181,15 @@
 ;; Version control management via Magit. This package
 ;; makes it easier to do e.g. status/checkout/commit.
 (use-package magit)
+
+;; Version control indicator via Diff-hl. This package
+;; adds a git gutter showing which parts have changed.
+(use-package diff-hl
+  :init
+  :config
+  (add-hook 'prog-mode-hook  'diff-hl-mode)
+  (add-hook 'org-mode-hook   'diff-hl-mode)
+  (add-hook 'dired-mode-hook 'diff-hl-dired-mode))
 
 
 
@@ -213,11 +226,15 @@
     :keymaps 'override
     :prefix "SPC"
     :non-normal-prefix "M-SPC"
-     "SPC" '(other-window 1 :which-key "window")
+     "SPC" '(ace-window :which-key "window")
+     "TAB" '(counsel-buffer-or-recentf :which-key "buffer")
      "RET" '(eshell :which-key "shell")
+     "d"   '(dired :which-key "dired")
      "p"   '(projectile-command-map :which-key "projectile")
-     "gs"  '(magit-status :which-key "git status")
-     "gc"  '(magit-status :which-key "git commit")
+     "g?"  '(magit-status :which-key "git status")
+     "gs"  '(magit-stage-file :which-key "git stage")
+     "gd"  '(magit-diff-buffer-file :which-key "git diff")
+     "gc"  '(magit-commit-create :which-key "git commit")
      "/"   '(projectile-grep :which-key "grep")
      "u"   '(counsel-unicode-char :which-key "unicode")
      "v"   '(split-window-right :which-key "split right")
@@ -235,15 +252,15 @@
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 
 ;; Replace some default Emacs bindings with Counsel.
-(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "M-x")     'counsel-M-x)
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-h f") 'counsel-describe-function)
-(global-set-key (kbd "C-h v") 'counsel-describe-variable)
-(global-set-key (kbd "C-c b") 'counsel-buffer-or-recentf)
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
-(global-set-key (kbd "C-c k") 'counsel-ag)
+(global-set-key (kbd "C-x l")   'counsel-locate)
+(global-set-key (kbd "C-h f")   'counsel-describe-function)
+(global-set-key (kbd "C-h v")   'counsel-describe-variable)
+(global-set-key (kbd "C-c b")   'counsel-buffer-or-recentf)
+(global-set-key (kbd "C-c g")   'counsel-git)
+(global-set-key (kbd "C-c j")   'counsel-git-grep)
+(global-set-key (kbd "C-c k")   'counsel-ag)
 
 ;; Make it easy to escape from weird places.
 (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
@@ -251,11 +268,13 @@
 ;; Autoindent and autocomment code when pressing enter.
 (define-key global-map (kbd "RET") 'comment-indent-new-line)
 
+;; Continue making selections when pressing enter in Ivy.
+(define-key ivy-minibuffer-map (kbd "RET") 'ivy-alt-done)
+
 ;; Autocomplete when pressing tab if appropriate.
 (define-key company-mode-map
   [remap indent-for-tab-command]
   #'company-indent-or-complete-common)
-
 
 
 
@@ -302,6 +321,7 @@
 ;; Latex mode
 ;;-------------------------------
 
+;; Load proper latex support.
 (use-package latex
   :defer
   :ensure auctex
@@ -310,22 +330,30 @@
   :config
   (setq-default TeX-master nil
                 TeX-PDF-mode t
-                TeX-engine 'luatex)
+                TeX-engine 'default)
   (setq TeX-auto-save t
         TeX-save-query nil
         TeX-parse-self t
         TeX-show-compilation nil
         LaTeX-babel-hyphen nil))
 
+;; Disable sub- and superscripts.
+(setq font-latex-fontify-script nil)
+
+;; Integrate autocompletion with Company.
+(use-package company-auctex)
+
 
 
 ;;-------------------------------
-;; Eshell mode
+;; Shell mode
 ;;-------------------------------
 
-;; Define aliases for common actions.
-(defalias 'e 'find-file-other-window)
-(defalias 'o 'xdg-open)
+;; Integrate autocompletion with Company.
+(add-hook 'eshell-mode-hook
+  (lambda () 
+    (define-key eshell-mode-map
+      (kbd "<tab>") #'company-indent-or-complete-common)))
 
 ;; Use the fish shell for completion
 ;; if eshell doesn't know what to do.
@@ -333,12 +361,13 @@
   :config
   (global-fish-completion-mode))
 
-;; Tab completion via standard means.
-; Alternative: call complete-symbol, works in any mode with ivy.
-(add-hook 'eshell-mode-hook
-  (lambda () 
-    (define-key eshell-mode-map (kbd "<tab>")
-      (lambda () (interactive) (pcomplete-std-complete)))))
+;; Change the default prompt.
+(setq eshell-prompt-function
+  (lambda () "λ:  "))
+
+;; Define aliases for common actions.
+(defalias 'e 'find-file-other-window)
+(defalias 'o 'xdg-open)
 
 
 
@@ -355,18 +384,11 @@
 
 ;; Open shell in the other split
 (eshell)
+(evil-normal-state)
 (other-window 1)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (company-jedi which-key use-package org-bullets neotree mood-line magit ivy-hydra helm-projectile general fish-completion evil-goggles evil-collection elpy doom-themes counsel-projectile conda auctex all-the-icons-ivy))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
+
+
+;;-------------------------------
+;; Autogenerated part
+;;-------------------------------
