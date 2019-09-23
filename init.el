@@ -57,11 +57,6 @@
   ;; Documents: Gruvbox light.
   (setq pdf-view-midnight-colors '("#000000" . "#ffdfaf")))
 
-;; Select modeline.
-(use-package mood-line
-  :hook
-  (after-init . mood-line-mode))
-
 ;; Use a minimalist interface.
 (scroll-bar-mode  -1)
 (menu-bar-mode    -1)
@@ -105,6 +100,10 @@
 
 ;; Use a minimal window fringe.
 (set-fringe-mode 1)
+
+;; Hide the mode- and header-lines.
+(setq-default mode-line-format nil)
+(setq-default header-line-format nil)
 
 
 ;;------------------------------
