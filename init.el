@@ -386,11 +386,11 @@
 ;; Shell mode
 ;;-------------------------------
 
-;; Integrate autocompletion with Company.
-; (add-hook 'eshell-mode-hook
-;   (lambda () 
-;     (define-key eshell-mode-map
-;       (kbd "<tab>") #'company-indent-or-complete-common)))
+; Integrate autocompletion with Company.
+(add-hook 'eshell-mode-hook
+  (lambda () 
+    (define-key eshell-mode-map
+      (kbd "<tab>") #'company-indent-or-complete-common)))
 
 ;; Use the fish shell for completion
 ;; if eshell doesn't know what to do.
@@ -398,9 +398,9 @@
   :config
   (global-fish-completion-mode))
 
-;; Change the default prompt.
-(setq eshell-prompt-function
-  (lambda () "λ:  "))
+;; Change the banner and prompt.
+(setq eshell-banner-message ""
+      eshell-prompt-function (lambda () "λ: "))
 
 ;; Define aliases for common actions.
 (defalias 'e 'find-file-other-window)
@@ -412,16 +412,11 @@
 ;; Startup commands
 ;;-------------------------------
 
-;; Horizontal two-split layout
 (split-window-horizontally)
-
-;; Open notes in the first split
-(find-file "~/TODO.org")
 (other-window 1)
-
-;; Open shell in the other split
 (eshell)
-(evil-normal-state)
+(other-window 1)
+(find-file "~/TODO.org")
 (other-window 1)
 
 
