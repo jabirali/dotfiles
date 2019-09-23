@@ -47,7 +47,12 @@
 ;; Select color scheme.
 (use-package doom-themes
   :config
-  (load-theme 'doom-gruvbox t))
+  ;; Programming: Gruvbox dark.
+  (load-theme 'doom-gruvbox t)
+  ;; Background: Ubuntu colors.
+  (set-face-background 'default "#2b2929")
+  ;; Documents: Gruvbox light.
+  (setq pdf-view-midnight-colors '("#000000" . "#ffdfaf")))
 
 ;; Select modeline.
 (use-package mood-line
@@ -67,9 +72,6 @@
 
 ;; Set the default font.
 (add-to-list 'default-frame-alist '(font . "mononoki-13"))
-
-;; Change the background color.
-(set-face-background 'default "#2b2929")
 
 ;; Disable frame title.
 (setq frame-title-format "")
@@ -341,7 +343,6 @@
 
 ;; Recolor PDF documents to fit the current
 ;; color scheme used in Emacs by default.
-(setq pdf-view-midnight-colors '("#2b2929" . "#ebdbb2"))
 (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode)
 
 ;; Load proper latex support.
@@ -383,10 +384,10 @@
 ;;-------------------------------
 
 ;; Integrate autocompletion with Company.
-(add-hook 'eshell-mode-hook
-  (lambda () 
-    (define-key eshell-mode-map
-      (kbd "<tab>") #'company-indent-or-complete-common)))
+; (add-hook 'eshell-mode-hook
+;   (lambda () 
+;     (define-key eshell-mode-map
+;       (kbd "<tab>") #'company-indent-or-complete-common)))
 
 ;; Use the fish shell for completion
 ;; if eshell doesn't know what to do.
