@@ -127,9 +127,7 @@
 ;; Load the Counsel, which provides Ivy integration.
 (use-package counsel
   :init
-  (setq counsel-find-file-ignore-regexp "\\(?:\\`[.]\\)")
-  :custom
-  (counsel-find-file-ignore-regexp ".git"))
+  (setq counsel-find-file-ignore-regexp "\\(?:\\`[#.]\\)"))
 
 ;; This package provides a more efficient mode for
 ;; selecting Ivy hits, available when yuo press C-o.
@@ -236,6 +234,7 @@
      "TAB" '(counsel-buffer-or-recentf :which-key "buffer")
      "RET" '(eshell :which-key "shell")
      "d"   '(dired :which-key "dired")
+     "f"   '(counsel-find-file :which-key "file")
      "p"   '(projectile-command-map :which-key "projectile")
      "gr"  '(diff-hl-revert-hunk :which-key "revert")
      "gs"  '(magit-status :which-key "status")
