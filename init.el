@@ -58,10 +58,6 @@
   (setq pdf-view-midnight-colors '("#000000" . "#ffdfaf")))
 
 ;; Select modeline.
-;(use-package telephone-line
-;  :config
-;  (telephone-line-mode t))
-
 (use-package mood-line
   :hook
   (after-init . mood-line-mode))
@@ -93,7 +89,7 @@
 (show-paren-mode 1)
 
 ;; Show line numbers in programming modes.
-(setq-default display-line-numbers-width 4)
+(setq-default display-line-numbers-width 3)
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 ;; Don't wrap long lines.
@@ -106,6 +102,9 @@
 ;; Use a thicker line between splits.
 (setq window-divider-default-places t)
 (window-divider-mode)
+
+;; Use a minimal window fringe.
+(set-fringe-mode 1)
 
 
 ;;------------------------------
