@@ -332,6 +332,11 @@
 ;; Latex mode
 ;;-------------------------------
 
+;; Modern PDF viewer plugin.
+(use-package pdf-tools
+ :config
+ (pdf-tools-install))
+
 ;; Load proper latex support.
 (use-package latex
   :defer
@@ -346,13 +351,23 @@
         TeX-save-query nil
         TeX-parse-self t
         TeX-show-compilation nil
-        LaTeX-babel-hyphen nil))
+        LaTeX-babel-hyphen nil
+	;; Use Synctex correlation
+	TeX-source-correlate-mode t
+	TeX-source-correlate-method 'synctex
+	TeX-source-correlate-start-server t
+	;; Use PDF viewer plugin.
+	TeX-view-program-selection '((output-pdf "PDF Tools"))
+	TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))))
 
 ;; Disable sub- and superscripts.
 (setq font-latex-fontify-script nil)
 
 ;; Integrate autocompletion with Company.
 (use-package company-auctex)
+
+;; to have the buffer refresh after compilation
+(add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
 
 
 
