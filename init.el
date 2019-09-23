@@ -61,11 +61,12 @@
 (tooltip-mode     -1)
 (blink-cursor-mode 0)
 
-;; Set the font and frame size.
-(add-to-list 'default-frame-alist '(font . "mononoki-13"))
+;; Maximize without window decorations.
+(set-frame-parameter nil 'undecorated t)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
-(add-to-list 'default-frame-alist '(height . 24))
-(add-to-list 'default-frame-alist '(width . 80))
+
+;; Set the default font.
+(add-to-list 'default-frame-alist '(font . "mononoki-13"))
 
 ;; Change the background color.
 (set-face-background 'default "#2b2929")
