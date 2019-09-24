@@ -1,16 +1,13 @@
-;; this config is inspired by the blog post "Emacs from scratch", which
-;; is available at https://blog.jft.rocks/emacs/emacs-from-scratch.html.
-;;
-;; Outline:
-;;  [ ] Setup auctex/pdftools for LaTeX usage
-;; TODO:
-;;  * Reftex \cref etc.
-;;  * Python mode (goto def etc.) (dumbjump)
-;;  * Org-mode intro
-;;
-;; TODO:
-;; https://realpython.com/emacs-the-best-python-editor/
-
+;;; init.el -- Emacs configuration file
+;;;
+;;; Commentary:
+;;;   This is a configuration file for GNU Emacs which features a
+;;;   minimalist user interface and Vim-style keyboard shortcuts.
+;;;
+;;; TODO:
+;;;   * Fix reftex \cref generation.
+;;;   * Fix reftex-zotero integration.
+;;;   * Continue setting up leader key.
 
 
 ;;------------------------------
@@ -79,6 +76,9 @@
 (setq inhibit-startup-buffer-menu t)
 (setq initial-scratch-message "")
 
+;; Show tabs as four spaces.
+(setq-default tab-width 4)
+
 ;; Show matching parentheses.
 (setq show-paren-delay 0)
 (show-paren-mode 1)
@@ -102,8 +102,9 @@
 (set-fringe-mode 1)
 
 ;; Hide the mode- and header-lines.
-(setq-default mode-line-format nil)
-(setq-default header-line-format nil)
+(setq-default header-line-format nil
+	      mode-line-format nil)
+
 
 
 ;;------------------------------
@@ -137,16 +138,6 @@
 ;; selecting Ivy hits, available when yuo press C-o.
 (use-package ivy-hydra)
 
-;; Autocompletion of code via the Company framework.
-;; The TNG option makes it behave like common Vim
-;; plugins: both completion and selection via <tab>,
-;; and then type any text to continue coding.
-(use-package company
-  :diminish "⇥"
-  :config
-  (global-company-mode)
-  (company-tng-configure-default))
-
 ;; More efficient way to switch between windows.
 (use-package ace-window)
 
@@ -162,10 +153,16 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
+;; Don't put random stuff in my config file,
+;; put it in ~/.emacs.d/custom.el instead.
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+    (load custom-file))
+
 
 
 ;;------------------------------
-;; Project management
+;; Programming projects
 ;;------------------------------
 
 ;; Project management via Projectile. This package
@@ -189,109 +186,28 @@
 (use-package diff-hl
   :init
   :config
-  ;; Which modes to use this mode.
+  ;; Which modes that should use Diff-hl.
   (add-hook 'prog-mode-hook  'diff-hl-mode)
   (add-hook 'org-mode-hook   'diff-hl-mode)
-  (add-hook 'dired-mode-hook 'diff-hl-dired-mode))
+  (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
+  ;; Refresh state after doing Magit commits.
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
-
-
-;;-------------------------------
-;; Keyboard shortcuts
-;;-------------------------------
-
-;; Provide Vim-like keybindings via the Evil framework.
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
+;; Autocompletion of code via the Company framework.
+;; The TNG option makes it behave like common Vim
+;; plugins: both completion and selection via <tab>,
+;; and then type any text to continue coding.
+(use-package company
   :config
-  (evil-mode 1))
+  (global-company-mode)
+  (company-tng-configure-default))
 
-;; Integrate the Evil keybindings in more modes.
-(use-package evil-collection
-  :after evil
+;; Syntax checking on-the-fly via Flycheck. This plugin
+;; autodetects which linters are available (e.g. flake8
+;; and pylint for Python), then runs an appropriate one.
+(use-package flycheck
   :config
-  (evil-collection-init))
-
-;; Add text objects for surrounding text with delimiters.
-(use-package evil-surround
-  :ensure t
-  :config
-  (global-evil-surround-mode 1))
-
-;; Provide visual cues for editing actions, such
-;; as cut & paste, search & replace, and so on.
-(use-package evil-goggles
-  :config
-  (evil-goggles-mode))
-
-;; Provide a custom "leader-key menu" with my own bindings.
-(use-package general
-  :config
-  (general-override-mode)
-  (general-define-key
-    :states '(normal visual insert emacs)
-    :keymaps 'override
-    :prefix "SPC"
-    :non-normal-prefix "M-SPC"
-     "SPC" '(ace-window :which-key "window")
-     "TAB" '(counsel-buffer-or-recentf :which-key "buffer")
-     "RET" '(eshell :which-key "shell")
-     "d"   '(dired :which-key "dired")
-     "f"   '(counsel-find-file :which-key "file")
-     "b"   '(counsel-ibuffer :which-key "buffer")
-     "p"   '(projectile-command-map :which-key "projectile")
-     "gr"  '(diff-hl-revert-hunk :which-key "revert")
-     "gs"  '(magit-status :which-key "status")
-     "gf"  '(magit-stage-file :which-key "stage")
-     "gd"  '(magit-diff-buffer-file :which-key "diff")
-     "gc"  '(magit-commit-create :which-key "commit")
-     "hf"  '(counsel-describe-function :which-key "fun")
-     "hv"  '(counsel-describe-variable :which-key "var")
-     "hk"  '(describe-key :which-key "key")
-     "/"   '(projectile-grep :which-key "grep")
-     "["   '(diff-hl-previous-hunk :which-key "prev hunk")
-     "]"   '(diff-hl-next-hunk :which-key "next hunk")
-     "u"   '(counsel-unicode-char :which-key "unicode")
-   ; "v"   '(split-window-right :which-key "split right")
-   ; "s"   '(split-window-below :which-key "split bottom")
-     "c"   '(delete-window :which-key "delete window")))
-
-;; Replace the default Evil forward/backward search
-;; with Swiper, which integrates nicely with Ivy.
-(with-eval-after-load 'evil-maps
-  (define-key evil-motion-state-map (kbd "/") 'swiper)
-  (define-key evil-motion-state-map (kbd "?") 'swiper-backward))
-
-;; Replace some default Emacs bindings with Ivy.
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-
-;; Replace some default Emacs bindings with Counsel.
-(global-set-key (kbd "M-x")     'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "C-x l")   'counsel-locate)
-(global-set-key (kbd "C-h f")   'counsel-describe-function)
-(global-set-key (kbd "C-h v")   'counsel-describe-variable)
-(global-set-key (kbd "C-c b")   'counsel-buffer-or-recentf)
-(global-set-key (kbd "C-c g")   'counsel-git)
-(global-set-key (kbd "C-c j")   'counsel-git-grep)
-(global-set-key (kbd "C-c k")   'counsel-ag)
-
-;; Make it easy to escape from weird places.
-(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
-
-;; Autoindent and autocomment code when pressing enter.
-(define-key global-map (kbd "RET") 'comment-indent-new-line)
-
-;; Continue making selections when pressing enter in Ivy.
-(define-key ivy-minibuffer-map (kbd "RET") 'ivy-alt-done)
-
-;; Autocomplete when pressing tab if appropriate.
-(define-key company-mode-map
-  [remap indent-for-tab-command]
-  #'company-indent-or-complete-common)
+  (add-hook 'after-init-hook #'global-flycheck-mode))
 
 
 
@@ -387,7 +303,7 @@
 
 ; Integrate autocompletion with Company.
 (add-hook 'eshell-mode-hook
-  (lambda () 
+  (lambda ()
     (define-key eshell-mode-map
       (kbd "<tab>") #'company-indent-or-complete-common)))
 
@@ -408,6 +324,110 @@
 
 
 ;;-------------------------------
+;; Keyboard shortcuts
+;;-------------------------------
+
+;; Provide Vim-like keybindings via the Evil framework.
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  :config
+  (evil-mode 1))
+
+;; Integrate the Evil keybindings in more modes.
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+
+;; Add text objects for surrounding text with delimiters.
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
+
+;; Provide visual cues for editing actions, such
+;; as cut & paste, search & replace, and so on.
+(use-package evil-goggles
+  :config
+  (evil-goggles-mode))
+
+;; Provide a custom "leader-key menu" with my own bindings.
+(use-package general
+  :config
+  (general-override-mode)
+  (general-define-key
+    :states '(normal visual insert emacs)
+    :keymaps 'override
+    :prefix "SPC"
+    :non-normal-prefix "M-SPC"
+     "SPC" '(ace-window :which-key "window")
+     "TAB" '(counsel-buffer-or-recentf :which-key "buffer")
+     "RET" '(eshell :which-key "shell")
+     "d"   '(dired :which-key "dired")
+     "f"   '(counsel-find-file :which-key "file")
+     "b"   '(counsel-ibuffer :which-key "buffer")
+     "p"   '(projectile-command-map :which-key "projectile")
+     "gr"  '(diff-hl-revert-hunk :which-key "revert")
+     "gs"  '(magit-status :which-key "status")
+     "gf"  '(magit-stage-file :which-key "stage")
+     "gd"  '(magit-diff-buffer-file :which-key "diff")
+     "gc"  '(magit-commit-create :which-key "commit")
+     "gj"  '(magit-pull :which-key "pull")
+     "gk"  '(magit-push :which-key "push")
+     "hf"  '(counsel-describe-function :which-key "fun")
+     "hv"  '(counsel-describe-variable :which-key "var")
+     "hk"  '(describe-key :which-key "key")
+     "/"   '(projectile-grep :which-key "grep")
+     "["   '(diff-hl-previous-hunk :which-key "prev hunk")
+     "]"   '(diff-hl-next-hunk :which-key "next hunk")
+     "{"   '(flycheck-previous-error :which-key "prev error")
+     "}"   '(flycheck-next-error :which-key "next error")
+     "u"   '(counsel-unicode-char :which-key "unicode")
+   ; "v"   '(split-window-right :which-key "split right")
+   ; "s"   '(split-window-below :which-key "split bottom")
+     "c"   '(delete-window :which-key "delete window")))
+
+;; Replace the default Evil forward/backward search
+;; with Swiper, which integrates nicely with Ivy.
+(with-eval-after-load 'evil-maps
+  (define-key evil-motion-state-map (kbd "/") 'swiper)
+  (define-key evil-motion-state-map (kbd "?") 'swiper-backward))
+
+;; Replace some default Emacs bindings with Ivy.
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+
+;; Replace some default Emacs bindings with Counsel.
+(global-set-key (kbd "M-x")     'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "C-x l")   'counsel-locate)
+(global-set-key (kbd "C-h f")   'counsel-describe-function)
+(global-set-key (kbd "C-h v")   'counsel-describe-variable)
+(global-set-key (kbd "C-c b")   'counsel-buffer-or-recentf)
+(global-set-key (kbd "C-c g")   'counsel-git)
+(global-set-key (kbd "C-c j")   'counsel-git-grep)
+(global-set-key (kbd "C-c k")   'counsel-ag)
+
+;; Make it easy to escape from weird places.
+(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+
+;; Autoindent and autocomment code when pressing enter.
+(define-key global-map (kbd "RET") 'comment-indent-new-line)
+
+;; Continue making selections when pressing enter in Ivy.
+(define-key ivy-minibuffer-map (kbd "RET") 'ivy-alt-done)
+
+;; Autocomplete when pressing tab if appropriate.
+(define-key company-mode-map
+  [remap indent-for-tab-command]
+  #'company-indent-or-complete-common)
+
+
+
+;;-------------------------------
 ;; Startup commands
 ;;-------------------------------
 
@@ -417,23 +437,3 @@
 (other-window 1)
 (find-file "~/TODO.org")
 (other-window 1)
-
-
-
-;;-------------------------------
-;; Autogenerated part
-;;-------------------------------
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (telephone-line which-key use-package pdf-tools org-bullets neotree mood-line magit ivy-hydra helm-projectile gruvbox-theme general fish-completion evil-surround evil-goggles evil-collection elpy doom-themes diff-hl counsel company-jedi company-auctex bash-completion ace-window))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
