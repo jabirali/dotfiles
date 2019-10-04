@@ -5,6 +5,8 @@
 ;;;   minimalist user interface and Vim-style keyboard shortcuts.
 ;;;
 ;;; TODO:
+;;;   * Use Hydra + General to make better skipping between
+;;;     flycheck errors (SPC e → j/k) and diff-hl hunks.
 ;;;   * Fix reftex \cref generation.
 ;;;   * Fix reftex-zotero integration.
 ;;;   * Continue setting up leader key.
@@ -23,6 +25,7 @@
       '(("org"   . "http://orgmode.org/elpa/")
 	("gnu"   . "http://elpa.gnu.org/packages/")
 	("melpa" . "https://melpa.org/packages/")))
+
 (package-initialize)
 
 ;; Install and load `use-package`, which is used throughout
@@ -207,6 +210,9 @@
 ;; and pylint for Python), then runs an appropriate one.
 (use-package flycheck
   :config
+  ;; Don't put stuff in the fringe.
+  (setq flycheck-indication-mode nil)
+  ;; Use this mode by default.
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
 
@@ -215,8 +221,12 @@
 ;; Org mode
 ;;-------------------------------
 
+;; Enable mouse support.
+(use-package org-mouse
+  :ensure nil)
+
 ;; Set default locations for notes.
-(setq org-agenda-files '("~/Documents/Org"))
+(setq org-agenda-files '("~/Notes"))
 
 ;; Indent subsections for readability.
 (add-hook 'org-mode-hook 'org-indent-mode)
@@ -296,16 +306,25 @@
 (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
 
 
+;;-------------------------------
+;; Data format modes
+;;-------------------------------
+
+(use-package csv-mode
+  :mode
+  ("\\.csv$" "\\.tsv$" "\\.dat$"))
+
+
 
 ;;-------------------------------
 ;; Shell mode
 ;;-------------------------------
 
 ; Integrate autocompletion with Company.
-(add-hook 'eshell-mode-hook
-  (lambda ()
-    (define-key eshell-mode-map
-      (kbd "<tab>") #'company-indent-or-complete-common)))
+;(add-hook 'eshell-mode-hook
+;  (lambda ()
+;    (define-key eshell-mode-map
+;      (kbd "<tab>") #'company-indent-or-complete-common)))
 
 ;; Use the fish shell for completion
 ;; if eshell doesn't know what to do.
@@ -313,9 +332,12 @@
   :config
   (global-fish-completion-mode))
 
-;; Change the banner and prompt.
-(setq eshell-banner-message ""
-      eshell-prompt-function (lambda () "λ: "))
+;; Change the startup banner.
+(setq eshell-banner-message "")
+
+;; Change the prompt. (Disabled due
+;; to a "text is read-only" error.)
+;(setq eshell-prompt-function (lambda () "λ: "))
 
 ;; Define aliases for common actions.
 (defalias 'e 'find-file-other-window)
@@ -335,6 +357,20 @@
   (setq evil-want-C-u-scroll t)
   :config
   (evil-mode 1))
+
+;; Integrate the Evil keybindings in Magit.
+(use-package evil-magit)
+
+;; Integrate the Evil keybindings in Org-mode.
+(use-package evil-org
+  :after org
+  :config
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook
+            (lambda ()
+              (evil-org-set-key-theme)))
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
 
 ;; Integrate the Evil keybindings in more modes.
 (use-package evil-collection
@@ -365,7 +401,7 @@
     :non-normal-prefix "M-SPC"
      "SPC" '(ace-window :which-key "window")
      "TAB" '(counsel-buffer-or-recentf :which-key "buffer")
-     "RET" '(eshell :which-key "shell")
+     "RET" '(projectile-run-eshell :which-key "shell")
      "d"   '(dired :which-key "dired")
      "f"   '(counsel-find-file :which-key "file")
      "b"   '(counsel-ibuffer :which-key "buffer")
@@ -435,5 +471,5 @@
 (other-window 1)
 (eshell)
 (other-window 1)
-(find-file "~/TODO.org")
+(find-file "~/Notes/TODO.org")
 (other-window 1)
