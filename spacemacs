@@ -14,6 +14,7 @@ This function should only modify configuration layer settings."
      auto-completion
      emacs-lisp
      git
+     (version-control :variables version-control-diff-side 'left)
      ivy
      latex
      pdf
@@ -135,18 +136,26 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-  (set-default 'truncate-lines t)
-  (setq vc-follow-symlinks t)
-  (spacemacs/toggle-highlight-current-line-globally-off)
-  (set-face-background 'line-number (face-background 'default))
-  (set-face-foreground 'line-number-current-line (face-foreground 'line-number))
-  (set-face-background 'line-number-current-line (face-background 'line-number))
-  (set-face-background 'vertical-border "#1d1d1d")
-  (set-face-foreground 'vertical-border "#1d1d1d")
-  (setq org-bullets-bullet-list '("•"))
-  (spacemacs/toggle-centered-point-globally-on)
 
-  ;; Minimalist modeline
+  ;; Common
+  (spacemacs/toggle-highlight-current-line-globally-off)
+  (spacemacs/toggle-centered-point-globally-on)
+  (set-default 'truncate-lines t)
+  (setq-default indent-tabs-mode t)
+  (setq-default tab-width 4)
+  (setq vc-follow-symlinks t)
+
+  ;; Dired
+  (setq dired-listing-switches "-lGh1v --time-style=long-iso --group-directories-first")
+
+  ;; Org
+  (setq org-startup-indented t)
+  (setq org-bullets-bullet-list '("•"))
+
+  ;; Python
+  (add-hook 'python-mode-hook (lambda () (setq tab-width 4) (setq indent-tabs-mode t)))
+
+  ;; Modeline
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-default)
   (setq spaceline-workspace-numbers-unicode nil)
   (setq spaceline-window-numbers-unicode nil)
@@ -162,7 +171,14 @@ before packages are loaded."
       ((flycheck-error flycheck-warning flycheck-info) :when active :priority 85)
       ((version-control) :when active :priority 80)))
 
-  ;; Startup layout
+  ;; Theme
+  (set-face-background 'line-number (face-background 'default))
+  (set-face-foreground 'line-number-current-line (face-foreground 'line-number))
+  (set-face-background 'line-number-current-line (face-background 'line-number))
+  (set-face-background 'vertical-border "#1d1d1d")
+  (set-face-foreground 'vertical-border "#1d1d1d")
+
+  ;; Startup
   (find-file-other-window "~/Notes/TODO.org")
   (other-window)
   (evil-goto-first-line))
