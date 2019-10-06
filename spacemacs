@@ -16,6 +16,7 @@ This function should only modify configuration layer settings."
      git
      ivy
      latex
+     pdf
      python
      markdown
      org
@@ -27,7 +28,7 @@ This function should only modify configuration layer settings."
      )
    dotspacemacs-additional-packages '(gruvbox-theme)
    dotspacemacs-frozen-packages '()
-   dotspacemacs-excluded-packages '(vi-tilde-fringe fancy-battery)
+   dotspacemacs-excluded-packages '(vi-tilde-fringe)
    dotspacemacs-install-packages 'used-only))
 
 (defun dotspacemacs/init ()
@@ -77,7 +78,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-enable-paste-transient-state t
    dotspacemacs-which-key-delay 0.4
    dotspacemacs-which-key-position 'bottom
-   dotspacemacs-switch-to-buffer-prefers-purpose t
+   dotspacemacs-switch-to-buffer-prefers-purpose nil
    dotspacemacs-loading-progress-bar t
    dotspacemacs-fullscreen-at-startup nil
    dotspacemacs-fullscreen-use-non-native nil
@@ -119,7 +120,7 @@ configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Prevent Emacs from littering my .spacemacs file.
-  (setq custom-file "~/.emacs.d/custom.el"))
+  )
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
@@ -135,6 +136,7 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
   (set-default 'truncate-lines t)
+  (setq vc-follow-symlinks t)
   (spacemacs/toggle-highlight-current-line-globally-off)
   (set-face-background 'line-number (face-background 'default))
   (set-face-foreground 'line-number-current-line (face-foreground 'line-number))
@@ -143,6 +145,23 @@ before packages are loaded."
   (set-face-foreground 'vertical-border "#1d1d1d")
   (setq org-bullets-bullet-list '("•"))
   (spacemacs/toggle-centered-point-globally-on)
+
+  ;; Minimalist modeline
+  (setq spaceline-highlight-face-func 'spaceline-highlight-face-default)
+  (setq spaceline-workspace-numbers-unicode nil)
+  (setq spaceline-window-numbers-unicode nil)
+  (spaceline-compile
+    '(((persp-name workspace-number window-number) :fallback evil-state :face highlight-face :priority 100)
+      ((buffer-id buffer-modified) :priority 90)
+      ((process) :when active))
+    '(which-function
+      ((anzu) :priority 95)
+      ((selection-info) :priority 95)
+      ((global) :when active)
+      ((auto-compile) :priority 85)
+      ((flycheck-error flycheck-warning flycheck-info) :when active :priority 85)
+      ((version-control) :when active :priority 80)))
+
   ;; Startup layout
   (find-file-other-window "~/Notes/TODO.org")
   (other-window)
