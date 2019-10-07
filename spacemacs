@@ -1,9 +1,11 @@
 ;; -*- mode: emacs-lisp; lexical-binding: t -*-
 ;; This file is loaded by Spacemacs at startup.
 
+
+
 (defun dotspacemacs/layers ()
-  "Layer configuration:
-This function should only modify configuration layer settings."
+  "Select the layers and packages to use in Spacemacs."
+
   (setq-default
    dotspacemacs-distribution 'spacemacs
    dotspacemacs-enable-lazy-installation 'unused
@@ -11,32 +13,35 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layer-path '()
    dotspacemacs-configuration-layers
    '(
-     auto-completion
-     emacs-lisp
-     git
+     (auto-completion)
+     (emacs-lisp)
+     (git)
+     (html)
+     (ivy)
+     (latex :variables latex-enable-auto-fill nil)
+     (markdown)
+     (org)
+     (pdf)
+     (python)
+     (shell :variables shell-default-shell 'eshell)
      (version-control :variables version-control-diff-side 'left)
-     ivy
-     latex
-     pdf
-     python
-     markdown
-     org
-     (shell :variables
-            shell-default-shell 'eshell
-            shell-default-position 'right)
-     ;; spell-checking
-     ;; syntax-checking
-     )
-   dotspacemacs-additional-packages '(gruvbox-theme)
+    )
+   dotspacemacs-additional-packages
+   '(
+     gruvbox-theme
+    )
+   dotspacemacs-excluded-packages
+   '(
+     vi-tilde-fringe
+    )
    dotspacemacs-frozen-packages '()
-   dotspacemacs-excluded-packages '(vi-tilde-fringe)
    dotspacemacs-install-packages 'used-only))
 
+
+
 (defun dotspacemacs/init ()
-  "Initialization:
-This function is called at the very beginning of Spacemacs startup,
-before layer configuration.
-It should only modify the values of Spacemacs settings."
+  "Customize the settings recognized by Spacemacs."
+
   (setq-default
    dotspacemacs-enable-emacs-pdumper nil
    dotspacemacs-emacs-pdumper-executable-file "emacs"
@@ -50,15 +55,12 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-elpa-subdirectory 'emacs-version
    dotspacemacs-editing-style 'vim
    dotspacemacs-startup-banner 'nil
-   dotspacemacs-startup-lists '((todos . 5)
-                                (recents . 5)
-                                (projects . 5))
+   dotspacemacs-startup-lists '((todos . 5) (recents . 5) (projects . 5))
    dotspacemacs-startup-buffer-responsive t
    dotspacemacs-new-empty-buffer-major-mode 'text-mode
    dotspacemacs-scratch-mode 'text-mode
    dotspacemacs-initial-scratch-message nil
-   dotspacemacs-themes '(gruvbox-dark-medium
-                         gruvbox-light-medium)
+   dotspacemacs-themes '(gruvbox-dark-medium gruvbox-light-soft)
    dotspacemacs-mode-line-theme '(spacemacs :separator arrow :separator-scale 1.5)
    dotspacemacs-colorize-cursor-according-to-state t
    dotspacemacs-default-font '("Input" :size 13.0 :weight normal :width normal)
@@ -106,79 +108,107 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-zone-out-when-idle nil
    dotspacemacs-pretty-docs nil))
 
-(defun dotspacemacs/user-env ()
-  "Environment variables setup.
-This function defines the environment variables for your Emacs session. By
-default it calls `spacemacs/load-spacemacs-env' which loads the environment
-variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
-See the header of this file for more information."
-  (spacemacs/load-spacemacs-env))
+
 
 (defun dotspacemacs/user-init ()
-  "Initialization for user code:
-This function is called immediately after `dotspacemacs/init', before layer
-configuration.
-It is mostly for variables that should be set before packages are loaded.
-If you are unsure, try setting them in `dotspacemacs/user-config' first."
-  ;; Prevent Emacs from littering my .spacemacs file.
-  )
+  "Custom code run before `dotspacemacs/layers'."
 
-(defun dotspacemacs/user-load ()
-  "Library to load while dumping.
-This function is called only while dumping Spacemacs configuration. You can
-`require' or `load' the libraries of your choice that will be included in the
-dump."
-  )
+  ;; Aesthetic revision all themes.
+  (add-hook
+   'spacemacs-post-theme-change-hook
+   (lambda ()
+     ;; Do not highlight the current line number.
+     (set-face-background 'line-number (face-background 'default))
+     (set-face-background 'line-number-current-line (face-background 'line-number))
+     (set-face-foreground 'line-number-current-line (face-foreground 'line-number))
+     ;; Use Ubuntu/Yaru colors for window borders.
+     (set-face-background 'vertical-border "#1d1d1d")
+     (set-face-foreground 'vertical-border "#1d1d1d"))))
+
+
 
 (defun dotspacemacs/user-config ()
-  "Configuration for user code:
-This function is called at the very end of Spacemacs startup, after layer
-configuration.
-Put your configuration code here, except for variables that should be set
-before packages are loaded."
+  "Custom code run after `dotspacemacs/layers'."
 
-  ;; Common
+  ;; Navigation settings:
+  ;; Disable line-highlighting and line-wrapping. However, keep the current
+  ;; line vertically centered, to provide more context and smooth scrolling.
   (spacemacs/toggle-highlight-current-line-globally-off)
   (spacemacs/toggle-centered-point-globally-on)
+  (spacemacs/toggle-truncate-lines-on)
   (set-default 'truncate-lines t)
-  (setq-default indent-tabs-mode t)
-  (setq-default tab-width 4)
-  (setq vc-follow-symlinks t)
 
-  ;; Dired
-  (setq dired-listing-switches "-lGh1v --time-style=long-iso --group-directories-first")
-
-  ;; Org
-  (setq org-startup-indented t)
-  (setq org-bullets-bullet-list '("•"))
-
-  ;; Python
-  (add-hook 'python-mode-hook (lambda () (setq tab-width 4) (setq indent-tabs-mode t)))
-
-  ;; Modeline
+  ;; Spaceline settings:
+  ;; Define a minimalist modeline, where unnecessary information is removed,
+  ;; and sections don't move around more than necessary as I switch windows.
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-default)
   (setq spaceline-workspace-numbers-unicode nil)
   (setq spaceline-window-numbers-unicode nil)
   (spaceline-compile
-    '(((persp-name workspace-number window-number) :fallback evil-state :face highlight-face :priority 100)
-      ((buffer-id buffer-modified) :priority 90)
-      ((process) :when active))
-    '(which-function
-      ((anzu) :priority 95)
-      ((selection-info) :priority 95)
-      ((global) :when active)
-      ((auto-compile) :priority 85)
-      ((flycheck-error flycheck-warning flycheck-info) :when active :priority 85)
-      ((version-control) :when active :priority 80)))
+  '(((persp-name workspace-number window-number) :fallback evil-state :face highlight-face :priority 100)
+    ((buffer-id buffer-modified) :priority 90)
+    ((process) :when active))
+  '(which-function
+    ((anzu) :priority 95)
+    ((selection-info) :priority 95)
+    ((global) :when active)
+    ((auto-compile) :priority 85)
+    ((flycheck-error flycheck-warning flycheck-info) :when active :priority 85)
+    ((version-control) :when active :priority 80)))
 
-  ;; Theme
-  (set-face-background 'line-number (face-background 'default))
-  (set-face-foreground 'line-number-current-line (face-foreground 'line-number))
-  (set-face-background 'line-number-current-line (face-background 'line-number))
-  (set-face-background 'vertical-border "#1d1d1d")
-  (set-face-foreground 'vertical-border "#1d1d1d")
+  ;; File management:
+  ;; Use ISO dates, hide hidden files, show directories first, follow symlinks.
+  (setq dired-listing-switches "-lGh1v --time-style=long-iso --group-directories-first")
+  (setq vc-follow-symlinks t)
 
-  ;; Startup
+  ;; Org-mode settings:
+  ;; I prefer using indentation to see what text belongs to which section.
+  ;; Also, bullet points should use consistent bullet types at all levels.
+  (setq org-startup-indented t)
+  (setq org-bullets-bullet-list '("•"))
+  (add-hook 'org-mode-hook 'turn-on-auto-fill)
+
+  ;; Pdf-tools settings:
+  ;; I want PDFs opened within Emacs to use the same colorscheme as
+  ;; Emacs itself, and want to use this mode to view all TeX output.
+  (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode)
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
+
+  ;; Keybindings:
+  ;; It is more useful to navigate horizontally than vertically with H/L,
+  ;; at least when using the centered-point and truncate-lines settings.
+  (define-key key-translation-map (kbd "H") (kbd "zH"))
+  (define-key key-translation-map (kbd "L") (kbd "zL"))
+
+  ;; Startup:
+  ;; This sets the default buffers to open in every Emacs session.
   (find-file-other-window "~/Notes/TODO.org")
   (other-window)
   (evil-goto-first-line))
+
+
+
+(defun dotspacemacs/user-load ()
+  "Custom code run during config dumps.")
+
+
+
+(defun dotspacemacs/user-env ()
+  "Custom environment variables."
+
+  ;; Load from ~/.spacemacs.env
+  (spacemacs/load-spacemacs-env))
+
+
+
+;;------------------------------------------------------------
+;; Autogenerated content below here
+;;------------------------------------------------------------
+
+(defun dotspacemacs/emacs-custom-settings ()
+  "Autogenerated from M-x customize."
+  (custom-set-variables
+   '(pdf-tools-enabled-modes
+     (quote
+      (pdf-history-minor-mode pdf-isearch-minor-mode pdf-links-minor-mode pdf-misc-minor-mode pdf-outline-minor-mode pdf-misc-size-indication-minor-mode pdf-misc-menu-bar-minor-mode pdf-annot-minor-mode pdf-sync-minor-mode pdf-misc-context-menu-minor-mode pdf-cache-prefetch-minor-mode pdf-view-auto-slice-minor-mode pdf-occur-global-minor-mode))))
+  (custom-set-faces))
