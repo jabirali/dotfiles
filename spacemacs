@@ -17,14 +17,50 @@
      (emacs-lisp)
      (git)
      (html)
-     (ivy)
-     (latex :variables latex-enable-auto-fill nil)
+     (ivy
+       :variables
+         ivy-height 20
+         ivy-enable-advanced-buffer-information t)
+     (latex
+       :variables
+         latex-enable-auto-fill nil
+         latex-enable-folding nil
+         latex-enable-magic nil
+         font-latex-fontify-script nil
+         font-latex-fontify-sectioning 'color)
      (markdown)
-     (org)
-     (pdf)
+     (org
+       :variables
+         org-startup-indented t
+         org-bullets-bullet-list '("•"))
+     (pdf
+       :variables
+         TeX-view-program-selection '((output-pdf "PDF Tools"))
+         pdf-tools-enabled-modes
+          '(pdf-history-minor-mode
+            pdf-isearch-minor-mode
+            pdf-links-minor-mode
+            pdf-misc-minor-mode
+            pdf-outline-minor-mode
+            pdf-misc-size-indication-minor-mode
+            pdf-misc-menu-bar-minor-mode
+            pdf-annot-minor-mode
+            pdf-sync-minor-mode
+            pdf-misc-context-menu-minor-mode
+            pdf-cache-prefetch-minor-mode
+            pdf-view-auto-slice-minor-mode
+            pdf-occur-global-minor-mode))
      (python)
-     (shell :variables shell-default-shell 'eshell)
-     (version-control :variables version-control-diff-side 'left)
+     (ranger)
+     (shell
+       :variables
+         shell-default-shell 'eshell
+         shell-default-height 40
+         shell-enable-smart-eshell t)
+     (version-control
+       :variables
+         version-control-diff-side 'left
+         vc-follow-symlinks t)
     )
    dotspacemacs-additional-packages
    '(
@@ -98,7 +134,7 @@
    dotspacemacs-smartparens-strict-mode nil
    dotspacemacs-smart-closing-parenthesis nil
    dotspacemacs-highlight-delimiters 'all
-   dotspacemacs-enable-server nil
+   dotspacemacs-enable-server t
    dotspacemacs-server-socket-dir nil
    dotspacemacs-persistent-server nil
    dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
@@ -113,7 +149,7 @@
 (defun dotspacemacs/user-init ()
   "Custom code run before `dotspacemacs/layers'."
 
-  ;; Aesthetic revision all themes.
+  ;; Aesthetic revision of all themes.
   (add-hook
    'spacemacs-post-theme-change-hook
    (lambda ()
@@ -130,7 +166,7 @@
 (defun dotspacemacs/user-config ()
   "Custom code run after `dotspacemacs/layers'."
 
-  ;; Navigation settings:
+  ;; General settings:
   ;; Disable line-highlighting and line-wrapping. However, keep the current
   ;; line vertically centered, to provide more context and smooth scrolling.
   (spacemacs/toggle-highlight-current-line-globally-off)
@@ -145,10 +181,10 @@
   (setq spaceline-workspace-numbers-unicode nil)
   (setq spaceline-window-numbers-unicode nil)
   (spaceline-compile
-  '(((persp-name workspace-number window-number) :fallback evil-state :face highlight-face :priority 100)
+  '(((window-number) :face highlight-face :priority 100)
     ((buffer-id buffer-modified) :priority 90)
     ((process) :when active))
-  '(which-function
+  '(((which-function))
     ((anzu) :priority 95)
     ((selection-info) :priority 95)
     ((global) :when active)
@@ -156,31 +192,23 @@
     ((flycheck-error flycheck-warning flycheck-info) :when active :priority 85)
     ((version-control) :when active :priority 80)))
 
-  ;; File management:
-  ;; Use ISO dates, hide hidden files, show directories first, follow symlinks.
-  (setq dired-listing-switches "-lGh1v --time-style=long-iso --group-directories-first")
-  (setq vc-follow-symlinks t)
-
-  ;; Org-mode settings:
-  ;; I prefer using indentation to see what text belongs to which section.
-  ;; Also, bullet points should use consistent bullet types at all levels.
-  (setq org-startup-indented t)
-  (setq org-bullets-bullet-list '("•"))
+  ;; Minor-mode hooks:
+  ;; Turn on useful additional functionality in various major modes.
   (add-hook 'org-mode-hook 'turn-on-auto-fill)
-
-  ;; Pdf-tools settings:
-  ;; I want PDFs opened within Emacs to use the same colorscheme as
-  ;; Emacs itself, and want to use this mode to view all TeX output.
   (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode)
-  (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
 
   ;; Keybindings:
   ;; It is more useful to navigate horizontally than vertically with H/L,
   ;; at least when using the centered-point and truncate-lines settings.
-  (define-key key-translation-map (kbd "H") (kbd "zH"))
-  (define-key key-translation-map (kbd "L") (kbd "zL"))
+  ;; Also, when using smartparens, M-[ and M-] are nice ways to move on.
+  (define-key evil-motion-state-map (kbd "H") 'evil-scroll-left)
+  (define-key evil-motion-state-map (kbd "L") 'evil-scroll-right)
 
-  ;; Startup:
+  ;; Miscellaneous settings:
+  ;; Minor tweaks that simply don't fit in anywhere else.
+  (setq dired-listing-switches "-lGh1v --time-style=long-iso --group-directories-first")
+
+  ;; Startup activities:
   ;; This sets the default buffers to open in every Emacs session.
   (find-file-other-window "~/Notes/TODO.org")
   (other-window)
@@ -204,11 +232,3 @@
 ;;------------------------------------------------------------
 ;; Autogenerated content below here
 ;;------------------------------------------------------------
-
-(defun dotspacemacs/emacs-custom-settings ()
-  "Autogenerated from M-x customize."
-  (custom-set-variables
-   '(pdf-tools-enabled-modes
-     (quote
-      (pdf-history-minor-mode pdf-isearch-minor-mode pdf-links-minor-mode pdf-misc-minor-mode pdf-outline-minor-mode pdf-misc-size-indication-minor-mode pdf-misc-menu-bar-minor-mode pdf-annot-minor-mode pdf-sync-minor-mode pdf-misc-context-menu-minor-mode pdf-cache-prefetch-minor-mode pdf-view-auto-slice-minor-mode pdf-occur-global-minor-mode))))
-  (custom-set-faces))
