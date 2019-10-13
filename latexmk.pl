@@ -1,6 +1,6 @@
 #------------------------------------------------------------
 # File: Latexmk config
-# Path: ~/.latexmkrc
+# Path: ~/.config/latexmk/latexmkrc
 #------------------------------------------------------------
 
 $biber='biber --isbn13 --isbn-normalise %O %S';

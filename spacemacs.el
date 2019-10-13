@@ -2,7 +2,7 @@
 
 ;;------------------------------------------------------------
 ;; File: Spacemacs config
-;; Path: ~/.spacemacs 
+;; Path: ~/.spacemacs
 ;;------------------------------------------------------------
 
 
@@ -36,6 +36,7 @@
        :variables
          org-startup-indented t
          org-bullets-bullet-list '("•"))
+     (perl5)
      (pdf
        :variables
          TeX-view-program-selection '((output-pdf "PDF Tools"))

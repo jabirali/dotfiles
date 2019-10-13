@@ -4,7 +4,7 @@
 #------------------------------------------------------------
 
 # Set theme
-theme_gruvbox dark medium
+#theme_gruvbox dark medium
 
 # Set prompt
 set -g theme_display_virtualenv no
