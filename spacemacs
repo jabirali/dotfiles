@@ -1,6 +1,9 @@
 ;; -*- mode: emacs-lisp; lexical-binding: t -*-
-;; This file is loaded by Spacemacs at startup.
 
+;;------------------------------------------------------------
+;; File: Spacemacs config
+;; Path: ~/.spacemacs 
+;;------------------------------------------------------------
 
 
 (defun dotspacemacs/layers ()
