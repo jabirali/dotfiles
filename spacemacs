@@ -159,7 +159,15 @@
      (set-face-background 'line-number (face-background 'default))
      (set-face-background 'line-number-current-line (face-background 'line-number))
      (set-face-foreground 'line-number-current-line (face-foreground 'line-number))
-     ;; Use Ubuntu/Yaru colors for window borders.
+     ;; Turn on window separators.
+     (setq window-divider-default-places t)
+     (setq window-divider-default-right-width 8)
+     (setq window-divider-default-bottom-width 8)
+     (window-divider-mode 1)
+     ;; Use Ubuntu/Yaru colors for window separators
+     (set-face-foreground 'window-divider "#1d1d1d")
+     (set-face-foreground 'window-divider-first-pixel "#1d1d1d")
+     (set-face-foreground 'window-divider-last-pixel "#1d1d1d")
      (set-face-background 'vertical-border "#1d1d1d")
      (set-face-foreground 'vertical-border "#1d1d1d"))))
 
