@@ -69,6 +69,8 @@
    dotspacemacs-excluded-packages
    '(
      vi-tilde-fringe
+     treemacs
+     treemacs-evil
     )
    dotspacemacs-frozen-packages '()
    dotspacemacs-install-packages 'used-only))
@@ -194,8 +196,12 @@
 
   ;; Minor-mode hooks:
   ;; Turn on useful additional functionality in various major modes.
+  ;; Note that the pdf-view hook is necessary to avoid ugly borders.
   (add-hook 'org-mode-hook 'turn-on-auto-fill)
   (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode)
+  (add-hook 'pdf-view-mode-hook
+            (lambda ()
+              (set (make-local-variable 'evil-evilified-state-cursor) (list nil))))
 
   ;; Keybindings:
   ;; It is more useful to navigate horizontally than vertically with H/L,
