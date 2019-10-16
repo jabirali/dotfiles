@@ -66,6 +66,14 @@
          shell-default-height 40
          shell-enable-smart-eshell t)
      (shell-scripts)
+     (spell-checking
+       :variables
+         spell-checking-enable-by-default nil
+         spell-checking-enable-auto-dictionary t)
+     (syntax-checking
+       :variables
+         syntax-checking-enable-tooltips nil
+         flycheck-indication-mode nil)
      (version-control
        :variables
          version-control-diff-side 'right
@@ -84,7 +92,6 @@
     )
    dotspacemacs-frozen-packages '()
    dotspacemacs-install-packages 'used-only))
-
 
 
 (defun dotspacemacs/init ()
@@ -141,7 +148,7 @@
    dotspacemacs-show-transient-state-color-guide t
    dotspacemacs-mode-line-unicode-symbols t
    dotspacemacs-smooth-scrolling t
-   dotspacemacs-line-numbers t
+   dotspacemacs-line-numbers nil
    dotspacemacs-folding-method 'evil
    dotspacemacs-smartparens-strict-mode nil
    dotspacemacs-smart-closing-parenthesis nil
@@ -176,16 +183,6 @@
      (setq window-divider-default-right-width 8)
      (setq window-divider-default-bottom-width 8)
      (window-divider-mode 1)
-     ;; Do not highlight the current line number.
-     (set-face-background 'line-number (face-background 'default))
-     (set-face-background 'line-number-current-line (face-background 'line-number))
-     (set-face-foreground 'line-number-current-line (face-foreground 'line-number))
-     ;; Customize line numbers.
-     (setq-default display-line-numbers-width 3)
-     (setq-default display-line-numbers-grow-only t)
-     ;(setq-default display-line-numbers-current-absolute nil
-     ;              display-line-numbers-widen nil
-     ;              display-line-numbers-width 2)
      ;; Increase line spacing.
      (setq-default line-spacing 2)
      (setq-default line-spacing 2)
@@ -193,12 +190,11 @@
      (setq-default fringes-outside-margins t
                    left-fringe-width 3
                    right-fringe-width 3
-                   left-margin-width 0
+                   left-margin-width 1
                    right-margin-width 0)
      ;; Disable fringe arrows on long lines.
      (setf (cdr (assq 'truncation   fringe-indicator-alist)) '(nil nil))
      (setf (cdr (assq 'continuation fringe-indicator-alist)) '(nil nil)))))
-
 
 
 (defun dotspacemacs/user-config ()
@@ -234,6 +230,7 @@
   ;; Mode hooks:
   ;; Turn on useful additional functionality in various major modes.
   ;; Note that the pdf-view hook is necessary to avoid ugly borders.
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   (add-hook 'pdf-tools-enabled-hook
             'pdf-view-midnight-minor-mode)
   (add-hook 'pdf-view-mode-hook
@@ -258,10 +255,8 @@
   (evil-goto-first-line))
 
 
-
 (defun dotspacemacs/user-load ()
   "Custom code run during config dumps.")
-
 
 
 (defun dotspacemacs/user-env ()
@@ -269,7 +264,6 @@
 
   ;; Load from ~/.spacemacs.env
   (spacemacs/load-spacemacs-env))
-
 
 
 ;;------------------------------------------------------------
