@@ -1,0 +1,21 @@
+#------------------------------------------------------------
+# File: Ignore patterns (git and rg)
+# Path: ~/.ignore
+#------------------------------------------------------------
+
+# Latex
+*.fdb_latexmk
+*.synctex.gz
+*.aux
+*.bbl
+*.blg
+*.fls
+*.out
+*.log
+
+# Python
+*.pyc
+
+# C
+*.out
+*.o
