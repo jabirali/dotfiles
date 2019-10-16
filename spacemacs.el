@@ -35,7 +35,11 @@
      (org
        :variables
          org-startup-indented t
-         org-bullets-bullet-list '("•"))
+         org-pretty-entities t
+         org-hide-emphasis-markers t
+         org-bullets-bullet-list '("•")
+         org-projectile-file "TODO.org"
+         org-todo-keywords '((sequence "TODO" "INIT" "|" "WAIT" "DONE")))
      (perl5)
      (pdf
        :variables
@@ -61,10 +65,12 @@
          shell-default-shell 'eshell
          shell-default-height 40
          shell-enable-smart-eshell t)
+     (shell-scripts)
      (version-control
        :variables
-         version-control-diff-side 'left
+         version-control-diff-side 'right
          vc-follow-symlinks t)
+     (yaml)
     )
    dotspacemacs-additional-packages
    '(
@@ -103,7 +109,7 @@
    dotspacemacs-scratch-mode 'text-mode
    dotspacemacs-initial-scratch-message nil
    dotspacemacs-themes '(gruvbox-dark-medium gruvbox-light-soft)
-   dotspacemacs-mode-line-theme '(spacemacs :separator arrow :separator-scale 1.5)
+   dotspacemacs-mode-line-theme '(spacemacs :separator arrow :separator-scale 1.667)
    dotspacemacs-colorize-cursor-according-to-state t
    dotspacemacs-default-font '("Input" :size 13.0 :weight normal :width normal)
    dotspacemacs-leader-key "SPC"
@@ -159,21 +165,39 @@
   (add-hook
    'spacemacs-post-theme-change-hook
    (lambda ()
-     ;; Do not highlight the current line number.
-     (set-face-background 'line-number (face-background 'default))
-     (set-face-background 'line-number-current-line (face-background 'line-number))
-     (set-face-foreground 'line-number-current-line (face-foreground 'line-number))
-     ;; Turn on window separators.
-     (setq window-divider-default-places t)
-     (setq window-divider-default-right-width 8)
-     (setq window-divider-default-bottom-width 8)
-     (window-divider-mode 1)
      ;; Use Ubuntu/Yaru colors for window separators
      (set-face-foreground 'window-divider "#1d1d1d")
      (set-face-foreground 'window-divider-first-pixel "#1d1d1d")
      (set-face-foreground 'window-divider-last-pixel "#1d1d1d")
      (set-face-background 'vertical-border "#1d1d1d")
-     (set-face-foreground 'vertical-border "#1d1d1d"))))
+     (set-face-foreground 'vertical-border "#1d1d1d")
+     ;; Turn on window separators.
+     (setq window-divider-default-places t)
+     (setq window-divider-default-right-width 8)
+     (setq window-divider-default-bottom-width 8)
+     (window-divider-mode 1)
+     ;; Do not highlight the current line number.
+     (set-face-background 'line-number (face-background 'default))
+     (set-face-background 'line-number-current-line (face-background 'line-number))
+     (set-face-foreground 'line-number-current-line (face-foreground 'line-number))
+     ;; Customize line numbers.
+     (setq-default display-line-numbers-width 3)
+     (setq-default display-line-numbers-grow-only t)
+     ;(setq-default display-line-numbers-current-absolute nil
+     ;              display-line-numbers-widen nil
+     ;              display-line-numbers-width 2)
+     ;; Increase line spacing.
+     (setq-default line-spacing 2)
+     (setq-default line-spacing 2)
+     ;; Customize fringes and margins.
+     (setq-default fringes-outside-margins t
+                   left-fringe-width 3
+                   right-fringe-width 3
+                   left-margin-width 0
+                   right-margin-width 0)
+     ;; Disable fringe arrows on long lines.
+     (setf (cdr (assq 'truncation   fringe-indicator-alist)) '(nil nil))
+     (setf (cdr (assq 'continuation fringe-indicator-alist)) '(nil nil)))))
 
 
 
@@ -204,21 +228,22 @@
     ((global) :when active)
     ((auto-compile) :priority 85)
     ((flycheck-error flycheck-warning flycheck-info) :when active :priority 85)
-    ((version-control) :when active :priority 80)))
+    ((version-control) :when active :priority 80)
+    ((line-column) :priority 50)))
 
-  ;; Minor-mode hooks:
+  ;; Mode hooks:
   ;; Turn on useful additional functionality in various major modes.
   ;; Note that the pdf-view hook is necessary to avoid ugly borders.
-  (add-hook 'org-mode-hook 'turn-on-auto-fill)
-  (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode)
+  (add-hook 'pdf-tools-enabled-hook
+            'pdf-view-midnight-minor-mode)
   (add-hook 'pdf-view-mode-hook
             (lambda ()
-              (set (make-local-variable 'evil-evilified-state-cursor) (list nil))))
+              (set (make-local-variable 'evil-evilified-state-cursor)
+                   (list nil))))
 
   ;; Keybindings:
   ;; It is more useful to navigate horizontally than vertically with H/L,
   ;; at least when using the centered-point and truncate-lines settings.
-  ;; Also, when using smartparens, M-[ and M-] are nice ways to move on.
   (define-key evil-motion-state-map (kbd "H") 'evil-scroll-left)
   (define-key evil-motion-state-map (kbd "L") 'evil-scroll-right)
 
