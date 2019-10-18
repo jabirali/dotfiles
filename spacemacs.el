@@ -40,10 +40,10 @@
          org-bullets-bullet-list '("•")
          org-projectile-file "TODO.org"
          org-todo-keywords '((sequence "TODO" "INIT" "|" "WAIT" "DONE")))
-     (perl5)
      (pdf
        :variables
          TeX-view-program-selection '((output-pdf "PDF Tools"))
+         pdf-view-bounding-box-margin 0.06
          pdf-tools-enabled-modes
           '(pdf-history-minor-mode
             pdf-isearch-minor-mode
@@ -58,6 +58,7 @@
             pdf-cache-prefetch-minor-mode
             pdf-view-auto-slice-minor-mode
             pdf-occur-global-minor-mode))
+     (perl5)
      (python)
      (ranger)
      (shell
@@ -164,9 +165,11 @@
    dotspacemacs-pretty-docs nil))
 
 
-
 (defun dotspacemacs/user-init ()
   "Custom code run before `dotspacemacs/layers'."
+
+  ;; Don't autowrite settings to my config.
+  (setq custom-file "~/.emacs.d/custom.el")
 
   ;; Aesthetic revision of all themes.
   (add-hook
@@ -216,27 +219,29 @@
   (setq spaceline-window-numbers-unicode nil)
   (spaceline-compile
   '(((window-number) :face highlight-face :priority 100)
-    ((buffer-id buffer-modified) :priority 90)
-    ((process) :when active))
+    ((buffer-id) :priority 90)
+    ((process) :when active)
+    ((line-column) :when active :priority 50))
   '(((which-function))
     ((anzu) :priority 95)
     ((selection-info) :priority 95)
     ((global) :when active)
     ((auto-compile) :priority 85)
     ((flycheck-error flycheck-warning flycheck-info) :when active :priority 85)
-    ((version-control) :when active :priority 80)
-    ((line-column) :priority 50)))
+    ((version-control) :priority 80)))
 
   ;; Mode hooks:
   ;; Turn on useful additional functionality in various major modes.
   ;; Note that the pdf-view hook is necessary to avoid ugly borders.
-  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   (add-hook 'pdf-tools-enabled-hook
             'pdf-view-midnight-minor-mode)
   (add-hook 'pdf-view-mode-hook
             (lambda ()
-              (set (make-local-variable 'evil-evilified-state-cursor)
-                   (list nil))))
+              (set (make-local-variable 'evil-evilified-state-cursor) (list nil))
+              (setq left-fringe-width 1
+                    right-fringe-width 1
+                    left-margin-width 0
+                    right-margin-width 0)))
 
   ;; Keybindings:
   ;; It is more useful to navigate horizontally than vertically with H/L,
