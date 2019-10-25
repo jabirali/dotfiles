@@ -193,28 +193,18 @@
   ;; and it doesn't provide much that cursor highlighting doesn't already.
   (spacemacs/toggle-highlight-current-line-globally-off)
 
-  ;; Turn centered-cursor-mode on everywhere. This keeps the current line
-  ;; centered. This results in smoother vertical scrolling, removes the
-  ;; need to move view and cursor separately, and automatically provides
-  ;; the maximum possible context for the code we're currently editing.
-  (spacemacs/toggle-centered-point-globally-on)
-
   ;; Use line truncation. For lines slightly wider than the current window,
   ;; I find it more annoying to look at wrapped lines than to scroll right.
   (spacemacs/toggle-truncate-lines-on)
   (set-default 'truncate-lines t)
 
-  ;; It is more useful to navigate horizontally than vertically with H/L,
-  ;; at least when using the centered-point and truncate-lines settings.
-  (define-key evil-motion-state-map (kbd "H") 'evil-scroll-left)
-  (define-key evil-motion-state-map (kbd "L") 'evil-scroll-right)
-
   ;; Load more advanced customization defined below.
+  (baba/customize-evil)
   (baba/customize-modeline)
   (baba/customize-readers)
   (baba/customize-shells)
   (baba/customize-layouts)
-  (baba/leader-keys)
+  (baba/customize-leaders)
 
   ;; Turn on appropriate linters for all programming modes.
   (add-hook 'prog-mode-hook (lambda () (flycheck-mode 1)))
@@ -240,6 +230,33 @@
 
   ;; Load from ~/.spacemacs.env
   (spacemacs/load-spacemacs-env))
+
+
+(defun baba/customize-evil ()
+  "Customize the evil-mode behavior.
+This function modifies the default Evil behavior to what I find more natural
+and ergonomic, including easier code folding and automatic view navigation."
+
+  ;; Turn centered-cursor-mode on everywhere. This keeps the current line
+  ;; centered. This results in smoother vertical scrolling, removes the
+  ;; need to move view and cursor separately, and automatically provides
+  ;; the maximum possible context for the code we're currently editing.
+  (spacemacs/toggle-centered-point-globally-on)
+
+  ;; It is more useful to navigate horizontally than vertically with H/L,
+  ;; at least when using the centered-point and truncate-lines settings.
+  (define-key evil-motion-state-map (kbd "H") 'evil-scroll-left)
+  (define-key evil-motion-state-map (kbd "L") 'evil-scroll-right)
+
+  ;; The command zz usually runs `evil-scroll-line-to-center', which is
+  ;; not useful when running centered-point mode. In contrast, code folding
+  ;; with za is harder to type than it should be. The corresponding command
+  ;; Z does nothing useful by default, but is natural to zoom out all folds.
+  (define-key evil-normal-state-map (kbd "Z")  'evil-close-folds)
+  (define-key evil-normal-state-map (kbd "zz") 'evil-toggle-fold)
+
+  ;; I always want to jump specifically to mark, not to the line of mark.
+  (define-key evil-motion-state-map (kbd "'")  'evil-goto-mark))
 
 
 (defun baba/customize-theme ()
@@ -403,7 +420,7 @@ and tries to minimize the section movement during window switching."
   (define-key evil-motion-state-map (kbd "C-w")   'eyebrowse-close-window-config))
 
 
-(defun baba/leader-keys ()
+(defun baba/customize-leaders ()
   "Populate the private leader-key menu (SPC o)."
 
   ;; TODO: add an entry for "oo" to my own TODO list.
