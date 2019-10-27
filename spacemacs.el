@@ -5,7 +5,6 @@
 ;; Path: ~/.spacemacs
 ;;------------------------------------------------------------
 
-
 (defun dotspacemacs/layers ()
   "Select the layers and packages to use in Spacemacs."
 
@@ -42,6 +41,7 @@
          org-hide-emphasis-markers t
          org-bullets-bullet-list '("•")
          org-projectile-file "TODO.org"
+         org-default-notes-file "~/Notes/TODO.org"
          org-todo-keywords '((sequence "TODO" "INIT" "|" "WAIT" "DONE")))
      (pdf
        :variables
@@ -90,7 +90,6 @@
     )
    dotspacemacs-additional-packages
    '(
-     esh-autosuggest
      fish-completion
      gruvbox-theme
      wolfram
@@ -103,7 +102,6 @@
     )
    dotspacemacs-frozen-packages '()
    dotspacemacs-install-packages 'used-only))
-
 
 (defun dotspacemacs/init ()
   "Customize the settings recognized by Spacemacs."
@@ -174,7 +172,6 @@
    dotspacemacs-zone-out-when-idle nil
    dotspacemacs-pretty-docs nil))
 
-
 (defun dotspacemacs/user-init ()
   "Custom code run before `dotspacemacs/layers'."
 
@@ -183,7 +180,6 @@
 
   ;; Aesthetic revision of all themes.
   (add-hook 'spacemacs-post-theme-change-hook 'baba/customize-theme))
-
 
 (defun dotspacemacs/user-config ()
   "Custom code run after `dotspacemacs/layers'."
@@ -202,35 +198,38 @@
   (baba/customize-evil)
   (baba/customize-modeline)
   (baba/customize-readers)
+  (baba/customize-prog)
   (baba/customize-shells)
   (baba/customize-layouts)
   (baba/customize-leaders)
-
-  ;; Turn on appropriate linters for all programming modes.
-  (add-hook 'prog-mode-hook (lambda () (flycheck-mode 1)))
 
   ;(define-key evil-motion-state-map (kbd "C-f") 'evil-avy-goto-word-1)
 
   ;; Minor tweaks that simply don't fit in anywhere else.
   (setq dired-listing-switches "-lGh1v --time-style=long-iso --group-directories-first")
   (setq wolfram-alpha-app-id (getenv "WOLFRAM_ID"))
+  (setq counsel-find-file-ignore-regexp
+        (concat
+         "\\(?:\\`[#.]\\)"          ; .* and #*
+         "\\|"
+         "\\(?:\\`.+?[#~]\\'\\)"))  ; *~ and ~#
+
 
   ;; This sets the default buffers to open in every Emacs session.
-  (find-file-other-window "~/Notes/TODO.org")
-  (other-window 1)
-  (evil-goto-first-line))
-
+  (unless
+      (get-buffer (car (last (split-string org-default-notes-file "/"))))
+    (find-file-other-window org-default-notes-file)
+    (other-window 1)
+    (evil-goto-first-line)))
 
 (defun dotspacemacs/user-load ()
   "Custom code run during config dumps.")
-
 
 (defun dotspacemacs/user-env ()
   "Custom environment variables."
 
   ;; Load from ~/.spacemacs.env
   (spacemacs/load-spacemacs-env))
-
 
 (defun baba/customize-evil ()
   "Customize the evil-mode behavior.
@@ -245,19 +244,17 @@ and ergonomic, including easier code folding and automatic view navigation."
 
   ;; It is more useful to navigate horizontally than vertically with H/L,
   ;; at least when using the centered-point and truncate-lines settings.
-  (define-key evil-motion-state-map (kbd "H") 'evil-scroll-left)
-  (define-key evil-motion-state-map (kbd "L") 'evil-scroll-right)
+  (evil-global-set-key 'motion (kbd "H") 'evil-scroll-left)
+  (evil-global-set-key 'motion (kbd "L") 'evil-scroll-right)
 
-  ;; The command zz usually runs `evil-scroll-line-to-center', which is
-  ;; not useful when running centered-point mode. In contrast, code folding
-  ;; with za is harder to type than it should be. The corresponding command
-  ;; Z does nothing useful by default, but is natural to zoom out all folds.
-  (define-key evil-normal-state-map (kbd "Z")  'evil-close-folds)
-  (define-key evil-normal-state-map (kbd "zz") 'evil-toggle-fold)
+  ;; Follow the lead of org-mode, and use TAB and S-TAB to fold everywhere.
+  ;; By default, TAB either does autoindent (which can be done with `=') or
+  ;; autocomplete (which I only want in insert mode), so I prefer folding.
+  (evil-global-set-key 'normal (kbd "<tab>") 'evil-toggle-fold)
+  (evil-global-set-key 'normal (kbd "<backtab>") 'evil-close-folds)
 
   ;; I always want to jump specifically to mark, not to the line of mark.
-  (define-key evil-motion-state-map (kbd "'")  'evil-goto-mark))
-
+  (evil-global-set-key 'motion (kbd "'")  'evil-goto-mark))
 
 (defun baba/customize-theme ()
   "Customize the graphical interface.
@@ -291,7 +288,6 @@ window manager, others make it fit better with the Ubuntu default theme."
   ;; Disable fringe arrows on long lines.
   (setf (cdr (assq 'truncation   fringe-indicator-alist)) '(nil nil))
   (setf (cdr (assq 'continuation fringe-indicator-alist)) '(nil nil)))
-
 
 (defun baba/customize-modeline ()
   "Define a minimalist modeline via Spaceline.
@@ -344,6 +340,17 @@ and tries to minimize the section movement during window switching."
       ((line-column) :when active :priority 50)
       ((workspace-number) :when active :face highlight-face :priority 100))))
 
+(defun baba/customize-prog ()
+  "Customize programming buffers by adding appropriate hooks."
+
+  (defun baba/prog-enable-minors ()
+    "Enable linting and folding in all prog-mode buffers."
+
+    (flycheck-mode)
+    (hs-minor-mode)
+    (evil-close-folds))
+
+  (add-hook 'prog-mode-hook 'baba/prog-enable-minors))
 
 (defun baba/customize-readers ()
   "Customize the modes used for reading documents."
@@ -358,7 +365,6 @@ and tries to minimize the section movement during window switching."
               (set (make-local-variable 'evil-evilified-state-cursor) (list nil))
               (setq left-fringe-width 1 right-fringe-width 1
                     left-margin-width 0 right-margin-width 0))))
-
 
 (defun baba/customize-shells ()
   "Customize the modes used to interact with terminals and shells."
@@ -382,18 +388,17 @@ and tries to minimize the section movement during window switching."
   ;
   ;(setq ivy-display-functions-alist nil)
   ;(add-hook 'eshell-mode-hook 'fish-completion-mode)
-  ;(add-hook 'eshell-mode-hook 'esh-autosuggest-mode)
   ;(add-hook 'eshell-post-command-hook 'evil-normal-state)
 
   ;(evil-define-key 'insert 'vterm-mode-map
   ;  (kbd "C-h") 'vterm-send-left
   ;  (kbd "C-j") 'vterm-send-down
   ;  (kbd "C-k") 'vterm-send-up
-  ;  (kbd "C-l") 'vterm-send-right
+  ;  (kbd "C-l") 'vterm-send-right)
 
   ;; Define aliases for use in Eshell.
-  (defalias 'v 'eshell-exec-visual))
-
+  (defalias 'v 'eshell-exec-visual)
+  (defalias 'g 'magit-status-here))
 
 (defun baba/customize-layouts ()
   "Customize the behavior of persp-mode layouts, eyebrowse workspaces, etc."
@@ -419,10 +424,15 @@ and tries to minimize the section movement during window switching."
   (define-key evil-motion-state-map (kbd "M-RET") 'eyebrowse-create-window-config)
   (define-key evil-motion-state-map (kbd "C-w")   'eyebrowse-close-window-config))
 
-
 (defun baba/customize-leaders ()
   "Populate the private leader-key menu (SPC o)."
 
-  ;; TODO: add an entry for "oo" to my own TODO list.
+  (defun baba/open-todo ()
+    (interactive)
+    (find-file org-default-notes-file))
+
+  (spacemacs/set-leader-keys "oc" 'org-capture)
+  (spacemacs/set-leader-keys "oo" 'baba/open-todo)
+  (spacemacs/set-leader-keys "of" 'deer)
   (spacemacs/set-leader-keys "ow" 'wolfram-alpha)
   (spacemacs/set-leader-keys "os" 'counsel-search))
