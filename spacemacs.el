@@ -66,9 +66,8 @@
      (ranger)
      (shell
        :variables
-         shell-default-shell 'vterm
+         shell-default-shell 'eshell
          shell-default-height 40
-         shell-enable-smart-eshell t
          eshell-banner-message ""
          eshell-history-size 1024
          eshell-destroy-buffer-when-process-dies t)
@@ -193,6 +192,9 @@
   ;; I find it more annoying to look at wrapped lines than to scroll right.
   (spacemacs/toggle-truncate-lines-on)
   (set-default 'truncate-lines t)
+
+  ;; Use 4-space tabs when reading tabbed code, since that's more common.
+  (setq-default tab-width 4)
 
   ;; Load more advanced customization defined below.
   (baba/customize-evil)
@@ -381,6 +383,34 @@ and tries to minimize the section movement during window switching."
   (evil-define-key 'normal vterm-mode-map (kbd "J") 'vterm-send-next)
   (evil-define-key 'normal vterm-mode-map (kbd "K") 'vterm-send-prior)
 
+  ;; When working in Eshell, it's very useful to be able to jump between
+  ;; prompts. This also makes the Plan9 smart-shell unnecessary, since
+  ;; I can just as easily type K to jump up and C-d to scroll down.
+  (defun eshell-above-prompt ()
+    "Jump to the prompt above in eshell."
+    (interactive)
+    (evil-previous-line)
+    (eshell-previous-prompt 1))
+  (evil-define-key 'normal eshell-mode-map (kbd "K") 'eshell-above-prompt)
+  (evil-define-key 'normal eshell-mode-map (kbd "J") 'eshell-next-prompt)
+
+  ;; Default to the normal state after running commands. This makes it
+  ;; easier to navigate within or between the buffers after commands.
+  (add-hook 'eshell-after-prompt-hook 'evil-normal-state)
+
+  ;; A few terminal commands don't do their own line wrapping, and end up
+  ;; writing 800-character lines instead of 80-character lines. Moreover, I
+  ;; occasionally write long commands due to long path names, in which case
+  ;; I also prefer not navigating horizontally. This fixes those issues by
+  ;; breaking long lines at word boundaries, which is suitable for shells.
+  (add-hook 'eshell-mode-hook 'visual-line-mode)
+
+  ;; Turn on smart autocompletion via Fish.
+  ;(add-hook 'eshell-mode-hook 'fish-completion-mode)
+  ;(when (and (executable-find "fish")
+  ;           (require 'fish-completion nil t))
+  ;  (global-fish-completion-mode))
+
   ;; Turn on fish-completion only in places where it is known to work.
   (defun fish-completion-tramp-toggle ()
     "Toggle fish-completion-mode based on the TRAMP status."
@@ -393,15 +423,8 @@ and tries to minimize the section movement during window switching."
     (add-hook 'eshell-mode-hook 'fish-completion-tramp-toggle)
     (add-hook 'eshell-directory-change-hook 'fish-completion-tramp-toggle))
 
-  ;(setq ivy-display-functions-alist nil)
-  ;(add-hook 'eshell-mode-hook 'fish-completion-mode)
-  ;(add-hook 'eshell-post-command-hook 'evil-normal-state)
-
-  ;(evil-define-key 'insert 'vterm-mode-map
-  ;  (kbd "C-h") 'vterm-send-left
-  ;  (kbd "C-j") 'vterm-send-down
-  ;  (kbd "C-k") 'vterm-send-up
-  ;  (kbd "C-l") 'vterm-send-right)
+  ;; Display the autocompletion in the minibuffer not inline.
+  (setq ivy-display-functions-alist nil)
 
   ;; Define aliases for use in Eshell.
   (defalias 'v 'eshell-exec-visual)
