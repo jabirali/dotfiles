@@ -239,7 +239,8 @@
   ; (evil-global-set-key 'insert (kbd "C-f") 'baba/counsel-insert-file-path)
 
   ;; Make C-RET another way to select a file without closing Helm.
-  (define-key helm-map (kbd "<C-return>") 'helm-toggle-visible-mark)
+  (with-eval-after-load 'helm
+    (define-key helm-map (kbd "<C-return>") 'helm-toggle-visible-mark))
 
   ;; This sets the default buffers to open in every Emacs session.
   (unless
