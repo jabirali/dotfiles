@@ -27,7 +27,8 @@
          helm-use-frame-when-more-than-two-windows nil
          helm-show-completion-display-function #'helm-show-completion-default-display-function
          helm-always-two-windows nil
-         helm-split-window-inside-p t)
+         helm-split-window-inside-p t
+         helm-display-header-line nil)
      ;(ivy
      ;  :variables
      ;    ivy-height 20
