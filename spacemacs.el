@@ -381,11 +381,18 @@ and tries to minimize the section movement during window switching."
   (evil-define-key 'normal vterm-mode-map (kbd "J") 'vterm-send-next)
   (evil-define-key 'normal vterm-mode-map (kbd "K") 'vterm-send-prior)
 
-  ;; TODO: Figure out which of these to keep.
-  ;(when (and (executable-find "fish")
-  ;           (require 'fish-completion nil t))
-  ;  (global-fish-completion-mode))
-  ;
+  ;; Turn on fish-completion only in places where it is known to work.
+  (defun fish-completion-tramp-toggle ()
+    "Toggle fish-completion-mode based on the TRAMP status."
+    (if (file-remote-p default-directory)
+        (fish-completion-mode 0)
+      (fish-completion-mode 1)))
+
+  ;; Enable the toggle above only when `fish' is available.
+  (when (and (executable-find "fish") (require 'fish-completion nil t))
+    (add-hook 'eshell-mode-hook 'fish-completion-tramp-toggle)
+    (add-hook 'eshell-directory-change-hook 'fish-completion-tramp-toggle))
+
   ;(setq ivy-display-functions-alist nil)
   ;(add-hook 'eshell-mode-hook 'fish-completion-mode)
   ;(add-hook 'eshell-post-command-hook 'evil-normal-state)
