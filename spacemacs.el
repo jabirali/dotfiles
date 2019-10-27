@@ -22,10 +22,16 @@
      (emacs-lisp)
      (git)
      (html)
-     (ivy
+     (helm
        :variables
-         ivy-height 20
-         ivy-enable-advanced-buffer-information t)
+         helm-use-frame-when-more-than-two-windows nil
+         helm-show-completion-display-function #'helm-show-completion-default-display-function
+         helm-always-two-windows nil
+         helm-split-window-inside-p t)
+     ;(ivy
+     ;  :variables
+     ;    ivy-height 20
+     ;    ivy-enable-advanced-buffer-information t)
      (latex
        :variables
          latex-enable-auto-fill nil
@@ -63,7 +69,9 @@
             pdf-occur-global-minor-mode))
      (perl5)
      (python)
-     (ranger)
+     (ranger
+      :variables
+        ranger-override-dired t)
      (shell
        :variables
          shell-default-shell 'eshell
@@ -215,6 +223,19 @@
          "\\(?:\\`[#.]\\)"          ; .* and #*
          "\\|"
          "\\(?:\\`.+?[#~]\\'\\)"))  ; *~ and ~#
+
+  ; ;; Make a function to insert file paths.
+  ; (defun baba/counsel-insert-file-path ()
+  ;   "Insert file path using Ivy/Counsel."
+  ;   (interactive)
+  ;   (ivy-read "Find file: " 'read-file-name-internal
+  ;             :matcher #'counsel--find-file-matcher
+  ;             :action
+  ;             (lambda (x)
+  ;               (insert (concat "\"" x "\" ")))))
+
+  ; ;; Bind it to an easily accessible keyboard shortcut.
+  ; (evil-global-set-key 'insert (kbd "C-f") 'baba/counsel-insert-file-path)
 
 
   ;; This sets the default buffers to open in every Emacs session.
@@ -423,8 +444,11 @@ and tries to minimize the section movement during window switching."
     (add-hook 'eshell-mode-hook 'fish-completion-tramp-toggle)
     (add-hook 'eshell-directory-change-hook 'fish-completion-tramp-toggle))
 
+  ;; Fall back on bash-completion when `fish' gets lost.
+  (setq fish-completion-fallback-on-bash-p t)
+
   ;; Display the autocompletion in the minibuffer not inline.
-  (setq ivy-display-functions-alist nil)
+  ;(setq ivy-display-functions-alist nil)
 
   ;; Define aliases for use in Eshell.
   (defalias 'v 'eshell-exec-visual)
