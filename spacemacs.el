@@ -497,21 +497,10 @@ and tries to minimize the section movement during window switching."
   ;; do an appropriate `find-file', `projectile', or `magit' command.
   (setq eyebrowse-new-workspace 'deer)
 
-  ;; Keybindings for switching to a workspace.
-  (define-key evil-motion-state-map (kbd "M-1") 'eyebrowse-switch-to-window-config-1)
-  (define-key evil-motion-state-map (kbd "M-2") 'eyebrowse-switch-to-window-config-2)
-  (define-key evil-motion-state-map (kbd "M-3") 'eyebrowse-switch-to-window-config-3)
-  (define-key evil-motion-state-map (kbd "M-4") 'eyebrowse-switch-to-window-config-4)
-  (define-key evil-motion-state-map (kbd "M-5") 'eyebrowse-switch-to-window-config-5)
-  (define-key evil-motion-state-map (kbd "M-6") 'eyebrowse-switch-to-window-config-6)
-  (define-key evil-motion-state-map (kbd "M-7") 'eyebrowse-switch-to-window-config-7)
-  (define-key evil-motion-state-map (kbd "M-8") 'eyebrowse-switch-to-window-config-8)
-  (define-key evil-motion-state-map (kbd "M-9") 'eyebrowse-switch-to-window-config-9)
-  (define-key evil-motion-state-map (kbd "M-0") 'eyebrowse-switch-to-window-config-0)
-
-  ;; Keybindings for making and removing workspace.
-  (define-key evil-motion-state-map (kbd "M-RET") 'eyebrowse-create-window-config)
-  (define-key evil-motion-state-map (kbd "C-w")   'eyebrowse-close-window-config))
+  ;; Typing `SPC l w' is inconvenient for such a useful command as the
+  ;; `eyebrowse' transient state, at least when using workspaces a lot.
+  ;; Let's just map `SPC 0' to it instead, since I don't use `treemacs'.
+  (spacemacs/set-leader-keys "0" 'spacemacs/workspaces-transient-state/body))
 
 (defun baba/customize-leaders ()
   "Populate the private leader-key menu (SPC o)."
