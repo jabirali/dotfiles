@@ -318,8 +318,8 @@ window manager, others make it fit better with the Ubuntu default theme."
   (window-divider-mode 1)
 
   ;; Increase line spacing.
-  (setq-default line-spacing 2)
-  (setq-default line-spacing 2)
+  ;; NOTE: Breaks magit images...
+  ; (setq-default line-spacing 2)
 
   ;; Customize fringes and margins.
   (setq-default fringes-outside-margins t
@@ -495,7 +495,7 @@ and tries to minimize the section movement during window switching."
   ;; What do do when opening a new workspace. An eshell is convenient
   ;; because I can `cd' around, including to `/ssh:' paths, and then
   ;; do an appropriate `find-file', `projectile', or `magit' command.
-  (setq eyebrowse-new-workspace 'deer)
+  (setq eyebrowse-new-workspace 'eshell)
 
   ;; Typing `SPC l w' is inconvenient for such a useful command as the
   ;; `eyebrowse' transient state, at least when using workspaces a lot.
