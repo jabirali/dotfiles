@@ -411,6 +411,8 @@ and tries to minimize the section movement during window switching."
   ;; When working in Eshell, it's very useful to be able to jump between
   ;; prompts. This also makes the Plan9 smart-shell unnecessary, since
   ;; I can just as easily type K to jump up and C-d to scroll down.
+  ;; Finally, I rarely use / to forward-search from the prompt, so
+  ;; I might as well use that to search through prompts woith Helm.
   (defun eshell-above-prompt ()
     "Jump to the prompt above in eshell."
     (interactive)
@@ -418,6 +420,7 @@ and tries to minimize the section movement during window switching."
     (eshell-previous-prompt 1))
   (evil-define-key 'normal eshell-mode-map (kbd "K") 'eshell-above-prompt)
   (evil-define-key 'normal eshell-mode-map (kbd "J") 'eshell-next-prompt)
+  (evil-define-key 'normal eshell-mode-map (kbd "/") 'helm-eshell-prompts-all)
 
   ;; Default to the normal state after running commands. This makes it
   ;; easier to navigate within or between the buffers after commands.
@@ -453,6 +456,16 @@ and tries to minimize the section movement during window switching."
 
   ;; Display the autocompletion in the minibuffer not inline.
   ;(setq ivy-display-functions-alist nil)
+
+  ;; Customize the prompt to use in Eshell.
+  (defun with-face (str &rest face-plist)
+    (propertize str 'face face-plist))
+  (setq eshell-prompt-function
+        (lambda () "Two-line prompt."
+          (concat
+           "\n" (with-face (eshell/pwd) :foreground "#fabd2f")
+           "\n" (with-face "❯ " :foreground "default")))
+          eshell-prompt-regexp "^❯ ")
 
   ;; Define aliases for use in Eshell.
   (defalias 'v 'eshell-exec-visual)
