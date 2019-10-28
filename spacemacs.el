@@ -293,6 +293,8 @@ and ergonomic, including easier code folding and automatic view navigation."
   (evil-global-set-key 'normal (kbd "S") 'baba/eshell-dwim)
   (with-eval-after-load 'ranger
     (define-key ranger-normal-mode-map (kbd "S") 'baba/eshell-dwim))
+  (with-eval-after-load 'pdf-tools
+    (define-key pdf-view-mode-map (kbd "S") 'baba/eshell-dwim))
 
   ;; I always want to jump specifically to mark, not to the line of mark.
   (evil-global-set-key 'motion (kbd "'")  'evil-goto-mark))
@@ -493,7 +495,7 @@ and tries to minimize the section movement during window switching."
   ;; What do do when opening a new workspace. An eshell is convenient
   ;; because I can `cd' around, including to `/ssh:' paths, and then
   ;; do an appropriate `find-file', `projectile', or `magit' command.
-  (setq eyebrowse-new-workspace 'eshell)
+  (setq eyebrowse-new-workspace 'deer)
 
   ;; Keybindings for switching to a workspace.
   (define-key evil-motion-state-map (kbd "M-1") 'eyebrowse-switch-to-window-config-1)
