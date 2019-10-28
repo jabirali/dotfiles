@@ -186,6 +186,11 @@
   ;; Don't autowrite settings to my config.
   (setq custom-file "~/.emacs.d/custom.el")
 
+  ;; Since I bind `SPC 0' to switch workspace, it's very convenient
+  ;; to let 0 be default workspace. This way, `SPC 0 0' goes back to
+  ;; default, while workspace #1 correspond to project/task #1, etc.
+  (setq eyebrowse-default-workspace-slot 0)
+
   ;; Aesthetic revision of all themes.
   (add-hook 'spacemacs-post-theme-change-hook 'baba/customize-theme))
 
