@@ -417,7 +417,9 @@ and tries to minimize the section movement during window switching."
     "Jump to the prompt above in eshell."
     (interactive)
     (evil-previous-line)
-    (eshell-previous-prompt 1))
+    (eshell-previous-prompt 1)
+    (evil-end-of-line)
+    (evil-beginning-of-line))
   (evil-define-key 'normal eshell-mode-map (kbd "K") 'eshell-above-prompt)
   (evil-define-key 'normal eshell-mode-map (kbd "J") 'eshell-next-prompt)
   (evil-define-key 'normal eshell-mode-map (kbd "/") 'helm-eshell-prompts-all)
