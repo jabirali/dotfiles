@@ -280,9 +280,19 @@ and ergonomic, including easier code folding and automatic view navigation."
   (evil-global-set-key 'normal (kbd "<tab>") 'evil-toggle-fold)
   (evil-global-set-key 'normal (kbd "<backtab>") 'evil-close-folds)
 
-  ;; Make _ a shortcut for opening a shell, similar to how - opens Deer.
-  ;; By default, this key doesn't do anything useful, so it's all good.
-  (evil-global-set-key 'motion (kbd "_") 'projectile-run-eshell)
+  ;; Make a function that can be used to run Eshell in a smarter way.
+  (defun baba/eshell-dwim ()
+    "Open an eshell, and do so via projectile if possible."
+    (interactive)
+    (if (projectile-project-p)
+        (projectile-run-eshell)
+      (eshell)))
+
+  ;; Make S a shortcut for opening a shell. This is already the default
+  ;; keybinding in Deer/Ranger, and doesn't do anything useful in Evil.
+  (evil-global-set-key 'normal (kbd "S") 'baba/eshell-dwim)
+  (with-eval-after-load 'ranger
+    (define-key ranger-normal-mode-map (kbd "S") 'baba/eshell-dwim))
 
   ;; I always want to jump specifically to mark, not to the line of mark.
   (evil-global-set-key 'motion (kbd "'")  'evil-goto-mark))
