@@ -280,6 +280,10 @@ and ergonomic, including easier code folding and automatic view navigation."
   (evil-global-set-key 'normal (kbd "<tab>") 'evil-toggle-fold)
   (evil-global-set-key 'normal (kbd "<backtab>") 'evil-close-folds)
 
+  ;; Make _ a shortcut for opening a shell, similar to how - opens Deer.
+  ;; By default, this key doesn't do anything useful, so it's all good.
+  (evil-global-set-key 'motion (kbd "_") 'projectile-run-eshell)
+
   ;; I always want to jump specifically to mark, not to the line of mark.
   (evil-global-set-key 'motion (kbd "'")  'evil-goto-mark))
 
