@@ -29,10 +29,6 @@
          helm-always-two-windows nil
          helm-split-window-inside-p t
          helm-display-header-line nil)
-     ;(ivy
-     ;  :variables
-     ;    ivy-height 20
-     ;    ivy-enable-advanced-buffer-information t)
      (latex
        :variables
          latex-enable-auto-fill nil
@@ -219,33 +215,9 @@
   (baba/customize-layouts)
   (baba/customize-leaders)
 
-  ;(define-key evil-motion-state-map (kbd "C-f") 'evil-avy-goto-word-1)
-
   ;; Minor tweaks that simply don't fit in anywhere else.
   (setq dired-listing-switches "-lGh1v --time-style=long-iso --group-directories-first")
   (setq wolfram-alpha-app-id (getenv "WOLFRAM_ID"))
-  (setq counsel-find-file-ignore-regexp
-        (concat
-         "\\(?:\\`[#.]\\)"          ; .* and #*
-         "\\|"
-         "\\(?:\\`.+?[#~]\\'\\)"))  ; *~ and ~#
-
-  ; ;; Make a function to insert file paths.
-  ; (defun baba/counsel-insert-file-path ()
-  ;   "Insert file path using Ivy/Counsel."
-  ;   (interactive)
-  ;   (ivy-read "Find file: " 'read-file-name-internal
-  ;             :matcher #'counsel--find-file-matcher
-  ;             :action
-  ;             (lambda (x)
-  ;               (insert (concat "\"" x "\" ")))))
-
-  ; ;; Bind it to an easily accessible keyboard shortcut.
-  ; (evil-global-set-key 'insert (kbd "C-f") 'baba/counsel-insert-file-path)
-
-  ;; Make C-RET another way to select a file without closing Helm.
-  (with-eval-after-load 'helm
-    (define-key helm-map (kbd "<C-return>") 'helm-toggle-visible-mark))
 
   ;; This sets the default buffers to open in every Emacs session.
   (unless
@@ -447,7 +419,7 @@ and tries to minimize the section movement during window switching."
 
   ;; Default to the normal state after running commands. This makes it
   ;; easier to navigate within or between the buffers after commands.
-  (add-hook 'eshell-after-prompt-hook 'evil-normal-state)
+  ; (add-hook 'eshell-after-prompt-hook 'evil-normal-state)
 
   ;; A few terminal commands don't do their own line wrapping, and end up
   ;; writing 800-character lines instead of 80-character lines. Moreover, I
@@ -455,6 +427,9 @@ and tries to minimize the section movement during window switching."
   ;; I also prefer not navigating horizontally. This fixes those issues by
   ;; breaking long lines at word boundaries, which is suitable for shells.
   (add-hook 'eshell-mode-hook 'visual-line-mode)
+
+  ;; Turn off centered-point mode in shells. It's not that useful there...
+  (add-hook 'eshell-mode-hook 'spacemacs/toggle-centered-point-off)
 
   ;; Turn on smart autocompletion via Fish.
   ;(add-hook 'eshell-mode-hook 'fish-completion-mode)
@@ -477,18 +452,27 @@ and tries to minimize the section movement during window switching."
   ;; Fall back on bash-completion when `fish' gets lost.
   (setq fish-completion-fallback-on-bash-p t)
 
-  ;; Display the autocompletion in the minibuffer not inline.
-  ;(setq ivy-display-functions-alist nil)
-
   ;; Customize the prompt to use in Eshell.
-  (defun with-face (str &rest face-plist)
-    (propertize str 'face face-plist))
-  (setq eshell-prompt-function
-        (lambda () "Two-line prompt."
+  (setq eshell-prompt-regexp "^❯ "
+        eshell-prompt-function
+        (lambda ()
           (concat
-           "\n" (with-face (eshell/pwd) :foreground "#fabd2f")
-           "\n" (with-face "❯ " :foreground "default")))
-          eshell-prompt-regexp "^❯ ")
+           "\n"
+           (if (tramp-tramp-file-p default-directory)
+               (let* ((tramp-path (tramp-dissect-file-name default-directory))
+                      (tramp-method (nth 1 tramp-path))
+                      (tramp-domain (nth 4 tramp-path))
+                      (tramp-name (nth 6 tramp-path)))
+                 (concat
+                  (propertize (concat "/" tramp-method ":") 'face '(bold :foreground "#cc241d"))
+                  (if (string= tramp-domain (system-name))
+                      (propertize ":" 'face '(bold :foreground "#cc241d"))
+                    (propertize (concat tramp-domain ":") 'face '(bold :foreground "#d79921")))
+                  (propertize (concat tramp-name "\n") 'face '(bold :foreground "#83a598"))))
+             (unless (or (string= default-directory "~/")
+                         (string= default-directory (concat (getenv "HOME") "/")))
+               (propertize (concat default-directory "\n") 'face '(bold :foreground "#83a598"))))
+           (propertize "❯ " :foreground "default"))))
 
   ;; Define aliases for use in Eshell.
   (defalias 'v 'eshell-exec-visual)
@@ -518,4 +502,4 @@ and tries to minimize the section movement during window switching."
   (spacemacs/set-leader-keys "oo" 'baba/open-todo)
   (spacemacs/set-leader-keys "of" 'deer)
   (spacemacs/set-leader-keys "ow" 'wolfram-alpha)
-  (spacemacs/set-leader-keys "os" 'counsel-search))
+  (spacemacs/set-leader-keys "os" 'lazy-helm/helm-google-suggest))
