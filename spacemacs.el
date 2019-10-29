@@ -377,6 +377,10 @@ and tries to minimize the section movement during window switching."
 (defun baba/customize-readers ()
   "Customize the modes used for reading documents."
 
+  ;; Print PDF in the usual way.
+  (setq pdf-misc-print-programm "/usr/bin/lpr"
+        pdf-misc-print-programm-args (quote ("-o media=a4" "-o fitplot")))
+
   ;; Recolor PDF buffers to match surrounding color theme by default.
   (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode)
 
