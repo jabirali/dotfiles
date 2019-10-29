@@ -422,6 +422,7 @@ and tries to minimize the section movement during window switching."
   (evil-define-key 'normal eshell-mode-map (kbd "K") 'eshell-above-prompt)
   (evil-define-key 'normal eshell-mode-map (kbd "J") 'eshell-next-prompt)
   (evil-define-key 'normal eshell-mode-map (kbd "/") 'helm-eshell-prompts-all)
+  (evil-define-key 'normal eshell-mode-map (kbd "?") 'helm-eshell-history)
 
   ;; Default to the normal state after running commands. This makes it
   ;; easier to navigate within or between the buffers after commands.
