@@ -28,6 +28,7 @@
          helm-show-completion-display-function #'helm-show-completion-default-display-function
          helm-always-two-windows nil
          helm-split-window-inside-p t
+         helm-ff-skip-git-ignored-files t
          helm-display-header-line nil)
      (latex
        :variables
@@ -96,6 +97,7 @@
    '(
      fish-completion
      gruvbox-theme
+     ob-async
      wolfram
     )
    dotspacemacs-excluded-packages
