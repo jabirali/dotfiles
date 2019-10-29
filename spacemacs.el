@@ -459,6 +459,11 @@ and tries to minimize the section movement during window switching."
   ;; Fall back on bash-completion when `fish' gets lost.
   (setq fish-completion-fallback-on-bash-p t)
 
+  ;; Make it easy to use Helm to pick file names for commands.
+  (with-eval-after-load 'helm
+    (define-key eshell-mode-map (kbd "<C-return>") 'helm-find-files)
+    (define-key helm-map (kbd "<C-return>") 'helm-ff-run-complete-fn-at-point))
+
   ;; Customize the prompt to use in Eshell.
   (setq eshell-prompt-regexp "^❯ "
         eshell-prompt-function
