@@ -1,0 +1,26 @@
+#------------------------------------------------------------
+# File: SSH config
+# Path: ~/.ssh/config
+#------------------------------------------------------------
+
+Host *
+  User jabirali
+  Protocol 2
+  CheckHostIP no
+  Compression no
+  ForwardX11 yes
+  ControlMaster auto
+  ControlPath ~/.ssh/mux_%h_%p_%r
+  ControlPersist 5m
+
+Host babacup
+  Hostname 10.0.0.134
+
+Host vilje
+  Hostname vilje.hpc.ntnu.no
+
+Host ntnu
+  Hostname login.stud.ntnu.no
+
+Host pvv
+  Hostname monty.pvv.org
