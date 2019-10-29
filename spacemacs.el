@@ -458,17 +458,14 @@ and tries to minimize the section movement during window switching."
         (lambda ()
           (concat
            "\n"
-           (if (tramp-tramp-file-p default-directory)
-               (let* ((tramp-path (tramp-dissect-file-name default-directory))
-                      (tramp-method (nth 1 tramp-path))
-                      (tramp-domain (nth 4 tramp-path))
-                      (tramp-name (nth 6 tramp-path)))
+           (if (file-remote-p default-directory)
+               (with-parsed-tramp-file-name default-directory nil
                  (concat
-                  (propertize (concat "/" tramp-method ":") 'face '(bold :foreground "#cc241d"))
-                  (if (string= tramp-domain (system-name))
+                  (propertize (concat "/" method ":") 'face '(bold :foreground "#cc241d"))
+                  (if (string= host (system-name))
                       (propertize ":" 'face '(bold :foreground "#cc241d"))
-                    (propertize (concat tramp-domain ":") 'face '(bold :foreground "#d79921")))
-                  (propertize (concat tramp-name "\n") 'face '(bold :foreground "#83a598"))))
+                    (propertize (concat host ":") 'face '(bold :foreground "#d79921")))
+                  (propertize (concat localname "\n") 'face '(bold :foreground "#83a598"))))
              (unless (or (string= default-directory "~/")
                          (string= default-directory (concat (getenv "HOME") "/")))
                (propertize (concat default-directory "\n") 'face '(bold :foreground "#83a598"))))
