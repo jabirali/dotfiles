@@ -362,18 +362,6 @@ and tries to minimize the section movement during window switching."
       ((line-column) :when active :priority 50)
       ((workspace-number) :when active :face highlight-face :priority 100))))
 
-(defun baba/customize-prog ()
-  "Customize programming buffers by adding appropriate hooks."
-
-  (defun baba/prog-enable-minors ()
-    "Enable linting and folding in all prog-mode buffers."
-
-    (flycheck-mode)
-    (hs-minor-mode)
-    (evil-close-folds))
-
-  (add-hook 'prog-mode-hook 'baba/prog-enable-minors))
-
 (defun baba/customize-readers ()
   "Customize the modes used for reading documents."
 
@@ -391,6 +379,18 @@ and tries to minimize the section movement during window switching."
               (set (make-local-variable 'evil-evilified-state-cursor) (list nil))
               (setq left-fringe-width 1 right-fringe-width 1
                     left-margin-width 0 right-margin-width 0))))
+
+(defun baba/customize-prog ()
+  "Customize programming buffers by adding appropriate hooks."
+
+  (defun baba/prog-enable-minors ()
+    "Enable linting and folding in all prog-mode buffers."
+
+    (flycheck-mode)
+    (hs-minor-mode)
+    (evil-close-folds))
+
+  (add-hook 'prog-mode-hook 'baba/prog-enable-minors))
 
 (defun baba/customize-shells ()
   "Customize the modes used to interact with terminals and shells."
@@ -489,6 +489,13 @@ and tries to minimize the section movement during window switching."
 
 (defun baba/customize-layouts ()
   "Customize the behavior of persp-mode layouts, eyebrowse workspaces, etc."
+
+  ;; Define automatic layouts to prevent clutter.
+  (ignore-errors
+    (persp-def-auto-persp "dotfiles"
+                          :file-name "^/home/[^/]*/\..*"
+                          :parameters '((dont-save-to-file . t))
+                          :switch 'frame))
 
   ;; What do do when opening a new workspace. An eshell is convenient
   ;; because I can `cd' around, including to `/ssh:' paths, and then
