@@ -493,7 +493,7 @@ and tries to minimize the section movement during window switching."
   ;; Define automatic layouts to prevent clutter.
   (ignore-errors
     (persp-def-auto-persp "dotfiles"
-                          :file-name "^/home/[^/]*/\..*"
+                          :file-name (concat (getenv "HOME") "/[.][^.].*")
                           :parameters '((dont-save-to-file . t))
                           :switch 'frame))
 
