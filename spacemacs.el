@@ -254,6 +254,10 @@ and ergonomic, including easier code folding and automatic view navigation."
   (evil-global-set-key 'motion (kbd "H") 'evil-scroll-left)
   (evil-global-set-key 'motion (kbd "L") 'evil-scroll-right)
 
+  ;; After getting used to these in org-mode, I want them everywhere...
+  (evil-global-set-key 'normal (kbd "M-h") 'evil-shift-left)
+  (evil-global-set-key 'normal (kbd "M-l") 'evil-shift-right)
+
   ;; Follow the lead of org-mode, and use TAB and S-TAB to fold everywhere.
   ;; By default, TAB either does autoindent (which can be done with `=') or
   ;; autocomplete (which I only want in insert mode), so I prefer folding.
