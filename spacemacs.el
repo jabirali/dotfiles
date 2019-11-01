@@ -527,6 +527,10 @@ and tries to minimize the section movement during window switching."
     (interactive)
     (find-file org-default-notes-file))
 
+  ;; Play nice with `emacsclient' invocations from a terminal.
+  (spacemacs/set-leader-keys "RET" 'server-edit)
+
+  ;; Define the private leader keys.
   (spacemacs/set-leader-keys "oc" 'org-capture)
   (spacemacs/set-leader-keys "oo" 'baba/open-todo)
   (spacemacs/set-leader-keys "of" 'deer)

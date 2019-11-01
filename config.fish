@@ -24,7 +24,7 @@ set LC_NUMERIC en_US.UTF-8
 
 # Global aliases
 alias o="xdg-open"
-alias e="nvim -p"
+alias e="/opt/emacs/bin/emacsclient -c -a '' "
 alias v="tilix --action=app-new-session -e"
 
 alias venv="python -m venv .venv && source .venv/bin/activate.fish && pip install --upgrade pip setuptools > /dev/null"
