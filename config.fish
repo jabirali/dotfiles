@@ -26,6 +26,7 @@ set LC_NUMERIC en_US.UTF-8
 alias o="xdg-open"
 alias e="/opt/emacs/bin/emacsclient -nw -c -a ''"
 alias v="tilix --action=app-new-session -e"
+alias r="killall -SIGUSR2 emacs"
 
 alias venv="python -m venv .venv && source .venv/bin/activate.fish && pip install --upgrade pip setuptools > /dev/null"
 

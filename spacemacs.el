@@ -222,17 +222,13 @@
   (baba/customize-layouts)
   (baba/customize-leaders)
 
+  ;; Enable "Secret Service" (FreeDesktop.org password storage).
+  (require 'secrets)
+  (setq auth-sources '("secrets:session" "secrets:Login"))
+
   ;; Minor tweaks that simply don't fit in anywhere else.
   (setq dired-listing-switches "-lGh1v --time-style=long-iso --group-directories-first")
-  (setq wolfram-alpha-app-id (getenv "WOLFRAM_ID"))
-
-  ;; This sets the default buffers to open in every Emacs session.
-  ;(unless
-  ;    (get-buffer (car (last (split-string org-default-notes-file "/"))))
-  ;  (find-file-other-window org-default-notes-file)
-  ;  (other-window 1)
-  ;  (evil-goto-first-line))
-  )
+  (setq wolfram-alpha-app-id (getenv "WOLFRAM_ID")))
 
 (defun dotspacemacs/user-load ()
   "Custom code run during config dumps.")
