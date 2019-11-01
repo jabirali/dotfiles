@@ -95,9 +95,14 @@
     )
    dotspacemacs-additional-packages
    '(
+     evil-smartparens
      fish-completion
      gruvbox-theme
      ob-async
+     ; pcmpl-args
+     ; pcmpl-extension
+     ; pcmpl-git
+     ; pcmpl-pip
      wolfram
     )
    dotspacemacs-excluded-packages
@@ -140,10 +145,10 @@
    dotspacemacs-emacs-leader-key "M-m"
    dotspacemacs-major-mode-leader-key ","
    dotspacemacs-major-mode-emacs-leader-key "C-M-m"
-   dotspacemacs-distinguish-gui-tab nil
-   dotspacemacs-default-layout-name "default"
-   dotspacemacs-display-default-layout nil
-   dotspacemacs-auto-resume-layouts nil
+   dotspacemacs-distinguish-gui-tab t
+   dotspacemacs-default-layout-name "main"
+   dotspacemacs-display-default-layout t
+   dotspacemacs-auto-resume-layouts t
    dotspacemacs-auto-generate-layout-names nil
    dotspacemacs-large-file-size 1
    dotspacemacs-auto-save-file-location 'cache
@@ -159,13 +164,13 @@
    dotspacemacs-undecorated-at-startup t
    dotspacemacs-active-transparency 90
    dotspacemacs-inactive-transparency 90
-   dotspacemacs-show-transient-state-title t
-   dotspacemacs-show-transient-state-color-guide t
+   dotspacemacs-show-transient-state-title nil
+   dotspacemacs-show-transient-state-color-guide nil
    dotspacemacs-mode-line-unicode-symbols t
    dotspacemacs-smooth-scrolling t
    dotspacemacs-line-numbers nil
    dotspacemacs-folding-method 'evil
-   dotspacemacs-smartparens-strict-mode nil
+   dotspacemacs-smartparens-strict-mode t
    dotspacemacs-smart-closing-parenthesis nil
    dotspacemacs-highlight-delimiters 'all
    dotspacemacs-enable-server t
@@ -263,6 +268,9 @@ and ergonomic, including easier code folding and automatic view navigation."
   ;; autocomplete (which I only want in insert mode), so I prefer folding.
   (evil-global-set-key 'normal (kbd "<tab>") 'evil-toggle-fold)
   (evil-global-set-key 'normal (kbd "<backtab>") 'evil-close-folds)
+
+  ;; Smartparens seems like it might be a good idea. Let's do more of that.
+  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
 
   ;; Make a function that can be used to run Eshell in a smarter way.
   (defun baba/eshell-dwim ()
@@ -444,22 +452,9 @@ and tries to minimize the section movement during window switching."
   (add-hook 'eshell-mode-hook 'spacemacs/toggle-centered-point-off)
 
   ;; Turn on smart autocompletion via Fish.
-  ;(add-hook 'eshell-mode-hook 'fish-completion-mode)
-  ;(when (and (executable-find "fish")
-  ;           (require 'fish-completion nil t))
-  ;  (global-fish-completion-mode))
-
-  ;; Turn on fish-completion only in places where it is known to work.
-  (defun fish-completion-tramp-toggle ()
-    "Toggle fish-completion-mode based on the TRAMP status."
-    (if (file-remote-p default-directory)
-        (fish-completion-mode 0)
-      (fish-completion-mode 1)))
-
-  ;; Enable the toggle above only when `fish' is available.
-  (when (and (executable-find "fish") (require 'fish-completion nil t))
-    (add-hook 'eshell-mode-hook 'fish-completion-tramp-toggle)
-    (add-hook 'eshell-directory-change-hook 'fish-completion-tramp-toggle))
+  (when (and (executable-find "fish")
+             (require 'fish-completion nil t))
+    (global-fish-completion-mode))
 
   ;; Fall back on bash-completion when `fish' gets lost.
   (setq fish-completion-fallback-on-bash-p t)
@@ -490,6 +485,7 @@ and tries to minimize the section movement during window switching."
 
   ;; Define aliases for use in Eshell.
   (defalias 'v 'eshell-exec-visual)
+  (defalias 'o 'browse-url-xdg-open)
   (defalias 'g 'magit-status-here))
 
 (defun baba/customize-layouts ()

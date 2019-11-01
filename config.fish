@@ -14,7 +14,7 @@ end
 #theme_gruvbox dark medium
 
 # Environment variables
-set EDITOR nvim
+set EDITOR e
 set PATH /opt/zotero/ /opt/nomad/bin/ /opt/conda/bin /opt/mpw/bin $PATH
 set LC_ALL en_US.UTF-8
 set LC_NUMERIC en_US.UTF-8
@@ -24,7 +24,12 @@ set LC_NUMERIC en_US.UTF-8
 
 # Global aliases
 alias o="xdg-open"
-alias e="/opt/emacs/bin/emacsclient -c -a '' "
+alias e="/opt/emacs/bin/emacsclient -nw -c -a ''"
 alias v="tilix --action=app-new-session -e"
 
 alias venv="python -m venv .venv && source .venv/bin/activate.fish && pip install --upgrade pip setuptools > /dev/null"
+
+# Use the aliases...
+alias stop="clear; echo -e '\e[31;1mNO! Use the alias `e`.\e[0m\n\n'; sleep 3; e"
+alias vim=stop
+alias nvim=stop
