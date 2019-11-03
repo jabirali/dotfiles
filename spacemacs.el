@@ -227,6 +227,7 @@
   (setq auth-sources '("secrets:session" "secrets:Login"))
 
   ;; Minor tweaks that simply don't fit in anywhere else.
+  (add-hook 'org-mode-hook #'visual-line-mode)
   (setq dired-listing-switches "-lGh1v --time-style=long-iso --group-directories-first")
   (setq wolfram-alpha-app-id (getenv "WOLFRAM_ID")))
 
@@ -275,6 +276,12 @@ and ergonomic, including easier code folding and automatic view navigation."
     (if (projectile-project-p)
         (projectile-run-eshell)
       (eshell)))
+
+  ;; Make it easy to use Helm to pick file names for commands.
+  (with-eval-after-load 'helm
+    (evil-global-set-key 'insert (kbd "<C-i>") 'helm-find-files)
+    (define-key eshell-mode-map (kbd "<C-i>") 'helm-find-files)
+    (define-key helm-map (kbd "<C-i>") 'helm-ff-run-complete-fn-at-point))
 
   ;; Make S a shortcut for opening a shell. This is already the default
   ;; keybinding in Deer/Ranger, and doesn't do anything useful in Evil.
@@ -455,11 +462,6 @@ and tries to minimize the section movement during window switching."
   ;; Fall back on bash-completion when `fish' gets lost.
   (setq fish-completion-fallback-on-bash-p t)
 
-  ;; Make it easy to use Helm to pick file names for commands.
-  (with-eval-after-load 'helm
-    (define-key eshell-mode-map (kbd "<C-return>") 'helm-find-files)
-    (define-key helm-map (kbd "<C-return>") 'helm-ff-run-complete-fn-at-point))
-
   ;; Customize the prompt to use in Eshell.
   (setq eshell-prompt-regexp "^❯ "
         eshell-prompt-function
@@ -493,13 +495,6 @@ and tries to minimize the section movement during window switching."
     (persp-def-auto-persp "conf"
                           :file-name (concat (getenv "HOME") "/[.][^.].*")
                           :parameters '((dont-save-to-file . t))
-                          :switch 'frame))
-
-  ;; I want to collect all my notes in one place, even though I open them
-  ;; from various projects. Makes it easier to compare notes, so to speak.
-  (ignore-errors
-    (persp-def-auto-persp "note"
-                          :mode 'org-mode
                           :switch 'frame))
 
   ;; What do do when opening a new workspace. An eshell is convenient
