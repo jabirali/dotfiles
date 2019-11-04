@@ -229,6 +229,16 @@
   (require 'secrets)
   (setq auth-sources '("secrets:session" "secrets:Login"))
 
+  ;; Use Esc to quit anything...
+  (bind-key "<escape>" 'isearch-cancel isearch-mode-map)
+  (define-key minibuffer-local-map (kbd "ESC") 'abort-recursive-edit)
+  (define-key minibuffer-local-ns-map (kbd "ESC") 'abort-recursive-edit)
+  (define-key minibuffer-local-completion-map (kbd "ESC") 'abort-recursive-edit)
+  (define-key minibuffer-local-must-match-map (kbd "ESC") 'abort-recursive-edit)
+  (define-key minibuffer-local-isearch-map (kbd "ESC") 'abort-recursive-edit)
+  (bind-key "<escape>" 'helm-keyboard-quit helm-map)
+  (bind-key "<escape>" 'helm-keyboard-quit helm-comp-read-map)
+
   ;; Minor tweaks that simply don't fit in anywhere else.
   (add-hook 'magit-diff-mode-hook #'visual-line-mode)
   (add-hook 'org-mode-hook #'visual-line-mode)
