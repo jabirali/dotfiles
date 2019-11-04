@@ -451,8 +451,8 @@ and tries to minimize the section movement during window switching."
     (eshell-previous-prompt 1)
     (evil-end-of-line)
     (evil-beginning-of-line))
-  (evil-define-key 'normal eshell-mode-map (kbd "K") 'eshell-above-prompt)
-  (evil-define-key 'normal eshell-mode-map (kbd "J") 'eshell-next-prompt)
+  (evil-define-key 'normal eshell-mode-map (kbd "[") 'eshell-above-prompt)
+  (evil-define-key 'normal eshell-mode-map (kbd "]") 'eshell-next-prompt)
   (evil-define-key 'normal eshell-mode-map (kbd "/") 'helm-eshell-prompts-all)
   (evil-define-key 'normal eshell-mode-map (kbd "?") 'helm-eshell-history)
 
