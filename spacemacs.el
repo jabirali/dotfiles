@@ -20,6 +20,9 @@
          auto-completion-idle-delay nil
          auto-completion-enable-sort-by-usage t)
      (csv)
+     (deft
+       :variables
+         deft-directory "~/Notes/deft")
      (emacs-lisp)
      (git
        :variables
@@ -46,6 +49,7 @@
          org-startup-indented t
          org-pretty-entities t
          org-hide-emphasis-markers t
+         org-want-todo-bindings t
          org-bullets-bullet-list '("•")
          org-projectile-file "TODO.org"
          org-default-notes-file "~/Notes/TODO.org"
@@ -113,6 +117,7 @@
      vi-tilde-fringe
      treemacs
      treemacs-evil
+     org-brain
     )
    dotspacemacs-frozen-packages '()
    dotspacemacs-install-packages 'used-only))
@@ -236,8 +241,9 @@
   (define-key minibuffer-local-completion-map (kbd "ESC") 'abort-recursive-edit)
   (define-key minibuffer-local-must-match-map (kbd "ESC") 'abort-recursive-edit)
   (define-key minibuffer-local-isearch-map (kbd "ESC") 'abort-recursive-edit)
-  (bind-key "<escape>" 'helm-keyboard-quit helm-map)
-  (bind-key "<escape>" 'helm-keyboard-quit helm-comp-read-map)
+  (with-eval-after-load 'helm
+    (bind-key "<escape>" 'helm-keyboard-quit helm-map)
+    (bind-key "<escape>" 'helm-keyboard-quit helm-comp-read-map))
 
   ;; Minor tweaks that simply don't fit in anywhere else.
   (add-hook 'magit-diff-mode-hook #'visual-line-mode)
