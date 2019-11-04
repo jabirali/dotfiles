@@ -246,6 +246,11 @@
     (bind-key "<escape>" 'helm-keyboard-quit helm-comp-read-map))
 
   ;; Minor tweaks that simply don't fit in anywhere else.
+  (add-hook 'deft-mode-hook
+            (lambda ()
+              (setq-local evil-insert-state-cursor '(nil (bar . 0)))
+              (setq-local evil-normal-state-cursor '(nil (bar . 0)))
+              (hl-line-mode)))
   (add-hook 'magit-diff-mode-hook #'visual-line-mode)
   (add-hook 'org-mode-hook #'visual-line-mode)
   (add-hook 'markdown-mode-hook #'visual-line-mode)
