@@ -19,6 +19,7 @@
        :variables
          auto-completion-idle-delay nil
          auto-completion-enable-sort-by-usage t)
+     (csv)
      (emacs-lisp)
      (git
        :variables
@@ -231,6 +232,8 @@
   ;; Minor tweaks that simply don't fit in anywhere else.
   (add-hook 'magit-diff-mode-hook #'visual-line-mode)
   (add-hook 'org-mode-hook #'visual-line-mode)
+  (add-hook 'markdown-mode-hook #'visual-line-mode)
+  (add-hook 'help-mode-hook #'visual-line-mode)
   (setq dired-listing-switches "-lGh1v --time-style=long-iso --group-directories-first")
   (setq wolfram-alpha-app-id (getenv "WOLFRAM_ID")))
 
