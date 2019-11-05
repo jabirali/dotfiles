@@ -22,7 +22,8 @@
      (csv)
      (deft
        :variables
-         deft-directory "~/Notes/deft/")
+         deft-directory "~/Notes/deft/"
+         deft-strip-summary-regexp "\\(\n.*\\|^#\s*\\)")
      (emacs-lisp)
      (git
        :variables
