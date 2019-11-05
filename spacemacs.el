@@ -538,18 +538,24 @@ and tries to minimize the section movement during window switching."
 (defun baba/customize-leaders ()
   "Populate the private leader-key menu (SPC o)."
 
-  (defun baba/open-todo ()
+  (defun baba/note-goto ()
     (interactive)
-    (find-file org-default-notes-file))
+    (persp-switch "note")
+    (spacemacs/window-split-double-columns)
+    (find-file org-default-notes-file)
+    (other-window 1)
+    (spacemacs/deft)
+    (deft-filter-clear)
+    (other-window 1))
 
-  (defun baba/helm-semi-deft ()
-    (interactive)
-    (helm-find-files-1 deft-directory))
+  ;(defun baba/note-deft ()
+  ;  (interactive)
+  ;  (baba/note-goto)
+  ;  (helm-find-files-1 deft-directory))
 
   ;; Define the private leader keys.
   (spacemacs/set-leader-keys "oc" 'org-capture)
-  (spacemacs/set-leader-keys "oo" 'baba/open-todo)
-  (spacemacs/set-leader-keys "on" 'baba/helm-semi-deft)
+  (spacemacs/set-leader-keys "oo" 'baba/note-goto)
   (spacemacs/set-leader-keys "of" 'deer)
   (spacemacs/set-leader-keys "ow" 'wolfram-alpha)
   (spacemacs/set-leader-keys "os" 'lazy-helm/helm-google-suggest))
