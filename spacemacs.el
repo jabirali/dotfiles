@@ -22,7 +22,7 @@
      (csv)
      (deft
        :variables
-         deft-directory "~/Notes/deft")
+         deft-directory "~/Notes/deft/")
      (emacs-lisp)
      (git
        :variables
@@ -541,9 +541,14 @@ and tries to minimize the section movement during window switching."
     (interactive)
     (find-file org-default-notes-file))
 
+  (defun baba/helm-semi-deft ()
+    (interactive)
+    (helm-find-files-1 deft-directory))
+
   ;; Define the private leader keys.
   (spacemacs/set-leader-keys "oc" 'org-capture)
   (spacemacs/set-leader-keys "oo" 'baba/open-todo)
+  (spacemacs/set-leader-keys "on" 'baba/helm-semi-deft)
   (spacemacs/set-leader-keys "of" 'deer)
   (spacemacs/set-leader-keys "ow" 'wolfram-alpha)
   (spacemacs/set-leader-keys "os" 'lazy-helm/helm-google-suggest))
