@@ -30,6 +30,7 @@ alias v="tilix --action=app-new-session -e"
 alias r="killall -SIGUSR2 emacs"
 
 alias venv="python -m venv .venv && source .venv/bin/activate.fish && pip install --upgrade pip setuptools > /dev/null"
+alias scrape="wget -r -l 1 -e robots=off"
 
 # Use the aliases...
 alias stop="clear; echo -e '\e[31;1mNO! Use the alias `e`.\e[0m\n\n'; sleep 3; e"
