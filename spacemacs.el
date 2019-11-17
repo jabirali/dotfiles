@@ -19,6 +19,11 @@
        :variables
          auto-completion-idle-delay nil
          auto-completion-enable-sort-by-usage t)
+     (bibtex
+       :variables
+         org-ref-pdf-directory "~/Refs/"
+         org-ref-default-bibliography '("~/Refs/index.bib")
+         org-ref-bibliography-notes "~/Refs/index.org")
      (csv)
      (deft
        :variables
@@ -466,6 +471,13 @@ and tries to minimize the section movement during window switching."
 (defun baba/customize-eshell ()
   "Customize the behavior of the Emacs shell."
 
+  ;; Workaround for Eshell bug related to `eshell-mode-map':
+  ;; start a temporary Eshell instance while configuring...
+  (eshell)
+
+  ;; Load a package for smart autocompletion via Helm and Fish.
+  (require 'helm-fish-completion nil t)
+
   ;; Define aliases for use in Eshell.
   (defalias 'v 'eshell-exec-visual)
   (defalias 'o 'browse-url-xdg-open)
@@ -504,9 +516,6 @@ and tries to minimize the section movement during window switching."
   (add-hook
    'eshell-mode-hook
    (lambda ()
-     ;; Load a package for smart autocompletion via Helm and Fish.
-     (require 'helm-fish-completion nil t)
-
      ;; Smarter autocompletion via Fish (including keyword descriptions).
      (evil-define-key 'insert eshell-mode-map (kbd "<tab>") 'helm-fish-completion)
 
@@ -524,9 +533,8 @@ and tries to minimize the section movement during window switching."
      ;; Turn off centered-point mode in shells. It's not that useful there...
      (spacemacs/toggle-centered-point-off)))
 
-  ;; Default to the normal state after running commands. This makes it
-  ;; easier to navigate within or between the buffers after commands.
-  (add-hook 'eshell-after-prompt-hook 'evil-normal-state))
+  ;; Remove the temporary Eshell buffer after configuration.
+  (kill-buffer))
 
 (defun baba/customize-layouts ()
   "Customize the behavior of persp-mode layouts, eyebrowse workspaces, etc."
