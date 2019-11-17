@@ -51,10 +51,25 @@
          font-latex-fontify-script nil
          font-latex-fontify-sectioning 'color)
      (markdown)
-     (notmuch
+     (mu4e
        :variables
-         notmuch-spacemacs-layout-name "@mail"
-         notmuch-spacemacs-layout-binding "m")
+          mu4e-maildir "~/Mail"
+          mu4e-sent-folder "/Sent"
+          mu4e-trash-folder "/Trash"
+          mu4e-drafts-folder "/Drafts"
+          mu4e-refile-folder "/Archive"
+          mu4e-headers-date-format "%Y-%m-%d %H:%M"
+          mu4e-headers-fields '((:date . 20) (:from . 30) (:to . 30) (:thread-subject))
+          mu4e-get-mail-command "offlineimap"
+          mu4e-spacemacs-layout-name "@mail"
+          mu4e-spacemacs-layout-binding "m"
+          mu4e-update-interval 300
+          mu4e-compose-signature-auto-include nil
+          mu4e-use-fancy-chars nil
+          mu4e-view-show-images t
+          mu4e-view-show-addresses t
+          mu4e-split-view 'vertical
+          mu4e-headers-visible-columns 80)
      (org
        :variables
          org-startup-indented t
