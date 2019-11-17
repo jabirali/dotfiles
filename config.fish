@@ -24,8 +24,8 @@ set LC_NUMERIC en_US.UTF-8
 
 # Global aliases
 alias o="xdg-open"
-alias e="/opt/emacs/bin/emacsclient -nw -c -a ''"
-alias t="/opt/emacs/bin/emacsclient -c -a '' -e '(eshell t)'"
+alias e="emacsclient -nw -c -a ''"
+alias t="emacsclient -c -a '' -e '(eshell t)'"
 alias v="tilix --action=app-new-session -e"
 alias r="killall -SIGUSR2 emacs"
 
