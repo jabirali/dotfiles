@@ -15,7 +15,7 @@ end
 
 # Environment variables
 set EDITOR e
-set PATH /opt/zotero/ /opt/nomad/bin/ /opt/conda/bin /opt/mpw/bin $PATH
+set PATH /opt/zotero/ /opt/nomad/bin/ /opt/conda/bin /opt/mpw/bin /snap/bin $PATH
 set LC_ALL en_US.UTF-8
 set LC_NUMERIC en_US.UTF-8
 
@@ -33,6 +33,6 @@ alias venv="python -m venv .venv && source .venv/bin/activate.fish && pip instal
 alias scrape="wget -r -l 1 -e robots=off"
 
 # Use the aliases...
-alias stop="clear; echo -e '\e[31;1mNO! Use the alias `e`.\e[0m\n\n'; sleep 3; e"
+alias stop="echo -e '\e[31;1mUse the alias `e`.\e[0m\n\n'"
 alias vim=stop
 alias nvim=stop

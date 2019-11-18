@@ -54,6 +54,7 @@
          org-bullets-bullet-list '("•")
          org-projectile-file "TODO.org"
          org-default-notes-file "~/Notes/TODO.org"
+         org-attach-directory "~/Notes/data/"
          org-todo-keywords '((sequence "TODO" "|" "DONE" "WAIT")))
      (pdf
        :variables
