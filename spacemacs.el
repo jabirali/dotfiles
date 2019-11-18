@@ -19,10 +19,16 @@
        :variables
          auto-completion-idle-delay nil
          auto-completion-enable-sort-by-usage t)
+     (bibtex
+       :variables
+         org-ref-pdf-directory "~/Refs/"
+         org-ref-default-bibliography '("~/Refs/index.bib")
+         org-ref-bibliography-notes "~/Refs/index.org")
      (csv)
      (deft
        :variables
          deft-directory "~/Notes/deft/"
+         deft-auto-save-interval 60
          deft-strip-summary-regexp "\\(\n.*\\|^#\s*\\)")
      (emacs-lisp)
      (git
@@ -45,17 +51,43 @@
          font-latex-fontify-script nil
          font-latex-fontify-sectioning 'color)
      (markdown)
+     (mu4e
+       :variables
+          mu4e-maildir "~/Mail"
+          mu4e-sent-folder "/Sent"
+          mu4e-trash-folder "/Trash"
+          mu4e-drafts-folder "/Drafts"
+          mu4e-refile-folder "/Archive"
+          mu4e-headers-date-format "%Y-%m-%d %H:%M"
+          mu4e-headers-fields '((:date . 20) (:from . 30) (:to . 30) (:thread-subject))
+          mu4e-get-mail-command "offlineimap"
+          mu4e-spacemacs-layout-name "@mail"
+          mu4e-spacemacs-layout-binding "m"
+          mu4e-update-interval 300
+          mu4e-compose-signature-auto-include nil
+          mu4e-use-fancy-chars nil
+          mu4e-view-show-images t
+          mu4e-view-show-addresses t
+          mu4e-split-view 'vertical
+          mu4e-headers-visible-columns 80)
      (org
        :variables
          org-startup-indented t
+         org-image-actual-width '(300)
          org-pretty-entities t
          org-hide-emphasis-markers t
+         org-catch-invisible-edits 'smart
          org-want-todo-bindings t
          org-bullets-bullet-list '("•")
          org-projectile-file "TODO.org"
+         org-directory "~/Notes"
          org-default-notes-file "~/Notes/TODO.org"
+         org-agenda-files '("~/Notes/TODO.org")
          org-attach-directory "~/Notes/data/"
-         org-todo-keywords '((sequence "TODO" "|" "DONE" "WAIT")))
+         org-download-method 'attach
+         org-todo-keywords
+          '((sequence "TODO(t)" "INIT(i)" "|" "DONE(d!)")
+            (sequence "WAIT(w@/!)" "|" "STOP(c@)")))
      (pdf
        :variables
          TeX-view-program-selection '((output-pdf "PDF Tools"))
@@ -77,15 +109,16 @@
      (perl5)
      (python)
      (ranger
-      :variables
-        ranger-override-dired t)
+       :variables
+         ranger-override-dired t)
      (shell
        :variables
          shell-default-shell 'eshell
          shell-default-height 40
          eshell-banner-message ""
          eshell-history-size 1024
-         eshell-destroy-buffer-when-process-dies t)
+         eshell-destroy-buffer-when-process-dies t
+         tramp-default-method "ssh")
      (shell-scripts)
      (spell-checking
        :variables
@@ -104,22 +137,18 @@
     )
    dotspacemacs-additional-packages
    '(
-     evil-smartparens
-     fish-completion
-     gruvbox-theme
-     ob-async
-     ; pcmpl-args
-     ; pcmpl-extension
-     ; pcmpl-git
-     ; pcmpl-pip
-     wolfram
+     (evil-smartparens)
+     (fish-completion)
+     (helm-fish-completion :location (recipe :fetcher github :repo "emacs-helm/helm-fish-completion"))
+     (gruvbox-theme)
+     (ob-async)
     )
    dotspacemacs-excluded-packages
    '(
-     vi-tilde-fringe
-     treemacs
-     treemacs-evil
-     org-brain
+     (vi-tilde-fringe)
+     (treemacs)
+     (treemacs-evil)
+     (org-brain)
     )
    dotspacemacs-frozen-packages '()
    dotspacemacs-install-packages 'used-only))
@@ -158,7 +187,7 @@
    dotspacemacs-distinguish-gui-tab t
    dotspacemacs-default-layout-name "main"
    dotspacemacs-display-default-layout t
-   dotspacemacs-auto-resume-layouts t
+   dotspacemacs-auto-resume-layouts nil
    dotspacemacs-auto-generate-layout-names nil
    dotspacemacs-large-file-size 1
    dotspacemacs-auto-save-file-location 'cache
@@ -223,12 +252,16 @@
   ;; Use 4-space tabs when reading tabbed code, since that's more common.
   (setq-default tab-width 4)
 
+  ;; Since F11 does fullscreen, F12 should do writeroom-mode.
+  (global-set-key (kbd "<f12>") 'writeroom-mode)
+
   ;; Load more advanced customization defined below.
   (baba/customize-evil)
   (baba/customize-modeline)
   (baba/customize-readers)
+  (baba/customize-text)
   (baba/customize-prog)
-  (baba/customize-shells)
+  (baba/customize-eshell)
   (baba/customize-layouts)
   (baba/customize-leaders)
 
@@ -236,29 +269,13 @@
   (require 'secrets)
   (setq auth-sources '("secrets:session" "secrets:Login"))
 
-  ;; Use Esc to quit anything...
-  (bind-key "<escape>" 'isearch-cancel isearch-mode-map)
-  (define-key minibuffer-local-map (kbd "ESC") 'abort-recursive-edit)
-  (define-key minibuffer-local-ns-map (kbd "ESC") 'abort-recursive-edit)
-  (define-key minibuffer-local-completion-map (kbd "ESC") 'abort-recursive-edit)
-  (define-key minibuffer-local-must-match-map (kbd "ESC") 'abort-recursive-edit)
-  (define-key minibuffer-local-isearch-map (kbd "ESC") 'abort-recursive-edit)
-  (with-eval-after-load 'helm
-    (bind-key "<escape>" 'helm-keyboard-quit helm-map)
-    (bind-key "<escape>" 'helm-keyboard-quit helm-comp-read-map))
-
   ;; Minor tweaks that simply don't fit in anywhere else.
-  (add-hook 'deft-mode-hook
-            (lambda ()
-              (setq-local evil-insert-state-cursor '(nil (bar . 0)))
-              (setq-local evil-normal-state-cursor '(nil (bar . 0)))
-              (hl-line-mode)))
-  (add-hook 'magit-diff-mode-hook #'visual-line-mode)
-  (add-hook 'org-mode-hook #'visual-line-mode)
-  (add-hook 'markdown-mode-hook #'visual-line-mode)
-  (add-hook 'help-mode-hook #'visual-line-mode)
-  (setq dired-listing-switches "-lGh1v --time-style=long-iso --group-directories-first")
-  (setq wolfram-alpha-app-id (getenv "WOLFRAM_ID")))
+  ;(add-hook 'deft-mode-hook
+  ;          (lambda ()
+  ;            (setq-local evil-insert-state-cursor '(nil (bar . 0)))
+  ;            (setq-local evil-normal-state-cursor '(nil (bar . 0)))
+  ;            (hl-line-mode)))
+  (setq dired-listing-switches "-lGh1v --time-style=long-iso --group-directories-first"))
 
 (defun dotspacemacs/user-load ()
   "Custom code run during config dumps.")
@@ -267,7 +284,10 @@
   "Custom environment variables."
 
   ;; Load from ~/.spacemacs.env
-  (spacemacs/load-spacemacs-env))
+  (spacemacs/load-spacemacs-env)
+
+  ;; Extract Emacs variables
+  (setq wolfram-alpha-app-id (getenv "WOLFRAM_ID")))
 
 (defun baba/customize-evil ()
   "Customize the evil-mode behavior.
@@ -279,6 +299,23 @@ and ergonomic, including easier code folding and automatic view navigation."
   ;; need to move view and cursor separately, and automatically provides
   ;; the maximum possible context for the code we're currently editing.
   (spacemacs/toggle-centered-point-globally-on)
+
+  ;; Use ESC to escape from basically anything.
+  (bind-key "<escape>" 'isearch-cancel isearch-mode-map)
+  (define-key minibuffer-local-map (kbd "ESC") 'abort-recursive-edit)
+  (define-key minibuffer-local-ns-map (kbd "ESC") 'abort-recursive-edit)
+  (define-key minibuffer-local-completion-map (kbd "ESC") 'abort-recursive-edit)
+  (define-key minibuffer-local-must-match-map (kbd "ESC") 'abort-recursive-edit)
+  (define-key minibuffer-local-isearch-map (kbd "ESC") 'abort-recursive-edit)
+  (with-eval-after-load 'helm
+    (bind-key "<escape>" 'helm-keyboard-quit helm-map)
+    (bind-key "<escape>" 'helm-keyboard-quit helm-comp-read-map))
+
+  ;; Make up/down operate in screen lines instead of logical lines.
+  (define-key evil-motion-state-map "j" 'evil-next-visual-line)
+  (define-key evil-motion-state-map "k" 'evil-previous-visual-line)
+  (define-key evil-visual-state-map "j" 'evil-next-visual-line)
+  (define-key evil-visual-state-map "k" 'evil-previous-visual-line)
 
   ;; It is more useful to navigate horizontally than vertically with H/L,
   ;; at least when using the centered-point and truncate-lines settings.
@@ -425,6 +462,16 @@ and tries to minimize the section movement during window switching."
               (setq left-fringe-width 1 right-fringe-width 1
                     left-margin-width 0 right-margin-width 0))))
 
+(defun baba/customize-text ()
+  "Customize plaintext buffers by adding appropriate hooks."
+
+  ;; Break long lines on word boundaries.
+  (add-hook 'magit-diff-mode-hook #'visual-line-mode)
+  (add-hook 'org-mode-hook #'visual-line-mode)
+  (add-hook 'markdown-mode-hook #'visual-line-mode)
+  (add-hook 'text-mode-hook #'visual-line-mode)
+  (add-hook 'help-mode-hook #'visual-line-mode))
+
 (defun baba/customize-prog ()
   "Customize programming buffers by adding appropriate hooks."
 
@@ -437,59 +484,20 @@ and tries to minimize the section movement during window switching."
 
   (add-hook 'prog-mode-hook 'baba/prog-enable-minors))
 
-(defun baba/customize-shells ()
-  "Customize the modes used to interact with terminals and shells."
+(defun baba/customize-eshell ()
+  "Customize the behavior of the Emacs shell."
 
-  ;; When spawning a `vterm', we can define a proper normal-mode, where
-  ;; hjkl are autotranslated to arrow keys, and JK are autotranslated
-  ;; to page-up/page-down. This makes any terminal application that
-  ;; understands arrow keys (fish, htop, etc.) useful from an Evil
-  ;; normal-mode, as one can drop to normal mode for navigation.
-  (evil-define-key 'normal vterm-mode-map (kbd "h") 'vterm-send-left)
-  (evil-define-key 'normal vterm-mode-map (kbd "j") 'vterm-send-down)
-  (evil-define-key 'normal vterm-mode-map (kbd "k") 'vterm-send-up)
-  (evil-define-key 'normal vterm-mode-map (kbd "l") 'vterm-send-right)
-  (evil-define-key 'normal vterm-mode-map (kbd "J") 'vterm-send-next)
-  (evil-define-key 'normal vterm-mode-map (kbd "K") 'vterm-send-prior)
+  ;; Workaround for Eshell bug related to `eshell-mode-map':
+  ;; start a temporary Eshell instance while configuring...
+  (eshell)
 
-  ;; When working in Eshell, it's very useful to be able to jump between
-  ;; prompts. This also makes the Plan9 smart-shell unnecessary, since
-  ;; I can just as easily type K to jump up and C-d to scroll down.
-  ;; Finally, I rarely use / to forward-search from the prompt, so
-  ;; I might as well use that to search through prompts woith Helm.
-  (defun eshell-above-prompt ()
-    "Jump to the prompt above in eshell."
-    (interactive)
-    (evil-previous-line)
-    (eshell-previous-prompt 1)
-    (evil-end-of-line)
-    (evil-beginning-of-line))
-  (evil-define-key 'normal eshell-mode-map (kbd "[") 'eshell-above-prompt)
-  (evil-define-key 'normal eshell-mode-map (kbd "]") 'eshell-next-prompt)
-  (evil-define-key 'normal eshell-mode-map (kbd "/") 'helm-eshell-prompts-all)
-  (evil-define-key 'normal eshell-mode-map (kbd "?") 'helm-eshell-history)
+  ;; Load a package for smart autocompletion via Helm and Fish.
+  (require 'helm-fish-completion nil t)
 
-  ;; Default to the normal state after running commands. This makes it
-  ;; easier to navigate within or between the buffers after commands.
-  ; (add-hook 'eshell-after-prompt-hook 'evil-normal-state)
-
-  ;; A few terminal commands don't do their own line wrapping, and end up
-  ;; writing 800-character lines instead of 80-character lines. Moreover, I
-  ;; occasionally write long commands due to long path names, in which case
-  ;; I also prefer not navigating horizontally. This fixes those issues by
-  ;; breaking long lines at word boundaries, which is suitable for shells.
-  (add-hook 'eshell-mode-hook 'visual-line-mode)
-
-  ;; Turn off centered-point mode in shells. It's not that useful there...
-  (add-hook 'eshell-mode-hook 'spacemacs/toggle-centered-point-off)
-
-  ;; Turn on smart autocompletion via Fish.
-  (when (and (executable-find "fish")
-             (require 'fish-completion nil t))
-    (global-fish-completion-mode))
-
-  ;; Fall back on bash-completion when `fish' gets lost.
-  (setq fish-completion-fallback-on-bash-p t)
+  ;; Define aliases for use in Eshell.
+  (defalias 'v 'eshell-exec-visual)
+  (defalias 'o 'browse-url-xdg-open)
+  (defalias 'g 'magit-status-here)
 
   ;; Customize the prompt to use in Eshell.
   (setq eshell-prompt-regexp "^❯ "
@@ -510,10 +518,39 @@ and tries to minimize the section movement during window switching."
                (propertize (concat default-directory "\n") 'face '(bold :foreground "#83a598"))))
            (propertize "❯ " :foreground "default"))))
 
-  ;; Define aliases for use in Eshell.
-  (defalias 'v 'eshell-exec-visual)
-  (defalias 'o 'browse-url-xdg-open)
-  (defalias 'g 'magit-status-here))
+  ;; Do what `eshell-previous-prompt' should be doing by default.
+  (defun eshell-above-prompt ()
+    "Jump to the prompt above in `eshell'."
+    (interactive)
+    (evil-previous-line)
+    (eshell-previous-prompt 1)
+    (evil-end-of-line)
+    (evil-beginning-of-line))
+
+  ;; Customize keybindings. Unfortunately, Eshell does something weird, and only defines
+  ;; its keymap upon buffer creation. It therefore has to be configured via hooks...
+  (add-hook
+   'eshell-mode-hook
+   (lambda ()
+     ;; Smarter autocompletion via Fish (including keyword descriptions).
+     (evil-define-key 'insert eshell-mode-map (kbd "<tab>") 'helm-fish-completion)
+
+     ;; Motions between prompts (replaces the Plan9 "smart shell" feature).
+     (evil-define-key 'normal eshell-mode-map (kbd "[") 'eshell-above-prompt)
+     (evil-define-key 'normal eshell-mode-map (kbd "]") 'eshell-next-prompt)
+
+     ;; A few terminal commands don't do their own line wrapping, and end up
+     ;; writing 800-character lines instead of 80-character lines. Moreover, I
+     ;; occasionally write long commands due to long path names, in which case
+     ;; I also prefer not navigating horizontally. This fixes those issues by
+     ;; breaking long lines at word boundaries, which is suitable for shells.
+     (visual-line-mode)
+
+     ;; Turn off centered-point mode in shells. It's not that useful there...
+     (spacemacs/toggle-centered-point-off)))
+
+  ;; Remove the temporary Eshell buffer after configuration.
+  (kill-buffer))
 
 (defun baba/customize-layouts ()
   "Customize the behavior of persp-mode layouts, eyebrowse workspaces, etc."
@@ -557,6 +594,4 @@ and tries to minimize the section movement during window switching."
   ;; Define the private leader keys.
   (spacemacs/set-leader-keys "oc" 'org-capture)
   (spacemacs/set-leader-keys "oo" 'baba/note-goto)
-  (spacemacs/set-leader-keys "of" 'deer)
-  (spacemacs/set-leader-keys "ow" 'wolfram-alpha)
-  (spacemacs/set-leader-keys "os" 'lazy-helm/helm-google-suggest))
+  (spacemacs/set-leader-keys "os" 'helm-surfraw))
