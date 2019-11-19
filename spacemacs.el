@@ -78,7 +78,6 @@
          org-image-actual-width '(300)
          org-pretty-entities t
          org-hide-emphasis-markers t
-         org-download-method 'attach
          org-catch-invisible-edits 'smart
          org-want-todo-bindings t
          org-bullets-bullet-list '("•")
@@ -86,9 +85,11 @@
          org-directory "~/Notes"
          org-default-notes-file "~/Notes/TODO.org"
          org-agenda-files '("~/Notes/TODO.org")
+         org-attach-directory "~/Notes/data/"
+         org-download-method 'attach
          org-todo-keywords
-         '((sequence "TODO(t)" "INIT(i)" "|" "DONE(d!)")
-           (sequence "WAIT(w@/!)" "|" "STOP(c@)")))
+          '((sequence "TODO(t)" "INIT(i)" "|" "DONE(d!)")
+            (sequence "WAIT(w@/!)" "|" "STOP(c@)")))
      (pdf
        :variables
          TeX-view-program-selection '((output-pdf "PDF Tools"))
