@@ -474,6 +474,9 @@ and tries to minimize the section movement during window switching."
 (defun baba/customize-text ()
   "Customize plaintext buffers by adding appropriate hooks."
 
+  ;; Do word wrapping at fill column in visual-line-mode.
+  (add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
+
   ;; Break long lines on word boundaries.
   (add-hook 'magit-diff-mode-hook #'visual-line-mode)
   (add-hook 'org-mode-hook #'visual-line-mode)
