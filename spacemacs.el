@@ -58,13 +58,15 @@
           mu4e-trash-folder "/Trash"
           mu4e-drafts-folder "/Drafts"
           mu4e-refile-folder "/Archive"
-          mu4e-headers-date-format "%Y-%m-%d %H:%M"
           mu4e-headers-fields '((:date . 20) (:from . 30) (:to . 30) (:thread-subject))
+          mu4e-headers-date-format "%Y-%m-%d %H:%M"
+          mu4e-headers-show-threads nil
           mu4e-get-mail-command "offlineimap"
           mu4e-spacemacs-layout-name "@mail"
           mu4e-spacemacs-layout-binding "m"
           mu4e-update-interval 300
           mu4e-compose-signature-auto-include nil
+          org-mu4e-link-query-in-headers-mode t
           mu4e-use-fancy-chars nil
           mu4e-view-show-images t
           mu4e-view-show-addresses t
@@ -322,8 +324,15 @@ and ergonomic, including easier code folding and automatic view navigation."
   (evil-global-set-key 'motion (kbd "L") 'evil-scroll-right)
 
   ;; After getting used to these in org-mode, I want them everywhere...
-  (evil-global-set-key 'normal (kbd "M-h") 'evil-shift-left)
-  (evil-global-set-key 'normal (kbd "M-l") 'evil-shift-right)
+  (evil-global-set-key 'normal (kbd "M-h") 'evil-shift-left-line)
+  (evil-global-set-key 'normal (kbd "M-l") 'evil-shift-right-line)
+  (evil-global-set-key 'normal (kbd "M-k") 'move-text-up)
+  (evil-global-set-key 'normal (kbd "M-j") 'move-text-down)
+
+  (evil-global-set-key 'visual (kbd "M-h") 'evil-shift-left)
+  (evil-global-set-key 'visual (kbd "M-l") 'evil-shift-right)
+  (evil-global-set-key 'visual (kbd "M-k") 'move-text-region-up)
+  (evil-global-set-key 'visual (kbd "M-j") 'move-text-region-down)
 
   ;; Follow the lead of org-mode, and use TAB and S-TAB to fold everywhere.
   ;; By default, TAB either does autoindent (which can be done with `=') or
