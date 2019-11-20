@@ -505,6 +505,8 @@ and tries to minimize the section movement during window switching."
 
   ;; Load a package for smart autocompletion via Helm and Fish.
   (require 'helm-fish-completion nil t)
+  (setq helm-esh-pcomplete-build-source-fn
+        #'helm-fish-completion-make-eshell-source)
 
   ;; Define aliases for use in Eshell.
   (defalias 'v 'eshell-exec-visual)
@@ -544,9 +546,6 @@ and tries to minimize the section movement during window switching."
   (add-hook
    'eshell-mode-hook
    (lambda ()
-     ;; Smarter autocompletion via Fish (including keyword descriptions).
-     (evil-define-key 'insert eshell-mode-map (kbd "<tab>") 'helm-fish-completion)
-
      ;; Motions between prompts (replaces the Plan9 "smart shell" feature).
      (evil-define-key 'normal eshell-mode-map (kbd "[") 'eshell-above-prompt)
      (evil-define-key 'normal eshell-mode-map (kbd "]") 'eshell-next-prompt)
