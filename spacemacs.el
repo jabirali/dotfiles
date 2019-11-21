@@ -93,21 +93,7 @@
      (pdf
        :variables
          TeX-view-program-selection '((output-pdf "PDF Tools"))
-         pdf-view-bounding-box-margin 0.06
-         pdf-tools-enabled-modes
-          '(pdf-history-minor-mode
-            pdf-isearch-minor-mode
-            pdf-links-minor-mode
-            pdf-misc-minor-mode
-            pdf-outline-minor-mode
-            pdf-misc-size-indication-minor-mode
-            pdf-misc-menu-bar-minor-mode
-            pdf-annot-minor-mode
-            pdf-sync-minor-mode
-            pdf-misc-context-menu-minor-mode
-            pdf-cache-prefetch-minor-mode
-            pdf-view-auto-slice-minor-mode
-            pdf-occur-global-minor-mode))
+         pdf-view-resize-factor 1.1)
      (perl5)
      (python)
      (ranger
