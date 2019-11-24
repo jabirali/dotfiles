@@ -53,25 +53,37 @@
      (markdown)
      (mu4e
        :variables
-          mu4e-maildir "~/Mail"
-          mu4e-sent-folder "/Sent"
-          mu4e-trash-folder "/Trash"
-          mu4e-drafts-folder "/Drafts"
-          mu4e-refile-folder "/Archive"
-          mu4e-headers-fields '((:date . 20) (:from . 30) (:to . 30) (:thread-subject))
-          mu4e-headers-date-format "%Y-%m-%d %H:%M"
-          mu4e-headers-show-threads nil
-          mu4e-get-mail-command "offlineimap"
-          mu4e-spacemacs-layout-name "@mail"
-          mu4e-spacemacs-layout-binding "m"
-          mu4e-update-interval 300
-          mu4e-compose-signature-auto-include nil
-          org-mu4e-link-query-in-headers-mode t
-          mu4e-use-fancy-chars nil
-          mu4e-view-show-images t
-          mu4e-view-show-addresses t
-          mu4e-split-view 'vertical
-          mu4e-headers-visible-columns 80)
+         ;; Identity
+         user-full-name "Jabir Ali Ouassou"
+         user-mail-address (rot13-string "wnovenyv@fjvgmreynaqznvy.pu")
+         mail-user-agent 'mu4e-user-agent
+         ;; Downloading mail
+         mu4e-maildir "~/Mail"
+         mu4e-sent-folder "/Sent"
+         mu4e-trash-folder "/Trash"
+         mu4e-drafts-folder "/Drafts"
+         mu4e-refile-folder "/Archive"
+         mu4e-get-mail-command "offlineimap"
+         mu4e-update-interval 900
+         ;; Uploading mail
+         sendmail-program "/usr/bin/msmtp"
+         send-mail-function 'smtpmail-send-it
+         message-sendmail-f-is-evil t
+         message-sendmail-extra-arguments '("--read-envelope-from")
+         message-send-mail-function 'message-send-mail-with-sendmail
+         ;; User interface
+         mu4e-enable-mode-line t
+         mu4e-spacemacs-layout-binding "m"
+         mu4e-spacemacs-layout-name "@mail"
+         mu4e-headers-fields '((:date . 20) (:from . 30) (:to . 30) (:thread-subject))
+         mu4e-headers-date-format "%Y-%m-%d %H:%M"
+         mu4e-headers-show-threads nil
+         mu4e-use-fancy-chars nil
+         ;mu4e-split-view 'vertical
+         mu4e-headers-visible-columns 80
+         mu4e-view-show-addresses t
+         mu4e-view-show-images t
+         mu4e-compose-in-new-frame t)
      (org
        :variables
          org-startup-indented t

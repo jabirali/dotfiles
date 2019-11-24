@@ -1,24 +1,21 @@
 '''
-This file is used by `offlineimap` to decode usernames and passwords.
+This file is used by offlineimap to fetch passwords from the desktop keyring.
+I'm using secret-tool over the keyring library so I can reuse the same stored
+password for offlineimap and msmtp, while avoiding an unnecessary dependency.
 '''
 
-import keyring
-import codecs
+from subprocess import Popen, PIPE
 
 
-def get_username(code):
-    '''
-    Decode my username. I don't want my plaintext email address in my dotfiles
-    repo due to bots and spam. The first-order workaround is a ROT13 encoding.
-    '''
+def keyring(username):
+    '''Locate and decrypt a password stored in the desktop keyring.'''
 
-    return codecs.decode(code, 'rot_13')
-
-
-def get_password(code):
-    '''
-    Fetch my password. I don't want to store plaintext passwords anywhere ever,
-    so just asking the OS keyring to store them for us seems like a good idea.
-    '''
-
-    return keyring.get_password('offlineimap', get_username(code))
+    try:
+        ps = Popen('secret-tool lookup user ' + username, shell=True, stdout=PIPE)
+        pw = ps.communicate()[0]
+        if ps.returncode or not pw:
+            pw = None
+    except:
+        pw = None
+    finally:
+        return pw

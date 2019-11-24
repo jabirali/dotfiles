@@ -22,3 +22,4 @@ ln -sf $REPO/ignore.conf ~/.ignore
 git config --global core.excludesfile ~/.ignore
 
 ln -sf $REPO/offlineimap.conf ~/.offlineimaprc
+ln -f  $REPO/msmtprc ~/.msmtprc
