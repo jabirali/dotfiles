@@ -10,29 +10,37 @@ if not functions -q fisher
     fish -c fisher
 end
 
-# Color theme
-#theme_gruvbox dark medium
-
 # Environment variables
 set EDITOR e
+set PAGER less -R
 set PATH /opt/zotero/ /opt/nomad/bin/ /opt/conda/bin /opt/mpw/bin /snap/bin $PATH
 set LC_ALL en_US.UTF-8
 set LC_NUMERIC en_US.UTF-8
 
-# Keybindings
-#fish_vi_key_bindings
+# Functions and aliases
+function e --description 'Edit in Emacs'
+    emacsclient -c -a '' $argv &
+end
 
-# Global aliases
-alias o="xdg-open"
-alias e="emacsclient -nw -c -a ''"
-alias t="emacsclient -c -a '' -e '(eshell t)'"
-alias v="tilix --action=app-new-session -e"
-alias r="killall -SIGUSR2 emacs"
+function o --description 'Open in system app'
+    xdg-open $argv &
+end
 
-alias venv="python -m venv .venv && source .venv/bin/activate.fish && pip install --upgrade pip setuptools > /dev/null"
-alias scrape="wget -r -l 1 -e robots=off"
+function r --description 'Interrupt Emacs'
+    killall -SIGUSR2 emacs
+end
 
-# Use the aliases...
+function venv --description 'Create or activate a virtual environment'
+    python -m venv .venv
+    source .venv/bin/activate.fish
+    pip install --upgrade pip setuptools > /dev/null
+end
+
+function scrape --description 'Scrape all linked documents from a website'
+    wget -r -l 1 -e robots=off
+end
+
+# Ensure that I actually use the aliases
 alias stop="echo -e '\e[31;1mUse the alias `e`.\e[0m\n\n'"
 alias vim=stop
 alias nvim=stop
