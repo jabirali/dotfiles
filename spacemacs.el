@@ -163,7 +163,6 @@
     )
    dotspacemacs-additional-packages
    '(
-     (evil-smartparens)
      (fish-completion)
      (helm-fish-completion :location (recipe :fetcher github :repo "emacs-helm/helm-fish-completion"))
      (gruvbox-theme)
@@ -236,7 +235,7 @@
    dotspacemacs-smooth-scrolling t
    dotspacemacs-line-numbers nil
    dotspacemacs-folding-method 'evil
-   dotspacemacs-smartparens-strict-mode t
+   dotspacemacs-smartparens-strict-mode nil
    dotspacemacs-smart-closing-parenthesis nil
    dotspacemacs-highlight-delimiters 'all
    dotspacemacs-enable-server t
@@ -380,7 +379,6 @@ and ergonomic, including easier code folding and automatic view navigation."
     (evil-global-set-key 'insert (kbd "<C-i>") 'helm-find-files)
     (define-key eshell-mode-map (kbd "<C-i>") 'helm-find-files)
     (define-key helm-map (kbd "<C-i>") 'helm-ff-run-complete-fn-at-point)))
-
 
 (defun baba/customize-theme ()
   "Customize the graphical interface.
