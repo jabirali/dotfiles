@@ -12,7 +12,8 @@ end
 
 # Environment variables
 set EDITOR e
-set PAGER less -R
+set TERMINFO /usr/lib/terminfo
+set TERM xterm-256color
 set PATH /opt/zotero/ /opt/nomad/bin/ /opt/conda/bin /opt/mpw/bin /snap/bin $PATH
 set LC_ALL en_US.UTF-8
 set LC_NUMERIC en_US.UTF-8

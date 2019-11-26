@@ -21,9 +21,10 @@
          auto-completion-enable-sort-by-usage t)
      (bibtex
        :variables
-         org-ref-pdf-directory "~/Refs/"
+         bibtex-completion-pdf-field "file"
+         bibtex-completion-bibliography '("~/Refs/index.bib")
          org-ref-default-bibliography '("~/Refs/index.bib")
-         org-ref-bibliography-notes "~/Refs/index.org")
+         org-ref-default-ref-type "cref")
      (csv)
      (deft
        :variables
@@ -55,7 +56,7 @@
        :variables
          ;; Identity
          user-full-name "Jabir Ali Ouassou"
-         user-mail-address (rot13-string "wnovenyv@fjvgmreynaqznvy.pu")
+         user-mail-address "jabirali@switzerlandmail.ch"
          mail-user-agent 'mu4e-user-agent
          ;; Downloading mail
          mu4e-maildir "~/Mail"
@@ -71,14 +72,23 @@
          message-sendmail-f-is-evil t
          message-sendmail-extra-arguments '("--read-envelope-from")
          message-send-mail-function 'message-send-mail-with-sendmail
+         ;; Shortcuts
+         mu4e-maildir-shortcuts '(("/INBOX"       . ?i)
+                                  ("/Archive"     . ?a)
+                                  ("/Accounts"    . ?c)
+                                  ("/Documents"   . ?d)
+                                  ("/Receipts"    . ?r)
+                                  ("/Notes"       . ?n)
+                                  ("/Sent"        . ?s))
          ;; User interface
          mu4e-enable-mode-line t
          mu4e-spacemacs-layout-binding "m"
          mu4e-spacemacs-layout-name "@mail"
-         mu4e-headers-fields '((:date . 20) (:from . 30) (:to . 30) (:thread-subject))
-         mu4e-headers-date-format "%Y-%m-%d %H:%M"
          mu4e-headers-show-threads nil
          mu4e-use-fancy-chars nil
+         mu4e-headers-date-format "%Y-%m-%d %H:%M"
+         mu4e-headers-fields '((:date . 20) (:from . 30) (:to . 30) (:thread-subject))
+         mu4e-alert-interesting-mail-query "flag:unread AND NOT flag:trashed AND maildir:/INBOX"
          ;mu4e-split-view 'vertical
          mu4e-headers-visible-columns 80
          mu4e-view-show-addresses t
@@ -86,6 +96,7 @@
          mu4e-compose-in-new-frame t)
      (org
        :variables
+         org-mu4e-link-query-in-headers-mode t
          org-startup-indented t
          org-image-actual-width '(300)
          org-pretty-entities t
@@ -98,7 +109,8 @@
          org-default-notes-file "~/Notes/TODO.org"
          org-agenda-files '("~/Notes/TODO.org")
          org-attach-directory "~/Notes/data/"
-         org-download-method 'attach
+         org-download-image-dir "~/Notes/pics"
+         org-download-method 'directory
          org-todo-keywords
           '((sequence "TODO(t)" "INIT(i)" "|" "DONE(d!)")
             (sequence "WAIT(w@/!)" "|" "STOP(c@)")))
@@ -156,6 +168,7 @@
      (helm-fish-completion :location (recipe :fetcher github :repo "emacs-helm/helm-fish-completion"))
      (gruvbox-theme)
      (ob-async)
+     (org-msg)
     )
    dotspacemacs-excluded-packages
    '(
@@ -247,6 +260,9 @@
   ;; default, while workspace #1 correspond to project/task #1, etc.
   (setq eyebrowse-default-workspace-slot 0)
 
+  ;; Make Y consistent with C and D (operate until the end of line).
+  (setq evil-want-Y-yank-to-eol t)
+
   ;; Aesthetic revision of all themes.
   (add-hook 'spacemacs-post-theme-change-hook 'baba/customize-theme))
 
@@ -284,12 +300,15 @@
   (setq auth-sources '("secrets:session" "secrets:Login"))
 
   ;; Minor tweaks that simply don't fit in anywhere else.
-  ;(add-hook 'deft-mode-hook
-  ;          (lambda ()
-  ;            (setq-local evil-insert-state-cursor '(nil (bar . 0)))
-  ;            (setq-local evil-normal-state-cursor '(nil (bar . 0)))
-  ;            (hl-line-mode)))
-  (setq dired-listing-switches "-lGh1v --time-style=long-iso --group-directories-first"))
+  (setq dired-listing-switches "-lGh1v --time-style=long-iso --group-directories-first")
+  ;(add-hook 'dired-mode-hook 'org-download-enable)
+
+  ;; Setup HTML mail composition.
+  ;(require 'org-msg)
+  ;(setq org-msg-options "html-postamble:nil H:5 num:nil ^:{} toc:nil"
+  ;      org-msg-startup "hidestars indent inlineimages")
+  ;(org-msg-mode)
+  )
 
 (defun dotspacemacs/user-load ()
   "Custom code run during config dumps.")
@@ -353,33 +372,15 @@ and ergonomic, including easier code folding and automatic view navigation."
   (evil-global-set-key 'normal (kbd "<tab>") 'evil-toggle-fold)
   (evil-global-set-key 'normal (kbd "<backtab>") 'evil-close-folds)
 
-  ;; Smartparens seems like it might be a good idea. Let's do more of that.
-  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
-
-  ;; Make a function that can be used to run Eshell in a smarter way.
-  (defun baba/eshell-dwim ()
-    "Open an eshell, and do so via projectile if possible."
-    (interactive)
-    (if (projectile-project-p)
-        (projectile-run-eshell)
-      (eshell)))
+  ;; I always want to jump specifically to mark, not to the line of mark.
+  (evil-global-set-key 'motion (kbd "'") 'evil-goto-mark)
 
   ;; Make it easy to use Helm to pick file names for commands.
   (with-eval-after-load 'helm
     (evil-global-set-key 'insert (kbd "<C-i>") 'helm-find-files)
     (define-key eshell-mode-map (kbd "<C-i>") 'helm-find-files)
-    (define-key helm-map (kbd "<C-i>") 'helm-ff-run-complete-fn-at-point))
+    (define-key helm-map (kbd "<C-i>") 'helm-ff-run-complete-fn-at-point)))
 
-  ;; Make S a shortcut for opening a shell. This is already the default
-  ;; keybinding in Deer/Ranger, and doesn't do anything useful in Evil.
-  (evil-global-set-key 'normal (kbd "S") 'baba/eshell-dwim)
-  (with-eval-after-load 'ranger
-    (define-key ranger-normal-mode-map (kbd "S") 'baba/eshell-dwim))
-  (with-eval-after-load 'pdf-tools
-    (define-key pdf-view-mode-map (kbd "S") 'baba/eshell-dwim))
-
-  ;; I always want to jump specifically to mark, not to the line of mark.
-  (evil-global-set-key 'motion (kbd "'")  'evil-goto-mark))
 
 (defun baba/customize-theme ()
   "Customize the graphical interface.
@@ -608,11 +609,6 @@ and tries to minimize the section movement during window switching."
     (spacemacs/deft)
     (deft-filter-clear)
     (other-window 1))
-
-  ;(defun baba/note-deft ()
-  ;  (interactive)
-  ;  (baba/note-goto)
-  ;  (helm-find-files-1 deft-directory))
 
   ;; Define the private leader keys.
   (spacemacs/set-leader-keys "oc" 'org-capture)
