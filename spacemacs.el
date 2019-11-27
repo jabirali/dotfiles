@@ -279,7 +279,14 @@
   (add-hook 'text-mode-hook 'outline-minor-mode)
   (add-hook 'python-mode-hook
             (defun baba/outline-python ()
-              (setq outline-regexp "[[:space:]]*\\_<\\(?:def\\|class\\)\\_>")))
+              (setq outline-regexp "[[:space:]]*\\_<\\(?:def\\|class\\)\\_>")
+              (outline-hide-body)))
+
+  ;; Hide all body content when opening files.
+  (add-hook 'outline-minor-mode-hook 'outline-hide-body)
+
+  ;; Customize the distracting folding markers.
+  (set-display-table-slot standard-display-table 'selective-display (string-to-vector " "))
 
   ;; Load more advanced customization defined below.
   (baba/customize-evil)
@@ -364,7 +371,7 @@ and ergonomic, including easier code folding and automatic view navigation."
   ;; Follow the lead of org-mode, and use TAB and S-TAB to fold everywhere.
   ;; By default, TAB either does autoindent (which can be done with `=') or
   ;; autocomplete (which I only want in insert mode), so I prefer folding.
-  (evil-global-set-key 'normal (kbd "<tab>") 'outline-toggle-children)
+  (evil-global-set-key 'normal (kbd "<tab>") 'outline-show-entry)
   (evil-global-set-key 'normal (kbd "<backtab>") 'outline-hide-body)
 
   ;; I always want to jump specifically to mark, not to the line of mark.
