@@ -48,7 +48,7 @@
      (latex
        :variables
          latex-enable-auto-fill nil
-         latex-enable-folding nil
+         latex-enable-folding t
          latex-enable-magic nil
          font-latex-fontify-script nil
          font-latex-fontify-sectioning 'color)
@@ -302,6 +302,16 @@
    'selective-display
    (let ((face-offset (* (face-id 'shadow) (lsh 1 22))))
      (vconcat (mapcar (lambda (c) (+ face-offset c)) " +"))))
+
+  ;; LaTeX buffers use additional folding. However, by default I have to
+  ;; do that manually; let's instead autofold on init and after edits.
+  ;; While we're at it, let's also fix the weird TeX folding colors.
+  (add-hook 'LaTeX-mode-hook
+            (defun baba/TeX-fold-auto ()
+              (TeX-fold-mode 1)
+              (set-face-foreground 'TeX-fold-folded-face "#ebdbb2")
+              (add-hook 'find-file-hook 'TeX-fold-buffer)
+              (add-hook 'evil-insert-state-exit-hook 'TeX-fold-paragraph)))
 
   ;; Load more advanced customization defined below.
   (baba/customize-evil)
