@@ -372,10 +372,10 @@ and ergonomic, including easier code folding and automatic view navigation."
     (bind-key "<escape>" 'helm-keyboard-quit helm-comp-read-map))
 
   ;; Make up/down operate in screen lines instead of logical lines.
-  (define-key evil-motion-state-map "j" 'evil-next-visual-line)
-  (define-key evil-motion-state-map "k" 'evil-previous-visual-line)
-  (define-key evil-visual-state-map "j" 'evil-next-visual-line)
-  (define-key evil-visual-state-map "k" 'evil-previous-visual-line)
+  ;(define-key evil-motion-state-map "j" 'evil-next-visual-line)
+  ;(define-key evil-motion-state-map "k" 'evil-previous-visual-line)
+  ;(define-key evil-visual-state-map "j" 'evil-next-visual-line)
+  ;(define-key evil-visual-state-map "k" 'evil-previous-visual-line)
 
   ;; It is more useful to navigate horizontally than vertically with H/L,
   ;; at least when using the centered-point and truncate-lines settings.
