@@ -297,7 +297,11 @@
               (outline-hide-body)))
 
   ;; Customize the distracting folding markers.
-  (set-display-table-slot standard-display-table 'selective-display (string-to-vector " "))
+  (set-display-table-slot
+   standard-display-table
+   'selective-display
+   (let ((face-offset (* (face-id 'shadow) (lsh 1 22))))
+     (vconcat (mapcar (lambda (c) (+ face-offset c)) " +"))))
 
   ;; Load more advanced customization defined below.
   (baba/customize-evil)
