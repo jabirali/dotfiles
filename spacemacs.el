@@ -279,11 +279,22 @@
   (add-hook 'text-mode-hook 'outline-minor-mode)
   (add-hook 'python-mode-hook
             (defun baba/outline-python ()
-              (setq outline-regexp "[[:space:]]*\\_<\\(?:def\\|class\\)\\_>")
-              (outline-hide-body)))
+              "Fold only definitions in Python."
+              (setq outline-regexp
+                    (rx (or
+                         ;; Definitions
+                         (group (group (* space)) bow (or "class" "def") eow)
 
-  ;; Hide all body content when opening files.
-  (add-hook 'outline-minor-mode-hook 'outline-hide-body)
+                         ;; Decorators
+                         (group (group (* space)) "@"))))
+              (baba/outline-overview)))
+
+  ;; Show all headings but no content in Outline mode.
+  (add-hook 'outline-minor-mode-hook
+            (defun baba/outline-overview ()
+              "Show only outline headings."
+              (outline-show-all)
+              (outline-hide-body)))
 
   ;; Customize the distracting folding markers.
   (set-display-table-slot standard-display-table 'selective-display (string-to-vector " "))
