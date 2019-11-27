@@ -44,6 +44,7 @@
          helm-split-window-inside-p t
          helm-ff-skip-git-ignored-files t
          helm-display-header-line nil)
+     (imenu-list)
      (latex
        :variables
          latex-enable-auto-fill nil
@@ -278,18 +279,27 @@
   (spacemacs/toggle-truncate-lines-on)
   (set-default 'truncate-lines t)
 
-  ;; Use 4-space tabs when reading tabbed code, since that's more common.
+  ;; Use 4-space tabs when reading tabbed code, since that's more common...
   (setq-default tab-width 4)
 
   ;; Since F11 does fullscreen, F12 should do writeroom-mode.
   (global-set-key (kbd "<f12>") 'writeroom-mode)
+
+  ;; Check syntax continuously in all programming modes.
+  (add-hook 'prog-mode-hook 'flycheck-mode)
+
+  ;; Clean code folding via Outline minor mode.
+  (add-hook 'prog-mode-hook 'outline-minor-mode)
+  (add-hook 'text-mode-hook 'outline-minor-mode)
+  (add-hook 'python-mode-hook
+            (defun baba/outline-python ()
+              (setq outline-regexp "[[:space:]]*\\_<\\(?:def\\|class\\)\\_>")))
 
   ;; Load more advanced customization defined below.
   (baba/customize-evil)
   (baba/customize-modeline)
   (baba/customize-readers)
   (baba/customize-text)
-  (baba/customize-prog)
   (baba/customize-eshell)
   (baba/customize-layouts)
   (baba/customize-leaders)
@@ -368,8 +378,8 @@ and ergonomic, including easier code folding and automatic view navigation."
   ;; Follow the lead of org-mode, and use TAB and S-TAB to fold everywhere.
   ;; By default, TAB either does autoindent (which can be done with `=') or
   ;; autocomplete (which I only want in insert mode), so I prefer folding.
-  (evil-global-set-key 'normal (kbd "<tab>") 'evil-toggle-fold)
-  (evil-global-set-key 'normal (kbd "<backtab>") 'evil-close-folds)
+  (evil-global-set-key 'normal (kbd "<tab>") 'outline-toggle-children)
+  (evil-global-set-key 'normal (kbd "<backtab>") 'outline-hide-body)
 
   ;; I always want to jump specifically to mark, not to the line of mark.
   (evil-global-set-key 'motion (kbd "'") 'evil-goto-mark)
@@ -494,18 +504,6 @@ and tries to minimize the section movement during window switching."
   (add-hook 'markdown-mode-hook #'visual-line-mode)
   (add-hook 'text-mode-hook #'visual-line-mode)
   (add-hook 'help-mode-hook #'visual-line-mode))
-
-(defun baba/customize-prog ()
-  "Customize programming buffers by adding appropriate hooks."
-
-  (defun baba/prog-enable-minors ()
-    "Enable linting and folding in all prog-mode buffers."
-
-    (flycheck-mode)
-    (hs-minor-mode)
-    (evil-close-folds))
-
-  (add-hook 'prog-mode-hook 'baba/prog-enable-minors))
 
 (defun baba/customize-eshell ()
   "Customize the behavior of the Emacs shell."
