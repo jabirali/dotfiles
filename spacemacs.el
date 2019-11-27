@@ -289,6 +289,22 @@
                          (group (group (* space)) "@"))))
               (baba/outline-overview)))
 
+  (add-hook 'f90-mode-hook
+            (defun baba-outline-fortran ()
+              "Fold definitions in Fortran."
+              (setq outline-regexp
+                    (rx (or
+                         ;; Modules definitions.
+                         (group (group (* space)) "module")
+
+                         ;; Functions and subroutines.
+                         (group
+                          (group (* space))
+                          (*? (or "pure " "impure " "elemental "))
+                          (or "function" "subroutine" "interface" "type")
+                          (group (+ space))))))))
+
+
   ;; Show all headings but no content in Outline mode.
   (add-hook 'outline-minor-mode-hook
             (defun baba/outline-overview ()
