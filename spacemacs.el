@@ -279,6 +279,7 @@
   ;; Clean code folding via Outline minor mode.
   (add-hook 'prog-mode-hook 'outline-minor-mode)
   (add-hook 'text-mode-hook 'outline-minor-mode)
+  (add-hook 'eshell-mode-hook 'outline-minor-mode)
 
   ;; Show all headings but no content in Outline mode.
   (add-hook 'outline-minor-mode-hook
@@ -572,8 +573,10 @@ and tries to minimize the section movement during window switching."
   (defalias 'o 'browse-url-xdg-open)
   (defalias 'g 'magit-status-here)
 
-  ;; Customize the prompt to use in Eshell.
+  ;; Customize the prompt to use in Eshell. This includes
+  ;; what outline-minor-mode folding pattern to use.
   (setq eshell-prompt-regexp "^❯ "
+        outline-regexp "❯"
         eshell-prompt-function
         (lambda ()
           (concat
