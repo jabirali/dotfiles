@@ -98,6 +98,7 @@
      (octave)
      (org
        :variables
+         org-ellipsis " +"
          org-mu4e-link-query-in-headers-mode t
          org-startup-indented t
          org-image-actual-width '(300)
@@ -332,7 +333,7 @@
    standard-display-table
    'selective-display
    (let ((face-offset (* (face-id 'shadow) (lsh 1 22))))
-     (vconcat (mapcar (lambda (c) (+ face-offset c)) " +"))))
+     (vconcat (mapcar (lambda (c) (+ face-offset c)) org-ellipsis))))
 
   ;; LaTeX buffers use additional folding. However, by default I have to
   ;; do that manually; let's instead autofold on init and after edits.
