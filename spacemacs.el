@@ -95,6 +95,7 @@
          mu4e-view-show-addresses t
          mu4e-view-show-images t
          mu4e-compose-in-new-frame t)
+     (octave)
      (org
        :variables
          org-mu4e-link-query-in-headers-mode t
@@ -277,6 +278,15 @@
   ;; Clean code folding via Outline minor mode.
   (add-hook 'prog-mode-hook 'outline-minor-mode)
   (add-hook 'text-mode-hook 'outline-minor-mode)
+
+  ;; Show all headings but no content in Outline mode.
+  (add-hook 'outline-minor-mode-hook
+            (defun baba/outline-overview ()
+              "Show only outline headings."
+              (outline-show-all)
+              (outline-hide-body)))
+
+  ;; Customize mode-specific Outline folding.
   (add-hook 'python-mode-hook
             (defun baba/outline-python ()
               "Fold only definitions in Python."
@@ -289,28 +299,33 @@
                          (group (group (* space)) "@"))))
               (baba/outline-overview)))
 
+  (add-hook 'octave-mode-hook
+            (defun baba-outline-matlab ()
+              "Fold definitions in Matlab."
+              (setq outline-regexp
+                    (rx (or
+                         (group
+                          (group (* space))
+                          bow
+                          (or "classdef" "function" "properties" "methods")
+                          eow))))
+              (baba/outline-overview)))
+
   (add-hook 'f90-mode-hook
             (defun baba-outline-fortran ()
               "Fold definitions in Fortran."
               (setq outline-regexp
                     (rx (or
-                         ;; Modules definitions.
-                         (group (group (* space)) "module")
+                         ;; Module and interface blocks.
+                         (group (group (* space)) (or "module" "interface"))
 
-                         ;; Functions and subroutines.
+                         ;; Procedures and type definitions.
                          (group
                           (group (* space))
                           (*? (or "pure " "impure " "elemental "))
-                          (or "function" "subroutine" "interface" "type")
-                          (group (+ space))))))))
-
-
-  ;; Show all headings but no content in Outline mode.
-  (add-hook 'outline-minor-mode-hook
-            (defun baba/outline-overview ()
-              "Show only outline headings."
-              (outline-show-all)
-              (outline-hide-body)))
+                          (or "function" "subroutine" "interface" "type" "type,")
+                          (group (+ space))))))
+                    (baba/outline-overview)))
 
   ;; Customize the distracting folding markers.
   (set-display-table-slot
