@@ -427,19 +427,26 @@ and ergonomic, including easier code folding and automatic view navigation."
   (evil-global-set-key 'visual (kbd "M-j") 'move-text-region-down)
 
   ;; Follow the lead of org-mode, and use TAB and S-TAB to fold everywhere.
-  ;; Numerical prefix arguments can be used to do indent-based folding too.
-  (defun baba/backtab ()
+  ;; The additional C-TAB command lets me do ad-hoc folding based on indent.
+  (defun baba/fold-outline ()
     (interactive)
       (outline-show-all)
       (outline-hide-body))
 
-  (defun baba/tab (n)
-    (interactive "P")
-    (outline-show-entry)
-    (set-selective-display n))
+  (defun baba/fold-indent ()
+    (interactive)
+    (save-excursion
+      (beginning-of-line-text)
+      (set-selective-display (+ 1 (current-column)))))
 
-  (evil-global-set-key 'normal (kbd "<tab>") 'baba/tab)
-  (evil-global-set-key 'normal (kbd "<backtab>") 'baba/backtab)
+  (defun baba/fold-expand ()
+    (interactive)
+    (set-selective-display nil)
+    (outline-show-entry))
+
+  (evil-global-set-key 'normal (kbd "<backtab>") 'baba/fold-outline)
+  (evil-global-set-key 'normal (kbd "<C-tab>") 'baba/fold-indent)
+  (evil-global-set-key 'normal (kbd "<tab>") 'baba/fold-expand)
 
 
   ;; I always want to jump specifically to mark, not to the line of mark.
