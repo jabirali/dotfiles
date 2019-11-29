@@ -427,26 +427,18 @@ and ergonomic, including easier code folding and automatic view navigation."
   (evil-global-set-key 'visual (kbd "M-k") 'move-text-region-up)
   (evil-global-set-key 'visual (kbd "M-j") 'move-text-region-down)
 
-  ;; "Zoom" in and out of buffer via folding and narrowing.
+  ;; "Zoom" in and out of the buffer via Outline.
   (defun baba/zoom-out ()
-    "Zoom out by either widening or folding the buffer."
+    "Zoom out to a buffer overview."
     (interactive)
-    (if (buffer-narrowed-p)
-        (widen)
-      (outline-show-all)
-      (outline-hide-body))
+    (outline-show-all)
+    (outline-hide-body)
     (recenter))
 
   (defun baba/zoom-in ()
-    "Zoom in by narrowing and unfolding the buffer."
+    "Zoom in to the buffer contents."
     (interactive)
-    (outline-show-all)
-    (when (use-region-p)
-      (progn
-        (widen)
-        (narrow-to-region (region-beginning) (region-end))
-        (deactivate-mark)))
-    (recenter 0))
+    (outline-show-entry))
 
   (evil-global-set-key 'normal (kbd "<backtab>") 'baba/zoom-out)
   (evil-global-set-key 'normal (kbd "<tab>") 'baba/zoom-in)
