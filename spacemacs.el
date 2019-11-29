@@ -155,6 +155,7 @@
      (fish-completion)
      (helm-fish-completion :location (recipe :fetcher github :repo "emacs-helm/helm-fish-completion"))
      (gruvbox-theme)
+     (fancy-narrow)
      (ob-async)
      (org-msg)
     )
@@ -302,7 +303,7 @@
               (baba/outline-overview)))
 
   (add-hook 'octave-mode-hook
-            (defun baba-outline-matlab ()
+            (defun baba/outline-matlab ()
               "Fold definitions in Matlab."
               (setq outline-regexp
                     (rx (or
@@ -314,7 +315,7 @@
               (baba/outline-overview)))
 
   (add-hook 'f90-mode-hook
-            (defun baba-outline-fortran ()
+            (defun baba/outline-fortran ()
               "Fold definitions in Fortran."
               (setq outline-regexp
                     (rx (or
@@ -426,28 +427,25 @@ and ergonomic, including easier code folding and automatic view navigation."
   (evil-global-set-key 'visual (kbd "M-k") 'move-text-region-up)
   (evil-global-set-key 'visual (kbd "M-j") 'move-text-region-down)
 
-  ;; Follow the lead of org-mode, and use TAB and S-TAB to fold everywhere.
-  ;; The additional C-TAB command lets me do ad-hoc folding based on indent.
-  (defun baba/fold-outline ()
+  ;; "Zoom" in and out of buffer via folding and narrowing.
+  (defun baba/zoom-out ()
+    "Zoom out by either widening or folding the buffer."
     (interactive)
+    (if (fancy-narrow-active-p)
+        (fancy-widen)
       (outline-show-all)
-      (outline-hide-body))
+      (outline-hide-body)))
 
-  (defun baba/fold-indent ()
+  (defun baba/zoom-in ()
+    "Zoom in by unfolding and/or narrowing the buffer."
     (interactive)
-    (save-excursion
-      (beginning-of-line-text)
-      (set-selective-display (+ 1 (current-column)))))
+    (outline-show-all)
+    (when (use-region-p)
+      (ignore-errors (fancy-widen))
+      (fancy-narrow-to-region (region-beginning) (region-end))))
 
-  (defun baba/fold-expand ()
-    (interactive)
-    (set-selective-display nil)
-    (outline-show-entry))
-
-  (evil-global-set-key 'normal (kbd "<backtab>") 'baba/fold-outline)
-  (evil-global-set-key 'normal (kbd "<C-tab>") 'baba/fold-indent)
-  (evil-global-set-key 'normal (kbd "<tab>") 'baba/fold-expand)
-
+  (evil-global-set-key 'normal (kbd "<backtab>") 'baba/zoom-out)
+  (evil-global-set-key 'normal (kbd "<tab>") 'baba/zoom-in)
 
   ;; I always want to jump specifically to mark, not to the line of mark.
   (evil-global-set-key 'motion (kbd "'") 'evil-goto-mark)
@@ -475,10 +473,6 @@ window manager, others make it fit better with the Ubuntu default theme."
   (setq window-divider-default-right-width 8)
   (setq window-divider-default-bottom-width 8)
   (window-divider-mode 1)
-
-  ;; Increase line spacing.
-  ;; NOTE: Breaks magit images...
-  ; (setq-default line-spacing 2)
 
   ;; Customize fringes and margins.
   (setq-default fringes-outside-margins t
