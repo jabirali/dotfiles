@@ -427,10 +427,20 @@ and ergonomic, including easier code folding and automatic view navigation."
   (evil-global-set-key 'visual (kbd "M-j") 'move-text-region-down)
 
   ;; Follow the lead of org-mode, and use TAB and S-TAB to fold everywhere.
-  ;; By default, TAB either does autoindent (which can be done with `=') or
-  ;; autocomplete (which I only want in insert mode), so I prefer folding.
-  (evil-global-set-key 'normal (kbd "<tab>") 'outline-show-entry)
-  (evil-global-set-key 'normal (kbd "<backtab>") 'outline-hide-body)
+  ;; Numerical prefix arguments can be used to do indent-based folding too.
+  (defun baba/backtab ()
+    (interactive)
+      (outline-show-all)
+      (outline-hide-body))
+
+  (defun baba/tab (n)
+    (interactive "P")
+    (outline-show-entry)
+    (set-selective-display n))
+
+  (evil-global-set-key 'normal (kbd "<tab>") 'baba/tab)
+  (evil-global-set-key 'normal (kbd "<backtab>") 'baba/backtab)
+
 
   ;; I always want to jump specifically to mark, not to the line of mark.
   (evil-global-set-key 'motion (kbd "'") 'evil-goto-mark)
