@@ -155,7 +155,7 @@
      (fish-completion)
      (helm-fish-completion :location (recipe :fetcher github :repo "emacs-helm/helm-fish-completion"))
      (gruvbox-theme)
-     (fancy-narrow)
+     (adaptive-wrap)
      (ob-async)
      (org-msg)
     )
@@ -431,22 +431,22 @@ and ergonomic, including easier code folding and automatic view navigation."
   (defun baba/zoom-out ()
     "Zoom out by either widening or folding the buffer."
     (interactive)
-    (if (fancy-narrow-active-p)
-        (fancy-widen)
+    (if (buffer-narrowed-p)
+        (widen)
       (outline-show-all)
       (outline-hide-body))
     (recenter))
 
   (defun baba/zoom-in ()
-    "Zoom in by either narrowing or unfolding the buffer."
+    "Zoom in by narrowing and unfolding the buffer."
     (interactive)
-    (if (use-region-p)
-        (progn
-          (ignore-errors (fancy-widen))
-          (fancy-narrow-to-region (region-beginning) (region-end))
-          (deactivate-mark))
-      (outline-show-all)
-      (recenter 0)))
+    (outline-show-all)
+    (when (use-region-p)
+      (progn
+        (widen)
+        (narrow-to-region (region-beginning) (region-end))
+        (deactivate-mark)))
+    (recenter 0))
 
   (evil-global-set-key 'normal (kbd "<backtab>") 'baba/zoom-out)
   (evil-global-set-key 'normal (kbd "<tab>") 'baba/zoom-in)
@@ -563,6 +563,9 @@ and tries to minimize the section movement during window switching."
 
   ;; Do word wrapping at fill column in visual-line-mode.
   (add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
+
+  ;; Preserve indents when wrapping lines in visual-line-mode.
+  (add-hook 'visual-line-mode-hook #'adaptive-wrap-prefix-mode)
 
   ;; Break long lines on word boundaries.
   (add-hook 'magit-diff-mode-hook #'visual-line-mode)
