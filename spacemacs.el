@@ -438,14 +438,15 @@ and ergonomic, including easier code folding and automatic view navigation."
     (recenter))
 
   (defun baba/zoom-in ()
-    "Zoom in by unfolding and/or narrowing the buffer."
+    "Zoom in by either narrowing or unfolding the buffer."
     (interactive)
-    (outline-show-all)
-    (when (use-region-p)
-      (ignore-errors (fancy-widen))
-      (fancy-narrow-to-region (region-beginning) (region-end))
-      (deactivate-mark))
-    (recenter 0))
+    (if (use-region-p)
+        (progn
+          (ignore-errors (fancy-widen))
+          (fancy-narrow-to-region (region-beginning) (region-end))
+          (deactivate-mark))
+      (outline-show-all)
+      (recenter 0)))
 
   (evil-global-set-key 'normal (kbd "<backtab>") 'baba/zoom-out)
   (evil-global-set-key 'normal (kbd "<tab>") 'baba/zoom-in)
