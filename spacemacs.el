@@ -152,10 +152,10 @@
     )
    dotspacemacs-additional-packages
    '(
+     (adaptive-wrap)
      (fish-completion)
      (helm-fish-completion :location (recipe :fetcher github :repo "emacs-helm/helm-fish-completion"))
      (gruvbox-theme)
-     (adaptive-wrap)
      (ob-async)
      (org-msg)
     )
@@ -289,7 +289,6 @@
               (outline-show-all)
               (outline-hide-body)))
 
-  ;; Customize mode-specific Outline folding.
   (add-hook 'python-mode-hook
             (defun baba/outline-python ()
               "Fold only definitions in Python."
@@ -427,21 +426,36 @@ and ergonomic, including easier code folding and automatic view navigation."
   (evil-global-set-key 'visual (kbd "M-k") 'move-text-region-up)
   (evil-global-set-key 'visual (kbd "M-j") 'move-text-region-down)
 
-  ;; "Zoom" in and out of the buffer via Outline.
-  (defun baba/zoom-out ()
-    "Zoom out to a buffer overview."
+  ;; Code folding via Outline minor mode.
+  (defun baba/outline-toggle-p ()
+    "Check the current code folding state."
     (interactive)
-    (outline-show-all)
-    (outline-hide-body)
-    (recenter))
+    (save-excursion
+      (end-of-line)
+      (outline-invisible-p)))
 
-  (defun baba/zoom-in ()
-    "Zoom in to the buffer contents."
+  (defun baba/outline-toggle-buffer ()
+    "Toggle code folding throughout the buffer."
     (interactive)
-    (outline-show-entry))
+    (if (baba/outline-toggle-p)
+        (progn
+          (outline-show-all)
+          (recenter 0))
+      (outline-hide-body)
+      (recenter)))
 
-  (evil-global-set-key 'normal (kbd "<backtab>") 'baba/zoom-out)
-  (evil-global-set-key 'normal (kbd "<tab>") 'baba/zoom-in)
+  (defun baba/outline-toggle-point ()
+    "Toggle code folding at the current point."
+    (interactive)
+    (if (baba/outline-toggle-p)
+        (progn
+          (outline-show-entry)
+          (recenter 0))
+      (outline-hide-entry)
+      (recenter)))
+
+  (evil-global-set-key 'normal (kbd "<backtab>") 'baba/outline-toggle-buffer)
+  (evil-global-set-key 'normal (kbd "<tab>") 'baba/outline-toggle-point)
 
   ;; I always want to jump specifically to mark, not to the line of mark.
   (evil-global-set-key 'motion (kbd "'") 'evil-goto-mark)
@@ -618,6 +632,7 @@ and tries to minimize the section movement during window switching."
   (add-hook
    'eshell-mode-hook
    (lambda ()
+     (setq outline-regexp "❯")
      ;; A few terminal commands don't do their own line wrapping, and end up
      ;; writing 800-character lines instead of 80-character lines. Moreover, I
      ;; occasionally write long commands due to long path names, in which case
