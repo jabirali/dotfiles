@@ -434,7 +434,8 @@ and ergonomic, including easier code folding and automatic view navigation."
     (if (fancy-narrow-active-p)
         (fancy-widen)
       (outline-show-all)
-      (outline-hide-body)))
+      (outline-hide-body))
+    (recenter))
 
   (defun baba/zoom-in ()
     "Zoom in by unfolding and/or narrowing the buffer."
@@ -443,7 +444,8 @@ and ergonomic, including easier code folding and automatic view navigation."
     (when (use-region-p)
       (ignore-errors (fancy-widen))
       (fancy-narrow-to-region (region-beginning) (region-end))
-      (deactivate-mark)))
+      (deactivate-mark))
+    (recenter 0))
 
   (evil-global-set-key 'normal (kbd "<backtab>") 'baba/zoom-out)
   (evil-global-set-key 'normal (kbd "<tab>") 'baba/zoom-in)
@@ -620,10 +622,6 @@ and tries to minimize the section movement during window switching."
   (add-hook
    'eshell-mode-hook
    (lambda ()
-     ;; Motions between prompts (replaces the Plan9 "smart shell" feature).
-     (evil-define-key 'normal eshell-mode-map (kbd "[") 'eshell-above-prompt)
-     (evil-define-key 'normal eshell-mode-map (kbd "]") 'eshell-next-prompt)
-
      ;; A few terminal commands don't do their own line wrapping, and end up
      ;; writing 800-character lines instead of 80-character lines. Moreover, I
      ;; occasionally write long commands due to long path names, in which case
