@@ -442,7 +442,8 @@ and ergonomic, including easier code folding and automatic view navigation."
     (outline-show-all)
     (when (use-region-p)
       (ignore-errors (fancy-widen))
-      (fancy-narrow-to-region (region-beginning) (region-end))))
+      (fancy-narrow-to-region (region-beginning) (region-end))
+      (deactivate-mark)))
 
   (evil-global-set-key 'normal (kbd "<backtab>") 'baba/zoom-out)
   (evil-global-set-key 'normal (kbd "<tab>") 'baba/zoom-in)
