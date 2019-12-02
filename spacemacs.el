@@ -244,11 +244,6 @@
   ;; Don't autowrite settings to my config.
   (setq custom-file "~/.emacs.d/custom.el")
 
-  ;; Since I bind `SPC 0' to switch workspace, it's very convenient
-  ;; to let 0 be default workspace. This way, `SPC 0 0' goes back to
-  ;; default, while workspace #1 correspond to project/task #1, etc.
-  (setq eyebrowse-default-workspace-slot 0)
-
   ;; Make Y consistent with C and D (operate until the end of line).
   (setq evil-want-Y-yank-to-eol t)
 
@@ -664,8 +659,14 @@ and tries to minimize the section movement during window switching."
 
   ;; Typing `SPC l w' is inconvenient for such a useful command as the
   ;; `eyebrowse' transient state, at least when using workspaces a lot.
-  ;; Let's just map `SPC 0' to it instead, since I don't use `treemacs'.
-  (spacemacs/set-leader-keys "0" 'spacemacs/workspaces-transient-state/body))
+  (global-set-key (kbd "<f1>") 'eyebrowse-switch-to-window-config-1)
+  (global-set-key (kbd "<f2>") 'eyebrowse-switch-to-window-config-2)
+  (global-set-key (kbd "<f3>") 'eyebrowse-switch-to-window-config-3)
+  (global-set-key (kbd "<f4>") 'eyebrowse-switch-to-window-config-4)
+  (global-set-key (kbd "<f5>") 'eyebrowse-switch-to-window-config-5)
+  (global-set-key (kbd "<f6>") 'eyebrowse-switch-to-window-config-6)
+  (global-set-key (kbd "<f7>") 'eyebrowse-switch-to-window-config-7)
+  (global-set-key (kbd "<f8>") 'eyebrowse-switch-to-window-config-8))
 
 (defun baba/customize-leaders ()
   "Populate the private leader-key menu (SPC o)."
