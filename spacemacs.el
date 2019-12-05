@@ -454,15 +454,15 @@ and ergonomic, including easier code folding and automatic view navigation."
   (evil-global-set-key 'normal (kbd "<tab>") 'baba/outline-toggle-point)
 
   ;; Tab completion or indentation via Company and Helm.
-  (defun baba/helm-company-or-indent ()
-    "Tab completion or indentation at point."
+  (defun baba/complete-or-indent ()
+    "Snippet expansion, tab completion, or indentation."
     (interactive)
     (if (looking-back "^\\s-*")
         (indent-for-tab-command)
-      (helm-company)))
+      (unless (yas-expand)
+        (helm-company))))
 
-  (evil-global-set-key 'insert (kbd "<tab>") 'baba/helm-company-or-indent)
-  (evil-global-set-key 'insert (kbd "<backtab>") 'hippie-expand)
+  (evil-global-set-key 'insert (kbd "<tab>") 'baba/complete-or-indent)
 
   ;; I always want to jump specifically to mark, not to the line of mark.
   (evil-global-set-key 'motion (kbd "'") 'evil-goto-mark)
