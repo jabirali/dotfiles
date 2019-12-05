@@ -408,7 +408,10 @@ and ergonomic, including easier code folding and automatic view navigation."
   (evil-global-set-key 'motion (kbd "H") 'evil-scroll-left)
   (evil-global-set-key 'motion (kbd "L") 'evil-scroll-right)
 
-  ;; After getting used to these in org-mode, I want them everywhere...
+  ;; After getting used to these in Org-mode, I want them everywhere...
+  (evil-global-set-key 'insert (kbd "M-h") 'evil-shift-left-line)
+  (evil-global-set-key 'insert (kbd "M-l") 'evil-shift-right-line)
+
   (evil-global-set-key 'normal (kbd "M-h") 'evil-shift-left-line)
   (evil-global-set-key 'normal (kbd "M-l") 'evil-shift-right-line)
   (evil-global-set-key 'normal (kbd "M-k") 'move-text-up)
@@ -449,6 +452,16 @@ and ergonomic, including easier code folding and automatic view navigation."
 
   (evil-global-set-key 'normal (kbd "<backtab>") 'baba/outline-toggle-buffer)
   (evil-global-set-key 'normal (kbd "<tab>") 'baba/outline-toggle-point)
+
+  ;; Tab completion or indentation via Company and Helm.
+  (defun baba/helm-company-or-indent ()
+    "Tab completion or indentation at point."
+    (interactive)
+    (if (looking-back "^\\s-*")
+        (indent-for-tab-command)
+      (helm-company)))
+
+  (evil-global-set-key 'insert (kbd "<tab>") 'baba/helm-company-or-indent)
 
   ;; I always want to jump specifically to mark, not to the line of mark.
   (evil-global-set-key 'motion (kbd "'") 'evil-goto-mark)
