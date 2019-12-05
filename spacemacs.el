@@ -462,6 +462,7 @@ and ergonomic, including easier code folding and automatic view navigation."
       (helm-company)))
 
   (evil-global-set-key 'insert (kbd "<tab>") 'baba/helm-company-or-indent)
+  (evil-global-set-key 'insert (kbd "<backtab>") 'hippie-expand)
 
   ;; I always want to jump specifically to mark, not to the line of mark.
   (evil-global-set-key 'motion (kbd "'") 'evil-goto-mark)
