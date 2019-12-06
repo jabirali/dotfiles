@@ -458,11 +458,11 @@ and ergonomic, including easier code folding and automatic view navigation."
     "Snippet expansion, tab completion, or indentation."
     (interactive)
     (if (looking-back "^\\s-*")
-        (indent-for-tab-command)
-      (unless (yas-expand)
-        (helm-company))))
+        (funcall indent-line-function)
+      (helm-company)))
 
   (evil-global-set-key 'insert (kbd "<tab>") 'baba/complete-or-indent)
+  (evil-global-set-key 'insert (kbd "<backtab>") 'yas-expand)
 
   ;; I always want to jump specifically to mark, not to the line of mark.
   (evil-global-set-key 'motion (kbd "'") 'evil-goto-mark)
