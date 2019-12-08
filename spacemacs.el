@@ -82,7 +82,8 @@
                                   ("/Notes"       . ?n)
                                   ("/Sent"        . ?s))
          ;; User interface
-         mu4e-enable-mode-line t
+         mu4e-enable-notifications t
+         mu4e-alert-email-notification-types '(count)
          mu4e-headers-show-threads nil
          mu4e-use-fancy-chars nil
          mu4e-headers-date-format "%Y-%m-%d %H:%M"
@@ -355,6 +356,10 @@
   ;; Enable "Secret Service" (FreeDesktop.org password storage).
   (require 'secrets)
   (setq auth-sources '("secrets:session" "secrets:Login"))
+
+  ;; Email notifications on the desktop.
+  (with-eval-after-load 'mu4e-alert
+    (mu4e-alert-set-default-style 'notifications))
 
   ;; Minor tweaks that simply don't fit in anywhere else.
   (setq dired-listing-switches "-lGh1v --time-style=long-iso --group-directories-first")
