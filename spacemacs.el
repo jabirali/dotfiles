@@ -159,6 +159,7 @@
     )
    dotspacemacs-excluded-packages
    '(
+     (persp-mode)
      (vi-tilde-fringe)
      (treemacs)
      (treemacs-evil)

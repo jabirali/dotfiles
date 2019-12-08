@@ -11,12 +11,12 @@ if not functions -q fisher
 end
 
 # Environment variables
-set EDITOR e
-set TERMINFO /usr/lib/terminfo
-set TERM xterm-256color
-set PATH /opt/zotero/ /opt/nomad/bin/ /opt/conda/bin /opt/mpw/bin /snap/bin $PATH
-set LC_ALL en_US.UTF-8
-set LC_NUMERIC en_US.UTF-8
+set -x EDITOR "emacsclient -c -a ''"
+set -x TERMINFO /usr/lib/terminfo
+set -x TERM xterm-256color
+set -x PATH /opt/zotero/ /opt/nomad/bin/ /opt/conda/bin /opt/mpw/bin /snap/bin $PATH
+set -x LC_ALL en_US.UTF-8
+set -x LC_NUMERIC en_US.UTF-8
 
 # Functions and aliases
 function e --description 'Edit in Emacs'
