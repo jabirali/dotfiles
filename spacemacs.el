@@ -344,8 +344,8 @@
   (baba/customize-evil)
   (baba/customize-modeline)
   (baba/customize-readers)
-  (baba/customize-text)
   (baba/customize-eshell)
+  (baba/customize-text)
   (baba/customize-layouts)
   (baba/customize-leaders)
 
@@ -575,13 +575,18 @@ and tries to minimize the section movement during window switching."
 (defun baba/customize-text ()
   "Customize plaintext buffers by adding appropriate hooks."
 
-  ;; Do word wrapping at fill column in visual-line-mode.
-  (add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
+  ;; Bundle modes for centering, indenting, wrapping, etc.
+  (add-hook 'visual-line-mode-hook
+            (defun baba/visual-line-bundle ()
+              "Toggle extra minor modes that work well with visual-line-mode."
+              (interactive)
+              (letf ((writeroom-maximize-window nil)
+                     (writeroom-mode-line t))
+                (adaptive-wrap-prefix-mode 'visual-line-mode)
+                (visual-fill-column-mode 'visual-line-mode)
+                (writeroom-mode 'visual-line-mode))))
 
-  ;; Preserve indents when wrapping lines in visual-line-mode.
-  (add-hook 'visual-line-mode-hook #'adaptive-wrap-prefix-mode)
-
-  ;; Break long lines on word boundaries.
+  ;; Enable these bundled minor modes where it makes sense.
   (add-hook 'text-mode-hook #'visual-line-mode)
   (add-hook 'magit-diff-mode-hook #'visual-line-mode)
   (add-hook 'mu4e-view-mode-hook #'visual-line-mode)
