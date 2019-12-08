@@ -582,10 +582,9 @@ and tries to minimize the section movement during window switching."
   (add-hook 'visual-line-mode-hook #'adaptive-wrap-prefix-mode)
 
   ;; Break long lines on word boundaries.
-  (add-hook 'magit-diff-mode-hook #'visual-line-mode)
-  (add-hook 'org-mode-hook #'visual-line-mode)
-  (add-hook 'markdown-mode-hook #'visual-line-mode)
   (add-hook 'text-mode-hook #'visual-line-mode)
+  (add-hook 'magit-diff-mode-hook #'visual-line-mode)
+  (add-hook 'mu4e-view-mode-hook #'visual-line-mode)
   (add-hook 'help-mode-hook #'visual-line-mode))
 
 (defun baba/customize-eshell ()
