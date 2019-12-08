@@ -585,12 +585,20 @@ and tries to minimize the section movement during window switching."
                 (adaptive-wrap-prefix-mode (if visual-line-mode 1 -1))
                 (writeroom-mode (if visual-line-mode 1 -1)))))
 
+  ;; Make Evil motions work accordingly.
+  (spacemacs//init-visual-line-keys)
+
   ;; Enable these bundled minor modes where it makes sense.
   (add-hook 'text-mode-hook #'visual-line-mode)
   (add-hook 'prog-mode-hook #'visual-line-mode)
   (add-hook 'magit-diff-mode-hook #'visual-line-mode)
   (add-hook 'mu4e-view-mode-hook #'visual-line-mode)
-  (add-hook 'help-mode-hook #'visual-line-mode))
+  (add-hook 'help-mode-hook #'visual-line-mode)
+
+  ;; Work around bugs in Org-mode.
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (adaptive-wrap-prefix-mode -1))))
 
 (defun baba/customize-eshell ()
   "Customize the behavior of the Emacs shell."
