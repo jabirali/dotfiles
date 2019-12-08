@@ -340,6 +340,9 @@
               (add-hook 'find-file-hook 'TeX-fold-buffer)
               (add-hook 'evil-insert-state-exit-hook 'TeX-fold-paragraph)))
 
+  ;; Autocompletion of emails in Mu4e.
+  (add-hook 'mu4e-compose-mode-hook 'company-mode)
+
   ;; Load more advanced customization defined below.
   (baba/customize-evil)
   (baba/customize-modeline)
