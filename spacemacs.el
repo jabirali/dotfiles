@@ -197,9 +197,9 @@
    dotspacemacs-leader-key "SPC"
    dotspacemacs-emacs-command-key "SPC"
    dotspacemacs-ex-command-key ":"
-   dotspacemacs-emacs-leader-key "M-m"
+   dotspacemacs-emacs-leader-key "<menu>"
    dotspacemacs-major-mode-leader-key ","
-   dotspacemacs-major-mode-emacs-leader-key "C-M-m"
+   dotspacemacs-major-mode-emacs-leader-key nil
    dotspacemacs-distinguish-gui-tab t
    dotspacemacs-default-layout-name "main"
    dotspacemacs-display-default-layout t
