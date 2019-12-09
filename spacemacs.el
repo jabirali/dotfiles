@@ -344,6 +344,9 @@
   ;; Autocompletion of emails in Mu4e.
   (add-hook 'mu4e-compose-mode-hook 'company-mode)
 
+  ;; Do not colorize HTML emails.
+  (setq shr-use-colors nil)
+
   ;; Load more advanced customization defined below.
   (baba/customize-evil)
   (baba/customize-modeline)
