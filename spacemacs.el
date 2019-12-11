@@ -152,8 +152,11 @@
    dotspacemacs-additional-packages
    '(
      (adaptive-wrap)
+     (evil-smartparens)
      (fish-completion)
-     (helm-fish-completion :location (recipe :fetcher github :repo "emacs-helm/helm-fish-completion"))
+     (helm-fish-completion
+      :location
+      (recipe :fetcher github :repo "emacs-helm/helm-fish-completion"))
      (gruvbox-theme)
      (ob-async)
      (org-msg)
@@ -225,7 +228,7 @@
    dotspacemacs-smooth-scrolling t
    dotspacemacs-line-numbers nil
    dotspacemacs-folding-method 'evil
-   dotspacemacs-smartparens-strict-mode nil
+   dotspacemacs-smartparens-strict-mode t
    dotspacemacs-smart-closing-parenthesis nil
    dotspacemacs-highlight-delimiters 'all
    dotspacemacs-enable-server t
@@ -397,6 +400,9 @@ and ergonomic, including easier code folding and automatic view navigation."
   ;; need to move view and cursor separately, and automatically provides
   ;; the maximum possible context for the code we're currently editing.
   (spacemacs/toggle-centered-point-globally-on)
+
+  ;; Enable Evil integration of Smartparens.
+  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
 
   ;; Use ESC to escape from basically anything.
   (bind-key "<escape>" 'isearch-cancel isearch-mode-map)
