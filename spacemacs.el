@@ -22,8 +22,8 @@
      (bibtex
        :variables
          bibtex-completion-pdf-field "file"
-         bibtex-completion-bibliography '("~/Refs/index.bib")
-         org-ref-default-bibliography '("~/Refs/index.bib")
+         bibtex-completion-bibliography '("~/.zotero/library.bib")
+         org-ref-default-bibliography '("~/.zotero/library.bib")
          org-ref-default-ref-type "cref")
      (csv)
      (deft
