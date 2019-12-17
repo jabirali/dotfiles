@@ -597,7 +597,7 @@ and tries to minimize the section movement during window switching."
             (defun baba/visual-line-bundle ()
               "Toggle extra minor modes that work well with visual-line-mode."
               (interactive)
-              (letf ((writeroom-maximize-window nil)
+              (let ((writeroom-maximize-window nil)
                      (writeroom-mode-line t))
                 (adaptive-wrap-prefix-mode (if visual-line-mode 1 -1))
                 (writeroom-mode (if visual-line-mode 1 -1)))))
