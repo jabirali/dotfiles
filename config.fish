@@ -14,7 +14,7 @@ end
 set -x EDITOR "emacsclient -c -a ''"
 set -x TERMINFO /usr/lib/terminfo
 set -x TERM xterm-256color
-set -x PATH /opt/zotero/ /opt/nomad/bin/ /opt/conda/bin /opt/mpw/bin /snap/bin $PATH
+set -x PATH ~/.emacs.d/bin/ /opt/zotero/ /opt/nomad/bin/ /opt/conda/bin /opt/mpw/bin /snap/bin $PATH
 set -x LC_ALL en_US.UTF-8
 set -x LC_NUMERIC en_US.UTF-8
 
