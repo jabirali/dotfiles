@@ -81,8 +81,9 @@
 (setq pdf-misc-print-programm "/usr/bin/lpr"
       pdf-misc-print-programm-args '("-o media=a4" "-o fitplot"))
 
-;; Use the first line of a deft note as a summary.
-(setq deft-strip-summary-regexp "\\(\n.*\\|^#\s*\\)")
+;; Use the deft filename as note title, and the first line as a summary.
+(setq deft-use-filename-as-title t
+      deft-strip-summary-regexp "\\(\n.*\\|^#\s*\\)")
 
 
 ;;; User interface:
@@ -94,7 +95,7 @@
       doom-variable-pitch-font (font-spec :family "sans" :size 19))
 
 ;; Select what colors to use for the gui.
-(setq doom-theme 'doom-gruvbox)
+(setq doom-theme 'doom-nord)
 
 ;; Don't highlight the current line number. It breaks in Org-mode when using
 ;; heading-based indentation, and highlights too much in the Gruvbox theme.

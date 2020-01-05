@@ -45,7 +45,6 @@
  (shell)
 
  :tools
- (debugger)
  (editorconfig)
  (eval +overlay)
  (flycheck)
@@ -59,7 +58,6 @@
  (cc +lsp)
  (data)
  (emacs-lisp)
- (ess)
  (julia)
  (latex +latexmk)
  (markdown)
