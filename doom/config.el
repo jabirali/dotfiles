@@ -18,7 +18,8 @@
 
 ;; Document folders.
 (setq org-directory "~/Documents/Notes/"
-      deft-directory "~/Documents/Notes/")
+      deft-directory "~/Documents/Notes/"
+      org-agenda-files (list (concat org-directory (system-name) ".org")))
 
 ;; Bibliographies.
 (setq reftex-default-bibliography "~/.zotero/library.bib"
