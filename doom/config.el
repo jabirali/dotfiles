@@ -33,6 +33,9 @@
       mu4e-drafts-folder "/Drafts"
       mu4e-refile-folder "/Archive")
 
+;; Download folders.
+(setq mu4e-attachment-dir "~/Downloads")
+
 
 ;;; System integration:
 ;; This section defines (i) how Emacs interacts with the surrounding operating
@@ -115,6 +118,17 @@
 ;; Disable help mouse-overs. They're usually annoying and not very helpful.
 (setq mode-line-default-help-echo nil
       show-help-function nil)
+
+;; Remove the ugly and distracting underlines from all hyperlinks.
+(custom-set-faces! '(link :underline nil))
+
+;; Remove highlighting from the mu4e command hints.
+(custom-set-faces! `(mu4e-highlight-face :inherit 'mu4e-link-face))
+
+;; Prettify mu4e metadata.
+(setq mu4e-use-fancy-chars t
+      mu4e-headers-date-format "%Y-%m-%d"
+      mu4e-headers-fields '((:date . 12) (:from . 20) (:to . 20) (:thread-subject)))
 
 ;; Use regular bullets instead of weird circles and flowers, resize to reasonable
 ;; defaults if no width has been manually set, and don't show all the org markup.
