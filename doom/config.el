@@ -95,10 +95,9 @@
       doom-variable-pitch-font (font-spec :family "sans" :size 19))
 
 ;; Select what colors to use for the gui.
-(setq doom-theme 'doom-nord)
+(setq doom-theme 'doom-one)
 
-;; Don't highlight the current line number. It breaks in Org-mode when using
-;; heading-based indentation, and highlights too much in the Gruvbox theme.
+;; Don't highlight the current line number.
 (custom-set-faces!
   `(line-number-current-line :background ,(doom-color 'bg)
                              :foreground ,(face-foreground 'line-number)))
@@ -116,11 +115,11 @@
 (setq mode-line-default-help-echo nil
       show-help-function nil)
 
-;; For org headings, use regular bullets instead of weird circles and flowers.
-(setq org-bullets-bullet-list '("⏵"))
-
-;; For org images, resize to a reasonable default width if none has been set.
-(setq org-image-actual-width '(400))
+;; Use regular bullets instead of weird circles and flowers, resize to reasonable
+;; defaults if no width has been manually set, and don't show all the org markup.
+(setq org-bullets-bullet-list '("⏵")
+      org-hide-emphasis-markers t
+      org-image-actual-width '(400))
 
 
 ;;; Keyboard shortcuts:

@@ -9,3 +9,5 @@
 (package! company-fish :recipe (:host github :repo "CeleritasCelery/company-fish"))
 (package! evil-smartparens)
 (package! org-ref)
+
+(package! hl-line :disable t)
