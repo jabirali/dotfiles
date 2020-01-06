@@ -173,6 +173,9 @@
   :config
   (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
 
+;; Use a Spacemacs'esque local leader key.
+(setq doom-localleader-key ",")
+
 ;; Use the usual C-u/C-d keybindings to navigate pdfs.
 (map!
  :map pdf-view-mode-map
@@ -184,7 +187,7 @@
  :map LaTeX-mode-map
  :localleader
  :desc "Compile" "c" #'TeX-command-run-all
- :desc "View"    "m" #'TeX-view)
+ :desc "View"    "," #'TeX-view)
 
 ;; After getting used to these bindings in Org-mode, I want them everywhere...
 ; (map!
