@@ -53,11 +53,11 @@
 (setq +mu4e-backend 'offlineimap)
 
 ;; Send email via the external program msmtp.
-(setq sendmail-program "/usr/bin/msmtp"
-      send-mail-function 'smtpmail-send-it
-      message-sendmail-f-is-evil t
-      message-sendmail-extra-arguments '("--read-envelope-from")
-      message-send-mail-function 'message-send-mail-with-sendmail)
+(after! mu4e
+  (setq sendmail-program "/usr/bin/msmtp"
+        message-send-mail-function 'message-send-mail-with-sendmail
+        message-sendmail-extra-arguments '("--read-envelope-from")
+        message-sendmail-f-is-evil t))
 
 ;; If fish is available on the system, use that as the default shell. Also,
 ;; do enable fish-based completion in shell and eshell buffers via company.
