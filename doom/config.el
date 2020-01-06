@@ -121,6 +121,10 @@
 (add-to-list 'default-frame-alist '(fullscreen  . maximized))
 (add-to-list 'default-frame-alist '(undecorated . t))
 
+;; Increase the spacing between windows.
+(setq window-divider-default-right-width 4
+      window-divider-default-bottom-width 4)
+
 ;; Disable help mouse-overs. They're usually annoying and not very helpful.
 (setq mode-line-default-help-echo nil
       show-help-function nil)
@@ -161,6 +165,12 @@
 (use-package evil-smartparens
   :config
   (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
+
+;; Use the usual C-u/C-d keybindings to navigate pdfs.
+(map!
+ :map pdf-view-mode-map
+ :m "C-u" 'pdf-view-scroll-down-or-previous-page
+ :m "C-d" 'pdf-view-scroll-up-or-next-page)
 
 ;; After getting used to these bindings in Org-mode, I want them everywhere...
 ; (map!
