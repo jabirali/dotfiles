@@ -61,6 +61,7 @@
 
 ;; If fish is available on the system, use that as the default shell. Also,
 ;; do enable fish-based completion in shell and eshell buffers via company.
+;; TODO: Remove the executable-find statement to cut down startup time.
 (let ((path (executable-find "fish")))
   (when path
     (setq explicit-shell-file-name path)
@@ -138,6 +139,7 @@
 ;; Use regular bullets instead of weird circles and flowers, resize to reasonable
 ;; defaults if no width has been manually set, and don't show all the org markup.
 (setq org-bullets-bullet-list '("⏵")
+      org-ellipsis " ▼ "
       org-hide-emphasis-markers t
       org-image-actual-width '(400))
 
