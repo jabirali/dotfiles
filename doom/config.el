@@ -27,11 +27,11 @@
       org-ref-default-bibliography '("~/.zotero/library.bib"))
 
 ;; Mail directories.
-(setq mu4e-maildir "~/Mail"
-      mu4e-sent-folder "/Sent"
-      mu4e-trash-folder "/Trash"
-      mu4e-drafts-folder "/Drafts"
-      mu4e-refile-folder "/Archive")
+(setq mu4e-maildir "~/.mail"
+      mu4e-sent-folder "/Personal/Sent"
+      mu4e-trash-folder "/Personal/Trash"
+      mu4e-drafts-folder "/Personal/Drafts"
+      mu4e-refile-folder "/Personal/Archive")
 
 ;; Download folders.
 (setq mu4e-attachment-dir "~/Downloads")
@@ -162,13 +162,13 @@
 
 ;; Maildir shortcuts in mu4e.
 (setq mu4e-maildir-shortcuts
-      '(("/INBOX"       . ?i)
-        ("/Archive"     . ?a)
-        ("/Accounts"    . ?c)
-        ("/Documents"   . ?d)
-        ("/Receipts"    . ?r)
-        ("/Notes"       . ?n)
-        ("/Sent"        . ?s)))
+      '(("/Personal/INBOX"       . ?i)
+        ("/Personal/Archive"     . ?a)
+        ("/Personal/Accounts"    . ?c)
+        ("/Personal/Documents"   . ?d)
+        ("/Personal/Receipts"    . ?r)
+        ("/Personal/Notes"       . ?n)
+        ("/Personal/Sent"        . ?s)))
 
 ;; Integrate Smartparens into the Evil bindings.
 (use-package! evil-smartparens
@@ -192,11 +192,3 @@
  :localleader
  :desc "Compile" "c" #'TeX-command-run-all
  :desc "Fold"    "z" #'TeX-fold-buffer)
-
-;; After getting used to these bindings in Org-mode, I want them everywhere...
-; (map!
-;  :n  "<backtab>" '+fold/close-all
-;  :ni "M-h" 'evil-shift-left-line
-;  :v  "M-h" 'evil-visual-dedent
-;  :ni "M-l" 'evil-shift-right-line
-;  :v  "M-l" 'evil-visual-indent)
