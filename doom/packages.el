@@ -11,3 +11,4 @@
 (package! org-ref)
 
 (package! hl-line :disable t)
+;(package! mu4e-maildirs-extension :disable t)

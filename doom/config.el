@@ -59,13 +59,18 @@
       message-sendmail-extra-arguments '("--read-envelope-from")
       message-send-mail-function 'message-send-mail-with-sendmail)
 
-;; Enable fish completion in shell/eshell buffers via company.
-(use-package! company-fish
-  :config
-  (when (executable-find "fish")
-    (add-to-list 'company-backends 'company-fish)
-    (add-hook 'shell-mode-hook 'company-mode)
-    (add-hook 'eshell-mode-hook 'company-mode)))
+;; If fish is available on the system, use that as the default shell. Also,
+;; do enable fish-based completion in shell and eshell buffers via company.
+(let ((path (executable-find "fish")))
+  (when path
+    (setq explicit-shell-file-name path)
+    (with-eval-after-load 'shell
+      (add-hook 'shell-mode-hook (lambda () (setq comint-process-echoes t))))
+    (use-package! company-fish
+      :config
+      (add-to-list 'company-backends 'company-fish)
+      (add-hook 'shell-mode-hook 'company-mode)
+      (add-hook 'eshell-mode-hook 'company-mode))))
 
 ;; Preferred previewers when working in latex.
 (setq +latex-viewers '(pdf-tools zathura evince sumatrapdf okular skim))
