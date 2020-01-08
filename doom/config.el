@@ -73,6 +73,16 @@
       (add-hook 'shell-mode-hook 'company-mode)
       (add-hook 'eshell-mode-hook 'company-mode))))
 
+;; Automatically enable Python virtual environments.
+(after! projectile
+  (defun pyvenv-autoload ()
+    "Automatically activates pyvenv version if .venv directory exists."
+    (let ((path (concat (projectile-project-root) ".venv")))
+      (when path
+        (pyvenv-activate path))))
+
+  (add-hook! python-mode 'pyvenv-autoload))
+
 ;; Preferred previewers when working in latex.
 (setq +latex-viewers '(pdf-tools zathura evince sumatrapdf okular skim))
 
