@@ -78,8 +78,9 @@
   (defun pyvenv-autoload ()
     "Automatically activates pyvenv version if .venv directory exists."
     (let ((path (concat (projectile-project-root) ".venv")))
-      (when path
-        (pyvenv-activate path))))
+      (if (file-directory-p path)
+          (pyvenv-activate path)
+        (pyvenv-deactivate))))
 
   (add-hook! python-mode 'pyvenv-autoload))
 
