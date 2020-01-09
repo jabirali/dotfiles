@@ -59,6 +59,10 @@
         message-sendmail-extra-arguments '("--read-envelope-from")
         message-sendmail-f-is-evil t))
 
+;; Change which external programs are used by Org-mode links.
+(after! org
+  (add-to-list 'org-file-apps '("\\.xls?x\\'" . "gnumeric %s")))
+
 ;; If fish is available on the system, use that as the default shell. Also,
 ;; do enable fish-based completion in shell and eshell buffers via company.
 ;; TODO: Remove the executable-find statement to cut down startup time.
@@ -110,6 +114,9 @@
 ;; Use the deft filename as note title, and the first line as a summary.
 (setq deft-use-filename-as-title t
       deft-strip-summary-regexp "\\(\n.*\\|^#\s*\\)")
+
+;; Setup the LSP frontend.
+(setq lsp-ui-doc-enable nil)
 
 
 ;;; User interface:
