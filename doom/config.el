@@ -148,6 +148,12 @@
 (add-to-list 'default-frame-alist '(fullscreen  . maximized))
 (add-to-list 'default-frame-alist '(undecorated . t))
 
+;; Remove the unneccesary parts of the modeline.
+(after! doom-modeline
+  (line-number-mode 0)
+  (column-number-mode 0)
+  (size-indication-mode 0))
+
 ;; Increase the spacing between windows.
 (setq window-divider-default-right-width 4
       window-divider-default-bottom-width 4)
