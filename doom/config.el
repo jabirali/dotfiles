@@ -18,8 +18,7 @@
 
 ;; Document folders.
 (setq org-directory "~/Documents/Org/"
-      deft-directory "~/Documents/Wiki/"
-      org-agenda-files (list (concat org-directory "todo.org")))
+      deft-directory "~/Documents/Wiki/")
 
 ;; Bibliographies.
 (setq reftex-default-bibliography "~/.zotero/library.bib"
