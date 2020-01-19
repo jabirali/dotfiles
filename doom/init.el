@@ -8,7 +8,7 @@
  :input
 
  :checkers
- (spell)
+ ;(spell)
  (syntax)
 
  :completion
@@ -16,7 +16,6 @@
  (ivy +icons)
 
  :ui
- (deft)
  (doom)
  (doom-dashboard)
  (doom-quit)

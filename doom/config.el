@@ -17,8 +17,10 @@
       user-mail-address "jabirali@switzerlandmail.ch")
 
 ;; Document folders.
-(setq org-directory "~/Documents/Org/"
-      deft-directory "~/Documents/Wiki/")
+(setq org-directory "~/Documents/Wiki/"
+      +org-capture-todo-file "~/Documents/Org/todo.org"
+      +org-capture-journal-file "~/Documents/Org/journal.org"
+      +org-capture-notes-file "~/Documents/Org/notes.org")
 
 ;; Bibliographies.
 (setq reftex-default-bibliography "~/.zotero/library.bib"
@@ -109,9 +111,6 @@
 ;; Print pdfs via the standard Unix tools.
 (setq pdf-misc-print-programm "/usr/bin/lpr"
       pdf-misc-print-programm-args '("-o media=a4" "-o fitplot"))
-
-;; Use the deft filename as note title, and the first line as a summary.
-(setq deft-use-filename-as-title t)
 
 ;; Setup the LSP frontend.
 (setq lsp-ui-doc-enable nil)
