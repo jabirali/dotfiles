@@ -18,6 +18,7 @@
 
 ;; Document folders.
 (setq org-directory "~/Documents/Wiki/"
+      org-agenda-files ("~/Documents/Org/")
       +org-capture-todo-file "~/Documents/Org/todo.org"
       +org-capture-journal-file "~/Documents/Org/journal.org"
       +org-capture-notes-file "~/Documents/Org/notes.org")
