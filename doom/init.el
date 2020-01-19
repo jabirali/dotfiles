@@ -7,6 +7,10 @@
 (doom!
  :input
 
+ :checkers
+ (spell)
+ (syntax)
+
  :completion
  (company)
  (ivy +icons)
@@ -47,8 +51,6 @@
  :tools
  (editorconfig)
  (eval +overlay)
- (flycheck)
- (flyspell)
  (lookup +docsets)
  (lsp)
  (magit)
