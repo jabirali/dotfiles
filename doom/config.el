@@ -17,8 +17,8 @@
       user-mail-address "jabirali@switzerlandmail.ch")
 
 ;; Document folders.
-(setq org-directory "~/Documents/Notes/"
-      deft-directory "~/Documents/Notes/"
+(setq org-directory "~/Documents/Org/"
+      deft-directory "~/Documents/Wiki/"
       org-agenda-files (list (concat org-directory (system-name) ".org")))
 
 ;; Bibliographies.
@@ -112,8 +112,7 @@
       pdf-misc-print-programm-args '("-o media=a4" "-o fitplot"))
 
 ;; Use the deft filename as note title, and the first line as a summary.
-(setq deft-use-filename-as-title t
-      deft-strip-summary-regexp "\\(\n.*\\|^#\s*\\)")
+(setq deft-use-filename-as-title t)
 
 ;; Setup the LSP frontend.
 (setq lsp-ui-doc-enable nil)
