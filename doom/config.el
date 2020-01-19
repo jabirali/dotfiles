@@ -18,7 +18,7 @@
 
 ;; Document folders.
 (setq org-directory "~/Documents/Wiki/"
-      org-agenda-files ("~/Documents/Org/")
+      org-agenda-files '("~/Documents/Org/")
       +org-capture-todo-file "~/Documents/Org/todo.org"
       +org-capture-journal-file "~/Documents/Org/journal.org"
       +org-capture-notes-file "~/Documents/Org/notes.org")
@@ -67,17 +67,13 @@
 
 ;; If fish is available on the system, use that as the default shell. Also,
 ;; do enable fish-based completion in shell and eshell buffers via company.
-;; TODO: Remove the executable-find statement to cut down startup time.
-(let ((path (executable-find "fish")))
-  (when path
-    (setq explicit-shell-file-name path)
-    (with-eval-after-load 'shell
-      (add-hook 'shell-mode-hook (lambda () (setq comint-process-echoes t))))
-    (use-package! company-fish
-      :config
-      (add-to-list 'company-backends 'company-fish)
-      (add-hook 'shell-mode-hook 'company-mode)
-      (add-hook 'eshell-mode-hook 'company-mode))))
+(with-eval-after-load 'shell
+  (add-hook 'shell-mode-hook (lambda () (setq comint-process-echoes t))))
+(use-package! company-fish
+  :config
+  (add-to-list 'company-backends 'company-fish)
+  (add-hook 'shell-mode-hook 'company-mode)
+  (add-hook 'eshell-mode-hook 'company-mode))
 
 ;; Automatically enable Python virtual environments.
 (after! projectile
