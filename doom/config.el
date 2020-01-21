@@ -18,10 +18,10 @@
 
 ;; Document folders.
 (setq org-directory "~/Documents/Wiki/"
-      org-agenda-files '("~/Documents/Org/")
-      +org-capture-todo-file "~/Documents/Org/todo.org"
-      +org-capture-journal-file "~/Documents/Org/journal.org"
-      +org-capture-notes-file "~/Documents/Org/notes.org")
+      org-agenda-files '("~/Documents/Admin")
+      +org-capture-todo-file "~/Documents/Admin/todo.org"
+      +org-capture-journal-file "~/Documents/Admin/journal.org"
+      +org-capture-notes-file "~/Documents/Admin/notes.org")
 
 ;; Bibliographies.
 (setq reftex-default-bibliography "~/.zotero/library.bib"
@@ -125,9 +125,9 @@
 (setq doom-theme 'doom-one)
 
 ;; Don't highlight the current line number.
-(custom-set-faces!
-  `(line-number-current-line :background ,(doom-color 'bg)
-                             :foreground ,(face-foreground 'line-number)))
+;(custom-set-faces!
+;  `(line-number-current-line :background ,(doom-color 'bg)
+;                             :foreground ,(face-foreground 'line-number)))
 
 ;; Come to the dark side; i.e. invert the colors used to read pdf documents.
 (add-hook! 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)
@@ -149,8 +149,8 @@
   (size-indication-mode 0))
 
 ;; Increase the spacing between windows.
-(setq window-divider-default-right-width 4
-      window-divider-default-bottom-width 4)
+;(setq window-divider-default-right-width 4
+;      window-divider-default-bottom-width 4)
 
 ;; Disable help mouse-overs. They're usually annoying and not very helpful.
 (setq mode-line-default-help-echo nil
@@ -172,6 +172,7 @@
 (setq org-bullets-bullet-list '("⏵")
       org-ellipsis " ▼ "
       org-hide-emphasis-markers t
+      org-pretty-entities t
       org-image-actual-width '(400))
 
 

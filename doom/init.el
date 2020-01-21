@@ -8,7 +8,7 @@
  :input
 
  :checkers
- ;(spell)
+ (spell)
  (syntax)
 
  :completion
