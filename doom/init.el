@@ -20,6 +20,7 @@
  (doom-dashboard)
  (doom-quit)
  (hl-todo)
+ (hydra)
  (modeline)
  (nav-flash)
  (ophints)
