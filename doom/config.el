@@ -122,7 +122,7 @@
       doom-variable-pitch-font (font-spec :family "sans" :size 19))
 
 ;; Select what colors to use for the gui.
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-wilmersdorf)
 
 ;; Don't highlight the current line number.
 ;(custom-set-faces!
