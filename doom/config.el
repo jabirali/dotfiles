@@ -150,7 +150,7 @@
   ;; Define a new default modeline.
   (doom-modeline-def-modeline 'babaline
     '(bar workspace-name window-number buffer-info remote-host)
-    '(matches debug checker vcs))
+    '(matches debug checker))
 
   ;; Actually use the new settings.
   (add-hook 'doom-modeline-mode-hook
