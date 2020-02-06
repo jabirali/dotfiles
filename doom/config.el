@@ -142,15 +142,20 @@
 (add-to-list 'default-frame-alist '(fullscreen  . maximized))
 (add-to-list 'default-frame-alist '(undecorated . t))
 
-;; Remove the unneccesary parts of the modeline.
+;; Minimalist modeline.
 (after! doom-modeline
-  (line-number-mode 0)
-  (column-number-mode 0)
-  (size-indication-mode 0))
+  ;; Disable unwanted modeline details.
+  (size-indication-mode 0)
 
-;; Increase the spacing between windows.
-;(setq window-divider-default-right-width 4
-;      window-divider-default-bottom-width 4)
+  ;; Define a new default modeline.
+  (doom-modeline-def-modeline 'babaline
+    '(bar workspace-name window-number buffer-info remote-host)
+    '(matches debug checker vcs))
+
+  ;; Actually use the new settings.
+  (add-hook 'doom-modeline-mode-hook
+    (lambda ()
+      (doom-modeline-set-modeline 'babaline 'default))))
 
 ;; Disable help mouse-overs. They're usually annoying and not very helpful.
 (setq mode-line-default-help-echo nil
