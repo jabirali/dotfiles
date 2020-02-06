@@ -174,11 +174,12 @@
 
 ;; Use regular bullets instead of weird circles and flowers, resize to reasonable
 ;; defaults if no width has been manually set, and don't show all the org markup.
-(setq org-bullets-bullet-list '("⏵")
-      org-ellipsis " ▼ "
+(setq org-bullets-bullet-list '("*")
+      org-ellipsis " * "
       org-hide-emphasis-markers t
       org-pretty-entities t
       org-image-actual-width '(400))
+
 
 
 ;;; Keyboard shortcuts:
