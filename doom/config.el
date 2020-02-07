@@ -224,15 +224,17 @@
  :m "C-d" 'pdf-view-scroll-up-or-next-page)
 
 ;; Terminal keybindings.
-(map!
- :map vterm-mode-map
- ;; Enable terminal control keys.
- :i "C-g" 'vterm-send-C-c
- ;; Doom-to-Emacs key translation.
- :i "C-h" 'vterm-send-left
- :i "C-j" 'vterm-send-down
- :i "C-k" 'vterm-send-up
- :i "C-l" 'vterm-send-right)
+(after! vterm
+  (map!
+   :map vterm-mode-map
+   ;; Enable terminal control keys.
+   :i "C-c" 'vterm-send-C-c
+   :i "C-z" 'vterm-send-C-z
+   ;; Doom-to-Emacs key translation.
+   :i "C-h" 'vterm-send-left
+   :i "C-j" 'vterm-send-down
+   :i "C-k" 'vterm-send-up
+   :i "C-l" 'vterm-send-right))
 
 ;; TeX commands.
 (map!
