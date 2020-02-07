@@ -170,10 +170,13 @@
 ;; Remove highlighting from the mu4e command hints.
 (custom-set-faces! `(mu4e-highlight-face :inherit 'mu4e-link-face))
 
-;; Prettify mu4e metadata.
-(setq mu4e-use-fancy-chars t
-      mu4e-headers-date-format "%Y-%m-%d"
-      mu4e-headers-fields '((:date . 12) (:from . 20) (:to . 20) (:thread-subject)))
+;; Prettify and minimize the mu4e metadata.
+(after! mu4e
+  (setq mu4e-use-fancy-chars t
+        mu4e-headers-show-threads nil
+        mu4e-headers-include-related nil
+        mu4e-headers-date-format "%Y-%m-%d"
+        mu4e-headers-fields '((:date . 12) (:from . 20) (:to . 20) (:thread-subject))))
 
 ;; Setup the LSP frontend.
 (setq lsp-ui-sideline-enable nil
