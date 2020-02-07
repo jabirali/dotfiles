@@ -223,6 +223,17 @@
  :m "C-u" 'pdf-view-scroll-down-or-previous-page
  :m "C-d" 'pdf-view-scroll-up-or-next-page)
 
+;; Terminal keybindings.
+(map!
+ :map vterm-mode-map
+ ;; Enable terminal control keys.
+ :i "C-g" 'vterm-send-C-c
+ ;; Doom-to-Emacs key translation.
+ :i "C-h" 'vterm-send-left
+ :i "C-j" 'vterm-send-down
+ :i "C-k" 'vterm-send-up
+ :i "C-l" 'vterm-send-right)
+
 ;; TeX commands.
 (map!
  :map LaTeX-mode-map
