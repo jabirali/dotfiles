@@ -45,3 +45,22 @@ end
 alias stop="echo -e '\e[31;1mUse the alias `e`.\e[0m\n\n'"
 alias vim=stop
 alias nvim=stop
+
+# Enable vterm directory tracking
+function vterm_printf;
+    if [ -n "$TMUX" ]
+        printf "\ePtmux;\e\e]%s\007\e\\" "$argv"
+    else if string match -q -- "screen*" "$TERM"
+        printf "\eP\e]%s\007\e\\" "$argv"
+    else
+        printf "\e]%s\e\\" "$argv"
+    end
+end
+
+function fish_vterm_prompt_end;
+    vterm_printf '51;A'(whoami)'@'(hostname)':'(pwd)
+end
+
+function track_directories --on-event fish_prompt;
+    fish_vterm_prompt_end;
+end
