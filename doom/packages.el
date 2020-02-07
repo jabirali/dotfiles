@@ -11,5 +11,3 @@
 (package! org-ref)
 
 (package! hl-line :disable t)
-(package! vi-tilde-fringe :disable t)
-;(package! mu4e-maildirs-extension :disable t)

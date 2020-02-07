@@ -67,6 +67,7 @@
 
 ;; If fish is available on the system, use that as the default shell. Also,
 ;; do enable fish-based completion in shell and eshell buffers via company.
+(setq vterm-shell "fish")
 (with-eval-after-load 'shell
   (add-hook 'shell-mode-hook (lambda () (setq comint-process-echoes t))))
 (use-package! company-fish
@@ -109,8 +110,10 @@
 (setq pdf-misc-print-programm "/usr/bin/lpr"
       pdf-misc-print-programm-args '("-o media=a4" "-o fitplot"))
 
-;; Setup the LSP frontend.
-(setq lsp-ui-doc-enable nil)
+;; Enable extra syntax checkers.
+(add-hook 'lsp-after-initialize-hook
+          (lambda ()
+            (flycheck-add-next-checker 'lsp-ui 'python-flake8)))
 
 
 ;;; User interface:
@@ -172,6 +175,13 @@
       mu4e-headers-date-format "%Y-%m-%d"
       mu4e-headers-fields '((:date . 12) (:from . 20) (:to . 20) (:thread-subject)))
 
+;; Setup the LSP frontend.
+(setq lsp-ui-sideline-enable nil
+      lsp-enable-indentation nil
+      lsp-enable-on-type-formatting nil
+      lsp-enable-symbol-highlighting nil
+      lsp-enable-file-watchers nil)
+
 ;; Use regular bullets instead of weird circles and flowers, resize to reasonable
 ;; defaults if no width has been manually set, and don't show all the org markup.
 (setq org-bullets-bullet-list '("*")
@@ -179,6 +189,9 @@
       org-hide-emphasis-markers t
       org-pretty-entities t
       org-image-actual-width '(400))
+
+;; Get rid of unneccessary fringe symbols.
+(setq vi-tilde-fringe-bitmap-array [0])
 
 
 
