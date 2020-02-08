@@ -127,10 +127,10 @@
 ;; Select what colors to use for the gui.
 (setq doom-theme 'doom-moonlight)
 
-;; Don't highlight the current line number.
-;(custom-set-faces!
-;  `(line-number-current-line :background ,(doom-color 'bg)
-;                             :foreground ,(face-foreground 'line-number)))
+;; Disable line numbers. They look nice in regular buffers, but they look bad in
+;; terminals, look strange in buffers with variable line height, and cause issues
+;; with smooth scrolling in Emacs (much more responsive without them present).
+(setq display-line-numbers-type nil)
 
 ;; Come to the dark side; i.e. invert the colors used to read pdf documents.
 (add-hook! 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)
