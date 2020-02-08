@@ -269,6 +269,9 @@
 ;; Enable code folding and navigation in terminals.
 (setq-hook! 'vterm-mode-hook outline-regexp "❯")
 
+;; Make hideshow only open one level when I unfold a region.
+(advice-add '+fold/open :after (lambda () (+fold-from-eol (hs-hide-level 0))))
+
 ;; ;; Clean code folding via Outline minor mode.
 ;; (add-hook 'prog-mode-hook 'outline-minor-mode)
 ;; (add-hook 'text-mode-hook 'outline-minor-mode)
