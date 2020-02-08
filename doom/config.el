@@ -211,6 +211,17 @@
         ("/Personal/Notes"       . ?n)
         ("/Personal/Sent"        . ?s)))
 
+;; This makes it more convenient to edit e.g. M-: commands, since you
+;; can paste there using Vim keyboard shortcuts, etc. However, making
+;; it usable requires redefining the Ivy minibuffer map (C-hjkl, etc.)
+;; (setq evil-want-minibuffer t)
+
+;; It is more useful to navigate horizontally than vertically
+;; with H/L, at least when using truncate lines in e.g. LaTeX.
+(map!
+ :m "H" 'evil-scroll-left
+ :m "L" 'evil-scroll-right)
+
 ;; Integrate Smartparens into the Evil bindings.
 (use-package! evil-smartparens
   :after evil
@@ -230,6 +241,9 @@
 (after! vterm
   (map!
    :map vterm-mode-map
+   ;; Navigate between prompts.
+   :m "[[" 'outline-previous-heading
+   :m "]]" 'outline-next-heading
    ;; Enable terminal control keys.
    :i "C-c" 'vterm-send-C-c
    :i "C-z" 'vterm-send-C-z
@@ -246,3 +260,111 @@
  :localleader
  :desc "Compile" "c" #'TeX-command-run-all
  :desc "Fold"    "z" #'TeX-fold-buffer)
+
+
+;;; Code folding:
+;; This code was copied over from my heavily customized Spacemacs setup, and has
+;; not yet been adjusted to fit well in Doom. TODO: Find a good folding solution.
+
+;; Enable code folding and navigation in terminals.
+(setq-hook! 'vterm-mode-hook outline-regexp "❯")
+
+;; ;; Clean code folding via Outline minor mode.
+;; (add-hook 'prog-mode-hook 'outline-minor-mode)
+;; (add-hook 'text-mode-hook 'outline-minor-mode)
+;; (add-hook 'eshell-mode-hook 'outline-minor-mode)
+
+;; ;; Show all headings but no content in Outline mode.
+;; (add-hook 'outline-minor-mode-hook
+;;           (defun baba/outline-overview ()
+;;             "Show only outline headings."
+;;             (outline-show-all)
+;;             (outline-hide-body)))
+
+;; (add-hook 'python-mode-hook
+;;           (defun baba/outline-python ()
+;;             "Fold only definitions in Python."
+;;             (setq outline-regexp
+;;                   (rx (or
+;;                        ;; Definitions
+;;                        (group (group (* space)) bow (or "class" "def") eow)
+
+;;                        ;; Decorators
+;;                        (group (group (* space)) "@"))))
+;;             (baba/outline-overview)))
+
+;; (add-hook 'octave-mode-hook
+;;           (defun baba/outline-matlab ()
+;;             "Fold definitions in Matlab."
+;;             (setq outline-regexp
+;;                   (rx (or
+;;                        (group
+;;                         (group (* space))
+;;                         bow
+;;                         (or "classdef" "function" "properties" "methods")
+;;                         eow))))
+;;             (baba/outline-overview)))
+
+;; (add-hook 'f90-mode-hook
+;;           (defun baba/outline-fortran ()
+;;             "Fold definitions in Fortran."
+;;             (setq outline-regexp
+;;                   (rx (or
+;;                        ;; Module and interface blocks.
+;;                        (group (group (* space)) (or "module" "interface"))
+
+;;                        ;; Procedures and type definitions.
+;;                        (group
+;;                         (group (* space))
+;;                         (*? (or "pure " "impure " "elemental "))
+;;                         (or "function" "subroutine" "interface" "type" "type,")
+;;                         (group (+ space))))))
+;;             (baba/outline-overview)))
+
+;; ;; Customize the distracting folding markers.
+;; (set-display-table-slot
+;;  standard-display-table
+;;  'selective-display
+;;  (let ((face-offset (* (face-id 'shadow) (lsh 1 22))))
+;;    (vconcat (mapcar (lambda (c) (+ face-offset c)) org-ellipsis))))
+
+;; ;; LaTeX buffers use additional folding. However, by default I have to
+;; ;; do that manually; let's instead autofold on init and after edits.
+;; ;; While we're at it, let's also fix the weird TeX folding colors.
+;; (add-hook 'LaTeX-mode-hook
+;;           (defun baba/TeX-fold-auto ()
+;;             (TeX-fold-mode 1)
+;;             (set-face-foreground 'TeX-fold-folded-face "#ebdbb2")
+;;             (add-hook 'find-file-hook 'TeX-fold-buffer)
+;;             (add-hook 'evil-insert-state-exit-hook 'TeX-fold-paragraph)))
+
+;; ;; Code folding via Outline minor mode.
+;; (defun baba/outline-toggle-p ()
+;;   "Check the current code folding state."
+;;   (interactive)
+;;   (save-excursion
+;;     (end-of-line)
+;;     (outline-invisible-p)))
+
+;; (defun baba/outline-toggle-buffer ()
+;;   "Toggle code folding throughout the buffer."
+;;   (interactive)
+;;   (if (baba/outline-toggle-p)
+;;       (progn
+;;         (outline-show-all)
+;;         (recenter 0))
+;;     (outline-hide-body)
+;;     (recenter)))
+
+;; (defun baba/outline-toggle-point ()
+;;   "Toggle code folding at the current point."
+;;   (interactive)
+;;   (if (baba/outline-toggle-p)
+;;       (progn
+;;         (outline-show-entry)
+;;         (recenter 0))
+;;     (outline-hide-entry)
+;;     (recenter)))
+
+;; (evil-global-set-key 'normal (kbd "<backtab>") 'baba/outline-toggle-buffer)
+;; (evil-global-set-key 'normal (kbd "<tab>") 'baba/outline-toggle-point)
