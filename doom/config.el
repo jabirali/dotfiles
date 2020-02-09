@@ -267,7 +267,7 @@
 ;; not yet been adjusted to fit well in Doom. TODO: Find a good folding solution.
 
 ;; Enable outline folding in terminals.
-(setq-hook! 'vterm-mode-hook outline-regexp "❯")
+(setq-hook! 'vterm-mode-hook outline-regexp ".*❯")
 
 ;; Enable outline folding in latex.
 (add-hook! 'LaTeX-mode-hook 'outline-minor-mode)
