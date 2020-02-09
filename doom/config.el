@@ -266,23 +266,33 @@
 ;; This code was copied over from my heavily customized Spacemacs setup, and has
 ;; not yet been adjusted to fit well in Doom. TODO: Find a good folding solution.
 
-;; Enable code folding and navigation in terminals.
+;; Enable outline folding in terminals.
 (setq-hook! 'vterm-mode-hook outline-regexp "❯")
 
-;; Make hideshow only open one level when I unfold a region.
-(advice-add '+fold/open :after (lambda () (+fold-from-eol (hs-hide-level 0))))
+;; Enable outline folding in latex.
+(add-hook! 'LaTeX-mode-hook 'outline-minor-mode)
 
-;; ;; Clean code folding via Outline minor mode.
-;; (add-hook 'prog-mode-hook 'outline-minor-mode)
-;; (add-hook 'text-mode-hook 'outline-minor-mode)
-;; (add-hook 'eshell-mode-hook 'outline-minor-mode)
+;; Define advice to make the Doom Emacs `fold' module work as expected.
+;; In particular, expanding an entry shouldn't expand its entire subtree,
+;; and closing all folds should close top-level outline sections as well.
+;; Finally, global operations with `+fold/*-all' should recenter cursor.
 
-;; ;; Show all headings but no content in Outline mode.
-;; (add-hook 'outline-minor-mode-hook
-;;           (defun baba/outline-overview ()
-;;             "Show only outline headings."
-;;             (outline-show-all)
-;;             (outline-hide-body)))
+(defun +baba/fold-close-outline (&optional level)
+  "Close Outline folds after running `+fold/close-all' without prefix."
+  (unless (or (integerp level) (derived-mode-p 'org-mode))
+    (outline-hide-body)))
+
+(defun +baba/fold-close-subtree (fun &rest args)
+  "Close Hideshow subtree after opening an entry with `+fold/open'."
+  (interactive)
+  (apply fun args)
+  (when (+fold--hideshow-fold-p)
+    (+fold-from-eol (hs-hide-level 0))))
+
+(advice-add '+fold/open :around '+baba/fold-close-subtree)
+(advice-add '+fold/close-all :after '+baba/fold-close-outline)
+(advice-add '+fold/close-all :after 'evil-scroll-line-to-center)
+(advice-add '+fold/open-all :after 'evil-scroll-line-to-center)
 
 ;; (add-hook 'python-mode-hook
 ;;           (defun baba/outline-python ()
@@ -340,34 +350,3 @@
 ;;             (set-face-foreground 'TeX-fold-folded-face "#ebdbb2")
 ;;             (add-hook 'find-file-hook 'TeX-fold-buffer)
 ;;             (add-hook 'evil-insert-state-exit-hook 'TeX-fold-paragraph)))
-
-;; ;; Code folding via Outline minor mode.
-;; (defun baba/outline-toggle-p ()
-;;   "Check the current code folding state."
-;;   (interactive)
-;;   (save-excursion
-;;     (end-of-line)
-;;     (outline-invisible-p)))
-
-;; (defun baba/outline-toggle-buffer ()
-;;   "Toggle code folding throughout the buffer."
-;;   (interactive)
-;;   (if (baba/outline-toggle-p)
-;;       (progn
-;;         (outline-show-all)
-;;         (recenter 0))
-;;     (outline-hide-body)
-;;     (recenter)))
-
-;; (defun baba/outline-toggle-point ()
-;;   "Toggle code folding at the current point."
-;;   (interactive)
-;;   (if (baba/outline-toggle-p)
-;;       (progn
-;;         (outline-show-entry)
-;;         (recenter 0))
-;;     (outline-hide-entry)
-;;     (recenter)))
-
-;; (evil-global-set-key 'normal (kbd "<backtab>") 'baba/outline-toggle-buffer)
-;; (evil-global-set-key 'normal (kbd "<tab>") 'baba/outline-toggle-point)
