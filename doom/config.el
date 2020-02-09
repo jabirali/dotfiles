@@ -35,6 +35,22 @@
       mu4e-drafts-folder "/Personal/Drafts"
       mu4e-refile-folder "/Personal/Archive")
 
+;; Mail bookmarks.
+(after! mu4e
+  (setq mu4e-bookmarks
+        `( ,(make-mu4e-bookmark
+             :name  "Inbox"
+             :query "maildir:/Personal/INBOX AND NOT subject:NOTE*"
+             :key ?i)
+           ,(make-mu4e-bookmark
+             :name "Todos"
+             :query "maildir:/Personal/INBOX AND subject:NOTE*"
+             :key ?t)
+           ,(make-mu4e-bookmark
+             :name "Notes"
+             :query "maildir:/Personal/Notes"
+             :key ?n))))
+
 ;; Download folders.
 (setq mu4e-attachment-dir "~/Downloads")
 
@@ -202,14 +218,14 @@
 ;; This section defines custom keyboard shortcuts for Doom Emacs.
 
 ;; Maildir shortcuts in mu4e.
-(setq mu4e-maildir-shortcuts
-      '(("/Personal/INBOX"       . ?i)
-        ("/Personal/Archive"     . ?a)
-        ("/Personal/Accounts"    . ?c)
-        ("/Personal/Documents"   . ?d)
-        ("/Personal/Receipts"    . ?r)
-        ("/Personal/Notes"       . ?n)
-        ("/Personal/Sent"        . ?s)))
+;(setq mu4e-maildir-shortcuts
+;      '(("/Personal/INBOX"       . ?i)
+;        ("/Personal/Archive"     . ?a)
+;        ("/Personal/Accounts"    . ?c)
+;        ("/Personal/Documents"   . ?d)
+;        ("/Personal/Receipts"    . ?r)
+;        ("/Personal/Notes"       . ?n)
+;        ("/Personal/Sent"        . ?s)))
 
 ;; This makes it more convenient to edit e.g. M-: commands, since you
 ;; can paste there using Vim keyboard shortcuts, etc. However, making
@@ -240,7 +256,7 @@
 ;; Terminal keybindings.
 (after! vterm
   (map!
-   :map vterm-mode-map
+   :map vtermmode-map
    ;; Navigate between prompts.
    :m "[[" 'outline-previous-heading
    :m "]]" 'outline-next-heading
