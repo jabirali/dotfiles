@@ -49,7 +49,12 @@
            ,(make-mu4e-bookmark
              :name "Notes"
              :query "maildir:/Personal/Notes"
-             :key ?n))))
+             :key ?n)
+           ,(make-mu4e-bookmark
+             :name "Files"
+             :query "maildir:/Personal/Archive AND flag:attach"
+             :key ?f)
+           )))
 
 ;; Download folders.
 (setq mu4e-attachment-dir "~/Downloads")
