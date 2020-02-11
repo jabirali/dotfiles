@@ -34,6 +34,7 @@
  (evil +everywhere)
  (file-templates)
  (fold)
+ (format +onsave)
  (multiple-cursors)
  (rotate-text)
  (snippets)
