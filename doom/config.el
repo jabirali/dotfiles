@@ -17,11 +17,9 @@
       user-mail-address "jabirali@switzerlandmail.ch")
 
 ;; Document folders.
-(setq org-directory "~/Documents/Wiki/"
-      org-agenda-files '("~/Documents/Admin")
-      +org-capture-todo-file "~/Documents/Admin/todo.org"
-      +org-capture-journal-file "~/Documents/Admin/journal.org"
-      +org-capture-notes-file "~/Documents/Admin/notes.org")
+(setq org-directory "~/Documents/Notes"
+      org-agenda-files '("~/Documents/Notes")
+      +org-capture-todo-file "~/Documents/Notes/personal.org")
 
 ;; Bibliographies.
 (setq reftex-default-bibliography "~/.zotero/library.bib"
