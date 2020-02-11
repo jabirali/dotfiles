@@ -220,6 +220,14 @@
 ;;; Keyboard shortcuts:
 ;; This section defines custom keyboard shortcuts for Doom Emacs.
 
+;; Make an application menu containing the "missing defaults".
+(map!
+ :leader
+ "K" 'man
+ :prefix "o"
+ "m" 'mu4e
+ "n" '+default/browse-notes)
+
 ;; Maildir shortcuts in mu4e.
 ;(setq mu4e-maildir-shortcuts
 ;      '(("/Personal/INBOX"       . ?i)
