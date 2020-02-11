@@ -259,7 +259,7 @@
 ;; Terminal keybindings.
 (after! vterm
   (map!
-   :map vtermmode-map
+   :map vterm-mode-map
    ;; Navigate between prompts.
    :m "[[" 'outline-previous-heading
    :m "]]" 'outline-next-heading
