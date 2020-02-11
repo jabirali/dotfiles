@@ -4,7 +4,7 @@
 #------------------------------------------------------------
 
 [git_branch]
-symbol = ''
+disabled = true
 
 [git_status]
 prefix = '('
@@ -21,4 +21,4 @@ renamed = 'r'
 stashed = ''
 
 [python]
-symbol = 'py '
+symbol = ' '
