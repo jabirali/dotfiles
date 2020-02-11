@@ -3,22 +3,28 @@
 # Path: ~/.config/fish/config.fish
 #------------------------------------------------------------
 
-# Package manager
-if not functions -q fisher
-    set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
-    curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
-    fish -c fisher
-end
-
-# Environment variables
+# Define environment variables.
 set -x EDITOR "emacsclient -c -a ''"
 set -x TERMINFO /usr/lib/terminfo
-set -x TERM xterm-256color
-set -x PATH ~/.emacs.d/bin/ /opt/zotero/ /opt/nomad/bin/ /opt/conda/bin /opt/mpw/bin /snap/bin $PATH
+set -x TERM xterm
+set -x PATH ~/.emacs.d/bin/ ~/.local/bin/ /opt/zotero/ /opt/nomad/bin/ /opt/conda/bin /opt/mpw/bin /snap/bin $PATH
 set -x LC_ALL en_US.UTF-8
 set -x LC_NUMERIC en_US.UTF-8
 
-# Functions and aliases
+# Disable the Fish greeting.
+set fish_greeting
+
+# Load the Starship prompt.
+if not [ (which starship) ];
+   set file (mktemp);
+   curl -fsSL https://starship.rs/install.sh > $file;
+   mkdir -p ~/.local/bin/;
+   bash $file -y -b ~/.local/bin/;
+   rm $file;
+end
+starship init fish | source
+
+# Functions and aliases.
 function e --description 'Edit in Emacs'
     emacsclient -c -a '' $argv &
 end
@@ -41,12 +47,12 @@ function scrape --description 'Scrape all linked documents from a website'
     wget -r -l 1 -e robots=off
 end
 
-# Ensure that I actually use the aliases
+# Ensure that I actually use the aliases.
 alias stop="echo -e '\e[31;1mUse the alias `e`.\e[0m\n\n'"
 alias vim=stop
 alias nvim=stop
 
-# Enable vterm directory tracking
+# Enable vterm directory tracking in Emacs.
 function vterm_printf;
     if [ -n "$TMUX" ]
         printf "\ePtmux;\e\e]%s\007\e\\" "$argv"

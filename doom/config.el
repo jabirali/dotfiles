@@ -295,6 +295,7 @@
 
 ;; Enable outline folding in terminals.
 (setq-hook! 'vterm-mode-hook outline-regexp ".*❯")
+(add-hook! 'vterm-mode-hook 'outline-minor-mode)
 
 ;; Enable outline folding in latex.
 (add-hook! 'LaTeX-mode-hook 'outline-minor-mode)

@@ -1,0 +1,24 @@
+#------------------------------------------------------------
+# File: Starship prompt config
+# Path: ~/.config/starship.toml
+#------------------------------------------------------------
+
+[git_branch]
+symbol = ''
+
+[git_status]
+prefix = '('
+suffix = ') '
+ahead = '+'
+behind = '-'
+diverged = '±'
+conflicted = '!'
+untracked = '?'
+modified = 'm'
+deleted = 'd'
+staged = 's'
+renamed = 'r'
+stashed = ''
+
+[python]
+symbol = 'py '
