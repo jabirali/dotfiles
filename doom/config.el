@@ -215,6 +215,12 @@
 ;; Get rid of unneccessary fringe symbols.
 (setq vi-tilde-fringe-bitmap-array [0])
 
+;; Customize the Ivy popup frame.
+(after! ivy
+  (setq ivy-posframe-width 120
+        ivy-posframe-height 80
+        ivy-posframe-display-functions-alist
+        '((t . ivy-posframe-display-at-frame-center))))
 
 
 ;;; Keyboard shortcuts:
