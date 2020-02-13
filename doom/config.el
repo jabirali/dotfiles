@@ -257,12 +257,6 @@
  :m "H" 'evil-scroll-left
  :m "L" 'evil-scroll-right)
 
-;; Integrate Smartparens into the Evil bindings.
-(use-package! evil-smartparens
-  :after evil
-  :config
-  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
-
 ;; Use a Spacemacs'esque local leader key.
 (setq doom-localleader-key ",")
 

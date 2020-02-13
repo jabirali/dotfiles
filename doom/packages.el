@@ -6,7 +6,7 @@
 ;; to install directly from another repo, add the straight.el `:recipe' keyword.
 ;; It's also possible to use `:disable' keyword to disable built-in packages.
 
-(package! evil-smartparens)
+;; (package! evil-smartparens)
 (package! org-ref)
 
 (package! hl-line :disable t)
