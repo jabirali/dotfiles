@@ -253,10 +253,14 @@
 
 ;; It is more useful to navigate horizontally than vertically
 ;; with H/L, at least when using truncate lines in e.g. LaTeX.
-;; TODO: Map Q, R, U, M to something more usable than default.
+;; I often revert a buffer, but rarely ever use replace-mode.
+;; Finally, C-r is not the most logical or ergonomic redo key.
 (map!
- :m "H" 'evil-scroll-left
- :m "L" 'evil-scroll-right)
+ :nv "R" 'revert-buffer
+ :nv "U" 'undo-tree-redo
+ :m  "H" 'evil-scroll-left
+ :m  "L" 'evil-scroll-right
+ :m  "M" 'recenter-top-bottom)
 
 ;; Use a Spacemacs'esque local leader key.
 (setq doom-localleader-key ",")
