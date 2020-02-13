@@ -84,16 +84,10 @@
 (after! org
   (add-to-list 'org-file-apps '("\\.xls?x\\'" . "gnumeric %s")))
 
-;; If fish is available on the system, use that as the default shell. Also,
-;; do enable fish-based completion in shell and eshell buffers via company.
+;; If fish is available on the system, use that as the default shell in `vterm'.
+;; Also, specify what prompt I use, so that Emacs knows how to fold and jump.
 (setq vterm-shell "fish")
-(with-eval-after-load 'shell
-  (add-hook 'shell-mode-hook (lambda () (setq comint-process-echoes t))))
-(use-package! company-fish
-  :config
-  (add-to-list 'company-backends 'company-fish)
-  (add-hook 'shell-mode-hook 'company-mode)
-  (add-hook 'eshell-mode-hook 'company-mode))
+(setq-hook! 'vterm-mode-hook outline-regexp ".*❯")
 
 ;; Automatically enable Python virtual environments.
 (after! projectile
@@ -307,11 +301,8 @@
 ;; This code was copied over from my heavily customized Spacemacs setup, and has
 ;; not yet been adjusted to fit well in Doom. TODO: Find a good folding solution.
 
-;; Enable outline folding in terminals.
-(setq-hook! 'vterm-mode-hook outline-regexp ".*❯")
+;; Enable outline folding in more modes.
 (add-hook! 'vterm-mode-hook 'outline-minor-mode)
-
-;; Enable outline folding in latex.
 (add-hook! 'LaTeX-mode-hook 'outline-minor-mode)
 
 ;; Define advice to make the Doom Emacs `fold' module work as expected.
