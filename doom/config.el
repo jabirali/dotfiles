@@ -253,6 +253,7 @@
 
 ;; It is more useful to navigate horizontally than vertically
 ;; with H/L, at least when using truncate lines in e.g. LaTeX.
+;; TODO: Map Q, R, U, M to something more usable than default.
 (map!
  :m "H" 'evil-scroll-left
  :m "L" 'evil-scroll-right)
