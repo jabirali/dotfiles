@@ -21,4 +21,7 @@ renamed = 'r'
 stashed = ''
 
 [python]
-symbol = ' '
+symbol = ''
+
+[conda]
+symbol = ''
