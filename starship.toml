@@ -21,7 +21,10 @@ renamed = 'r'
 stashed = ''
 
 [python]
-symbol = ''
+symbol = 'python '
 
 [conda]
+symbol = 'conda '
+
+[package]
 symbol = ''
