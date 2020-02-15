@@ -17,14 +17,17 @@
       user-mail-address "jabirali@switzerlandmail.ch")
 
 ;; Document folders.
-(setq org-directory "~/Documents/Notes"
-      org-agenda-files '("~/Documents/Notes")
-      +org-capture-todo-file "~/Documents/Notes/personal.org")
+(setq org-directory "~/projects/notes"
+      org-agenda-files '("~/projects/notes")
+      +org-capture-todo-file "~/projects/notes/personal.org")
 
 ;; Bibliographies.
 (setq reftex-default-bibliography "~/.zotero/library.bib"
       bibtex-completion-bibliography '("~/.zotero/library.bib")
       org-ref-default-bibliography '("~/.zotero/library.bib"))
+
+;; Download folders.
+(setq mu4e-attachment-dir "~/tmp")
 
 ;; Mail directories.
 (setq mu4e-maildir "~/.mail"
@@ -53,9 +56,6 @@
              :query "maildir:/Personal/Archive AND flag:attach"
              :key ?f)
            )))
-
-;; Download folders.
-(setq mu4e-attachment-dir "~/Downloads")
 
 
 ;;; System integration:
