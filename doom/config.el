@@ -126,9 +126,9 @@
       pdf-misc-print-programm-args '("-o media=a4" "-o fitplot"))
 
 ;; Enable extra syntax checkers.
-; (add-hook 'lsp-after-initialize-hook
-;           (lambda ()
-;             (flycheck-add-next-checker 'lsp-ui 'python-flake8)))
+(add-hook 'lsp-after-initialize-hook
+          (lambda ()
+            (flycheck-add-next-checker 'lsp 'python-flake8)))
 
 
 ;;; User interface:
