@@ -26,6 +26,9 @@
       bibtex-completion-bibliography '("~/.zotero/library.bib")
       org-ref-default-bibliography '("~/.zotero/library.bib"))
 
+;; Virtual envs.
+(setq pyvenv-default-virtual-env-name "~/.cache/pypoetry/virtualenvs/")
+
 ;; Download folders.
 (setq mu4e-attachment-dir "~/tmp")
 
@@ -54,8 +57,7 @@
            ,(make-mu4e-bookmark
              :name "Files"
              :query "maildir:/Personal/Archive AND flag:attach"
-             :key ?f)
-           )))
+             :key ?f))))
 
 
 ;;; System integration:
@@ -90,15 +92,15 @@
 (setq-hook! 'vterm-mode-hook outline-regexp ".*❯")
 
 ;; Automatically enable Python virtual environments.
-(after! projectile
-  (defun pyvenv-autoload ()
-    "Automatically activates pyvenv version if .venv directory exists."
-    (let ((path (concat (projectile-project-root) ".venv")))
-      (if (file-directory-p path)
-          (pyvenv-activate path)
-        (pyvenv-deactivate))))
-
-  (add-hook! python-mode 'pyvenv-autoload))
+;; (after! projectile
+;;   (defun pyvenv-autoload ()
+;;     "Automatically activates pyvenv version if .venv directory exists."
+;;     (let ((path (concat (projectile-project-root) ".venv")))
+;;       (if (file-directory-p path)
+;;           (pyvenv-activate path)
+;;         (pyvenv-deactivate))))
+;;
+;;   (add-hook! python-mode 'pyvenv-autoload))
 
 ;; Preferred previewers when working in latex.
 (setq +latex-viewers '(pdf-tools zathura evince sumatrapdf okular skim))
@@ -124,17 +126,9 @@
       pdf-misc-print-programm-args '("-o media=a4" "-o fitplot"))
 
 ;; Enable extra syntax checkers.
-(add-hook 'lsp-after-initialize-hook
-          (lambda ()
-            (flycheck-add-next-checker 'lsp-ui 'python-flake8)))
-
-;; Recenter the current line after saving. This makes Emacs play nicer with
-;; automatic code formatters such as `black'. It's also anyway not a bad idea,
-;; since I tend to save right before moving on with C-u/C-d, in which case
-;; centering the cursor lets me see as much as possible around the point.
-(after! format
-  (add-hook 'before-save-hook
-            (lambda () (ignore-errors (recenter)))))
+; (add-hook 'lsp-after-initialize-hook
+;           (lambda ()
+;             (flycheck-add-next-checker 'lsp-ui 'python-flake8)))
 
 
 ;;; User interface:
@@ -223,6 +217,13 @@
         ivy-posframe-height 80
         ivy-posframe-display-functions-alist
         '((t . ivy-posframe-display-at-frame-center))))
+
+;; Move around continuously.
+(after! ivy
+  (use-package! centered-cursor-mode
+    :init
+    (require 'centered-cursor-mode)
+    (global-centered-cursor-mode +1)))
 
 
 ;;; Keyboard shortcuts:

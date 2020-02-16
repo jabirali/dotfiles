@@ -8,5 +8,6 @@
 
 ;; (package! evil-smartparens)
 (package! org-ref)
+(package! centered-cursor-mode)
 
 (package! hl-line :disable t)
