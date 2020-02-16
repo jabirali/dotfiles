@@ -319,18 +319,6 @@
 (advice-add '+fold/close-all :after 'evil-scroll-line-to-center)
 (advice-add '+fold/open-all :after 'evil-scroll-line-to-center)
 
-;; (add-hook 'python-mode-hook
-;;           (defun baba/outline-python ()
-;;             "Fold only definitions in Python."
-;;             (setq outline-regexp
-;;                   (rx (or
-;;                        ;; Definitions
-;;                        (group (group (* space)) bow (or "class" "def") eow)
-
-;;                        ;; Decorators
-;;                        (group (group (* space)) "@"))))
-;;             (baba/outline-overview)))
-
 ;; (add-hook 'octave-mode-hook
 ;;           (defun baba/outline-matlab ()
 ;;             "Fold definitions in Matlab."
@@ -365,13 +353,3 @@
 ;;  'selective-display
 ;;  (let ((face-offset (* (face-id 'shadow) (lsh 1 22))))
 ;;    (vconcat (mapcar (lambda (c) (+ face-offset c)) org-ellipsis))))
-
-;; ;; LaTeX buffers use additional folding. However, by default I have to
-;; ;; do that manually; let's instead autofold on init and after edits.
-;; ;; While we're at it, let's also fix the weird TeX folding colors.
-;; (add-hook 'LaTeX-mode-hook
-;;           (defun baba/TeX-fold-auto ()
-;;             (TeX-fold-mode 1)
-;;             (set-face-foreground 'TeX-fold-folded-face "#ebdbb2")
-;;             (add-hook 'find-file-hook 'TeX-fold-buffer)
-;;             (add-hook 'evil-insert-state-exit-hook 'TeX-fold-paragraph)))
