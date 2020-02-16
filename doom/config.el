@@ -26,9 +26,6 @@
       bibtex-completion-bibliography '("~/.zotero/library.bib")
       org-ref-default-bibliography '("~/.zotero/library.bib"))
 
-;; Virtual envs.
-(setq pyvenv-default-virtual-env-name "~/.cache/pypoetry/virtualenvs/")
-
 ;; Download folders.
 (setq mu4e-attachment-dir "~/tmp")
 
@@ -90,17 +87,6 @@
 ;; Also, specify what prompt I use, so that Emacs knows how to fold and jump.
 (setq vterm-shell "fish")
 (setq-hook! 'vterm-mode-hook outline-regexp ".*❯")
-
-;; Automatically enable Python virtual environments.
-;; (after! projectile
-;;   (defun pyvenv-autoload ()
-;;     "Automatically activates pyvenv version if .venv directory exists."
-;;     (let ((path (concat (projectile-project-root) ".venv")))
-;;       (if (file-directory-p path)
-;;           (pyvenv-activate path)
-;;         (pyvenv-deactivate))))
-;;
-;;   (add-hook! python-mode 'pyvenv-autoload))
 
 ;; Preferred previewers when working in latex.
 (setq +latex-viewers '(pdf-tools zathura evince sumatrapdf okular skim))
@@ -235,6 +221,7 @@
  "K" 'man
  :prefix "o"
  "m" 'mu4e
+ "v" 'pyvenv-workon
  "n" '+default/browse-notes)
 
 ;; Maildir shortcuts in mu4e.
