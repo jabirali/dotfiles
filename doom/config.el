@@ -153,7 +153,7 @@
 
   ;; Define a new default modeline.
   (doom-modeline-def-modeline 'babaline
-    '(bar workspace-name window-number buffer-info remote-host)
+    '(bar workspace-name buffer-info remote-host)
     '(matches debug checker))
 
   ;; Actually use the new settings.
@@ -215,7 +215,7 @@
 ;;; Keyboard shortcuts:
 ;; This section defines custom keyboard shortcuts for Doom Emacs.
 
-;; Make an application menu containing the "missing defaults".
+;; Make an application menu containing some "missing defaults".
 (map!
  :leader
  "K" 'man
@@ -225,19 +225,25 @@
  "n" '+default/browse-notes)
 
 ;; Maildir shortcuts in mu4e.
-;(setq mu4e-maildir-shortcuts
-;      '(("/Personal/INBOX"       . ?i)
-;        ("/Personal/Archive"     . ?a)
-;        ("/Personal/Accounts"    . ?c)
-;        ("/Personal/Documents"   . ?d)
-;        ("/Personal/Receipts"    . ?r)
-;        ("/Personal/Notes"       . ?n)
-;        ("/Personal/Sent"        . ?s)))
+(setq mu4e-maildir-shortcuts
+      '(("/Personal/INBOX"       . ?i)
+        ("/Personal/Archive"     . ?a)
+        ("/Personal/Accounts"    . ?c)
+        ("/Personal/Documents"   . ?d)
+        ("/Personal/Receipts"    . ?r)
+        ("/Personal/Notes"       . ?n)
+        ("/Personal/Sent"        . ?s)))
 
 ;; This makes it more convenient to edit e.g. M-: commands, since you
 ;; can paste there using Vim keyboard shortcuts, etc. However, making
 ;; it usable requires redefining the Ivy minibuffer map (C-hjkl, etc.)
 ;; (setq evil-want-minibuffer t)
+
+;; Enable some Evil extra bindings.
+(setq evil-magit-want-horizontal-movement t)
+
+;; I need to navigate window splits relatively often.
+(map! :mnv "`" 'evil-window-next)
 
 ;; It is more useful to navigate horizontally than vertically
 ;; with H/L, at least when using truncate lines in e.g. LaTeX.
@@ -247,8 +253,7 @@
  :nv "R" 'revert-buffer
  :nv "U" 'undo-tree-redo
  :m  "H" 'evil-scroll-left
- :m  "L" 'evil-scroll-right
- :m  "M" 'recenter-top-bottom)
+ :m  "L" 'evil-scroll-right)
 
 ;; Use a Spacemacs'esque local leader key.
 (setq doom-localleader-key ",")
