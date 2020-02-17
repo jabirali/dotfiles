@@ -9,9 +9,9 @@ disabled = true
 [git_status]
 prefix = '('
 suffix = ') '
-ahead = '+'
-behind = '-'
-diverged = '±'
+ahead = 'p'
+behind = 'p'
+diverged = 'p'
 conflicted = '!'
 untracked = '?'
 modified = 'm'
