@@ -242,8 +242,9 @@
 ;; Enable some Evil extra bindings.
 (setq evil-magit-want-horizontal-movement t)
 
-;; I need to navigate window splits relatively often.
-(map! :mnv "`" 'evil-window-next)
+;; I don't need to separate between jumping to mark and line of mark.
+;; Let's instead do a Quake-style terminal that pops up this key.
+(map! :mnv "`" '+vterm/toggle)
 
 ;; It is more useful to navigate horizontally than vertically
 ;; with H/L, at least when using truncate lines in e.g. LaTeX.
