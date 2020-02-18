@@ -242,10 +242,6 @@
 ;; Enable some Evil extra bindings.
 (setq evil-magit-want-horizontal-movement t)
 
-;; I don't need to separate between jumping to mark and line of mark.
-;; Let's instead do a Quake-style terminal that pops up this key.
-(map! :mnv "`" '+vterm/toggle)
-
 ;; It is more useful to navigate horizontally than vertically
 ;; with H/L, at least when using truncate lines in e.g. LaTeX.
 ;; I often revert a buffer, but rarely ever use replace-mode.
@@ -264,6 +260,12 @@
  :map pdf-view-mode-map
  :m "C-u" 'pdf-view-scroll-down-or-previous-page
  :m "C-d" 'pdf-view-scroll-up-or-next-page)
+
+;; I don't need to separate between jumping to mark and line of mark.
+;; I also don't use `...` in shell, as (...) or $(...) does the same.
+;; Let's instead do a Quake-style terminal that pops up on backtick.
+(map! :mnv "`" '+vterm/toggle)
+(map! :map vterm-mode-map "`" '+vterm/toggle)
 
 ;; Terminal keybindings.
 (after! vterm
