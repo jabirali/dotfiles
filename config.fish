@@ -63,20 +63,24 @@ function r --description 'Interrupt Emacs'
     killall -SIGUSR2 emacs
 end
 
-function venv --description 'Create or activate a virtual environment'
-    python -m venv .venv
-    source .venv/bin/activate.fish
-    pip install --upgrade pip setuptools > /dev/null
+function venv --description 'Python virtual environments'
+    if not count $argv > /dev/null
+        echo "Virtual environments:"
+        for i in (ls ~/.virtualenvs)
+            echo "-" $i
+        end
+    else if [ -d ~/.virtualenvs/$argv[1] ]
+        echo "Activating virtual environment."
+        source ~/.virtualenvs/$argv/bin/activate.fish
+    else
+        echo "The specified virtual environment does not exist."
+        echo "Create with `python -m venv ~/.virtualenvs/<name>`."
+    end
 end
 
 function scrape --description 'Scrape all linked documents from a website'
     wget -r -l 1 -e robots=off
 end
-
-# Ensure that I actually use the aliases.
-alias stop="echo -e '\e[31;1mUse the alias `e`.\e[0m\n\n'"
-alias vim=stop
-alias nvim=stop
 
 # Enable vterm directory tracking in Emacs.
 function vterm_printf;
