@@ -215,6 +215,13 @@
 ;;; Keyboard shortcuts:
 ;; This section defines custom keyboard shortcuts for Doom Emacs.
 
+;; I love unimpaired-style bindings, I just miss window navigation.
+(map!
+ :prefix "["
+ :mnv "q" 'evil-window-prev
+ :prefix "]"
+ :mnv "q" 'evil-window-next)
+
 ;; Make an application menu containing some "missing defaults".
 (map!
  :leader
