@@ -303,6 +303,24 @@
 ;; This code was copied over from my heavily customized Spacemacs setup, and has
 ;; not yet been adjusted to fit well in Doom. TODO: Find a good folding solution.
 
+;; Possible alternative: Imenu.
+(defun +baba/imenu-here ()
+  "Navigate the imenu from the current entry."
+  (interactive)
+
+  ;; Current or previous section.
+  (evil-end-of-line)
+  (evil-backward-section-begin)
+
+  ;; Skip the definition keyword.
+  (back-to-indentation)
+  (evil-forward-WORD-begin)
+
+  ;; Activate imenu jump.
+  (counsel-imenu))
+
+(map! :mn "C-j" '+baba/imenu-here)
+
 ;; Enable outline folding in more modes.
 (add-hook! 'vterm-mode-hook 'outline-minor-mode)
 (add-hook! 'LaTeX-mode-hook 'outline-minor-mode)
