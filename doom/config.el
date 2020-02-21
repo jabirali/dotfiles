@@ -126,7 +126,7 @@
       doom-variable-pitch-font (font-spec :family "sans" :size 19))
 
 ;; Select what colors to use for the gui.
-(setq doom-theme 'doom-moonlight)
+(setq doom-theme  'doom-moonlight)
 
 ;; Disable line numbers. They look nice in regular buffers, but they look bad in
 ;; terminals, look strange in buffers with variable line height, and cause issues
@@ -199,10 +199,12 @@
 
 ;; Customize the Ivy popup frame.
 (after! ivy
-  (setq ivy-posframe-width 120
-        ivy-posframe-height 80
+  (setq ivy-posframe-min-width (- (frame-width) 1)
+        ivy-posframe-width (- (frame-width) 1)
+        ivy-posframe-min-height 16
+        ivy-posframe-height 16
         ivy-posframe-display-functions-alist
-        '((t . ivy-posframe-display-at-frame-center))))
+        '((t . ivy-posframe-display-at-frame-top-center))))
 
 ;; Move around continuously.
 (after! ivy
