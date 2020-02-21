@@ -200,7 +200,7 @@
 ;; Customize the Ivy popup frame.
 (after! ivy
   (setq ivy-posframe-width (- (frame-width) 1)
-        ivy-posframe-height 16
+        ivy-posframe-min-width (- (frame-width) 1)
         ivy-posframe-display-functions-alist
         '((t . ivy-posframe-display-at-frame-top-center))))
 
