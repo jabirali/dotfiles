@@ -105,6 +105,7 @@
   :init
   (setq org-ref-completion-library 'org-ref-ivy-cite)
   :config
+  (map! :map org-mode-map :localleader "RET" 'org-ref-ivy-insert-cite-link)
   (setq org-ref-get-pdf-filename-function #'org-ref-get-pdf-filename-helm-bibtex))
 
 ;; Print pdfs via the standard Unix tools.
