@@ -181,6 +181,7 @@
 
 ;; Setup the LSP frontend.
 (setq lsp-ui-sideline-enable nil
+      lsp-eldoc-enable-hover nil
       lsp-enable-indentation nil
       lsp-enable-on-type-formatting nil
       lsp-enable-symbol-highlighting nil
