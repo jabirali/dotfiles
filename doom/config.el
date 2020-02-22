@@ -204,8 +204,8 @@
   (defun +baba/ivy-posframe-size ()
     "Customized sizes for `ivy-posframe'."
     (list
-     :height (+ ivy-height 0.5)
-     :min-height (+ ivy-height 0.5)
+     :height ivy-height
+     :min-height ivy-height
      :width (- (frame-width) 1)
      :min-width (- (frame-width) 1)))
 
@@ -218,7 +218,7 @@
   (use-package! centered-cursor-mode
     :init
     (require 'centered-cursor-mode)
-    (global-centered-cursor-mode +1)))
+    (add-hook! (prog-mode text-mode) #'centered-cursor-mode)))
 
 
 ;;; Keyboard shortcuts:
@@ -227,9 +227,11 @@
 ;; I love unimpaired-style bindings, I just miss window navigation.
 (map!
  :prefix "["
- :mnv "q" 'evil-window-prev
+ :mnv "w" 'evil-window-prev
+ :mnv "TAB" '+workspace/switch-left
  :prefix "]"
- :mnv "q" 'evil-window-next)
+ :mnv "w" 'evil-window-next
+ :mnv "TAB" '+workspace/switch-right)
 
 ;; Make an application menu containing some "missing defaults".
 (map!
