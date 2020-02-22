@@ -201,8 +201,17 @@
 
 ;; Customize the Ivy popup frame.
 (after! ivy
-  (setq ivy-posframe-display-functions-alist
-        '((t . ivy-posframe-display-at-frame-center))))
+  (defun +baba/ivy-posframe-size ()
+    "Customized sizes for `ivy-posframe'."
+    (list
+     :height (+ ivy-height 0.5)
+     :min-height (+ ivy-height 0.5)
+     :width (- (frame-width) 1)
+     :min-width (- (frame-width) 1)))
+
+  (setq
+   ivy-posframe-size-function '+baba/ivy-posframe-size
+   ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))))
 
 ;; Move around continuously.
 (after! ivy
