@@ -13,7 +13,7 @@
 
  :completion
  (company)
- (ivy +icons +childframe)
+ (ivy +childframe)
 
  :ui
  (doom)
@@ -40,7 +40,7 @@
  (snippets)
 
  :emacs
- (dired +ranger +icons)
+ (dired +ranger)
  (electric)
  (ibuffer)
  (vc)

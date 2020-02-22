@@ -17,8 +17,8 @@
       user-mail-address "jabirali@switzerlandmail.ch")
 
 ;; Document folders.
-(setq org-directory "~/projects/notes"
-      org-agenda-files '("~/projects/notes")
+(setq org-directory "~/projects/notes/"
+      org-agenda-files '("~/projects/notes/")
       +org-capture-todo-file "~/projects/notes/personal.org")
 
 ;; Bibliographies.
@@ -214,11 +214,10 @@
    ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))))
 
 ;; Move around continuously.
-(after! ivy
-  (use-package! centered-cursor-mode
-    :init
-    (require 'centered-cursor-mode)
-    (add-hook! (prog-mode text-mode) #'centered-cursor-mode)))
+(use-package! centered-cursor-mode
+  :init
+  (require 'centered-cursor-mode)
+  (add-hook! (prog-mode text-mode) #'centered-cursor-mode))
 
 
 ;;; Keyboard shortcuts:
