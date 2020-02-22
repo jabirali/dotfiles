@@ -13,7 +13,7 @@
 
  :completion
  (company)
- (ivy +childframe)
+ (ivy)
 
  :ui
  (doom)

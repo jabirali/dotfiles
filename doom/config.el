@@ -199,20 +199,6 @@
 ;; Get rid of unneccessary fringe symbols.
 (setq vi-tilde-fringe-bitmap-array [0])
 
-;; Customize the Ivy popup frame.
-(after! ivy
-  (defun +baba/ivy-posframe-size ()
-    "Customized sizes for `ivy-posframe'."
-    (list
-     :height ivy-height
-     :min-height ivy-height
-     :width (- (frame-width) 1)
-     :min-width (- (frame-width) 1)))
-
-  (setq
-   ivy-posframe-size-function '+baba/ivy-posframe-size
-   ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))))
-
 ;; Move around continuously.
 (use-package! centered-cursor-mode
   :init
