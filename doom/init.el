@@ -53,19 +53,18 @@
  (editorconfig)
  (eval +overlay)
  (lookup +docsets)
- (lsp)
  (magit)
  (pdf)
 
  :lang
- (cc +lsp)
+ (cc)
  (data)
  (emacs-lisp)
  (julia)
  (latex +latexmk)
  (markdown)
  (org +dragndrop +present)
- (python +lsp)
+ (python)
  (sh)
 
  :email

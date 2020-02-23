@@ -112,11 +112,6 @@
 (setq pdf-misc-print-programm "/usr/bin/lpr"
       pdf-misc-print-programm-args '("-o media=a4" "-o fitplot"))
 
-;; Enable extra syntax checkers.
-(add-hook 'lsp-after-initialize-hook
-          (lambda ()
-            (flycheck-add-next-checker 'lsp 'python-flake8)))
-
 ;; Try to use scratch buffers instead of M-:.
 (setq doom-scratch-buffer-major-mode 'emacs-lisp-mode)
 
@@ -182,14 +177,6 @@
         mu4e-headers-include-related nil
         mu4e-headers-date-format "%Y-%m-%d"
         mu4e-headers-fields '((:date . 12) (:from . 20) (:to . 20) (:thread-subject))))
-
-;; Setup the LSP frontend.
-(setq lsp-ui-sideline-enable nil
-      lsp-eldoc-enable-hover nil
-      lsp-enable-indentation nil
-      lsp-enable-on-type-formatting nil
-      lsp-enable-symbol-highlighting nil
-      lsp-enable-file-watchers nil)
 
 ;; Use regular bullets instead of weird circles and flowers, resize to reasonable
 ;; defaults if no width has been manually set, and don't show all the org markup.
