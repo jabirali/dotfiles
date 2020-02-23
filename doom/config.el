@@ -239,8 +239,25 @@
 
 ;; This makes it more convenient to edit e.g. M-: commands, since you
 ;; can paste there using Vim keyboard shortcuts, etc. However, making
-;; it usable requires redefining the Ivy minibuffer map (C-hjkl, etc.)
+;; it usable requires redefining the Ivy minibuffer map (C-j/C-k etc.)
 ;; (setq evil-want-minibuffer t)
+;; (map! :map ivy-minibuffer-map
+;;       ;; All modes: Keys for completion etc.
+;;       :nmi "TAB" 'ivy-partial-or-done
+;;       :nmi "DEL" 'ivy-backward-delete-char
+;;       :nmi "RET" 'ivy-done
+;;       :nmi "C-DEL" 'ivy-backward-kill-word
+;;       :nmi "C-RET" 'ivy-dispatching-done
+;;       ;; Insert mode: Make it behave like usual Doom Ivy.
+;;       :i "C-j" 'ivy-next-line
+;;       :i "C-k" 'ivy-previous-line
+;;       ;; Normal mode: Add natural Vim-like keybindings.
+;;       :nm "h" 'ivy-backward-kill-word
+;;       :nm "j" 'ivy-next-line
+;;       :nm "k" 'ivy-previous-line
+;;       :nm "l" 'ivy-partial-or-done
+;;       :nm "J" 'ivy-scroll-up-command
+;;       :nm "K" 'ivy-scroll-down-command)
 
 ;; Enable some Evil extra bindings.
 (setq evil-magit-want-horizontal-movement t)
