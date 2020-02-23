@@ -117,6 +117,9 @@
           (lambda ()
             (flycheck-add-next-checker 'lsp 'python-flake8)))
 
+;; Try to use scratch buffers instead of M-:.
+(setq doom-scratch-buffer-major-mode 'emacs-lisp-mode)
+
 
 ;;; User interface:
 ;; This section contains the settings for the graphical user interface.
