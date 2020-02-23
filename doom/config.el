@@ -247,22 +247,30 @@
 
 ;; It is more useful to navigate horizontally than vertically
 ;; with H/L, at least when using truncate lines in e.g. LaTeX.
+;; Having J/K for vertical navigation is then more ergonomic
+;; and consistent than the Evil default C-u/C-d keybindings.
+(map!
+ :mnv "H" 'evil-scroll-left
+ :mnv "J" 'evil-scroll-down
+ :mnv "K" 'evil-scroll-up
+ :mnv "L" 'evil-scroll-right
+
+ :map pdf-view-mode-map
+ :mnv "J" 'pdf-view-scroll-down-or-previous-page
+ :mnv "K" 'pdf-view-scroll-up-or-next-page)
+
+;; "Merging" and "querying" makes as much sense as J and K for
+;; these common actions, and frees J/K for consistent navigation.
 ;; I often revert a buffer, but rarely ever use replace-mode.
 ;; Finally, C-r is not the most logical or ergonomic redo key.
 (map!
  :nv "R" 'revert-buffer
  :nv "U" 'undo-tree-redo
- :m  "H" 'evil-scroll-left
- :m  "L" 'evil-scroll-right)
+ :nv "M" 'evil-join
+ :mn "Q" '+lookup/documentation)
 
 ;; Use a Spacemacs'esque local leader key.
 (setq doom-localleader-key ",")
-
-;; Use the usual C-u/C-d keybindings to navigate pdfs.
-(map!
- :map pdf-view-mode-map
- :m "C-u" 'pdf-view-scroll-down-or-previous-page
- :m "C-d" 'pdf-view-scroll-up-or-next-page)
 
 ;; I don't need to separate between jumping to mark and line of mark.
 ;; I also don't use `...` in shell, as (...) or $(...) does the same.
