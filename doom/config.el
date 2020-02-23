@@ -274,9 +274,9 @@
 
 ;; I don't need to separate between jumping to mark and line of mark.
 ;; I also don't use `...` in shell, as (...) or $(...) does the same.
-;; Let's instead do a Quake-style terminal that pops up on backtick.
-(map! :mnv "`" '+vterm/toggle)
-(map! :map vterm-mode-map "`" '+vterm/toggle)
+;; Let's instead do some serious Quake-style popup management.
+(map! :mnv "`" '+popup/toggle)
+(map! :map vterm-mode-map "`" '+popup/toggle)
 
 ;; Terminal keybindings.
 (after! vterm
@@ -302,6 +302,13 @@
  :desc "Compile" "c" #'TeX-command-run-all
  :desc "Fold"    "z" #'TeX-fold-buffer)
 
+;; Prevent bad habits from using Windows from infecting my Linux.
+;; Also, this might make me use scratch buffers over M-: more...
+(map!
+ :mniv "<left>"  nil
+ :mniv "<right>" nil
+ :mniv "<up>"    nil
+ :mniv "<down>"  nil)
 
 ;;; Code folding:
 ;; This code was copied over from my heavily customized Spacemacs setup, and has
