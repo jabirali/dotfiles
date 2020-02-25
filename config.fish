@@ -8,7 +8,7 @@ fish_vi_key_bindings
 bind -M insert jk "if commandline -P; commandline -f cancel; else; set fish_bind_mode default; commandline -f backward-char force-repaint; end"
 
 # Define environment variables.
-set -x EDITOR "emacsclient -c -a ''"
+set -x EDITOR emacsclient -c -a ''
 set -x TERMINFO /usr/lib/terminfo
 set -x TERM xterm
 set -x PATH ~/.emacs.d/bin/ ~/.poetry/bin ~/.local/bin/ /opt/zotero/ /opt/nomad/bin/ /opt/conda/bin /opt/mpw/bin /snap/bin $PATH
