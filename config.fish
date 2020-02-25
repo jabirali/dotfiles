@@ -53,7 +53,15 @@ starship init fish | source
 
 # Functions and aliases.
 function e --description 'Edit in Emacs'
-    emacsclient -c -a '' $argv &
+    if [ "$INSIDE_EMACS" = "vterm" ]
+        printf '\033]51;E%s\033\\' "find-file $argv"
+    else
+       emacsclient -c -a '' $argv &
+    end
+end
+
+function vim --description 'Edit in barebones Emacs'
+	emacs -q -nw --eval="(setq viper-mode t)" --eval="(viper-mode)" --eval="(load-theme 'wombat)" --eval="(menu-bar-mode -1)" $argv
 end
 
 function o --description 'Open in system app'
