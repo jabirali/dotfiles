@@ -320,13 +320,6 @@
  :desc "Compile" "c" #'TeX-command-run-all
  :desc "Fold"    "z" #'TeX-fold-buffer)
 
-;; Prevent bad habits from using Windows from infecting my Linux.
-;; Also, this might make me use scratch buffers over M-: more...
-(map!
- :mniv "<left>"  nil
- :mniv "<right>" nil
- :mniv "<up>"    nil
- :mniv "<down>"  nil)
 
 ;;; Code folding:
 ;; This code was copied over from my heavily customized Spacemacs setup, and has
