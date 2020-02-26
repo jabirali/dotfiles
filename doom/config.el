@@ -124,6 +124,10 @@
 (setq doom-font (font-spec :family "Iosevka SS09" :size 19)
       doom-variable-pitch-font (font-spec :family "sans" :size 19))
 
+;; Window splitting settings.
+(setq split-width-threshold 120
+      split-height-threshold nil)
+
 ;; Select what colors to use for the gui.
 (setq doom-theme  'doom-moonlight)
 
