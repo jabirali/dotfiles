@@ -54,7 +54,7 @@ starship init fish | source
 # Functions and aliases.
 function e --description 'Edit in Emacs'
     if [ "$INSIDE_EMACS" = "vterm" ]
-        printf '\033]51;E%s\033\\' "find-file $argv"
+        printf '\e]51;E%s\e\\' "find-file $argv"
     else
        emacsclient -c -a '' $argv &
     end
