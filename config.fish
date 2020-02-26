@@ -52,7 +52,7 @@ end
 starship init fish | source
 
 # Functions and aliases.
-function e --description 'Edit in Emacs'
+function e --description 'Edit in normal Emacs'
     if [ "$INSIDE_EMACS" = "vterm" ]
         printf '\e]51;E%s\e\\' "find-file $argv"
     else
@@ -60,8 +60,13 @@ function e --description 'Edit in Emacs'
     end
 end
 
-function vim --description 'Edit in barebones Emacs'
-	emacs -q -nw --eval="(setq viper-mode t)" --eval="(viper-mode)" --eval="(load-theme 'wombat)" --eval="(menu-bar-mode -1)" $argv
+function e! --description 'Edit in barebones Emacs'
+	emacs -q -nw \
+        --eval="(menu-bar-mode -1)" \
+        --eval="(setq-default mode-line-format nil)" \
+        --eval="(setq viper-mode t)" \
+        --eval="(viper-mode)" \
+        $argv
 end
 
 function o --description 'Open in system app'
