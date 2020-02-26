@@ -273,7 +273,9 @@
 
  :map pdf-view-mode-map
  :mnv "K" 'pdf-view-scroll-down-or-previous-page
- :mnv "J" 'pdf-view-scroll-up-or-next-page)
+ :mnv "J" 'pdf-view-scroll-up-or-next-page
+ :mnv "C-u" 'pdf-view-scroll-down-or-previous-page
+ :mnv "C-d" 'pdf-view-scroll-up-or-next-page)
 
 ;; "Merging" and "querying" makes as much sense as J and K for
 ;; these common actions, and frees J/K for consistent navigation.
