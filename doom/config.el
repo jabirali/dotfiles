@@ -142,6 +142,7 @@
 
 ;; Customize how latex buffers should be formatted.
 (after! latex
+  (setq TeX-insert-braces nil)
   (setq font-latex-fontify-script nil))
 
 ;; Default to an undecorated maximized frame. (I mean, if you basically live
