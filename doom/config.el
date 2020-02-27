@@ -122,10 +122,8 @@
 
 ;; Select what fonts to use for the gui.
 (setq doom-font (font-spec :family "Iosevka SS09" :size 19)
-      doom-variable-pitch-font (font-spec :family "sans" :size 19))
-
-;; Window centering default.
-;; (centered-window-mode t)
+      doom-variable-pitch-font (font-spec :family "sans" :size 19)
+      +zen-text-scale 1)
 
 ;; Window splitting settings.
 (setq split-width-threshold 120
@@ -225,7 +223,7 @@
  :leader
  "K" 'man
  :prefix "w"
- "c" 'centered-window-mode
+ "c" 'writeroom-mode
  :prefix "o"
  "m" 'mu4e
  "v" 'pyvenv-workon

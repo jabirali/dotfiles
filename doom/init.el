@@ -29,6 +29,7 @@
  (vi-tilde-fringe)
  (window-select +numbers)
  (workspaces)
+ (zen)
 
  :editor
  (evil +everywhere)
