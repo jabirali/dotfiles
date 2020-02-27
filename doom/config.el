@@ -124,12 +124,15 @@
 (setq doom-font (font-spec :family "Iosevka SS09" :size 19)
       doom-variable-pitch-font (font-spec :family "sans" :size 19))
 
+;; Window centering default.
+;; (centered-window-mode t)
+
 ;; Window splitting settings.
 (setq split-width-threshold 120
       split-height-threshold nil)
 
 ;; Select what colors to use for the gui.
-(setq doom-theme  'doom-moonlight)
+(setq doom-theme 'doom-palenight)
 
 ;; Disable line numbers. They look nice in regular buffers, but they look bad in
 ;; terminals, look strange in buffers with variable line height, and cause issues
@@ -221,6 +224,8 @@
 (map!
  :leader
  "K" 'man
+ :prefix "w"
+ "c" 'centered-window-mode
  :prefix "o"
  "m" 'mu4e
  "v" 'pyvenv-workon
