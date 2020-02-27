@@ -122,7 +122,8 @@
 
 ;; Select what fonts to use for the gui.
 (setq doom-font (font-spec :family "Iosevka SS09" :size 19)
-      doom-variable-pitch-font (font-spec :family "sans" :size 19)
+      doom-variable-pitch-font (font-spec :family "Libertinus Sans" :size 19)
+      +zen-mixed-pitch-modes nil
       +zen-text-scale 1)
 
 ;; Window splitting settings.
@@ -190,7 +191,7 @@
 
 ;; Use regular bullets instead of weird circles and flowers, resize to reasonable
 ;; defaults if no width has been manually set, and don't show all the org markup.
-(setq org-bullets-bullet-list '("*")
+(setq org-bullets-bullet-list '("•")
       org-ellipsis " * "
       org-hide-emphasis-markers t
       org-pretty-entities t
