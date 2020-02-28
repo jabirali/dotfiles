@@ -265,6 +265,10 @@
 ;; Enable some Evil extra bindings.
 (setq evil-magit-want-horizontal-movement t)
 
+;; Make s/S/f/F/t/T jump when repeated.
+(setq evil-snipe-repeat-keys t
+      evil-snipe-override-evil-repeat-keys t)
+
 ;; It is more useful to navigate horizontally than vertically
 ;; with H/L, at least when using truncate lines in e.g. LaTeX.
 ;; Having J/K for vertical navigation is then more ergonomic
