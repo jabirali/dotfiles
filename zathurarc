@@ -44,3 +44,7 @@ set recolor                     "true"
 
 # Keybindings
 map <C-i> recolor
+
+# NeoVim/Synctex
+set synctex true
+set synctex-editor-command "nvr --remote-silent %f -c %l"

@@ -56,7 +56,7 @@ command! GitCd execute 'cd ./'.system('git rev-parse --show-cdup')
 " Plugin parameters.
 let b:ale_fixers = { '*': [ 'trim_whitespace' ], 'python': [ 'black', 'isort' ] }
 let g:ale_fix_on_save = 1
-let g:ale_linters = { 'python': [ 'flake8' ] }
+let g:ale_linters = { 'python': [ 'flake8' ], 'tex': [] }
 let g:clever_f_chars_match_any_signs = '.'
 let g:clever_f_smart_case = 1
 let g:fold_cycle_default_mapping = 0
@@ -72,7 +72,8 @@ let g:UltiSnipsListSnippets = "<S-tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 let g:UltiSnipsJumpForwardTrigger = "<C-j>"
 let g:vim_markdown_folding_style_pythonic = 1
-let g:vimtex_view_general_viewer = 'zathura'
+let g:vimtex_compiler_progname = "nvr"
+let g:vimtex_view_method = 'zathura'
 
 " Syntax highlights.
 augroup clean_highlights
