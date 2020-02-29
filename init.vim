@@ -5,16 +5,15 @@
 " Path: ~/.config/nvim/init.vim
 " -----------------------------------------------------------
 
-" Plugins {{{ 
-
-" Install the plugin manager
+" PLUGINS {{{ 
+" Install the manager
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Plugin install
+" Install the plugins.
 call plug#begin('~/.local/share/nvim/plugins')
   " User interface
   Plug 'Brettm12345/moonlight.vim' " Moonlight colorscheme
@@ -24,22 +23,26 @@ call plug#begin('~/.local/share/nvim/plugins')
   Plug 'andymass/vim-matchup'      " Smarter `%` jumps and highlights
   Plug 'junegunn/vim-slash'        " Smarter `*` jumps and highlights
   Plug 'tpope/vim-commentary'      " Smarter (un)commenting with `gc`
+  " IDE features
+  Plug 'Lenovsky/nuake'            " One pop-up terminal per tab
+  Plug 'junegunn/fzf.vim'          " Fuzzy finding of everything
+  Plug 'junegunn/fzf',             { 'do': { -> fzf#install() } }
   " Language support
   Plug 'lervag/vimtex'             " *.tex
   Plug 'jceb/vim-orgmode'          " *.org
   Plug 'plasticboy/vim-markdown'   " *.md
   "Plug 'vim-ctrlspace/vim-ctrlspace'
-  Plug 'junegunn/fzf'
-  Plug 'junegunn/fzf.vim'
+
 call plug#end()
 " }}}
 
+" Prettier `vim-matchup` highlights.
 augroup matchup_matchparen_highlight
   autocmd!
   autocmd ColorScheme * hi MatchParen guifg=red gui=none
 augroup END
 
-
+" Turn off line numbers in terminals.
 au TermOpen * setlocal listchars= nonumber norelativenumber
 
 " Color scheme
@@ -99,28 +102,47 @@ nnoremap <silent> <localleader> :WhichKey   ','<cr>
 " nnoremap <silent>               g :WhichKey 'g'<cr>
 " nnoremap <silent>               z :WhichKey 'z'<cr>
 
-" Spacemacs-like menu.
+" Menu: Window management.
 map <leader>w <C-w>
+
+" Menu: Open applications.
 map <leader>ot :bot split term://fish<cr>i
 map <leader>of :bot split term://nnn<cr>i
 map <leader>op :bot split term://htop<cr>i
-map <leader>fp :e ~/.config/nvim/init.vim<cr>
-map <leader>ff :e 
+
+" Menu: Find files.
+map <leader>fg :BCommits<cr>
+map <leader>fG :Commits<cr>
+map <leader>ff :Files ~/projects/<cr>
+map <leader>fn :Files ~/projects/notes/<cr>
+map <leader>fd :Files ~/.dotfiles<cr>
+
+" Menu: Search.
+map <leader>ss :BLines<cr>
+
+" Menu: Speed keys.
+map <leader>, :Buffers<cr>
+map <leader>. :GFiles<cr>
+map <leader>/ :Ag<cr>
+"map <leader><leader> :Buffers<cr>
+
+" Menu: Manage Vim.
 map <leader>bd :q<cr>
-map <leader>qq :qa<cr>
+map <leader>qq :qq<cr>
+map <leader>qa :qa<cr>
 map <leader>qr :source ~/.config/nvim/init.vim<cr>
 map <leader>qu :PlugUpdate<cr>
 
 tnoremap <esc> <C-\><C-n>
 tmap <C-x> <C-\><C-n>
-tnoremap <C-h> <C-w>h
-tnoremap <C-j> <C-w>j
-tnoremap <C-k> <C-w>k
-tnoremap <C-l> <C-w>l
-noremap <C-h> <C-w>h
-noremap <C-j> <C-w>j
-noremap <C-k> <C-w>k
-noremap <C-l> <C-w>l
+"tnoremap <C-h> <C-w>h
+"tnoremap <C-j> <C-w>j
+"tnoremap <C-k> <C-w>k
+"tnoremap <C-l> <C-w>l
+"noremap <C-h> <C-w>h
+"noremap <C-j> <C-w>j
+"noremap <C-k> <C-w>k
+"noremap <C-l> <C-w>l
 noremap Y y$
 noremap M J
 noremap Q K
@@ -133,4 +155,8 @@ map <S-tab> *
 nnoremap <A-j> zo
 nnoremap <A-k> zc
 "let g:CtrlSpaceDefaultMappingKey = "<leader><leader> "
-" gc
+
+" Quake-style terminal
+nnoremap ` :Nuake<cr>
+tnoremap ` <C-\><C-n>:Nuake<cr>
+let g:nuake_per_tab = 1
