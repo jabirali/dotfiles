@@ -74,6 +74,7 @@ let g:UltiSnipsListSnippets = "<S-tab>"
 let g:ultisnips_python_style = 'google'
 let g:vim_markdown_folding_style_pythonic = 1
 let g:vimtex_compiler_progname = "nvr"
+let g:vimtex_fold_enabled = 1
 let g:vimtex_view_method = 'zathura'
 
 " Syntax highlights.
@@ -186,9 +187,8 @@ map <leader>fr :History<cr>
 map <leader>f. :Files .<cr>
 
 " Version control.
-map <leader>gg <Plug>(GitGutterStageHunk)
+map <leader>gg :MagitOnly<cr>
 map <leader>gb :GBlame<cr>
-map <leader>gc :MagitOnly<cr>
 map <leader>gD :Gdelete<cr>
 map <leader>gd :Git difftool<cr>
 map <leader>gf :Gfetch<cr>
@@ -257,12 +257,12 @@ map <bs> %
 map <cr> *
 
 " Ergonomic code folding.
-nmap <Tab> <Plug>(fold-cycle-open)
-nmap <S-Tab> zm
+nnoremap <tab>   zr
+nnoremap <S-tab> zm
 
 " Jumping through history.
-nnoremap _ <C-o>
-nnoremap - <C-i>
+nnoremap - <C-o>
+nnoremap _ <C-i>
 
 " Align expressions.
 nmap ga <Plug>(EasyAlign)
