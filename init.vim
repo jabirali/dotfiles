@@ -60,17 +60,18 @@ let g:ale_linters = { 'python': [ 'flake8' ], 'tex': [] }
 let g:clever_f_chars_match_any_signs = '.'
 let g:clever_f_smart_case = 1
 let g:fold_cycle_default_mapping = 0
+let g:gitgutter_sign_modified_removed = '~ '
 let g:magit_default_fold_level = 1
 let g:nuake_per_tab = 1
 let g:nuake_position = 'top'
 let g:org_aggressive_conceal = 1
 let g:SimpylFold_docstring_preview = 1
 let g:tex_conceal = 'abdgm'
-let g:ultisnips_python_style = 'google'
 let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsListSnippets = "<S-tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 let g:UltiSnipsJumpForwardTrigger = "<C-j>"
+let g:UltiSnipsListSnippets = "<S-tab>"
+let g:ultisnips_python_style = 'google'
 let g:vim_markdown_folding_style_pythonic = 1
 let g:vimtex_compiler_progname = "nvr"
 let g:vimtex_view_method = 'zathura'
@@ -106,14 +107,16 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'rhysd/clever-f.vim'         " Smarter `f` jumps and highlights
 	Plug 'machakann/vim-sandwich'     " More intuitive `surround` plugin
 	Plug 'tpope/vim-commentary'       " Faster (un)commenting with `gc`
+    Plug 'junegunn/vim-easy-align'    " Faster code alignment with `ga`
 	Plug 'tpope/vim-speeddating'      " Better C-a/C-x actions for dates
 	" IDE features
 	Plug 'dense-analysis/ale'         " Linters and language servers
 	Plug 'junegunn/fzf',              { 'do': './install --bin' }
 	Plug 'junegunn/fzf.vim'           " Fuzzy finding of everything
-	Plug 'Lenovsky/nuake'             " One pop-up terminal per tab
-	Plug 'jreybert/vimagit'           " Version control integration
-	Plug 'tpope/vim-fugitive'         " Version control integration
+	Plug 'Lenovsky/nuake'             " Per-tab pop-up terminal
+	Plug 'tpope/vim-fugitive'         " Version control (general)
+	Plug 'jreybert/vimagit'           " Version control (commit)
+	Plug 'airblade/vim-gitgutter'     " Version control (buffer)
 	Plug 'honza/vim-snippets'         " Snippet collection
 	Plug 'SirVer/ultisnips'           " Snippet engine
 	" Language support
@@ -169,12 +172,12 @@ map <leader>of :bot split term://nnn<cr>i
 map <leader>op :bot split term://htop<cr>i
 
 " Find files.
+map <leader>ff :Files ~/projects/<cr>
 map <leader>fb :Buffers<cr>
 map <leader>fc :BCommits<cr>
 map <leader>fC :Commits<cr>
 map <leader>fd :Files ~/.dotfiles/<cr>
 map <leader>fD :Files /etc/<cr>
-map <leader>ff :Files ~/projects/<cr>
 map <leader>fF :Files ~/<cr>
 map <leader>fg :GFiles<cr>
 map <leader>fG :GFiles?<cr>
@@ -183,13 +186,19 @@ map <leader>fr :History<cr>
 map <leader>f. :Files .<cr>
 
 " Version control.
-map <leader>gg :MagitOnly<cr>
+map <leader>gg <Plug>(GitGutterStageHunk)
 map <leader>gb :GBlame<cr>
-map <leader>gd :Gdelete<cr>
-map <leader>gr :Gmove<cr>
-map <leader>gm :Git mergetool<cr>
+map <leader>gc :MagitOnly<cr>
+map <leader>gD :Gdelete<cr>
 map <leader>gd :Git difftool<cr>
+map <leader>gf :Gfetch<cr>
 map <leader>gl :Glog<cr>
+map <leader>gm :Git mergetool<cr>
+map <leader>gp :Gpush<cr>
+map <leader>gR :Gmove<cr>
+map <leader>gs <Plug>(GitGutterStageHunk)
+map <leader>gu <Plug>(GitGutterUndoHunk)
+map <leader>gz :GitGutterFold<cr>
 
 " Search content.
 map <leader>ss    :BLines<cr>
@@ -200,7 +209,7 @@ map <leader>s<cr> :Ggrep <C-R><C-W><cr>
 
 " Manage Vim.
 map <leader>qa :qa<cr>
-map <leader>qr :source ~/.config/nvim/init.vim<cr>
+map <leader>qr :source ~/.config/nvim/init.vim<cr>:filetype detect<cr>
 map <leader>qu <leader>qr<cr>:PlugUpdate<cr>
 
 " Leader-based speed keys.
@@ -223,6 +232,7 @@ nnoremap Y y$
 noremap  j gj
 noremap  k gk
 nnoremap U <C-r>
+noremap  R :filetype detect<cr>
 
 " Paging with HJKL.
 noremap H zH
@@ -253,6 +263,10 @@ nmap <S-Tab> zm
 " Jumping through history.
 nnoremap _ <C-o>
 nnoremap - <C-i>
+
+" Align expressions.
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
 
 " Relocated keys.
 noremap Q K
