@@ -66,6 +66,11 @@ let g:nuake_position = 'top'
 let g:org_aggressive_conceal = 1
 let g:SimpylFold_docstring_preview = 1
 let g:tex_conceal = 'abdgm'
+let g:ultisnips_python_style = 'google'
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsListSnippets = "<S-tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
+let g:UltiSnipsJumpForwardTrigger = "<C-j>"
 let g:vim_markdown_folding_style_pythonic = 1
 let g:vimtex_view_general_viewer = 'zathura'
 
@@ -87,6 +92,7 @@ endif
 " Load the plugins.
 call plug#begin('~/.local/share/nvim/plugins')
 	" User interface
+	Plug 'arecarn/vim-fold-cycle'     " Org-like recursive fold cycling
 	Plug 'Brettm12345/moonlight.vim'  " Moonlight colorscheme
 	Plug 'Konfekt/FastFold'           " More optimized code folding
 	Plug 'liuchengxu/vim-which-key'   " Interactive keybinding help
@@ -98,7 +104,6 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'junegunn/vim-slash'         " Smarter `*` jumps and highlights
 	Plug 'rhysd/clever-f.vim'         " Smarter `f` jumps and highlights
 	Plug 'machakann/vim-sandwich'     " More intuitive `surround` plugin
-	Plug 'arecarn/vim-fold-cycle'     " Org-like recursive fold cycling
 	Plug 'tpope/vim-commentary'       " Faster (un)commenting with `gc`
 	Plug 'tpope/vim-speeddating'      " Better C-a/C-x actions for dates
 	" IDE features
@@ -108,6 +113,8 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'Lenovsky/nuake'             " One pop-up terminal per tab
 	Plug 'jreybert/vimagit'           " Version control integration
 	Plug 'tpope/vim-fugitive'         " Version control integration
+	Plug 'honza/vim-snippets'         " Snippet collection
+	Plug 'SirVer/ultisnips'           " Snippet engine
 	" Language support
 	Plug 'cespare/vim-toml'           " TOML (syntax)
 	Plug 'jceb/vim-orgmode'           " Org (general)
@@ -115,9 +122,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'PietroPate/vim-tex-conceal' " TeX (conceal)
 	Plug 'plasticboy/vim-markdown'    " MarkDown (general)
 	Plug 'tmhedberg/SimpylFold'       " Python (folding)
-	" TODO: Look at these.
-	" Plug 'davidhalter/jedi-vim'     " Python (completion)
-	" Plug 'vim-python/python-syntax' " Python (syntax)
+	Plug 'vim-python/python-syntax'   " Python (syntax)
 call plug#end()
 
 " Activate plugins.
@@ -183,6 +188,7 @@ map <leader>gd :Gdelete<cr>
 map <leader>gr :Gmove<cr>
 map <leader>gm :Git mergetool<cr>
 map <leader>gd :Git difftool<cr>
+map <leader>gl :Glog<cr>
 
 " Search content.
 map <leader>ss    :BLines<cr>
