@@ -1,48 +1,56 @@
 " vim:foldmethod=marker
 
-"------------------------------------------------------------
+" -----------------------------------------------------------
 " File: Neovim config
 " Path: ~/.config/nvim/init.vim
-"------------------------------------------------------------
+" -----------------------------------------------------------
 
 " Plugins {{{ 
-" Plugin manager
+
+" Install the plugin manager
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall | source $MYVIMRC
+  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 " Plugin install
 call plug#begin('~/.local/share/nvim/plugins')
   " User interface
-  Plug 'Brettm12345/moonlight.vim' " Moonlight colors
-  Plug 'Konfekt/FastFold'          " Optimized folding
+  Plug 'Brettm12345/moonlight.vim' " Moonlight colorscheme
+  Plug 'Konfekt/FastFold'          " More optimized code folding
+  Plug 'liuchengxu/vim-which-key'  " Interactive keybinding help
   " Text editing
-  Plug 'andymass/vim-matchup'      " Smarter `%` jumps
-  Plug 'junegunn/vim-slash'        " Smarter `*` jumps
+  Plug 'andymass/vim-matchup'      " Smarter `%` jumps and highlights
+  Plug 'junegunn/vim-slash'        " Smarter `*` jumps and highlights
+  Plug 'tpope/vim-commentary'      " Smarter (un)commenting with `gc`
   " Language support
-  Plug 'lervag/vimtex'
-  Plug 'jceb/vim-orgmode'
-  Plug 'plasticboy/vim-markdown'
+  Plug 'lervag/vimtex'             " *.tex
+  Plug 'jceb/vim-orgmode'          " *.org
+  Plug 'plasticboy/vim-markdown'   " *.md
+  "Plug 'vim-ctrlspace/vim-ctrlspace'
+  Plug 'junegunn/fzf'
+  Plug 'junegunn/fzf.vim'
 call plug#end()
-
 " }}}
 
 augroup matchup_matchparen_highlight
   autocmd!
-  autocmd ColorScheme * hi MatchParen ctermfg=red cterm=none guifg=red gui=none
+  autocmd ColorScheme * hi MatchParen guifg=red gui=none
 augroup END
 
 
+au TermOpen * setlocal listchars= nonumber norelativenumber
 
 " Color scheme
-"let g:moonlight_terminal_italics=1
 set termguicolors
 set background=dark
 colorscheme moonlight
 
 " User interface
-set scrolloff=999 sidescrolloff=5 nowrap
+set scrolloff=999 
+set sidescrolloff=5
+set nowrap
 set noshowmode
 set hidden
 set number
@@ -76,9 +84,32 @@ set clipboard=unnamedplus
 set tildeop
 set autochdir
 
+
 " Keybindings
+
+" Spacemacs-like leaders.
 let mapleader="\<space>"
+let maplocalleader=","
+
+" Provide interactive hints.
+nnoremap <silent> <leader>      :WhichKey   '<space>'<cr>
+nnoremap <silent> <localleader> :WhichKey   ','<cr>
+" nnoremap <silent>               [ :WhichKey '['<cr>
+" nnoremap <silent>               ] :WhichKey ']'<cr>
+" nnoremap <silent>               g :WhichKey 'g'<cr>
+" nnoremap <silent>               z :WhichKey 'z'<cr>
+
+" Spacemacs-like menu.
 map <leader>w <C-w>
+map <leader>ot :bot split term://fish<cr>i
+map <leader>of :bot split term://nnn<cr>i
+map <leader>op :bot split term://htop<cr>i
+map <leader>fp :e ~/.config/nvim/init.vim<cr>
+map <leader>ff :e 
+map <leader>bd :q<cr>
+map <leader>qq :qa<cr>
+map <leader>qr :source ~/.config/nvim/init.vim<cr>
+map <leader>qu :PlugUpdate<cr>
 
 tnoremap <esc> <C-\><C-n>
 tmap <C-x> <C-\><C-n>
@@ -101,9 +132,5 @@ map <tab> %
 map <S-tab> *
 nnoremap <A-j> zo
 nnoremap <A-k> zc
-map <leader>ot :bottomright split<cr>:terminal<cr>
-map <leader>fp :e ~/.config/nvim/init.vim<cr>
-map <leader>ff :e 
-map <leader>bd :q<cr>
-map <leader>qq :qa<cr>
+"let g:CtrlSpaceDefaultMappingKey = "<leader><leader> "
 " gc
