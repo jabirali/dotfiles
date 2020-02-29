@@ -1,180 +1,143 @@
-" vim: foldmethod=marker 
+" vim: foldmethod=marker
 " ~/.config/nvim/init.vim
 
-" {{{ Plugin management
-
-" Install the manager
-if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
-" Install the plugins.
-call plug#begin('~/.local/share/nvim/plugins')
-  " User interface
-  Plug 'Brettm12345/moonlight.vim' " Moonlight colorscheme
-  Plug 'Konfekt/FastFold'          " More optimized code folding
-  Plug 'liuchengxu/vim-which-key'  " Interactive keybinding help
-  Plug 'tpope/vim-repeat'          " Repeat more things with `.`
-  " Text editing
-  Plug 'arecarn/vim-fold-cycle'    " Org-mode-like fold cycling
-  Plug 'andymass/vim-matchup'      " Smarter `%` jumps and highlights
-  Plug 'junegunn/vim-slash'        " Smarter `*` jumps and highlights
-  Plug 'tpope/vim-speeddating'     " Smarter number inc/dec actions
-  "Plug 'justinmk/vim-sneak'        " Smarter and more character jumps
-  Plug 'tpope/vim-commentary'      " Smarter (un)commenting with `gc`
-  Plug 'machakann/vim-sandwich'    " More intuitive `surround` plugin
-  " IDE features
-  Plug 'Lenovsky/nuake'            " One pop-up terminal per tab
-  Plug 'junegunn/fzf.vim'          " Fuzzy finding of everything
-  Plug 'junegunn/fzf',             { 'do': { -> fzf#install() } }
-  " Language support
-  Plug 'lervag/vimtex'             " *.tex  (general)
-  Plug 'PietroPate/vim-tex-conceal' " *.tex (conceal)
-  Plug 'jceb/vim-orgmode'          " *.org  (general)
-  Plug 'plasticboy/vim-markdown'   " *.md  (syntax, folding)
-  Plug 'cespare/vim-toml'          " TOML (syntax)
-  Plug 'tmhedberg/SimpylFold'      " Python fold plugin
-  "Plug 'vim-ctrlspace/vim-ctrlspace'
-
-" " Plugin: Completion and snippets
-" Plug 'Shougo/deoplete.nvim'
-" Plug 'roxma/vim-hug-neovim-rpc'
-" Plug 'roxma/nvim-yarp'
-
-" " Plugin: Finder, motions, and tags
-" Plug 'ctrlpvim/ctrlp.vim'       " Fuzzy file finder
-" Plug 'dyng/ctrlsf.vim'          " A very nice search and replace plugin
-
-" " Plugin: Linting, debugging, and code runners
-" Plug 'w0rp/ale'
-
-" " Plugin: Version control systems
-" Plug 'rbong/vim-flog'
-" Plug 'tpope/vim-fugitive'
-
-" " Filetype: python
-" Plug 'davidhalter/jedi-vim'     " Python plugin (e.g. completion)
-" Plug 'vim-python/python-syntax' " Python syntax plugin
-
-call plug#end()
-" }}}
-
-" {{{ Neovim settings
-" Color scheme
-set termguicolors
-colorscheme moonlight
-
-" User interface
-set scrolloff=999 
-set sidescrolloff=5
-set nowrap
-set noshowmode
-set hidden
-set number
-
-" Spell check
-set spelllang=en,nb
-
-" Search & replace
-set ignorecase
-set smartcase
-set gdefault
-set inccommand=nosplit
-
-" Indentation & folding
-set tabstop=4
-set shiftwidth=4
-set foldlevel=0
-set foldmethod=syntax
-set conceallevel=2
-set concealcursor=nc
-
-" Autocompletion
-set wildmode=longest:full,full
+"{{{1 Neovim settings
+"{{{2 Configuration
+set autochdir
+set clipboard+=unnamedplus
 set complete+=k,s,d
 set completeopt=longest,menu,preview
-
-" Miscellaneous
-set virtualedit=block
-set clipboard+=unnamedplus
-set tildeop
-set autochdir
+set concealcursor=nc
+set conceallevel=2
 set confirm
-
-" Live substitution
-
-" Confirm quit
-set winaltkeys=no
-
-" Substitute g on my default
-"set mouse=a
-
-
+set foldlevel=0
+set foldmethod=syntax
+set gdefault
+set hidden
+set ignorecase
+set inccommand=nosplit
+set noshowmode
+set nowrap
+set number
+set scrolloff=999
+set shiftwidth=4
+set sidescrolloff=5
+set smartcase
+set spelllang=en,nb
 set splitbelow
 set splitright
+set tabstop=4
+set termguicolors
+set tildeop
+set virtualedit=block
+set wildmode=longest:full,full
+set winaltkeys=no
 
-" }}}
-" {{{ Plugin settings
-
-" TeX/MD folding
-
-"let g:python_highlight_all = 1
-let g:SimpylFold_docstring_preview = 1
-let g:vim_markdown_folding_style_pythonic = 1
-let g:org_aggressive_conceal = 1
-"
-"
-" let g:tex_stylish = 1
-" let g:tex_conceal = ''
-" let g:tex_flavor = 'latex'
-" let g:tex_isk='48-57,a-z,A-Z,192-255,:'
-
-" let g:vimtex_fold_enabled = 1
-" let g:vimtex_quickfix_open_on_warning = 0
-" let g:vimtex_index_split_pos = 'below'
-" let g:vimtex_toc_hotkeys = {'enabled' : 1}
-" let g:vimtex_view_general_viewer = 'evince'
-
-  " let g:vimtex_compiler_progname = 'nvr'
-
-" }}}
-" {{{ Autocommands
-
-" Less intrusive `vim-matchup` highlights.
-augroup matchup_highlight
-  autocmd!
-  autocmd ColorScheme * hi MatchParen guifg=none gui=bold
-augroup END
-
+"{{{2 Miscellaneous
+" Only show cursor line in active window.
 augroup active_cursor_line
-  autocmd!
-  autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  autocmd WinLeave * setlocal nocursorline
+	autocmd!
+	autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+	autocmd WinLeave * setlocal nocursorline
 augroup END
 
-augroup emacs_like_exit
+" Close pop-up windows with `q` like Emacs.
+augroup quit_like_emacs
+	autocmd!
+	autocmd BufWinEnter quickfix noremap <buffer> q :q<cr>
 	autocmd FileType help noremap <buffer> q :q<cr>
 augroup END
 
-" Turn off line numbers in terminals.
-"au TermOpen * setlocal listchars= nonumber norelativenumber
-" }}}
-" {{{ Leader keybindings
+" Jump to the Git project root.
+command! GitCd execute 'cd ./'.system('git rev-parse --show-cdup')
 
+"{{{1 Plugin settings
+"{{{2 Configuration
+" Plugin parameters.
+let b:ale_fixers = { '*': [ 'trim_whitespace' ], 'python': [ 'black', 'isort' ] }
+let g:ale_fix_on_save = 1
+let g:ale_linters = { 'python': [ 'flake8' ] }
+let g:clever_f_chars_match_any_signs = '.'
+let g:clever_f_smart_case = 1
+let g:fold_cycle_default_mapping = 0
+let g:magit_default_fold_level = 1
+let g:nuake_per_tab = 1
+let g:nuake_position = 'top'
+let g:org_aggressive_conceal = 1
+let g:SimpylFold_docstring_preview = 1
+let g:tex_conceal = 'abdgm'
+let g:vim_markdown_folding_style_pythonic = 1
+let g:vimtex_view_general_viewer = 'zathura'
+
+" Syntax highlights.
+augroup clean_highlights
+	autocmd!
+	autocmd ColorScheme * hi MatchParen guifg=none gui=bold
+	autocmd ColorScheme * hi CleverFDefaultLabel guifg=white gui=bold
+	autocmd ColorScheme * hi SpellBad guifg=red gui=none
+augroup END
+
+"{{{2 Installation
+" Bootstrap procedure.
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+	silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * nested PlugInstall --sync | source $MYVIMRC
+endif
+
+" Load the plugins.
+call plug#begin('~/.local/share/nvim/plugins')
+	" User interface
+	Plug 'Brettm12345/moonlight.vim'  " Moonlight colorscheme
+	Plug 'Konfekt/FastFold'           " More optimized code folding
+	Plug 'liuchengxu/vim-which-key'   " Interactive keybinding help
+	Plug 'tpope/vim-repeat'           " Repeat more things with `.`
+	Plug 'tpope/vim-unimpaired'       " Browse more things with `[]`
+	Plug 'junegunn/goyo.vim'          " Center buffer when writing
+	" Text editing
+	Plug 'andymass/vim-matchup'       " Smarter `%` jumps and highlights
+	Plug 'junegunn/vim-slash'         " Smarter `*` jumps and highlights
+	Plug 'rhysd/clever-f.vim'         " Smarter `f` jumps and highlights
+	Plug 'machakann/vim-sandwich'     " More intuitive `surround` plugin
+	Plug 'arecarn/vim-fold-cycle'     " Org-like recursive fold cycling
+	Plug 'tpope/vim-commentary'       " Faster (un)commenting with `gc`
+	Plug 'tpope/vim-speeddating'      " Better C-a/C-x actions for dates
+	" IDE features
+	Plug 'dense-analysis/ale'         " Linters and language servers
+	Plug 'junegunn/fzf',              { 'do': './install --bin' }
+	Plug 'junegunn/fzf.vim'           " Fuzzy finding of everything
+	Plug 'Lenovsky/nuake'             " One pop-up terminal per tab
+	Plug 'jreybert/vimagit'           " Version control integration
+	Plug 'tpope/vim-fugitive'         " Version control integration
+	" Language support
+	Plug 'cespare/vim-toml'           " TOML (syntax)
+	Plug 'jceb/vim-orgmode'           " Org (general)
+	Plug 'lervag/vimtex'              " TeX (general)
+	Plug 'PietroPate/vim-tex-conceal' " TeX (conceal)
+	Plug 'plasticboy/vim-markdown'    " MarkDown (general)
+	Plug 'tmhedberg/SimpylFold'       " Python (folding)
+	" TODO: Look at these.
+	" Plug 'davidhalter/jedi-vim'     " Python (completion)
+	" Plug 'vim-python/python-syntax' " Python (syntax)
+call plug#end()
+
+" Activate plugins.
+silent! colorscheme moonlight
+
+"{{{1 Keybindings
+"{{{2 Leader keys
 " Spacemacs-like leaders.
 let mapleader="\<space>"
-let maplocalleader="\\"
+let maplocalleader=","
 
-" Provide interactive hints.
+" Spacemacs-like hints.
 nnoremap <silent> <leader>      :WhichKey '<space>'<cr>
 nnoremap <silent> <localleader> :WhichKey ','<cr>
 
 " Window splits.
 map <leader>w <C-w>
+map <leader>wd :close<cr>
 
-" Workspaces.
+" Tabs/Workspaces.
 map <leader><tab>n :tabnew<cr>
 map <leader><tab>1 :1tabnext<cr>
 map <leader><tab>2 :2tabnext<cr>
@@ -190,110 +153,110 @@ map <leader><tab>[ :tabprev<cr>
 map ]<tab> :tabnext<cr>
 map [<tab> :tabprev<cr>
 
-" Toggle options.
-" TODO: Unimpaired?
-map <leader>ts :set spell
-map <leader>tS :set nospell
+" Toggle unimpaired.
+map <leader>t yo
+map <leader>tg :Goyo<cr>
 
 " Open applications.
-map <leader>ot :bot split term://fish<cr>i
+map <leader>ot :Nuake<cr>
 map <leader>of :bot split term://nnn<cr>i
 map <leader>op :bot split term://htop<cr>i
 
 " Find files.
-map <leader>fg :BCommits<cr>
-map <leader>fG :Commits<cr>
-map <leader>fr :History<cr>
+map <leader>fb :Buffers<cr>
+map <leader>fc :BCommits<cr>
+map <leader>fC :Commits<cr>
+map <leader>fd :Files ~/.dotfiles/<cr>
+map <leader>fD :Files /etc/<cr>
 map <leader>ff :Files ~/projects/<cr>
+map <leader>fF :Files ~/<cr>
+map <leader>fg :GFiles<cr>
+map <leader>fG :GFiles?<cr>
 map <leader>fn :Files ~/projects/notes/<cr>
-map <leader>fd :Files ~/.dotfiles<cr>
+map <leader>fr :History<cr>
+map <leader>f. :Files .<cr>
 
-" Search.
-map <leader>ss :BLines<cr>
-map <leader>sn :<cr>
+" Version control.
+map <leader>gg :MagitOnly<cr>
+map <leader>gb :GBlame<cr>
+map <leader>gd :Gdelete<cr>
+map <leader>gr :Gmove<cr>
+map <leader>gm :Git mergetool<cr>
+map <leader>gd :Git difftool<cr>
 
-" Speed keys.
-map <leader>, :Buffers<cr>
-map <leader>. :GFiles<cr>
-map <leader>h :Helptags<cr>
-map <leader>: :Commands<cr>
-"map <leader>k :Maps<cr>
-"map <leader>/ :Ag<cr>
-"map <leader><leader> :Buffers<cr>
+" Search content.
+map <leader>ss    :BLines<cr>
+map <leader>sn    :cd ~/projects/notes/<cr>:Rg<cr>
+map <leader>sp    :GitCd<cr>:Rg<cr>
+map <leader>sg    :Ggrep<space>
+map <leader>s<cr> :Ggrep <C-R><C-W><cr>
 
 " Manage Vim.
-map <leader>bd :q<cr>
-map <leader>qq :qq<cr>
 map <leader>qa :qa<cr>
 map <leader>qr :source ~/.config/nvim/init.vim<cr>
-map <leader>qu :PlugUpdate<cr>
+map <leader>qu <leader>qr<cr>:PlugUpdate<cr>
 
-" }}}
-" {{{ Editor keybindings
+" Leader-based speed keys.
+map <leader><leader> <leader>fb
+map <leader>, <leader>fg
+map <leader>. <leader>f.
+map <leader>/ <leader>sp
+map <leader>h :Helptags<cr>
+map <leader>: :Commands<cr>
 
+" Non-leader speed keys.
+map  ; :
+nmap ` <leader>ot
+tmap ` <C-\><C-n><leader>ot
+
+"{{{2 Editor keys
 " Better defaults.
 nnoremap ' `
 nnoremap Y y$
+noremap  j gj
+noremap  k gk
+nnoremap U <C-r>
 
 " Paging with HJKL.
-noremap J <C-d>
-noremap K <C-u>
 noremap H zH
 noremap L zL
+noremap J <C-d>
+noremap K <C-u>
+
+" Org-like indentation.
+nnoremap <M-h> <<
+nnoremap <M-l> >>
+vnoremap <M-h> <gv
+vnoremap <M-l> >gv
+
+" Org-like dragging.
+nmap <M-j> ]e
+nmap <M-k> [e
+vmap <M-j> ]egv
+vmap <M-k> [egv
+
+" Ergononmic matching jumps.
+map <bs> %
+map <cr> *
+
+" Ergonomic code folding.
+nmap <Tab> <Plug>(fold-cycle-open)
+nmap <S-Tab> zm
+
+" Jumping through history.
+nnoremap _ <C-o>
+nnoremap - <C-i>
 
 " Relocated keys.
 noremap Q K
 noremap M J
 
-" Escape to normal mode in Vim terminals,
-" without interfering with FZF closing.
+" Escape to normal mode with `jk`.
+inoremap jk <esc>
+
+" Escape to normal mode in terminals.
 augroup terminal_escape
 	autocmd!
 	autocmd TermOpen * tnoremap <buffer> <esc> <c-\><c-n>
 	autocmd FileType fzf tunmap <buffer> <esc>
 augroup END
-
-"tnoremap 
-
-" Escale to normal mode with `jk`.
-inoremap jk <esc>
-
-
-" nnoremap gt :tabnew<cr>
-" nnoremap ]t :tabnext<cr>
-" nnoremap [t :tabprev<cr>
-" nnoremap gw :<cr>
-" nnoremap ]w :<cr>
-" nnoremap [w :tabprev<cr>
-
-"tmap <C-x> <C-\><C-n>
-"tnoremap <C-h> <C-w>h
-"tnoremap <C-j> <C-w>j
-"tnoremap <C-k> <C-w>k
-"tnoremap <C-l> <C-w>l
-"noremap <C-h> <C-w>h
-"noremap <C-j> <C-w>j
-"noremap <C-k> <C-w>k
-"noremap <C-l> <C-w>l
-"map <tab> %
-"map <S-tab> *
-"nnoremap <A-j> zo
-"nnoremap <A-k> zc
-
-" nmap <tab> za
-" nmap <S-tab> zm
-"let g:CtrlSpaceDefaultMappingKey = "<leader><leader> "
-
-"map <tab> %
-"map <S-tab> *
-
-let g:tex_conceal="abdgm"
-let g:fold_cycle_default_mapping = 0 "disable default mappings
-nmap <Tab> <Plug>(fold-cycle-open)
-nmap <S-Tab> <Plug>(fold-cycle-close)
-
-" Quake-style terminal
-nnoremap ` :Nuake<cr>
-tnoremap ` <C-\><C-n>:Nuake<cr>
-let g:nuake_per_tab = 1
-" }}}
