@@ -16,6 +16,7 @@ set gdefault
 set hidden
 set ignorecase
 set inccommand=nosplit
+set statusline=%t%=%m
 set noshowmode
 set nowrap
 set number
@@ -52,8 +53,8 @@ augroup END
 " of the folded text. For Python and YAML, we also change colons to semicolons.
 " For languages with braces, we also add closing braces to the folding marker.
 function! SimpleFoldText()
-	let line = getline(v:foldstart)
-	let line2 = substitute(line, ':\s*$', ';', '')
+	let line1 = getline(v:foldstart)
+	let line2 = substitute(line1, ':\s*$', ';', '')
 	let line3 = substitute(line2, '[\{][\{]*\s*$', '{...}', '')
 	return line3
 endfunction
@@ -94,6 +95,8 @@ let g:vim_markdown_folding_style_pythonic = 1
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_view_method = 'zathura'
+let g:loaded_netrw = 1
+let loaded_netrwPlugin = 1
 let $NNN_USE_EDITOR = 1
 let $NNN_TRASH = 1
 
