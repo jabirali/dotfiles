@@ -95,6 +95,7 @@ let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsListSnippets = '<S-tab>'
 let g:ultisnips_python_style = 'google'
 let g:vim_markdown_folding_style_pythonic = 1
+let g:vim_markdown_override_foldtext = 0
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_view_method = 'zathura'
