@@ -10,6 +10,7 @@ set completeopt=longest,menu,preview
 set concealcursor=nc
 set conceallevel=2
 set confirm
+set fillchars=fold: 
 set foldlevel=0
 set foldmethod=syntax
 set gdefault
@@ -46,6 +47,19 @@ augroup quit_like_emacs
 	autocmd!
 	autocmd BufWinEnter quickfix noremap <buffer> q :q<cr>
 	autocmd FileType help noremap <buffer> q :q<cr>
+augroup END
+
+" Define a simple custom folding style. It basically just shows the first
+" line of the folded text; for Python and YAML, the colon is also removed.
+function! SimpleFoldText()
+	return substitute(getline(v:foldstart), ':\s*$', '', '')
+endfunction
+
+" Use this folding style everywhere.
+set foldtext=SimpleFoldText()
+augroup fold_with_style
+	autocmd!
+	autocmd VimEnter,WinEnter,BufWinEnter * setlocal foldtext=SimpleFoldText()
 augroup END
 
 " Jump to the Git project root.
@@ -95,8 +109,8 @@ endif
 " Load the plugins.
 call plug#begin('~/.local/share/nvim/plugins')
 	" User interface
-	Plug 'arecarn/vim-fold-cycle'     " Org-like recursive fold cycling
 	Plug 'Brettm12345/moonlight.vim'  " Moonlight colorscheme
+ 	Plug 'arecarn/vim-fold-cycle'     " Org-like recursive folding
 	Plug 'Konfekt/FastFold'           " More optimized code folding
 	Plug 'liuchengxu/vim-which-key'   " Interactive keybinding help
 	Plug 'tpope/vim-repeat'           " Repeat more things with `.`
@@ -257,7 +271,7 @@ map <bs> %
 map <cr> *
 
 " Ergonomic code folding.
-nnoremap <tab>   zr
+nmap <tab> <Plug>(fold-cycle-open)
 nnoremap <S-tab> zm
 
 " Jumping through history.
