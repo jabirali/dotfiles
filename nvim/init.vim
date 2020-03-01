@@ -46,10 +46,15 @@ augroup quit_like_emacs
 augroup END
 
 " Don't show line numbers in terminals.
-augroup TerminalStuff
+augroup terminal_settings
 	autocmd!
 	autocmd TermOpen * setlocal nonumber norelativenumber
 augroup END
+
+" Don't show line numbers etc. in browsers.
+if exists('g:started_by_firenvim')
+	set nonumber signcolumn=no statusline=%=
+endif
 
 " Define a simple custom folding style. It basically just shows the first line
 " of the folded text. For Python and YAML, we also change colons to semicolons.
@@ -154,10 +159,18 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'tmhedberg/SimpylFold'       " Python (folding)
 	Plug 'vim-python/python-syntax'   " Python (syntax)
 	Plug 'jmcantrell/vim-virtualenv'  " Python (venv)
+	" Miscellaneous
+	Plug 'glacambre/firenvim',        { 'do': { _ -> firenvim#install(0) } }
 call plug#end()
 
-" Activate plugins.
-silent! colorscheme moonlight
+" Activate colorscheme based on context.
+if exists('g:started_by_firenvim')
+	set background=light
+	silent! colorscheme zellner
+else
+	set background=dark
+	silent! colorscheme moonlight
+endif
 
 "{{{1 Keybindings
 "{{{2 Leader keys
@@ -243,8 +256,9 @@ map <leader>s<cr> :Ggrep <C-R><C-W><cr>
 
 " Manage Vim.
 map <leader>qa :qa<cr>
-map <leader>qr :source ~/.config/nvim/init.vim<cr>:filetype detect<cr>
-map <leader>qu <leader>qr<cr>:PlugUpdate<cr>
+map <leader>qr :source ~/.config/nvim/init.vim<cr>R
+map <leader>qi :PlugInstall<cr>
+map <leader>qu :PlugUpdate<cr>
 
 " Leader-based speed keys.
 map <leader><leader> <leader>fg
