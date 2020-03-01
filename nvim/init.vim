@@ -38,25 +38,17 @@ set wildmode=longest:full,full
 set winaltkeys=no
 
 "{{{2 Miscellaneous
-" Only show cursor line in active window.
-augroup active_cursor_line
-	autocmd!
-	autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-	autocmd WinLeave * setlocal nocursorline
-augroup END
-
-" Close pop-up windows with `q` like Emacs.
+" Close pop-ups with `q` like Emacs.
 augroup quit_like_emacs
 	autocmd!
 	autocmd BufWinEnter quickfix noremap <buffer> q :q<cr>
 	autocmd FileType help noremap <buffer> q :q<cr>
 augroup END
 
-" Don't show line numbers in terminals. Just when the
-" terminal is opening, don't show cursorline either.
+" Don't show line numbers in terminals.
 augroup TerminalStuff
 	autocmd!
-	autocmd TermOpen * setlocal nonumber norelativenumber nocursorline
+	autocmd TermOpen * setlocal nonumber norelativenumber
 augroup END
 
 " Define a simple custom folding style. It basically just shows the first line
@@ -204,9 +196,9 @@ map <leader>tv :VirtualEnvActivate<space>
 map <leader>tV :VirtualEnvDeactivate<cr>
 
 " Open stuff.
+map <leader>od :NnnPicker '%:p:h'<cr>
 map <leader>oo :tabedit ~/projects/notes/sintef.org<cr>
 map <leader>oO :tabedit ~/projects/notes/personal.org<cr>
-map <leader>of :NnnPicker '%:p:h'<cr>
 map <leader>op :bot split term://htop<cr>i
 map <leader>ot :Nuake<cr><C-\><C-n>:set scrolloff=999<cr>:<C-c>
 map <leader>oT :terminal<cr>
@@ -256,7 +248,7 @@ map <leader>qu <leader>qr<cr>:PlugUpdate<cr>
 " Leader-based speed keys.
 map <leader><leader> <leader>fg
 map <leader>, <leader>fb
-map <leader>. <leader>of
+map <leader>. <leader>od
 map <leader>/ <leader>sp
 map <leader>: :Commands<cr>
 map <leader>; :Commands<cr>
