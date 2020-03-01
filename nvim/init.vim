@@ -196,7 +196,9 @@ map <leader>tg :Goyo<cr>
 map <leader>tv :VirtualEnvActivate<space>
 map <leader>tV :VirtualEnvDeactivate<cr>
 
-" Open applications.
+" Open stuff.
+map <leader>oo :tabedit ~/projects/notes/sintef.org<cr>
+map <leader>oO :tabedit ~/projects/notes/personal.org<cr>
 map <leader>of :NnnPicker '%:p:h'<cr>
 map <leader>op :bot split term://htop<cr>i
 map <leader>ot :Nuake<cr><C-\><C-n>:set scrolloff=999<cr>:<C-c>
@@ -213,6 +215,7 @@ map <leader>fD :Files /etc/<cr>
 map <leader>fg :GFiles<cr>
 map <leader>fG :GFiles?<cr>
 map <leader>fn :Files ~/projects/notes/<cr>
+map <leader>fp :Files ~/projects/<cr>
 map <leader>fr :History<cr>
 
 " Version control.
