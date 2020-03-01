@@ -49,10 +49,10 @@ augroup quit_like_emacs
 	autocmd FileType help noremap <buffer> q :q<cr>
 augroup END
 
-" Define a simple custom folding style. It basically just shows the first
-" line of the folded text; for Python and YAML, the colon is also removed.
+" Define a simple custom folding style. It basically just shows the first line
+" of the folded text; for Python and YAML, we also change colons to semicolons.
 function! SimpleFoldText()
-	return substitute(getline(v:foldstart), ':\s*$', '', '')
+	return substitute(getline(v:foldstart), ':\s*$', ';', '')
 endfunction
 
 " Use this folding style everywhere.
