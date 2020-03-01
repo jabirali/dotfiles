@@ -52,6 +52,13 @@ augroup quit_like_emacs
 	autocmd FileType help noremap <buffer> q :q<cr>
 augroup END
 
+" Don't show line numbers in terminals. Just when the
+" terminal is opening, don't show cursorline either.
+augroup TerminalStuff
+	autocmd!
+	autocmd TermOpen * setlocal nonumber norelativenumber nocursorline
+augroup END
+
 " Define a simple custom folding style. It basically just shows the first line
 " of the folded text. For Python and YAML, we also change colons to semicolons.
 " For languages with braces, we also add closing braces to the folding marker.

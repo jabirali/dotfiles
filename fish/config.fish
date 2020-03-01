@@ -5,7 +5,7 @@ fish_vi_key_bindings
 bind -M insert jk "if commandline -P; commandline -f cancel; else; set fish_bind_mode default; commandline -f backward-char force-repaint; end"
 
 # Define environment variables.
-set -x EDITOR nvim
+set -x EDITOR nvr 
 set -x TERMINFO /usr/lib/terminfo
 set -x TERM xterm
 set -x PATH ~/.emacs.d/bin/ ~/.poetry/bin ~/.local/bin/ /opt/zotero/ /opt/nomad/bin/ /opt/mpw/bin /snap/bin $PATH
@@ -14,7 +14,8 @@ set -x LC_ALL en_US.UTF-8
 set -x LC_NUMERIC en_US.UTF-8
 set -x FZF_DEFAULT_COMMAND 'fdfind --type f'
 set -x NNN_TRASH = 1
-# set -x NNN_USE_EDITOR = 1
+set -x NNN_USE_EDITOR = 1
+set -x NVIM_LISTEN_ADDRESS /tmp/nvimsocket
 
 # Moonlight colorscheme.
 set fish_color_autosuggestion "#5b6395"
