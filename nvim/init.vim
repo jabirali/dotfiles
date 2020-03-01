@@ -19,8 +19,8 @@ set inccommand=nosplit
 set noshowmode
 set nowrap
 set number
-set scrolloff=999
 set shiftwidth=4
+set scrolloff=999
 set sidescrolloff=5
 set smartcase
 set spelllang=en,nb
@@ -84,13 +84,13 @@ let g:nuake_position = 'top'
 let g:org_aggressive_conceal = 1
 let g:SimpylFold_docstring_preview = 1
 let g:tex_conceal = 'abdgm'
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
-let g:UltiSnipsJumpForwardTrigger = "<C-j>"
-let g:UltiSnipsListSnippets = "<S-tab>"
+let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+let g:UltiSnipsListSnippets = '<S-tab>'
 let g:ultisnips_python_style = 'google'
 let g:vim_markdown_folding_style_pythonic = 1
-let g:vimtex_compiler_progname = "nvr"
+let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_view_method = 'zathura'
 
@@ -145,6 +145,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'plasticboy/vim-markdown'    " MarkDown (general)
 	Plug 'tmhedberg/SimpylFold'       " Python (folding)
 	Plug 'vim-python/python-syntax'   " Python (syntax)
+	Plug 'jmcantrell/vim-virtualenv'  " Python (venv)
 call plug#end()
 
 " Activate plugins.
@@ -180,9 +181,11 @@ map <leader><tab>[ :tabprev<cr>
 map ]<tab> :tabnext<cr>
 map [<tab> :tabprev<cr>
 
-" Toggle unimpaired.
+" Toggle stuff.
 map <leader>t yo
 map <leader>tg :Goyo<cr>
+map <leader>tv :VirtualEnvActivate<space>
+map <leader>tV :VirtualEnvDeactivate<cr>
 
 " Open applications.
 map <leader>ot :Nuake<cr>
@@ -231,12 +234,13 @@ map <leader>qr :source ~/.config/nvim/init.vim<cr>:filetype detect<cr>
 map <leader>qu <leader>qr<cr>:PlugUpdate<cr>
 
 " Leader-based speed keys.
-map <leader><leader> <leader>fb
+map <leader><leader> <leader>fg
 map <leader>, <leader>fg
 map <leader>. <leader>f.
 map <leader>/ <leader>sp
 map <leader>h :Helptags<cr>
 map <leader>: :Commands<cr>
+map <leader>; :Commands<cr>
 
 " Non-leader speed keys.
 map  ; :
@@ -299,3 +303,5 @@ augroup terminal_escape
 	autocmd TermOpen * tnoremap <buffer> <esc> <c-\><c-n>
 	autocmd FileType fzf tunmap <buffer> <esc>
 augroup END
+
+
