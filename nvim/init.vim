@@ -199,7 +199,7 @@ map <leader>tV :VirtualEnvDeactivate<cr>
 " Open applications.
 map <leader>of :NnnPicker '%:p:h'<cr>
 map <leader>op :bot split term://htop<cr>i
-map <leader>ot :Nuake<cr>
+map <leader>ot :Nuake<cr><C-\><C-n>:set scrolloff=999<cr>:<C-c>
 map <leader>oT :terminal<cr>
 map <leader>ov <leader>tv
 map <leader>oV <leader>tV
