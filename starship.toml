@@ -1,7 +1,4 @@
-#------------------------------------------------------------
-# File: Starship prompt config
-# Path: ~/.config/starship.toml
-#------------------------------------------------------------
+# ~/.config/starship.toml
 
 [git_branch]
 disabled = true

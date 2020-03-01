@@ -1,7 +1,4 @@
-#------------------------------------------------------------
-# File: Shell config
-# Path: ~/.config/fish/config.fish
-#------------------------------------------------------------
+# ~/.config/fish/config.fish
 
 # Enable Vim mode with jk escape.
 fish_vi_key_bindings

@@ -1,3 +1,5 @@
+# ~/.config/offlineimap/auth.py
+
 '''
 This file is used by offlineimap to fetch passwords from the desktop keyring.
 I'm using secret-tool over the keyring library so I can reuse the same stored

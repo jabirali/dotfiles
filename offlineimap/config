@@ -1,12 +1,9 @@
-#------------------------------------------------------------
-# File: Mail downloading
-# Path: ~/.config/offlineimap/config
-#------------------------------------------------------------
+# ~/.config/offlineimap/config
 
 [general]
 accounts         = personal
 metadata         = ~/.cache/offlineimap
-pythonfile       = ~/.dotfiles/offlineimap.py
+pythonfile       = ~/.dotfiles/offlineimap/auth.py
 status_backend   = sqlite
 autorefresh      = 3
 quick            = 9

@@ -1,7 +1,4 @@
-#------------------------------------------------------------
-# File: Zathura reader settings
-# Path: ~/.config/zathura/zathurarc
-#------------------------------------------------------------
+# ~/.config/zathura/zathurarc 
 
 # Moonlight colorscheme
 set notification-error-bg       "#212337"

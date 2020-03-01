@@ -1,5 +1,4 @@
-" vim: foldmethod=marker
-" ~/.config/nvim/init.vim
+" ~/.config/nvim/init.vim vim: foldmethod=marker
 
 "{{{1 Neovim settings
 "{{{2 Configuration
@@ -50,9 +49,13 @@ augroup quit_like_emacs
 augroup END
 
 " Define a simple custom folding style. It basically just shows the first line
-" of the folded text; for Python and YAML, we also change colons to semicolons.
+" of the folded text. For Python and YAML, we also change colons to semicolons.
+" For languages with braces, we also add closing braces to the folding marker.
 function! SimpleFoldText()
-	return substitute(getline(v:foldstart), ':\s*$', ';', '')
+	let line = getline(v:foldstart)
+	let line2 = substitute(line, ':\s*$', ';', '')
+	let line3 = substitute(line2, '[\{][\{]*\s*$', '{...}', '')
+	return line3
 endfunction
 
 " Use this folding style everywhere.
@@ -183,6 +186,7 @@ map <leader>tg :Goyo<cr>
 
 " Open applications.
 map <leader>ot :Nuake<cr>
+map <leader>oT :terminal<cr>
 map <leader>of :bot split term://nnn<cr>i
 map <leader>op :bot split term://htop<cr>i
 
@@ -203,13 +207,13 @@ map <leader>f. :Files .<cr>
 " Version control.
 map <leader>gg :MagitOnly<cr>
 map <leader>gb :GBlame<cr>
-map <leader>gD :Gdelete<cr>
+map <leader>gD :Gdelete<space>
 map <leader>gd :Git difftool<cr>
 map <leader>gf :Gfetch<cr>
 map <leader>gl :Glog<cr>
 map <leader>gm :Git mergetool<cr>
 map <leader>gp :Gpush<cr>
-map <leader>gR :Gmove<cr>
+map <leader>gR :Gmove<space>
 map <leader>gs <Plug>(GitGutterStageHunk)
 map <leader>gu <Plug>(GitGutterUndoHunk)
 map <leader>gz :GitGutterFold<cr>

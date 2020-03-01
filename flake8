@@ -1,3 +1,5 @@
+# ~/.config/flake8 vim: ft=toml
+
 [flake8]
 select = C,D,E,F,W,B,B950
 ignore = E203, E501, W503, D107

@@ -1,7 +1,4 @@
-#------------------------------------------------------------
-# File: Gnuplot config
-# Path: ~/.gnuplot
-#------------------------------------------------------------
+# ~/.gnuplot
 
 # Terminal
 set terminal qt enhanced font 'Libertinus Serif,24' size 800,600

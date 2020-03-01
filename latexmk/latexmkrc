@@ -1,7 +1,4 @@
-#------------------------------------------------------------
-# File: Latexmk config
-# Path: ~/.config/latexmk/latexmkrc
-#------------------------------------------------------------
+# ~/.config/latexmk/latexmkrc vim: ft=perl
 
 # Always use normalized ISBN13 codes.
 $biber='biber --isbn13 --isbn-normalise %O %S';
