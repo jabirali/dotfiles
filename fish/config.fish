@@ -12,6 +12,9 @@ set -x PATH ~/.emacs.d/bin/ ~/.poetry/bin ~/.local/bin/ /opt/zotero/ /opt/nomad/
 set -x POETRY_VIRTUALENVS_PATH ~/.virtualenvs
 set -x LC_ALL en_US.UTF-8
 set -x LC_NUMERIC en_US.UTF-8
+set -x FZF_DEFAULT_COMMAND 'fdfind --type f'
+set -x NNN_TRASH = 1
+# set -x NNN_USE_EDITOR = 1
 
 # Moonlight colorscheme.
 set fish_color_autosuggestion "#5b6395"
