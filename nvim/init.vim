@@ -16,17 +16,18 @@ set gdefault
 set hidden
 set ignorecase
 set inccommand=nosplit
-set statusline=%t%=%m
 set noshowmode
 set nowrap
 set number
-set shiftwidth=4
 set scrolloff=999
+set shiftwidth=4
 set sidescrolloff=5
+set signcolumn=yes
 set smartcase
 set spelllang=en,nb
 set splitbelow
 set splitright
+set statusline=%t%=%m
 set tabstop=4
 set termguicolors
 set tildeop
@@ -79,6 +80,7 @@ let g:clever_f_chars_match_any_signs = '.'
 let g:clever_f_smart_case = 1
 let g:fold_cycle_default_mapping = 0
 let g:gitgutter_sign_modified_removed = '~ '
+let g:loaded_netrw = 1
 let g:magit_default_fold_level = 1
 let g:nnn#replace_netrw = 1
 let g:nuake_per_tab = 1
@@ -95,10 +97,7 @@ let g:vim_markdown_folding_style_pythonic = 1
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_view_method = 'zathura'
-let g:loaded_netrw = 1
 let loaded_netrwPlugin = 1
-let $NNN_USE_EDITOR = 1
-let $NNN_TRASH = 1
 
 " Syntax highlights.
 augroup clean_highlights
@@ -173,7 +172,6 @@ map <leader>w <C-w>
 map <leader>wd :close<cr>
 
 " Tabs/Workspaces.
-map <leader><tab>n :tabnew<cr>
 map <leader><tab>1 :1tabnext<cr>
 map <leader><tab>2 :2tabnext<cr>
 map <leader><tab>3 :3tabnext<cr>
@@ -183,6 +181,8 @@ map <leader><tab>6 :6tabnext<cr>
 map <leader><tab>7 :7tabnext<cr>
 map <leader><tab>8 :8tabnext<cr>
 map <leader><tab>9 :9tabnext<cr>
+map <leader><tab>d :tabclose<cr>
+map <leader><tab>n :tabnew<cr>
 map <leader><tab>] :tabnext<cr>
 map <leader><tab>[ :tabprev<cr>
 map ]<tab> :tabnext<cr>
@@ -195,30 +195,31 @@ map <leader>tv :VirtualEnvActivate<space>
 map <leader>tV :VirtualEnvDeactivate<cr>
 
 " Open applications.
-map <leader>ot :Nuake<cr>
-map <leader>oT :terminal<cr>
 map <leader>of :NnnPicker '%:p:h'<cr>
 map <leader>op :bot split term://htop<cr>i
+map <leader>ot :Nuake<cr>
+map <leader>oT :terminal<cr>
+map <leader>ov <leader>tv
+map <leader>oV <leader>tV
 
 " Find files.
 map <leader>ff :Files ~/projects/<cr>
+map <leader>fF :Files ~/<cr>
 map <leader>fb :Buffers<cr>
-map <leader>fc :BCommits<cr>
-map <leader>fC :Commits<cr>
 map <leader>fd :Files ~/.dotfiles/<cr>
 map <leader>fD :Files /etc/<cr>
-map <leader>fF :Files ~/<cr>
 map <leader>fg :GFiles<cr>
 map <leader>fG :GFiles?<cr>
 map <leader>fn :Files ~/projects/notes/<cr>
 map <leader>fr :History<cr>
-map <leader>f. :NnnPicker '.'<cr>
 
 " Version control.
 map <leader>gg :MagitOnly<cr>
 map <leader>gb :GBlame<cr>
-map <leader>gD :Gdelete<space>
+map <leader>gc :BCommits<cr>
+map <leader>gC :Commits<cr>
 map <leader>gd :Git difftool<cr>
+map <leader>gD :Gdelete<space>
 map <leader>gf :Gfetch<cr>
 map <leader>gl :Glog<cr>
 map <leader>gm :Git mergetool<cr>
@@ -243,11 +244,11 @@ map <leader>qu <leader>qr<cr>:PlugUpdate<cr>
 " Leader-based speed keys.
 map <leader><leader> <leader>fg
 map <leader>, <leader>fb
-map <leader>. <leader>f.
+map <leader>. <leader>of
 map <leader>/ <leader>sp
-map <leader>h :Helptags<cr>
 map <leader>: :Commands<cr>
 map <leader>; :Commands<cr>
+map <leader>h :Helptags<cr>
 
 " Non-leader speed keys.
 map  ; :
