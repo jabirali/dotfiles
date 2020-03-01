@@ -290,10 +290,10 @@ noremap J <C-d>
 noremap K <C-u>
 
 " Org-like indentation.
-nnoremap <M-h> <<
-nnoremap <M-l> >>
-vnoremap <M-h> <gv
-vnoremap <M-l> >gv
+nmap <M-h> <<
+nmap <M-l> >>
+vmap <M-h> <gv
+vmap <M-l> >gv
 
 " Org-like dragging.
 nmap <M-j> ]e
