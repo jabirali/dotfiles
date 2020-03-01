@@ -57,13 +57,19 @@ if exists('g:started_by_firenvim')
 endif
 
 " Define a simple custom folding style. It basically just shows the first line
-" of the folded text. For Python and YAML, we also change colons to semicolons.
-" For languages with braces, we also add closing braces to the folding marker.
+" of the folded text. If the end of the folding pattern contains an opening
+" marker, it is replaced by or accompandied by an appropriate closing marker.
 function! SimpleFoldText()
 	let line1 = getline(v:foldstart)
+
+	" Replace `def f(x):` with `def f(x);`.
 	let line2 = substitute(line1, ':\s*$', ';', '')
+	" Replace `int f(int x) {` with `int f(int x) {...}`.
 	let line3 = substitute(line2, '[\{][\{]*\s*$', '{...}', '')
-	return line3
+	" Replace `"""First line.` with `"""First line."""`
+	let line4 = substitute(line3, '"""\(.*\)', '"""\1"""', '')
+
+	return line4
 endfunction
 
 " Use this folding style everywhere.
