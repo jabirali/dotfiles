@@ -1,7 +1,7 @@
-" ~/.config/nvim/init.vim vim: foldmethod=marker
+" ~/.config/nvim/init.vim vim: foldmethod=marker foldmarker="\ #,"###
 
-"{{{1 Neovim settings
-"{{{2 Configuration
+" #1 Neovim settings
+" #2 Configuration
 set autochdir
 set clipboard+=unnamedplus
 set complete+=k,s,d
@@ -37,7 +37,7 @@ set virtualedit=block
 set wildmode=longest:full,full
 set winaltkeys=no
 
-"{{{2 Miscellaneous
+" #2 Miscellaneous
 " Close pop-ups with `q` like Emacs.
 augroup quit_like_emacs
 	autocmd!
@@ -82,8 +82,8 @@ augroup END
 " Jump to the Git project root.
 command! GitCd execute 'cd ./'.system('git rev-parse --show-cdup')
 
-"{{{1 Plugin settings
-"{{{2 Configuration
+" #1 Plugin settings
+" #2 Configuration
 " Plugin parameters.
 let b:ale_fixers = { '*': [ 'trim_whitespace' ], 'python': [ 'black', 'isort' ] }
 let g:ale_fix_on_save = 1
@@ -120,7 +120,7 @@ augroup clean_highlights
 	autocmd ColorScheme * hi SpellBad guifg=red gui=none
 augroup END
 
-"{{{2 Installation
+" #2 Installation
 " Bootstrap procedure.
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
 	silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -178,8 +178,8 @@ else
 	silent! colorscheme moonlight
 endif
 
-"{{{1 Keybindings
-"{{{2 Leader keys
+" #1 Keybindings
+" #2 Leader keys
 " Spacemacs-like leaders.
 let mapleader="\<space>"
 let maplocalleader=","
@@ -280,7 +280,7 @@ map  ; :
 nmap ` <leader>ot
 tmap ` <C-\><C-n><leader>ot
 
-"{{{2 Editor keys
+" #2 Editor keys
 " Better defaults.
 nnoremap ' `
 nnoremap Y y$
