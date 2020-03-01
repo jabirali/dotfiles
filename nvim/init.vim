@@ -9,13 +9,14 @@ set completeopt=longest,menu,preview
 set concealcursor=nc
 set conceallevel=2
 set confirm
-set fillchars=fold: 
+set fillchars=fold:\ ,stl:-,stlnc:-,
 set foldlevel=0
 set foldmethod=syntax
 set gdefault
 set hidden
 set ignorecase
 set inccommand=nosplit
+set laststatus=0
 set noshowmode
 set nowrap
 set number
@@ -27,7 +28,7 @@ set smartcase
 set spelllang=en,nb
 set splitbelow
 set splitright
-set statusline=%t%=%m
+set statusline=%#VertSplit#%=
 set tabstop=4
 set termguicolors
 set tildeop
