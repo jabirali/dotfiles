@@ -5,7 +5,7 @@ fish_vi_key_bindings
 bind -M insert jk "if commandline -P; commandline -f cancel; else; set fish_bind_mode default; commandline -f backward-char force-repaint; end"
 
 # Define environment variables.
-set -x EDITOR emacsclient -c -a ''
+set -x EDITOR nvim
 set -x TERMINFO /usr/lib/terminfo
 set -x TERM xterm
 set -x PATH ~/.emacs.d/bin/ ~/.poetry/bin ~/.local/bin/ /opt/zotero/ /opt/nomad/bin/ /opt/mpw/bin /snap/bin $PATH
@@ -48,23 +48,32 @@ if not [ (which starship) ];
 end
 starship init fish | source
 
-# Functions and aliases.
-function e --description 'Edit in normal Emacs'
-    if [ "$INSIDE_EMACS" = "vterm" ]
-        printf '\e]51;E%s\e\\' "find-file $argv"
-    else
-       emacsclient -c -a '' $argv &
-    end
+# Load virtualenv if needed.
+if [ -e $VIRTUAL_ENV ]
+	source $VIRTUAL_ENV/bin/activate.fish
 end
 
-function e! --description 'Edit in barebones Emacs'
-	emacs -q -nw \
-        --eval="(menu-bar-mode -1)" \
-        --eval="(setq-default mode-line-format nil)" \
-        --eval="(setq viper-mode t)" \
-        --eval="(viper-mode)" \
-        $argv
+# Functions and aliases.
+function e --description 'Edit file'
+	exec $EDITOR $argv
 end
+
+# function e --description 'Edit in normal Emacs'
+#     if [ "$INSIDE_EMACS" = "vterm" ]
+#         printf '\e]51;E%s\e\\' "find-file $argv"
+#     else
+#        emacsclient -c -a '' $argv &
+#     end
+# end
+
+# function e! --description 'Edit in barebones Emacs'
+# 	emacs -q -nw \
+#         --eval="(menu-bar-mode -1)" \
+#         --eval="(setq-default mode-line-format nil)" \
+#         --eval="(setq viper-mode t)" \
+#         --eval="(viper-mode)" \
+#         $argv
+# end
 
 function o --description 'Open in system app'
     xdg-open $argv &
