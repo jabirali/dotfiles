@@ -79,6 +79,7 @@ let g:clever_f_smart_case = 1
 let g:fold_cycle_default_mapping = 0
 let g:gitgutter_sign_modified_removed = '~ '
 let g:magit_default_fold_level = 1
+let g:nnn#replace_netrw = 1
 let g:nuake_per_tab = 1
 let g:nuake_position = 'top'
 let g:org_aggressive_conceal = 1
@@ -93,6 +94,8 @@ let g:vim_markdown_folding_style_pythonic = 1
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_view_method = 'zathura'
+let $NNN_USE_EDITOR = 1
+let $NNN_TRASH = 1
 
 " Syntax highlights.
 augroup clean_highlights
@@ -137,6 +140,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'airblade/vim-gitgutter'     " Version control (buffer)
 	Plug 'honza/vim-snippets'         " Snippet collection
 	Plug 'SirVer/ultisnips'           " Snippet engine
+	Plug 'mcchrish/nnn.vim'           " File browser
 	" Language support
 	Plug 'cespare/vim-toml'           " TOML (syntax)
 	Plug 'jceb/vim-orgmode'           " Org (general)
@@ -190,7 +194,7 @@ map <leader>tV :VirtualEnvDeactivate<cr>
 " Open applications.
 map <leader>ot :Nuake<cr>
 map <leader>oT :terminal<cr>
-map <leader>of :bot split term://nnn<cr>i
+map <leader>of :NnnPicker '%:p:h'<cr>
 map <leader>op :bot split term://htop<cr>i
 
 " Find files.
@@ -205,7 +209,7 @@ map <leader>fg :GFiles<cr>
 map <leader>fG :GFiles?<cr>
 map <leader>fn :Files ~/projects/notes/<cr>
 map <leader>fr :History<cr>
-map <leader>f. :Files .<cr>
+map <leader>f. :NnnPicker '.'<cr>
 
 " Version control.
 map <leader>gg :MagitOnly<cr>
@@ -235,7 +239,7 @@ map <leader>qu <leader>qr<cr>:PlugUpdate<cr>
 
 " Leader-based speed keys.
 map <leader><leader> <leader>fg
-map <leader>, <leader>fg
+map <leader>, <leader>fb
 map <leader>. <leader>f.
 map <leader>/ <leader>sp
 map <leader>h :Helptags<cr>
