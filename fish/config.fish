@@ -16,7 +16,6 @@ set -x FZF_DEFAULT_COMMAND 'fdfind --type f'
 set -x FZF_DEFAULT_OPTS '--color fg:-1,bg:-1,fg+:-1,bg+:#2a2e48,hl:#f79a62,hl+:#ffc777,pointer:#ffc777,marker:#c3a2ff,info:#c3a2ff,prompt:#7e8eda,border:#7e8eda,spinner:#7e8eda,header:#7e8eda'
 set -x NNN_TRASH = 1
 set -x NNN_USE_EDITOR = 1
-set -x NVIM_LISTEN_ADDRESS /tmp/nvimsocket
 
 # Moonlight colorscheme.
 set fish_color_autosuggestion "#5b6395"
@@ -59,33 +58,42 @@ if [ -e $VIRTUAL_ENV ]
 end
 
 # Functions and aliases.
-function e --description 'Edit file'
+function e --description "Edit file via $EDITOR"
 	exec $EDITOR $argv
 end
 
-# function e --description 'Edit in normal Emacs'
-#     if [ "$INSIDE_EMACS" = "vterm" ]
-#         printf '\e]51;E%s\e\\' "find-file $argv"
-#     else
-#        emacsclient -c -a '' $argv &
-#     end
-# end
+function e! --description 'Edit in safe mode'
+	nvim -u NORC $argv
+end
 
-# function e! --description 'Edit in barebones Emacs'
-# 	emacs -q -nw \
-#         --eval="(menu-bar-mode -1)" \
-#         --eval="(setq-default mode-line-format nil)" \
-#         --eval="(setq viper-mode t)" \
-#         --eval="(viper-mode)" \
-#         $argv
-# end
+function d --description 'File manager'
+    # Block nesting in subshells.
+    if test -n NNNLVL
+        if [ (expr $NNNLVL + 0) -ge 1 ]
+            echo "nnn is already running"
+            return
+        end
+    end
+
+    # Output file for `cd` info.
+    if [ -n "$XDG_CONFIG_HOME" ]
+        set -x NNN_TMPFILE "$XDG_CONFIG_HOME/nnn/.lastd"
+    else
+        set -x NNN_TMPFILE "$HOME/.config/nnn/.lastd"
+	end
+
+	# Launch `nnn`.
+	nnn $argv
+
+	# Implement `cd` on quit.
+    if [ -e $NNN_TMPFILE ]
+        source $NNN_TMPFILE
+        rm $NNN_TMPFILE
+    end
+end
 
 function o --description 'Open in system app'
     xdg-open $argv &
-end
-
-function r --description 'Interrupt Emacs'
-    killall -SIGUSR2 emacs
 end
 
 function venv --description 'Python virtual environments'
@@ -106,6 +114,27 @@ end
 function scrape --description 'Scrape all linked documents from a website'
     wget -r -l 1 -e robots=off
 end
+
+# function e --description 'Edit in normal Emacs'
+#     if [ "$INSIDE_EMACS" = "vterm" ]
+#         printf '\e]51;E%s\e\\' "find-file $argv"
+#     else
+#        emacsclient -c -a '' $argv &
+#     end
+# end
+
+# function e! --description 'Edit in barebones Emacs'
+# 	emacs -q -nw \
+#         --eval="(menu-bar-mode -1)" \
+#         --eval="(setq-default mode-line-format nil)" \
+#         --eval="(setq viper-mode t)" \
+#         --eval="(viper-mode)" \
+#         $argv
+# end
+
+# function r --description 'Interrupt Emacs'
+#     killall -SIGUSR2 emacs
+# end
 
 # Enable vterm directory tracking in Emacs.
 function vterm_printf;
