@@ -4,11 +4,12 @@
 " #2 Configuration
 set autochdir
 set clipboard+=unnamedplus
-set complete+=k,s,d
+set complete=t,i,d,.
 set completeopt=longest,menu,preview
 set concealcursor=nc
 set conceallevel=2
 set confirm
+set cursorline
 set fillchars=fold:\ ,stl:-,stlnc:-,
 set foldlevel=0
 set foldmethod=syntax
@@ -19,11 +20,11 @@ set inccommand=nosplit
 set laststatus=0
 set noshowmode
 set nowrap
-set number
+set nonumber
+set relativenumber
 set scrolloff=999
 set shiftwidth=4
 set sidescrolloff=5
-set signcolumn=yes
 set smartcase
 set spelllang=en,nb
 set splitbelow
@@ -45,10 +46,10 @@ augroup quit_like_emacs
 	autocmd FileType help noremap <buffer> q :q<cr>
 augroup END
 
-" Don't show line numbers in terminals.
+" Don't show line numbers or cursorlines in terminals.
 augroup terminal_settings
 	autocmd!
-	autocmd TermOpen * setlocal nonumber norelativenumber
+	autocmd TermOpen * setlocal nonumber norelativenumber nocursorline
 augroup END
 
 " Don't show line numbers etc. in browsers.
@@ -91,9 +92,9 @@ let g:ale_linters = { 'python': [ 'flake8' ], 'tex': [] }
 let g:clever_f_chars_match_any_signs = '.'
 let g:clever_f_smart_case = 1
 let g:fold_cycle_default_mapping = 0
-let g:gitgutter_sign_modified_removed = '~ '
 let g:loaded_netrw = 1
 let g:magit_default_fold_level = 1
+let g:gitgutter_signs = 0
 let g:nnn#replace_netrw = 1
 let g:nuake_per_tab = 1
 let g:nuake_position = 'top'
@@ -238,7 +239,7 @@ map <leader>fp :Files ~/projects/<cr>
 map <leader>fr :History<cr>
 
 " Version control.
-map <leader>gg :MagitOnly<cr>
+map <leader>gg :MagitOnly<cr>:set scrolloff=999<cr>
 map <leader>gb :GBlame<cr>
 map <leader>gc :BCommits<cr>
 map <leader>gC :Commits<cr>
@@ -251,7 +252,7 @@ map <leader>gp :Gpush<cr>
 map <leader>gR :Gmove<space>
 map <leader>gs <Plug>(GitGutterStageHunk)
 map <leader>gu <Plug>(GitGutterUndoHunk)
-map <leader>gz :GitGutterFold<cr>
+map <leader>gz :GitGutterSignsToggle<cr>:GitGutterFold<cr>
 
 " Search content.
 map <leader>ss    :BLines<cr>
