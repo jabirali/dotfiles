@@ -230,9 +230,10 @@ map <leader>oV <leader>tV
 
 " Find files.
 map <leader>ff :Files ~/projects/<cr>
+map <leader>fo :Files ~/onedrive/<cr>
 map <leader>fF :Files ~/<cr>
 map <leader>fb :Buffers<cr>
-map <leader>fd :Files ~/.dotfiles/<cr>
+map <leader>fd :Files ~/.config/<cr>
 map <leader>fD :Files /etc/<cr>
 map <leader>fg :GFiles<cr>
 map <leader>fG :GFiles?<cr>
