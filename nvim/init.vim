@@ -44,6 +44,7 @@ set winaltkeys=no
 augroup quit_like_emacs
 	autocmd!
 	autocmd BufWinEnter quickfix noremap <buffer> q :q<cr>
+	autocmd TermOpen * noremap <buffer> q <C-\><C-n>:close<cr>
 	autocmd FileType help noremap <buffer> q :q<cr>
 augroup END
 
@@ -102,6 +103,7 @@ let g:nuake_per_tab = 1
 let g:nuake_position = 'top'
 let g:org_aggressive_conceal = 1
 let g:SimpylFold_docstring_preview = 1
+let g:SimpylFold_fold_import = 0
 let g:sexp_filetypes = ''
 let g:tex_conceal = 'abdgm'
 let g:UltiSnipsExpandTrigger = '<tab>'
@@ -287,8 +289,8 @@ map <leader>h :Helptags<cr>
 
 " Non-leader speed keys.
 map  ; :
-nmap ` <leader>ot
-tmap ` <C-\><C-n><leader>ot
+" nmap ` <leader>ot
+" tmap ` <C-\><C-n><leader>ot
 
 " #2 Editor keys
 " Better defaults.
