@@ -90,6 +90,7 @@ command! GitCd execute 'cd ./'.system('git rev-parse --show-cdup')
 let b:ale_fixers = { '*': [ 'trim_whitespace' ], 'python': [ 'black', 'isort' ] }
 let g:ale_fix_on_save = 1
 let g:ale_linters = { 'python': [ 'flake8' ], 'tex': [] }
+let g:ale_set_quickfix = 1
 let g:clever_f_chars_match_any_signs = '.'
 let g:clever_f_smart_case = 1
 let g:fold_cycle_default_mapping = 0
@@ -223,6 +224,7 @@ map <leader>tV :VirtualEnvDeactivate<cr>
 
 " Open stuff.
 map <leader>od :NnnPicker '%:p:h'<cr>
+map <leader>ol :bot lopen<cr>
 map <leader>oo :tabedit ~/projects/notes/sintef.org<cr>
 map <leader>oO :tabedit ~/projects/notes/personal.org<cr>
 map <leader>op :bot split term://htop<cr>i
@@ -230,6 +232,7 @@ map <leader>ot :Nuake<cr><C-\><C-n>:set scrolloff=999<cr>:<C-c>
 map <leader>oT :terminal<cr>
 map <leader>ov <leader>tv
 map <leader>oV <leader>tV
+map <leader>oq :bot copen<cr>
 
 " Find files.
 map <leader>ff :Files ~/projects/<cr>
