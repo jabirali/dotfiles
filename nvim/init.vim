@@ -4,8 +4,8 @@
 " #2 Configuration
 set autochdir
 set clipboard+=unnamedplus
-set complete=t,i,d,.
 set completeopt=longest,menu,preview
+set complete=t,i,d,.
 set concealcursor=nc
 set conceallevel=2
 set confirm
@@ -18,9 +18,9 @@ set hidden
 set ignorecase
 set inccommand=nosplit
 set laststatus=0
+set nonumber
 set noshowmode
 set nowrap
-set nonumber
 set relativenumber
 set scrolloff=999
 set shiftwidth=4
@@ -97,13 +97,10 @@ let g:clever_f_smart_case = 1
 let g:fold_cycle_default_mapping = 0
 let g:loaded_netrw = 1
 let g:magit_default_fold_level = 1
-let g:gitgutter_signs = 0
 let g:nnn#replace_netrw = 1
 let g:nuake_per_tab = 1
 let g:nuake_position = 'top'
 let g:org_aggressive_conceal = 1
-let g:SimpylFold_docstring_preview = 1
-let g:SimpylFold_fold_import = 0
 let g:sexp_filetypes = ''
 let g:tex_conceal = 'abdgm'
 let g:UltiSnipsExpandTrigger = '<tab>'
@@ -136,44 +133,44 @@ endif
 " Load the plugins.
 call plug#begin('~/.local/share/nvim/plugins')
 	" User interface
-	Plug 'Brettm12345/moonlight.vim'  " Moonlight colorscheme
- 	Plug 'arecarn/vim-fold-cycle'     " Org-like recursive folding
-	Plug 'Konfekt/FastFold'           " More optimized code folding
-	Plug 'liuchengxu/vim-which-key'   " Interactive keybinding help
-	Plug 'tpope/vim-repeat'           " Repeat more things with `.`
-	Plug 'tpope/vim-unimpaired'       " Browse more things with `[]`
-	Plug 'junegunn/goyo.vim'          " Center buffer when writing
+	Plug 'Brettm12345/moonlight.vim'    " Moonlight colorscheme
+ 	Plug 'arecarn/vim-fold-cycle'       " Org-like recursive folding
+	Plug 'Konfekt/FastFold'             " More optimized code folding
+	Plug 'liuchengxu/vim-which-key'     " Interactive keybinding help
+	Plug 'tpope/vim-repeat'             " Repeat more things with `.`
+	Plug 'tpope/vim-unimpaired'         " Browse more things with `[]`
+	Plug 'junegunn/goyo.vim'            " Center buffer when writing
 	" Text editing
-	Plug 'andymass/vim-matchup'       " Smarter `%` jumps and highlights
-	Plug 'junegunn/vim-slash'         " Smarter `*` jumps and highlights
-	Plug 'rhysd/clever-f.vim'         " Smarter `f` jumps and highlights
-	Plug 'machakann/vim-sandwich'     " More intuitive `surround` plugin
-	Plug 'tpope/vim-commentary'       " Faster (un)commenting with `gc`
-	Plug 'junegunn/vim-easy-align'    " Faster code alignment with `ga`
-	Plug 'tpope/vim-speeddating'      " Better C-a/C-x actions for dates
-	Plug 'guns/vim-sexp'              " Support for Lisp/Sexp slurp/barf.
+	Plug 'andymass/vim-matchup'         " Smarter `%` jumps and highlights
+	Plug 'junegunn/vim-slash'           " Smarter `*` jumps and highlights
+	Plug 'rhysd/clever-f.vim'           " Smarter `f` jumps and highlights
+	Plug 'machakann/vim-sandwich'       " More intuitive `surround` plugin
+	Plug 'tpope/vim-commentary'         " Faster (un)commenting with `gc`
+	Plug 'junegunn/vim-easy-align'      " Faster code alignment with `ga`
+	Plug 'tpope/vim-speeddating'        " Better C-a/C-x actions for dates
+	Plug 'guns/vim-sexp'                " Support for Lisp/Sexp slurp/barf.
 	" IDE features
-	Plug 'dense-analysis/ale'         " Linters and language servers
-	Plug 'junegunn/fzf',              { 'do': './install --bin' }
-	Plug 'junegunn/fzf.vim'           " Fuzzy finding of everything
-	Plug 'Lenovsky/nuake'             " Per-tab pop-up terminal
-	Plug 'tpope/vim-fugitive'         " Version control (general)
-	Plug 'jreybert/vimagit'           " Version control (commit)
-	Plug 'airblade/vim-gitgutter'     " Version control (buffer)
-	Plug 'honza/vim-snippets'         " Snippet collection
-	Plug 'SirVer/ultisnips'           " Snippet engine
-	Plug 'mcchrish/nnn.vim'           " File browser
+	Plug 'dense-analysis/ale'           " Linters and language servers
+	Plug 'junegunn/fzf',                { 'do': './install --bin' }
+	Plug 'junegunn/fzf.vim'             " Fuzzy finding of everything
+	Plug 'Lenovsky/nuake'               " Per-tab pop-up terminal
+	Plug 'tpope/vim-fugitive'           " Version control (general)
+	Plug 'jreybert/vimagit'             " Version control (commit)
+	Plug 'airblade/vim-gitgutter'       " Version control (buffer)
+	Plug 'honza/vim-snippets'           " Snippet collection
+	Plug 'SirVer/ultisnips'             " Snippet engine
+	Plug 'mcchrish/nnn.vim'             " File browser
 	" Language support
-	Plug 'cespare/vim-toml'           " TOML (syntax)
-	Plug 'jceb/vim-orgmode'           " Org (general)
-	Plug 'lervag/vimtex'              " TeX (general)
-	Plug 'PietroPate/vim-tex-conceal' " TeX (conceal)
-	Plug 'plasticboy/vim-markdown'    " MarkDown (general)
-	Plug 'tmhedberg/SimpylFold'       " Python (folding)
-	Plug 'vim-python/python-syntax'   " Python (syntax)
-	Plug 'jmcantrell/vim-virtualenv'  " Python (venv)
+	Plug 'kalekundert/vim-coiled-snake' " Python
+	Plug 'vim-python/python-syntax'     " Python
+	Plug 'jmcantrell/vim-virtualenv'    " Python
+	Plug 'lervag/vimtex'                " LaTeX
+	Plug 'PietroPate/vim-tex-conceal'   " LaTeX
+	Plug 'plasticboy/vim-markdown'      " MarkDown
+	Plug 'jceb/vim-orgmode'             " Org-mode
+	Plug 'cespare/vim-toml'             " TOML
 	" Miscellaneous
-	Plug 'glacambre/firenvim',        { 'do': { _ -> firenvim#install(0) } }
+	Plug 'glacambre/firenvim',          { 'do': { _ -> firenvim#install(0) } }
 call plug#end()
 
 " Activate themes based on context.
