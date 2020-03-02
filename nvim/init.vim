@@ -22,7 +22,7 @@ set noshowmode
 set nowrap
 set nonumber
 set relativenumber
-set scrolloff=999
+set scrolloff=13
 set shiftwidth=4
 set sidescrolloff=5
 set smartcase
@@ -174,8 +174,9 @@ call plug#end()
 
 " Activate colorscheme based on context.
 if exists('g:started_by_firenvim')
-	set background=light
-	silent! colorscheme zellner
+	set background=dark
+	set guifont=Iosevka\ SS09:h8
+	silent! colorscheme moonlight
 else
 	set background=dark
 	set guifont=Iosevka\ SS09:h14
@@ -224,7 +225,7 @@ map <leader>od :NnnPicker '%:p:h'<cr>
 map <leader>oo :tabedit ~/projects/notes/sintef.org<cr>
 map <leader>oO :tabedit ~/projects/notes/personal.org<cr>
 map <leader>op :bot split term://htop<cr>i
-map <leader>ot :Nuake<cr><C-\><C-n>:set scrolloff=999<cr>:<C-c>
+map <leader>ot :Nuake<cr><C-\><C-n>:set scrolloff=13<cr>:<C-c>
 map <leader>oT :terminal<cr>
 map <leader>ov <leader>tv
 map <leader>oV <leader>tV
@@ -243,7 +244,7 @@ map <leader>fp :Files ~/projects/<cr>
 map <leader>fr :History<cr>
 
 " Version control.
-map <leader>gg :MagitOnly<cr>:set scrolloff=999<cr>
+map <leader>gg :MagitOnly<cr>:set scrolloff=13<cr>
 map <leader>gb :GBlame<cr>
 map <leader>gc :BCommits<cr>
 map <leader>gC :Commits<cr>
