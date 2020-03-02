@@ -87,7 +87,7 @@ command! GitCd execute 'cd ./'.system('git rev-parse --show-cdup')
 " #1 Plugin settings
 " #2 Configuration
 " Plugin parameters.
-let b:ale_fixers = { '*': [ 'trim_whitespace' ], 'python': [ 'black', 'isort' ] }
+let g:ale_fixers = { '*': [ 'trim_whitespace' ], 'python': [ 'black', 'isort' ] }
 let g:ale_fix_on_save = 1
 let g:ale_linters = { 'python': [ 'flake8' ], 'tex': [] }
 let g:ale_set_quickfix = 1
@@ -224,7 +224,7 @@ map <leader>tV :VirtualEnvDeactivate<cr>
 
 " Open stuff.
 map <leader>od :NnnPicker '%:p:h'<cr>
-map <leader>ol :bot lopen<cr>
+map <leader>ol :bot lwindow<cr>
 map <leader>oo :tabedit ~/projects/notes/sintef.org<cr>
 map <leader>oO :tabedit ~/projects/notes/personal.org<cr>
 map <leader>op :bot split term://htop<cr>i
@@ -232,7 +232,7 @@ map <leader>ot :Nuake<cr><C-\><C-n>:set scrolloff=999<cr>:<C-c>
 map <leader>oT :terminal<cr>
 map <leader>ov <leader>tv
 map <leader>oV <leader>tV
-map <leader>oq :bot copen<cr>
+map <leader>oq :bot cwindow<cr>
 
 " Find files.
 map <leader>ff :Files ~/projects/<cr>
@@ -297,7 +297,7 @@ nnoremap Y y$
 noremap  j gj
 noremap  k gk
 nnoremap U <C-r>
-noremap  R :filetype detect<cr>
+noremap  R :e!<cr>
 
 " Paging with HJKL.
 noremap H zH
@@ -324,8 +324,8 @@ nmap <M-{> <Plug>(sexp_capture_prev_element)
 nmap <M-}> <Plug>(sexp_emit_head_element)
 
 " Ergononmic matching jumps.
-map <bs> %
-map <cr> *
+" map <bs> %
+" map <cr> *
 
 " Ergonomic code folding.
 nmap <tab> <Plug>(fold-cycle-open)
