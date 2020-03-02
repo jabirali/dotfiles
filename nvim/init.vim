@@ -59,28 +59,12 @@ if exists('g:started_by_firenvim')
 	set nonumber norelativenumber signcolumn=no statusline=%= wrap linebreak
 endif
 
-" Define a simple custom folding style. It basically just shows the first line
-" of the folded text. If the end of the folding pattern contains an opening
-" marker, it is replaced by or accompandied by an appropriate closing marker.
-function! SimpleFoldText()
-	let line1 = getline(v:foldstart)
-
-	" Replace `def f(x):` with `def f(x);`.
-	let line2 = substitute(line1, ':\s*$', ';', '')
-	" Replace `int f(int x) {` with `int f(int x) {...}`.
-	let line3 = substitute(line2, '[\{][\{]*\s*$', '{...}', '')
-	" Replace `"""First line.` with `"""First line."""`
-	let line4 = substitute(line3, '"""\(.*\)', '"""\1"""', '')
-
-	return line4
-endfunction
-
-" Use this folding style everywhere.
+" Define a simple custom folding style. For filetypes that don't have custom
+" folding packages loaded, this is much less noisy than the NeoVim defaults.
 set foldtext=SimpleFoldText()
-augroup fold_with_style
-	autocmd!
-	autocmd VimEnter,WinEnter,BufWinEnter * setlocal foldtext=SimpleFoldText()
-augroup END
+function! SimpleFoldText()
+	return getline(v:foldstart)
+endfunction
 
 " Jump to the Git project root.
 command! GitCd execute 'cd ./'.system('git rev-parse --show-cdup')
@@ -94,6 +78,7 @@ let g:ale_linters = { 'python': [ 'flake8' ], 'tex': [] }
 let g:ale_set_quickfix = 1
 let g:clever_f_chars_match_any_signs = '.'
 let g:clever_f_smart_case = 1
+let g:coiled_snake_foldtext_flags = []
 let g:fold_cycle_default_mapping = 0
 let g:loaded_netrw = 1
 let g:magit_default_fold_level = 1
