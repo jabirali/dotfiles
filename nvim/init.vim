@@ -100,6 +100,7 @@ let g:nuake_per_tab = 1
 let g:nuake_position = 'top'
 let g:org_aggressive_conceal = 1
 let g:SimpylFold_docstring_preview = 1
+let g:sexp_filetypes = ''
 let g:tex_conceal = 'abdgm'
 let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
@@ -144,8 +145,9 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'rhysd/clever-f.vim'         " Smarter `f` jumps and highlights
 	Plug 'machakann/vim-sandwich'     " More intuitive `surround` plugin
 	Plug 'tpope/vim-commentary'       " Faster (un)commenting with `gc`
-    Plug 'junegunn/vim-easy-align'    " Faster code alignment with `ga`
+	Plug 'junegunn/vim-easy-align'    " Faster code alignment with `ga`
 	Plug 'tpope/vim-speeddating'      " Better C-a/C-x actions for dates
+	Plug 'guns/vim-sexp'              " Support for Lisp/Sexp slurp/barf.
 	" IDE features
 	Plug 'dense-analysis/ale'         " Linters and language servers
 	Plug 'junegunn/fzf',              { 'do': './install --bin' }
@@ -307,6 +309,12 @@ nmap <M-j> ]e
 nmap <M-k> [e
 vmap <M-j> ]egv
 vmap <M-k> [egv
+
+" Sexp operations.
+nmap <M-]> <Plug>(sexp_capture_next_element)
+nmap <M-[> <Plug>(sexp_emit_tail_element)
+nmap <M-{> <Plug>(sexp_capture_prev_element)
+nmap <M-}> <Plug>(sexp_emit_head_element)
 
 " Ergononmic matching jumps.
 map <bs> %
