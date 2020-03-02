@@ -87,6 +87,7 @@ let g:nuake_per_tab = 1
 let g:nuake_position = 'top'
 let g:org_aggressive_conceal = 1
 let g:sexp_filetypes = ''
+let g:semshi#mark_selected_nodes = 0
 let g:tex_conceal = 'abdgm'
 let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
@@ -136,7 +137,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'guns/vim-sexp'                " Support for Lisp/Sexp slurp/barf.
 	" IDE features
 	Plug 'dense-analysis/ale'           " Linters and language servers
-	Plug 'junegunn/fzf',                { 'do': './install --bin' }
+	Plug 'junegunn/fzf',                {'do': './install --bin'}
 	Plug 'junegunn/fzf.vim'             " Fuzzy finding of everything
 	Plug 'Lenovsky/nuake'               " Per-tab pop-up terminal
 	Plug 'tpope/vim-fugitive'           " Version control (general)
@@ -145,17 +146,20 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'honza/vim-snippets'           " Snippet collection
 	Plug 'SirVer/ultisnips'             " Snippet engine
 	Plug 'mcchrish/nnn.vim'             " File browser
-	" Language support
-	Plug 'kalekundert/vim-coiled-snake' " Python
-	Plug 'vim-python/python-syntax'     " Python
-	Plug 'jmcantrell/vim-virtualenv'    " Python
-	Plug 'lervag/vimtex'                " LaTeX
-	Plug 'PietroPate/vim-tex-conceal'   " LaTeX
-	Plug 'plasticboy/vim-markdown'      " MarkDown
-	Plug 'jceb/vim-orgmode'             " Org-mode
-	Plug 'cespare/vim-toml'             " TOML
+	" Python
+	Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+	Plug 'kalekundert/vim-coiled-snake'
+	Plug 'jmcantrell/vim-virtualenv'
+	" LaTeX
+	Plug 'lervag/vimtex'
+	Plug 'PietroPate/vim-tex-conceal'
+	" Markup
+	Plug 'plasticboy/vim-markdown'
+	Plug 'jceb/vim-orgmode'
+	" Config
+	Plug 'cespare/vim-toml'
 	" Miscellaneous
-	Plug 'glacambre/firenvim',          { 'do': { _ -> firenvim#install(0) } }
+	Plug 'glacambre/firenvim', {'do': {_ -> firenvim#install(0)}}
 call plug#end()
 
 " Activate themes based on context.
