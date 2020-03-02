@@ -54,7 +54,7 @@ augroup END
 
 " Don't show line numbers etc. in browsers.
 if exists('g:started_by_firenvim')
-	set nonumber signcolumn=no statusline=%=
+	set nonumber norelativenumber signcolumn=no statusline=%=
 endif
 
 " Define a simple custom folding style. It basically just shows the first line
@@ -178,6 +178,7 @@ if exists('g:started_by_firenvim')
 	silent! colorscheme zellner
 else
 	set background=dark
+	set guifont=Iosevka\ SS09:h14
 	silent! colorscheme moonlight
 endif
 
