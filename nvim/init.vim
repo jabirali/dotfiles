@@ -25,6 +25,7 @@ set relativenumber
 set scrolloff=999
 set shiftwidth=4
 set sidescrolloff=5
+set signcolumn=no
 set smartcase
 set spelllang=en,nb
 set splitbelow
