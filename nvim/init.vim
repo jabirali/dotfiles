@@ -9,7 +9,7 @@ set complete=t,i,d,.
 set concealcursor=nc
 set conceallevel=2
 set confirm
-set fillchars=fold:\ ,stl:-,stlnc:-,
+set fillchars=fold:\ ,stl:_,stlnc:_,
 set foldmethod=syntax
 set foldlevel=0
 set gdefault
@@ -80,6 +80,7 @@ let g:clever_f_chars_match_any_signs = '.'
 let g:clever_f_smart_case = 1
 let g:coiled_snake_foldtext_flags = []
 let g:fold_cycle_default_mapping = 0
+let g:fzf_layout = { 'window': 'enew' }
 let g:loaded_netrw = 1
 let g:magit_default_fold_level = 1
 let g:nnn#replace_netrw = 1
@@ -342,6 +343,9 @@ augroup terminal_escape
 	autocmd TermOpen * tnoremap <buffer> <esc> <c-\><c-n>
 	autocmd FileType fzf tunmap <buffer> <esc>
 augroup END
+
+" TeX bindings.
+nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
 
 " LSP bindings.
 augroup lsp_bindings
