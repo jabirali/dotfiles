@@ -72,9 +72,10 @@ command! GitCd execute 'cd ./'.system('git rev-parse --show-cdup')
 " #1 Plugin settings
 " #2 Configuration
 " Plugin parameters.
-let g:ale_fixers = { '*': [ 'trim_whitespace' ], 'python': [ 'black', 'isort' ] }
+let g:ale_fixers = {'*': ['trim_whitespace'], 'python': ['black', 'isort']}
 let g:ale_fix_on_save = 1
-let g:ale_linters = { 'python': [ 'flake8' ], 'tex': [] }
+let g:ale_linters = {'python': ['pyls'], 'tex': []}
+let g:ale_python_pyls_config = {'pyls': {'plugins': {'pycodestyle': {'enabled': v:false}}}}
 let g:ale_set_quickfix = 1
 let g:clever_f_chars_match_any_signs = '.'
 let g:clever_f_smart_case = 1
@@ -172,6 +173,10 @@ else
 	set guifont=Iosevka\ SS09:h14
 	silent! colorscheme moonlight
 endif
+
+" Enable LSP integration.
+set omnifunc=ale#completion#OmniFunc
+
 
 " #1 Keybindings
 " #2 Leader keys
@@ -341,4 +346,7 @@ augroup terminal_escape
 	autocmd FileType fzf tunmap <buffer> <esc>
 augroup END
 
-
+" LSP bindings.
+nnoremap gd :ALEGoToDefinition<cr>
+nnoremap gr :ALEFindReferences<cr>
+autocmd FileType python nmap <buffer> Q :ALEHover<cr>
