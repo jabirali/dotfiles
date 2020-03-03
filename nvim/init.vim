@@ -275,13 +275,7 @@ map <leader>, <leader>fb
 map <leader>. <leader>od
 map <leader>/ <leader>sp
 map <leader>: :Commands<cr>
-map <leader>; :Commands<cr>
 map <leader>h :Helptags<cr>
-
-" Non-leader speed keys.
-map  ; :
-" nmap ` <leader>ot
-" tmap ` <C-\><C-n><leader>ot
 
 " #2 Editor keys
 " Better defaults.
@@ -347,6 +341,6 @@ augroup terminal_escape
 augroup END
 
 " LSP bindings.
-nnoremap gd :ALEGoToDefinition<cr>
-nnoremap gr :ALEFindReferences<cr>
-autocmd FileType python nmap <buffer> Q :ALEHover<cr>
+nmap ;; :ALEHover<cr>
+nmap ;d :ALEGoToDefinition<cr>
+nmap ;r :ALEFindReferences<cr>
