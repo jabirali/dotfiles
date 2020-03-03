@@ -11,8 +11,8 @@ set conceallevel=2
 set confirm
 set cursorline
 set fillchars=fold:\ ,stl:-,stlnc:-,
-set foldlevel=0
 set foldmethod=syntax
+set foldlevel=1
 set gdefault
 set hidden
 set ignorecase
@@ -105,9 +105,10 @@ let loaded_netrwPlugin = 1
 " Syntax highlights.
 augroup clean_highlights
 	autocmd!
-	autocmd ColorScheme * hi MatchParen guifg=none gui=bold
-	autocmd ColorScheme * hi CleverFDefaultLabel guifg=white gui=bold
-	autocmd ColorScheme * hi SpellBad guifg=red gui=none
+	autocmd ColorScheme * hi! link CursorLineNr CursorLine
+	autocmd ColorScheme * hi! MatchParen guifg=none gui=bold
+	autocmd ColorScheme * hi! CleverFDefaultLabel guifg=white gui=bold
+	autocmd ColorScheme * hi! SpellBad guifg=red gui=none
 augroup END
 
 " #2 Installation
@@ -166,11 +167,11 @@ call plug#end()
 " Activate themes based on context.
 if exists('g:started_by_firenvim')
 	set background=dark
-	set guifont=Iosevka\ SS09:h8
+	set guifont=Iosevka\ SS09\ Light:h8
 	silent! colorscheme moonlight
 else
 	set background=dark
-	set guifont=Iosevka\ SS09:h16
+	set guifont=Iosevka\ SS09\ Light:h16
 	silent! colorscheme moonlight
 endif
 
