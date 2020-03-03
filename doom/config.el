@@ -121,7 +121,7 @@
 ;; This includes all aesthetic settings controlling colors, fonts, etc.
 
 ;; Select what fonts to use for the gui.
-(setq doom-font (font-spec :family "Iosevka SS09" :size 19)
+(setq doom-font (font-spec :family "Iosevka SS09 Light" :size 19)
       doom-variable-pitch-font (font-spec :family "Libertinus Sans" :size 19)
       +zen-mixed-pitch-modes nil
       +zen-text-scale 1)
@@ -131,7 +131,7 @@
       split-height-threshold nil)
 
 ;; Select what colors to use for the gui.
-(setq doom-theme 'doom-gruvbox)
+(setq doom-theme 'doom-moonlight)
 
 ;; Disable line numbers. They look nice in regular buffers, but they look bad in
 ;; terminals, look strange in buffers with variable line height, and cause issues
