@@ -11,7 +11,7 @@ set conceallevel=2
 set confirm
 set fillchars=fold:\ ,stl:-,stlnc:-,
 set foldmethod=syntax
-set foldlevel=1
+set foldlevel=0
 set gdefault
 set hidden
 set ignorecase
@@ -332,6 +332,9 @@ noremap M J
 
 " Escape to normal mode with `jk`.
 inoremap jk <esc>
+
+" Escape to command mode with `;`.
+nnoremap ; :
 
 " Escape to normal mode in terminals.
 augroup terminal_escape
