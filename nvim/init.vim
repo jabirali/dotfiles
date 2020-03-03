@@ -9,7 +9,7 @@ set complete=t,i,d,.
 set concealcursor=nc
 set conceallevel=2
 set confirm
-set fillchars=fold:\ ,stl:-,stlnc:-,
+set fillchars=fold:\ ,stl:_,stlnc:_,
 set foldmethod=syntax
 set foldlevel=0
 set gdefault

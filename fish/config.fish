@@ -4,8 +4,11 @@
 fish_vi_key_bindings
 bind -M insert jk "if commandline -P; commandline -f cancel; else; set fish_bind_mode default; commandline -f backward-char force-repaint; end"
 
+# Enable FZF integration.
+fzf_key_bindings
+
 # Define environment variables.
-set -x EDITOR nvr 
+set -x EDITOR nvr
 set -x TERMINFO /usr/lib/terminfo
 set -x TERM xterm
 set -x PATH ~/.emacs.d/bin/ ~/.poetry/bin ~/.local/bin/ /opt/zotero/ /opt/nomad/bin/ /opt/mpw/bin /snap/bin $PATH
@@ -96,6 +99,16 @@ function o --description 'Open in system app'
     xdg-open $argv &
 end
 
+function p --description 'Open project folder'
+	cd (fd -t d . ~/projects/ | fzf --prompt='Project: ')
+end
+
+function z --description 'Open library file'
+	for f in (fd -t f -e pdf . ~/.zotero/ | fzf -m -d '/' --with-nth=-1 --prompt='Zotero: ')
+		zathura $f &
+	end
+end
+
 function venv --description 'Python virtual environments'
     if not count $argv > /dev/null
         echo "Virtual environments:"
@@ -114,6 +127,8 @@ end
 function scrape --description 'Scrape all linked documents from a website'
     wget -r -l 1 -e robots=off
 end
+
+alias fd=fdfind
 
 # function e --description 'Edit in normal Emacs'
 #     if [ "$INSIDE_EMACS" = "vterm" ]
