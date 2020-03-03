@@ -341,6 +341,9 @@ augroup terminal_escape
 augroup END
 
 " LSP bindings.
-nmap ;; :ALEHover<cr>
-nmap ;d :ALEGoToDefinition<cr>
-nmap ;r :ALEFindReferences<cr>
+augroup lsp_bindings
+	autocmd!
+	autocmd FileType python nmap <buffer> gd :ALEGoToDefinition<cr>
+	autocmd FileType python nmap <buffer> gr :ALEFindReferences<cr>
+	autocmd FileType python nmap <buffer> Q  :ALEHover<cr>
+augroup END
