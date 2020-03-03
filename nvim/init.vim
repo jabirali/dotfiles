@@ -74,8 +74,8 @@ command! GitCd execute 'cd ./'.system('git rev-parse --show-cdup')
 " Plugin parameters.
 let g:ale_fixers = {'*': ['trim_whitespace'], 'python': ['black', 'isort']}
 let g:ale_fix_on_save = 1
-let g:ale_linters = {'python': ['pyls'], 'tex': []}
-let g:ale_python_pyls_config = {'pyls': {'plugins': {'pycodestyle': {'enabled': v:false}}}}
+let g:ale_linters = {'python': ['pyls', 'flake8'], 'tex': []}
+let g:ale_linters_ignore = {'python': ['pyls']}
 let g:ale_set_quickfix = 1
 let g:clever_f_chars_match_any_signs = '.'
 let g:clever_f_smart_case = 1
