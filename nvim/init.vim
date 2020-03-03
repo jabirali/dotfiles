@@ -9,7 +9,6 @@ set complete=t,i,d,.
 set concealcursor=nc
 set conceallevel=2
 set confirm
-set cursorline
 set fillchars=fold:\ ,stl:-,stlnc:-,
 set foldmethod=syntax
 set foldlevel=1
@@ -48,10 +47,10 @@ augroup quit_like_emacs
 	autocmd FileType help noremap <buffer> q :q<cr>
 augroup END
 
-" Don't show line numbers or cursorlines in terminals.
+" Don't show line numbers in terminals.
 augroup terminal_settings
 	autocmd!
-	autocmd TermOpen * setlocal nonumber norelativenumber nocursorline
+	autocmd TermOpen * setlocal nonumber norelativenumber
 augroup END
 
 " Don't show line numbers etc. in browsers.
@@ -105,7 +104,7 @@ let loaded_netrwPlugin = 1
 " Syntax highlights.
 augroup clean_highlights
 	autocmd!
-	autocmd ColorScheme * hi! link CursorLineNr CursorLine
+	autocmd ColorScheme * hi! link CursorLineNr LineNr
 	autocmd ColorScheme * hi! MatchParen guifg=none gui=bold
 	autocmd ColorScheme * hi! CleverFDefaultLabel guifg=white gui=bold
 	autocmd ColorScheme * hi! SpellBad guifg=red gui=none
