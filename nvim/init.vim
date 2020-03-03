@@ -170,7 +170,7 @@ if exists('g:started_by_firenvim')
 	silent! colorscheme moonlight
 else
 	set background=dark
-	set guifont=Iosevka\ SS09:h14
+	set guifont=Iosevka\ SS09:h16
 	silent! colorscheme moonlight
 endif
 
