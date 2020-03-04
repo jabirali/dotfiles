@@ -16,7 +16,7 @@ set -x POETRY_VIRTUALENVS_PATH ~/.virtualenvs
 set -x LC_ALL en_US.UTF-8
 set -x LC_NUMERIC en_US.UTF-8
 set -x FZF_DEFAULT_COMMAND 'fdfind --type f'
-set -x FZF_DEFAULT_OPTS '--color fg:-1,bg:-1,fg+:-1,bg+:#2a2e48,hl:#f79a62,hl+:#ffc777,pointer:#ffc777,marker:#c3a2ff,info:#c3a2ff,prompt:#7e8eda,border:#7e8eda,spinner:#7e8eda,header:#7e8eda --layout=reverse --bind="F2:toggle-preview"'
+set -x FZF_DEFAULT_OPTS '--color fg:-1,bg:-1,fg+:-1,bg+:#2a2e48,hl:#f79a62,hl+:#ffc777,pointer:#ffc777,marker:#c3a2ff,info:#c3a2ff,prompt:#7e8eda,border:#7e8eda,spinner:#7e8eda,header:#7e8eda --layout=reverse'
 set -x NNN_TRASH = 1
 set -x NNN_USE_EDITOR = 1
 
