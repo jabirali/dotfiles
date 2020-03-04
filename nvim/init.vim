@@ -81,6 +81,22 @@ let g:clever_f_smart_case = 1
 let g:coiled_snake_foldtext_flags = []
 let g:fold_cycle_default_mapping = 0
 let g:fzf_layout = { 'window': 'enew' }
+let g:fzf_action = { 'ctrl-s': 'split', 'ctrl-v': 'vsplit' }
+let g:fzf_colors =
+  \ { 'fg':      ['fg', 'Normal'],
+    \ 'bg':      ['bg', 'Normal'],
+    \ 'hl':      ['fg', 'Comment'],
+    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+    \ 'hl+':     ['fg', 'Statement'],
+    \ 'info':    ['fg', 'PreProc'],
+    \ 'border':  ['fg', 'Ignore'],
+    \ 'prompt':  ['fg', 'Conditional'],
+    \ 'pointer': ['fg', 'Exception'],
+    \ 'marker':  ['fg', 'Keyword'],
+    \ 'spinner': ['fg', 'Label'],
+    \ 'header':  ['fg', 'Comment'] }
+let g:fzf_history_dir = '~/.local/share/fzf'
 let g:loaded_netrw = 1
 let g:magit_default_fold_level = 1
 let g:nnn#replace_netrw = 1
