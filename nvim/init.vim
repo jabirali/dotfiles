@@ -69,11 +69,12 @@ endfunction
 command! GitCd execute 'cd ./'.system('git rev-parse --show-cdup')
 
 " Search through Zotero library.
-command! -bang Zotero call fzf#run(fzf#wrap('zotero',
-			\ {'source': 'fdfind -t f -e pdf . ~/.zotero/',
-			\  'sink': '!zathura --fork',
-			\  'options' :'-m -d / --with-nth=-1'},
-			\  <bang>0))
+command! -bang Zotero call fzf#run(fzf#wrap(
+			\ 'zotero',
+			\ { 'source':  'fdfind -t f -e pdf . ~/.zotero/',
+			\   'sink':    '!zathura --fork',
+			\   'options': '-m -d / --with-nth=-1' },
+			\ <bang>0))
 
 " #1 Plugin settings
 " #2 Configuration
