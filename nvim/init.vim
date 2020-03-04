@@ -360,6 +360,11 @@ augroup terminal_escape
 	autocmd FileType fzf tunmap <buffer> <esc>
 augroup END
 
+" FZF bindings.
+imap <C-x><C-k> <plug>(fzf-complete-word)
+imap <C-x><C-f> <plug>(fzf-complete-path)
+imap <C-x><C-l> <plug>(fzf-complete-line)
+
 " TeX bindings.
 nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
 
