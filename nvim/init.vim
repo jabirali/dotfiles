@@ -9,7 +9,7 @@ set complete=t,i,d,.
 set concealcursor=nc
 set conceallevel=2
 set confirm
-set fillchars=fold:\ ,stl:_,stlnc:_,
+set fillchars=fold:\ ,stl:\ ,stlnc:\ ,vert:\ ,eob:\ ,
 set foldmethod=syntax
 set foldlevel=0
 set gdefault
@@ -113,6 +113,7 @@ let g:UltiSnipsListSnippets = '<S-tab>'
 let g:ultisnips_python_style = 'google'
 let g:vim_markdown_folding_style_pythonic = 1
 let g:vim_markdown_override_foldtext = 0
+"let g:vimade = {'fadelevel': 0.7}
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_view_method = 'zathura'
@@ -121,6 +122,12 @@ let loaded_netrwPlugin = 1
 " Syntax highlights.
 augroup clean_highlights
 	autocmd!
+	" Suddle highlighting of active window.
+	autocmd ColorScheme * hi! InactiveWindow guibg=none
+	autocmd ColorScheme * hi! ActiveWindow guibg='#23253a'
+	set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow
+	" Tone down too heavy default highlighting.
+	autocmd ColorScheme * hi! LineNr guibg=none
 	autocmd ColorScheme * hi! link CursorLineNr LineNr
 	autocmd ColorScheme * hi! Conceal guifg=none guibg=none
 	autocmd ColorScheme * hi! MatchParen guifg=none gui=bold
@@ -145,6 +152,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'tpope/vim-repeat'             " Repeat more things with `.`
 	Plug 'tpope/vim-unimpaired'         " Browse more things with `[]`
 	Plug 'junegunn/goyo.vim'            " Center buffer when writing
+	" Plug 'TaDaa/vimade'                 " Dim inactive windows
 	" Text editing
 	Plug 'andymass/vim-matchup'         " Smarter `%` jumps and highlights
 	Plug 'junegunn/vim-slash'           " Smarter `*` jumps and highlights
