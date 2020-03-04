@@ -273,7 +273,7 @@ map <leader>fG :GFiles?<cr>
 map <leader>fn :Files ~/projects/notes/<cr>
 map <leader>fp :Files ~/projects/<cr>
 map <leader>fr :History<cr>
-map <leader>fz :Zotero<cr>
+map <leader>fz :Zotero!<cr>
 
 " Version control.
 map <leader>gg :MagitOnly<cr>:set scrolloff=999<cr>
