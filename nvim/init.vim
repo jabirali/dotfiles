@@ -122,6 +122,7 @@ let loaded_netrwPlugin = 1
 augroup clean_highlights
 	autocmd!
 	autocmd ColorScheme * hi! link CursorLineNr LineNr
+	autocmd ColorScheme * hi! Conceal guifg=none guibg=none
 	autocmd ColorScheme * hi! MatchParen guifg=none gui=bold
 	autocmd ColorScheme * hi! CleverFDefaultLabel guifg=white gui=bold
 	autocmd ColorScheme * hi! SpellBad guifg=red gui=none
