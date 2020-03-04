@@ -34,7 +34,7 @@ set tabstop=4
 set termguicolors
 set tildeop
 set updatetime=100
-set virtualedit=block
+set virtualedit=all
 set wildmode=longest:full,full
 set winaltkeys=no
 
@@ -113,7 +113,7 @@ let g:UltiSnipsListSnippets = '<S-tab>'
 let g:ultisnips_python_style = 'google'
 let g:vim_markdown_folding_style_pythonic = 1
 let g:vim_markdown_override_foldtext = 0
-"let g:vimade = {'fadelevel': 0.7}
+let g:vimade = {'fadelevel': 0.7}
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_view_method = 'zathura'
@@ -152,7 +152,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'tpope/vim-repeat'             " Repeat more things with `.`
 	Plug 'tpope/vim-unimpaired'         " Browse more things with `[]`
 	Plug 'junegunn/goyo.vim'            " Center buffer when writing
-	" Plug 'TaDaa/vimade'                 " Dim inactive windows
+	Plug 'TaDaa/vimade'                 " Dim inactive windows
 	" Text editing
 	Plug 'andymass/vim-matchup'         " Smarter `%` jumps and highlights
 	Plug 'junegunn/vim-slash'           " Smarter `*` jumps and highlights
