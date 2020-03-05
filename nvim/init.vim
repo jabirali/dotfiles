@@ -34,7 +34,7 @@ set tabstop=4
 set termguicolors
 set tildeop
 set updatetime=100
-set virtualedit=all
+set virtualedit=block
 set wildmode=longest:full,full
 set winaltkeys=no
 
@@ -173,6 +173,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'dense-analysis/ale'           " Linters and language servers
 	Plug 'junegunn/fzf',                {'do': './install --bin'}
 	Plug 'junegunn/fzf.vim'             " Fuzzy finding of everything
+	" Plug 'lifepillar/vim-mucomplete'    " Minimalist autocompletion
 	Plug 'Lenovsky/nuake'               " Per-tab pop-up terminal
 	Plug 'tpope/vim-fugitive'           " Version control (general)
 	Plug 'jreybert/vimagit'             " Version control (commit)
@@ -320,7 +321,7 @@ nnoremap Y y$
 noremap  j gj
 noremap  k gk
 nnoremap U <C-r>
-noremap  R :e!<cr>
+noremap  R :silent bunload<cr>:silent buffer #<cr>
 
 " Paging with HJKL.
 noremap H zH
