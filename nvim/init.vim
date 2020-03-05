@@ -72,7 +72,7 @@ command! GitCd execute 'cd ./'.system('git rev-parse --show-cdup')
 command! -bang Zotero call fzf#run(fzf#wrap(
 			\ 'zotero',
 			\ { 'source':  'fdfind -t f -e pdf . ~/.zotero/',
-			\   'sink':    '!zathura --fork',
+			\   'sink':    'silent !zathura --fork',
 			\   'options': '-m -d / --with-nth=-1' },
 			\ <bang>0))
 
@@ -160,7 +160,6 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'tpope/vim-repeat'             " Repeat more things with `.`
 	Plug 'tpope/vim-unimpaired'         " Browse more things with `[]`
 	Plug 'junegunn/goyo.vim'            " Center buffer when writing
-	Plug 'TaDaa/vimade'                 " Dim inactive windows
 	" Text editing
 	Plug 'andymass/vim-matchup'         " Smarter `%` jumps and highlights
 	Plug 'junegunn/vim-slash'           " Smarter `*` jumps and highlights
@@ -180,6 +179,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'airblade/vim-gitgutter'       " Version control (buffer)
 	Plug 'honza/vim-snippets'           " Snippet collection
 	Plug 'SirVer/ultisnips'             " Snippet engine
+    Plug 'ludovicchabant/vim-gutentags' " Automatic tags
 	Plug 'mcchrish/nnn.vim'             " File browser
 	" Python
 	Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
@@ -292,11 +292,12 @@ map <leader>gu <Plug>(GitGutterUndoHunk)
 map <leader>gz :GitGutterSignsToggle<cr>:GitGutterFold<cr>
 
 " Search content.
-map <leader>ss    :BLines<cr>
-map <leader>sn    :cd ~/projects/notes/<cr>:Rg<cr>
-map <leader>sp    :GitCd<cr>:Rg<cr>
-map <leader>sg    :Ggrep<space>
-map <leader>s<cr> :Ggrep <C-R><C-W><cr>
+map <leader>ss :BLines<cr>
+map <leader>s* :Ggrep <C-R><C-W><cr>
+map <leader>sg :Ggrep<space>
+map <leader>sn :cd ~/projects/notes/<cr>:Rg<cr>
+map <leader>sp :GitCd<cr>:Rg<cr>
+map <leader>s] :BTags<cr>
 
 " Manage Vim.
 map <leader>qa :qa<cr>
@@ -308,7 +309,7 @@ map <leader>qu :PlugUpdate<cr>
 map <leader><leader> <leader>fg
 map <leader>, <leader>fb
 map <leader>. <leader>od
-map <leader>/ <leader>sp
+map <leader>/ <leader>s]
 map <leader>: :Commands<cr>
 map <leader>h :Helptags<cr>
 
@@ -387,9 +388,9 @@ imap <C-x><C-l> <plug>(fzf-complete-line)
 nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
 
 " LSP bindings.
-augroup lsp_bindings
-	autocmd!
-	autocmd FileType python nmap <buffer> gd :ALEGoToDefinition<cr>
-	autocmd FileType python nmap <buffer> gr :ALEFindReferences<cr>
-	autocmd FileType python nmap <buffer> Q  :ALEHover<cr>
-augroup END
+" augroup lsp_bindings
+" 	autocmd!
+" 	autocmd FileType python nmap <buffer> gd :ALEGoToDefinition<cr>
+" 	autocmd FileType python nmap <buffer> gr :ALEFindReferences<cr>
+" 	autocmd FileType python nmap <buffer> Q  :ALEHover<cr>
+" augroup END
