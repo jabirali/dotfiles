@@ -1,14 +1,59 @@
-# ~/.config/fish/config.fish
+# ~/.config/fish/config.fish vim: foldmethod=marker
 
-# Enable Vim mode with jk escape.
-fish_vi_key_bindings
-bind -M insert jk "if commandline -P; commandline -f cancel; else; set fish_bind_mode default; commandline -f backward-char force-repaint; end"
+# Package manager.
+if not functions -q fisher
+    set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
+    curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
+    fish -c fisher
+end
 
-# Enable FZF integration.
+# Fancy prompt.
+if not [ (which starship) ];
+   set file (mktemp);
+   curl -fsSL https://starship.rs/install.sh > $file;
+   mkdir -p ~/.local/bin/;
+   bash $file -y -b ~/.local/bin/;
+   rm $file;
+end
+starship init fish | source
+set fish_greeting ""
+
+# NeoVim integration.
+if [ -e "$NVIM_LISTEN_ADDRESS" ]
+	set -x EDITOR nvr
+else
+	set -x EDITOR nvim
+end
+
+# Virtualenv integration.
+if [ -e "$VIRTUAL_ENV" ]
+	source $VIRTUAL_ENV/bin/activate.fish
+end
+
+# Fuzzy-finder integration.
 fzf_key_bindings
 
+# Use abbreviations to make me switch from
+# some UNIX classics to modern alternatives.
+abbr -ga cat  'bat'
+abbr -ga find 'fd'
+abbr -ga grep 'rg'
+abbr -ga ll   'exa -l'
+abbr -ga ls   'exa'
+abbr -ga tree 'exa -T'
+abbr -ga vim  'nvim'
+abbr -ga vi   'nvim'
+
+# Use aliases for default arguments.
+alias bat 'bat -p'
+alias exa 'exa --git --git-ignore --group-directories-first --time-style=long-iso'
+alias fd  'fdfind'
+
+# Enable Vim mode with jk escape.
+# fish_vi_key_bindings
+# bind -M insert jk "if commandline -P; commandline -f cancel; else; set fish_bind_mode default; commandline -f backward-char force-repaint; end"
+
 # Define environment variables.
-set -x EDITOR nvr
 set -x TERMINFO /usr/lib/terminfo
 set -x TERM xterm
 set -x PATH ~/.emacs.d/bin/ ~/.poetry/bin ~/.local/bin/ /opt/zotero/ /opt/nomad/bin/ /opt/mpw/bin /snap/bin $PATH
@@ -42,34 +87,20 @@ set fish_pager_color_completion white
 set fish_pager_color_description brblack
 set fish_pager_color_prefix yellow
 
-# Disable the Fish greeting.
-set fish_greeting
-
-# Load the Starship prompt.
-if not [ (which starship) ];
-   set file (mktemp);
-   curl -fsSL https://starship.rs/install.sh > $file;
-   mkdir -p ~/.local/bin/;
-   bash $file -y -b ~/.local/bin/;
-   rm $file;
-end
-starship init fish | source
-
-# Load virtualenv if needed.
-if [ -e $VIRTUAL_ENV ]
-	source $VIRTUAL_ENV/bin/activate.fish
-end
-
 # Functions and aliases.
-function e --description "Edit file via $EDITOR"
-	exec $EDITOR $argv
+function e -d "Edit via $EDITOR" -w nvim
+	if count $argv > /dev/null
+		$EDITOR $argv
+	else
+		$EDITOR (fzf -m)
+	end
 end
 
-function e! --description 'Edit in safe mode'
+function e! -d 'Edit in safe mode'
 	nvim -u NORC $argv
 end
 
-function d --description 'File manager'
+function d -d 'File manager'
     # Block nesting in subshells.
     if test -n NNNLVL
         if [ (expr $NNNLVL + 0) -ge 1 ]
@@ -95,21 +126,21 @@ function d --description 'File manager'
     end
 end
 
-function o --description 'Open in system app'
+function o -d 'Open in system app'
     xdg-open $argv &
 end
 
-function p --description 'Open project folder'
+function p -d 'Open project folder'
 	cd (fd -t d . ~/projects/ | fzf --prompt='Project: ')
 end
 
-function z --description 'Open library file'
+function z -d 'Open library file'
 	for f in (fd -t f -e pdf . ~/.zotero/ | fzf -m -d '/' --with-nth=-1 --prompt='Zotero: ')
 		zathura $f &
 	end
 end
 
-function venv --description 'Python virtual environments'
+function venv -d 'Python virtual environments'
     if not count $argv > /dev/null
         echo "Virtual environments:"
         for i in (ls ~/.virtualenvs)
@@ -124,13 +155,11 @@ function venv --description 'Python virtual environments'
     end
 end
 
-function scrape --description 'Scrape all linked documents from a website'
+function scrape -d 'Scrape all linked documents from a website'
     wget -r -l 1 -e robots=off
 end
 
-alias fd=fdfind
-
-# function e --description 'Edit in normal Emacs'
+# function e -d 'Edit in normal Emacs'
 #     if [ "$INSIDE_EMACS" = "vterm" ]
 #         printf '\e]51;E%s\e\\' "find-file $argv"
 #     else
@@ -138,7 +167,7 @@ alias fd=fdfind
 #     end
 # end
 
-# function e! --description 'Edit in barebones Emacs'
+# function e! -d 'Edit in barebones Emacs'
 # 	emacs -q -nw \
 #         --eval="(menu-bar-mode -1)" \
 #         --eval="(setq-default mode-line-format nil)" \
@@ -147,25 +176,25 @@ alias fd=fdfind
 #         $argv
 # end
 
-# function r --description 'Interrupt Emacs'
+# function r -d 'Interrupt Emacs'
 #     killall -SIGUSR2 emacs
 # end
 
-# Enable vterm directory tracking in Emacs.
-function vterm_printf;
-    if [ -n "$TMUX" ]
-        printf "\ePtmux;\e\e]%s\007\e\\" "$argv"
-    else if string match -q -- "screen*" "$TERM"
-        printf "\eP\e]%s\007\e\\" "$argv"
-    else
-        printf "\e]%s\e\\" "$argv"
-    end
-end
+# # Enable vterm directory tracking in Emacs.
+# function vterm_printf;
+#     if [ -n "$TMUX" ]
+#         printf "\ePtmux;\e\e]%s\007\e\\" "$argv"
+#     else if string match -q -- "screen*" "$TERM"
+#         printf "\eP\e]%s\007\e\\" "$argv"
+#     else
+#         printf "\e]%s\e\\" "$argv"
+#     end
+# end
 
-function fish_vterm_prompt_end;
-    vterm_printf '51;A'(whoami)'@'(hostname)':'(pwd)
-end
+# function fish_vterm_prompt_end;
+#     vterm_printf '51;A'(whoami)'@'(hostname)':'(pwd)
+# end
 
-function track_directories --on-event fish_prompt;
-    fish_vterm_prompt_end;
-end
+# function track_directories --on-event fish_prompt;
+#     fish_vterm_prompt_end;
+# end
