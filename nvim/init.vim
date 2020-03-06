@@ -114,13 +114,12 @@ let g:org_aggressive_conceal = 1
 let g:sexp_filetypes = ''
 let g:semshi#mark_selected_nodes = 0
 let g:tex_conceal = 'abdgm'
+let g:pandoc#folding#fdc = 0
 let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsListSnippets = '<S-tab>'
 let g:ultisnips_python_style = 'google'
-let g:vim_markdown_folding_style_pythonic = 1
-let g:vim_markdown_override_foldtext = 0
 let g:vimade = {'fadelevel': 0.7}
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
@@ -190,7 +189,8 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'lervag/vimtex'
 	Plug 'PietroPate/vim-tex-conceal'
 	" Markup
-	Plug 'plasticboy/vim-markdown'
+	Plug 'vim-pandoc/vim-pandoc-syntax'
+	Plug 'vim-pandoc/vim-pandoc'
 	Plug 'jceb/vim-orgmode'
 	" Config
 	Plug 'cespare/vim-toml'
