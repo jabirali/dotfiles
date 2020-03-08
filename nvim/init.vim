@@ -42,7 +42,7 @@ set winaltkeys=no
 augroup quit_like_emacs
 	autocmd!
 	autocmd BufWinEnter quickfix noremap <buffer> q :q<cr>
-	autocmd TermOpen * noremap <buffer> q <C-\><C-n>:close<cr>
+	autocmd TermOpen * noremap <buffer> q <c-\><c-n>:close<cr>
 	autocmd FileType help noremap <buffer> q :q<cr>
 augroup END
 
@@ -107,6 +107,9 @@ let g:org_aggressive_conceal = 1
 let g:pandoc#folding#fdc = 0
 let g:semshi#mark_selected_nodes = 0
 let g:tex_conceal = 'abdgm'
+let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 let g:vimade = {'fadelevel': 0.7}
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
@@ -153,12 +156,14 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'machakann/vim-sandwich'       " More intuitive `surround` plugin
 	Plug 'tpope/vim-commentary'         " Faster (un)commenting with `gc`
 	Plug 'junegunn/vim-easy-align'      " Faster code alignment with `ga`
-	Plug 'tpope/vim-speeddating'        " Better C-a/C-x actions for dates
+	Plug 'tpope/vim-speeddating'        " Better c-a/c-x actions for dates
 	" IDE features
 	Plug 'dense-analysis/ale'           " Linters and formatters
 	Plug 'junegunn/fzf',                {'do': './install --bin'}
 	Plug 'junegunn/fzf.vim'             " Fuzzy finding of everything
-	Plug 'lifepillar/vim-mucomplete'    " Minimalist autocompletion
+	Plug 'sirver/ultisnips'             " Snippets (the engine)
+	Plug 'honza/vim-snippets'           " Snippets (collection)
+	" Plug 'lifepillar/vim-mucomplete'    " Minimalist autocompletion
 	Plug 'Lenovsky/nuake'               " Per-tab pop-up terminal
 	Plug 'tpope/vim-fugitive'           " Version control (general)
 	Plug 'jreybert/vimagit'             " Version control (commit)
@@ -196,7 +201,7 @@ nnoremap <silent> <leader>      :WhichKey '<space>'<cr>
 nnoremap <silent> <localleader> :WhichKey ','<cr>
 
 " Window splits.
-map <leader>w <C-w>
+map <leader>w <c-w>
 map <leader>wd :close<cr>
 
 " Tabs/Workspaces.
@@ -228,7 +233,7 @@ map <leader>ol :bot lwindow<cr>
 map <leader>oo :tabedit ~/projects/notes/sintef.org<cr>
 map <leader>oO :tabedit ~/projects/notes/personal.org<cr>
 map <leader>op :bot split term://htop<cr>i
-map <leader>ot :Nuake<cr><C-\><C-n>:set scrolloff=999<cr>:<C-c>
+map <leader>ot :Nuake<cr><c-\><c-n>:set scrolloff=999<cr>:<c-c>
 map <leader>oT :terminal<cr>
 map <leader>ov <leader>tv
 map <leader>oV <leader>tV
@@ -266,7 +271,7 @@ map <leader>gz :GitGutterSignsToggle<cr>:GitGutterFold<cr>
 
 " Search content.
 map <leader>ss :BLines<cr>
-map <leader>s* :Ggrep <C-R><C-W><cr>
+map <leader>s* :Ggrep <c-R><c-W><cr>
 map <leader>sg :Ggrep<space>
 map <leader>sn :cd ~/projects/notes/<cr>:Rg<cr>
 map <leader>sp :GitCd<cr>:Rg<cr>
@@ -292,14 +297,14 @@ nnoremap ' `
 nnoremap Y y$
 noremap  j gj
 noremap  k gk
-nnoremap U <C-r>
+nnoremap U <c-r>
 noremap  R :silent bunload<cr>:silent buffer #<cr>
 
 " Paging with HJKL.
 noremap H zH
 noremap L zL
-noremap J <C-d>
-noremap K <C-u>
+noremap J <c-d>
+noremap K <c-u>
 
 " Org-like indentation.
 nmap <M-h> <<
@@ -319,7 +324,7 @@ vmap <M-k> [egv
 
 " Ergonomic code folding.
 nmap <tab> <Plug>(fold-cycle-open)
-nnoremap <S-tab> zm
+nnoremap <s-tab> zm
 
 " Align expressions.
 nmap ga <Plug>(EasyAlign)
@@ -343,9 +348,9 @@ augroup terminal_escape
 augroup END
 
 " FZF bindings.
-imap <C-x><C-k> <plug>(fzf-complete-word)
-imap <C-x><C-f> <plug>(fzf-complete-path)
-imap <C-x><C-l> <plug>(fzf-complete-line)
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-l> <plug>(fzf-complete-line)
 
 " TeX bindings.
 nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
