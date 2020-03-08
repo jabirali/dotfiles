@@ -33,8 +33,7 @@ end
 # Fuzzy-finder integration.
 fzf_key_bindings
 
-# Use abbreviations to make me switch from
-# some UNIX classics to modern alternatives.
+# Use abbreviations to switch from UNIX classics.
 abbr -ga cat  'bat'
 abbr -ga find 'fd'
 abbr -ga grep 'rg'
@@ -44,14 +43,10 @@ abbr -ga tree 'exa -T'
 abbr -ga vim  'nvim'
 abbr -ga vi   'nvim'
 
-# Use aliases for default arguments.
+# Use aliases to provide sensible default arguments.
 alias bat 'bat -p'
 alias exa 'exa --git --git-ignore --group-directories-first --time-style=long-iso'
 alias fd  'fdfind'
-
-# Enable Vim mode with jk escape.
-# fish_vi_key_bindings
-# bind -M insert jk "if commandline -P; commandline -f cancel; else; set fish_bind_mode default; commandline -f backward-char force-repaint; end"
 
 # Define environment variables.
 set -x TERMINFO /usr/lib/terminfo
@@ -89,15 +84,7 @@ set fish_pager_color_prefix yellow
 
 # Functions and aliases.
 function e -d "Edit via $EDITOR" -w nvim
-	if count $argv > /dev/null
-		$EDITOR $argv
-	else
-		$EDITOR (fzf -m)
-	end
-end
-
-function e! -d 'Edit in safe mode'
-	nvim -u NORC $argv
+	$EDITOR $argv
 end
 
 function d -d 'File manager'
@@ -155,46 +142,6 @@ function venv -d 'Python virtual environments'
     end
 end
 
-function scrape -d 'Scrape all linked documents from a website'
+function wget! -d 'Scrape all linked documents from a website'
     wget -r -l 1 -e robots=off
 end
-
-# function e -d 'Edit in normal Emacs'
-#     if [ "$INSIDE_EMACS" = "vterm" ]
-#         printf '\e]51;E%s\e\\' "find-file $argv"
-#     else
-#        emacsclient -c -a '' $argv &
-#     end
-# end
-
-# function e! -d 'Edit in barebones Emacs'
-# 	emacs -q -nw \
-#         --eval="(menu-bar-mode -1)" \
-#         --eval="(setq-default mode-line-format nil)" \
-#         --eval="(setq viper-mode t)" \
-#         --eval="(viper-mode)" \
-#         $argv
-# end
-
-# function r -d 'Interrupt Emacs'
-#     killall -SIGUSR2 emacs
-# end
-
-# # Enable vterm directory tracking in Emacs.
-# function vterm_printf;
-#     if [ -n "$TMUX" ]
-#         printf "\ePtmux;\e\e]%s\007\e\\" "$argv"
-#     else if string match -q -- "screen*" "$TERM"
-#         printf "\eP\e]%s\007\e\\" "$argv"
-#     else
-#         printf "\e]%s\e\\" "$argv"
-#     end
-# end
-
-# function fish_vterm_prompt_end;
-#     vterm_printf '51;A'(whoami)'@'(hostname)':'(pwd)
-# end
-
-# function track_directories --on-event fish_prompt;
-#     fish_vterm_prompt_end;
-# end
