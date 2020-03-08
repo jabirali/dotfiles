@@ -4,25 +4,24 @@
 " #2 Configuration
 set autochdir
 set clipboard+=unnamedplus
-set completeopt=longest,menu,preview
-set complete=t,i,d,.
+set completeopt=longest,menuone,noselect
 set concealcursor=nc
 set conceallevel=2
 set confirm
 set fillchars=fold:\ ,stl:\ ,stlnc:\ ,vert:\ ,eob:\ ,
-set foldmethod=syntax
 set foldlevel=0
+set foldmethod=syntax
 set gdefault
 set hidden
 set ignorecase
 set inccommand=nosplit
 set laststatus=0
-set nonumber
 set noshowmode
 set nowrap
 set relativenumber
 set scrolloff=999
 set shiftwidth=4
+set shortmess+=c
 set sidescrolloff=5
 set signcolumn=no
 set smartcase
@@ -50,13 +49,8 @@ augroup END
 " Don't show line numbers in terminals.
 augroup terminal_settings
 	autocmd!
-	autocmd TermOpen * setlocal nonumber norelativenumber
+	autocmd TermOpen * setlocal nonumber norelativenumber scrolloff=0
 augroup END
-
-" Don't show line numbers etc. in browsers.
-if exists('g:started_by_firenvim')
-	set nonumber norelativenumber signcolumn=no statusline=%= wrap linebreak
-endif
 
 " Define a simple custom folding style. For filetypes that don't have custom
 " folding packages loaded, this is much less noisy than the NeoVim defaults.
@@ -81,15 +75,14 @@ command! -bang Zotero call fzf#run(fzf#wrap(
 " Plugin parameters.
 let g:ale_fixers = {'*': ['trim_whitespace'], 'python': ['black', 'isort']}
 let g:ale_fix_on_save = 1
-let g:ale_linters = {'python': ['pyls', 'flake8'], 'tex': []}
-let g:ale_linters_ignore = {'python': ['pyls']}
+let g:ale_linters = {'python': ['flake8'], 'tex': []}
 let g:ale_set_quickfix = 1
-let g:clever_f_chars_match_any_signs = '.'
+let g:clever_f_chars_match_any_signs = ' '
 let g:clever_f_smart_case = 1
 let g:coiled_snake_foldtext_flags = []
 let g:fold_cycle_default_mapping = 0
-let g:fzf_layout = { 'window': 'enew' }
 let g:fzf_action = { 'ctrl-s': 'split', 'ctrl-v': 'vsplit' }
+let g:fzf_layout = { 'window': 'enew' }
 let g:fzf_colors =
   \ { 'fg':      ['fg', 'Normal'],
     \ 'bg':      ['bg', 'Normal'],
@@ -111,15 +104,9 @@ let g:nnn#replace_netrw = 1
 let g:nuake_per_tab = 1
 let g:nuake_position = 'top'
 let g:org_aggressive_conceal = 1
-let g:sexp_filetypes = ''
+let g:pandoc#folding#fdc = 0
 let g:semshi#mark_selected_nodes = 0
 let g:tex_conceal = 'abdgm'
-let g:pandoc#folding#fdc = 0
-let g:UltiSnipsExpandTrigger = '<tab>'
-let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-let g:UltiSnipsJumpForwardTrigger = '<C-j>'
-let g:UltiSnipsListSnippets = '<S-tab>'
-let g:ultisnips_python_style = 'google'
 let g:vimade = {'fadelevel': 0.7}
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
@@ -167,24 +154,20 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'tpope/vim-commentary'         " Faster (un)commenting with `gc`
 	Plug 'junegunn/vim-easy-align'      " Faster code alignment with `ga`
 	Plug 'tpope/vim-speeddating'        " Better C-a/C-x actions for dates
-	Plug 'guns/vim-sexp'                " Support for Lisp/Sexp slurp/barf.
 	" IDE features
-	Plug 'dense-analysis/ale'           " Linters and language servers
+	Plug 'dense-analysis/ale'           " Linters and formatters
 	Plug 'junegunn/fzf',                {'do': './install --bin'}
 	Plug 'junegunn/fzf.vim'             " Fuzzy finding of everything
-	" Plug 'lifepillar/vim-mucomplete'    " Minimalist autocompletion
+	Plug 'lifepillar/vim-mucomplete'    " Minimalist autocompletion
 	Plug 'Lenovsky/nuake'               " Per-tab pop-up terminal
 	Plug 'tpope/vim-fugitive'           " Version control (general)
 	Plug 'jreybert/vimagit'             " Version control (commit)
 	Plug 'airblade/vim-gitgutter'       " Version control (buffer)
-	Plug 'honza/vim-snippets'           " Snippet collection
-	Plug 'SirVer/ultisnips'             " Snippet engine
-    Plug 'ludovicchabant/vim-gutentags' " Automatic tags
 	Plug 'mcchrish/nnn.vim'             " File browser
 	" Python
 	Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
-	Plug 'kalekundert/vim-coiled-snake'
 	Plug 'jmcantrell/vim-virtualenv'
+	Plug 'tmhedberg/SimpylFold'
 	" LaTeX
 	Plug 'lervag/vimtex'
 	Plug 'PietroPate/vim-tex-conceal'
@@ -194,23 +177,12 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'jceb/vim-orgmode'
 	" Config
 	Plug 'cespare/vim-toml'
-	" Miscellaneous
-	Plug 'glacambre/firenvim', {'do': {_ -> firenvim#install(0)}}
 call plug#end()
 
-" Activate themes based on context.
-if exists('g:started_by_firenvim')
-	set background=dark
-	set guifont=Iosevka\ SS09\ Light:h8
-	silent! colorscheme moonlight
-else
-	set background=dark
-	set guifont=Iosevka\ SS09\ Light:h16
-	silent! colorscheme moonlight
-endif
-
-" Enable LSP integration.
-set omnifunc=ale#completion#OmniFunc
+" Activate themes.
+set background=dark
+set guifont=Iosevka\ SS09\ Light:h16
+silent! colorscheme moonlight
 
 
 " #1 Keybindings
@@ -302,7 +274,7 @@ map <leader>s] :BTags<cr>
 
 " Manage Vim.
 map <leader>qa :qa<cr>
-map <leader>qr :source ~/.config/nvim/init.vim<cr>R
+map <leader>qr :source ~/.config/nvim/init.vim<cr>
 map <leader>qi :PlugInstall<cr>
 map <leader>qu :PlugUpdate<cr>
 
@@ -341,12 +313,6 @@ nmap <M-k> [e
 vmap <M-j> ]egv
 vmap <M-k> [egv
 
-" Sexp operations.
-nmap <M-]> <Plug>(sexp_capture_next_element)
-nmap <M-[> <Plug>(sexp_emit_tail_element)
-nmap <M-{> <Plug>(sexp_capture_prev_element)
-nmap <M-}> <Plug>(sexp_emit_head_element)
-
 " Ergononmic matching jumps.
 " map <bs> %
 " map <cr> *
@@ -354,10 +320,6 @@ nmap <M-}> <Plug>(sexp_emit_head_element)
 " Ergonomic code folding.
 nmap <tab> <Plug>(fold-cycle-open)
 nnoremap <S-tab> zm
-
-" Jumping through history.
-nnoremap - <C-o>
-nnoremap _ <C-i>
 
 " Align expressions.
 nmap ga <Plug>(EasyAlign)
@@ -387,11 +349,3 @@ imap <C-x><C-l> <plug>(fzf-complete-line)
 
 " TeX bindings.
 nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
-
-" LSP bindings.
-" augroup lsp_bindings
-" 	autocmd!
-" 	autocmd FileType python nmap <buffer> gd :ALEGoToDefinition<cr>
-" 	autocmd FileType python nmap <buffer> gr :ALEFindReferences<cr>
-" 	autocmd FileType python nmap <buffer> Q  :ALEHover<cr>
-" augroup END
