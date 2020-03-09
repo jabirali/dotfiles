@@ -32,6 +32,7 @@ set statusline=%#VertSplit#%=
 set tabstop=4
 set termguicolors
 set tildeop
+set undofile
 set updatetime=100
 set virtualedit=block
 set wildmode=longest:full,full
