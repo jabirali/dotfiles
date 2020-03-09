@@ -159,18 +159,21 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'tpope/vim-commentary'         " Faster (un)commenting with `gc`
 	Plug 'junegunn/vim-easy-align'      " Faster code alignment with `ga`
 	Plug 'tpope/vim-speeddating'        " Better c-a/c-x actions for dates
-	" IDE features
-	Plug 'dense-analysis/ale'           " Linters and formatters
+	" Searching
 	Plug 'junegunn/fzf',                {'do': './install --bin'}
 	Plug 'junegunn/fzf.vim'             " Fuzzy finding of everything
 	Plug 'alok/notational-fzf-vim'      " Fuzzy finding of notes
+	" Version control
+	Plug 'tpope/vim-fugitive'           " Version control (general)
+	Plug 'jreybert/vimagit'             " Version control (commit)
+	Plug 'airblade/vim-gitgutter'       " Version control (buffer)
+	" IDE features
+	Plug 'neovim/nvim-lsp'              " Built-in LSP (configs)
+	Plug 'dense-analysis/ale'           " Linters and formatters
 	Plug 'sirver/ultisnips'             " Snippets (the engine)
 	Plug 'honza/vim-snippets'           " Snippets (collection)
 	" Plug 'lifepillar/vim-mucomplete'    " Minimalist autocompletion
 	Plug 'Lenovsky/nuake'               " Per-tab pop-up terminal
-	Plug 'tpope/vim-fugitive'           " Version control (general)
-	Plug 'jreybert/vimagit'             " Version control (commit)
-	Plug 'airblade/vim-gitgutter'       " Version control (buffer)
 	Plug 'mcchrish/nnn.vim'             " File browser
 	" Python
 	Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
@@ -191,6 +194,13 @@ call plug#end()
 set background=dark
 set guifont=Iosevka\ SS09\ Light:h16
 silent! colorscheme moonlight
+
+" Activate LSP.
+lua require'nvim_lsp'.bashls.setup{}
+lua require'nvim_lsp'.pyls.setup{}
+lua require'nvim_lsp'.texlab.setup{}
+lua require'nvim_lsp'.vimls.setup{}
+autocmd Filetype sh,python,tex,vim setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
 
 " #1 Keybindings
@@ -322,6 +332,12 @@ nmap <M-k> [e
 vmap <M-j> ]egv
 vmap <M-k> [egv
 
+" Look around.
+" noremap <M-h> zH
+" noremap <M-j> <C-d>
+" noremap <M-k> <C-u>
+" noremap <M-l> zL
+
 " Ergononmic matching jumps.
 " map <bs> %
 " map <cr> *
@@ -358,3 +374,13 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 
 " TeX bindings.
 nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
+
+" LSP bindings.
+nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<cr>
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
+nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<cr>
+nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<cr>
+nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<cr>
+nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<cr>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<cr>
+nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<cr>
