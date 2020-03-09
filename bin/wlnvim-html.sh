@@ -9,7 +9,8 @@
 tmp=$(mktemp)
 
 # Get primary selection from Wayland clipboard
-wl-paste -t text/html -p | pandoc -f html -t markdown-raw_html-native_divs-native_spans-fenced_divs-bracketed_spans-header_attributes --atx-headers > $tmp
+wl-paste -t text/html -p | pandoc -f html --atx-headers --reference-links \
+	-t markdown-raw_html-native_divs-native_spans-fenced_divs-bracketed_spans-header_attributes > $tmp
 
 # Open Kitty + NeoVim to edit the selection
 kitty --title 'Markdown editor' -e nvim +'set ft=markdown' $tmp
