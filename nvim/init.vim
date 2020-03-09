@@ -104,6 +104,7 @@ let g:magit_default_fold_level = 1
 let g:nnn#replace_netrw = 1
 let g:nuake_per_tab = 1
 let g:nuake_position = 'top'
+let g:nv_search_paths = ['~/projects/notes']
 let g:org_aggressive_conceal = 1
 let g:pandoc#folding#fdc = 0
 let g:semshi#mark_selected_nodes = 0
@@ -162,6 +163,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'dense-analysis/ale'           " Linters and formatters
 	Plug 'junegunn/fzf',                {'do': './install --bin'}
 	Plug 'junegunn/fzf.vim'             " Fuzzy finding of everything
+	Plug 'alok/notational-fzf-vim'      " Fuzzy finding of notes
 	Plug 'sirver/ultisnips'             " Snippets (the engine)
 	Plug 'honza/vim-snippets'           " Snippets (collection)
 	" Plug 'lifepillar/vim-mucomplete'    " Minimalist autocompletion
@@ -233,6 +235,7 @@ map <leader>od :NnnPicker '%:p:h'<cr>
 map <leader>ol :bot lwindow<cr>
 map <leader>oo :tabedit ~/projects/notes/sintef.org<cr>
 map <leader>oO :tabedit ~/projects/notes/personal.org<cr>
+map <leader>on :NV<cr>
 map <leader>op :bot split term://htop<cr>i
 map <leader>ot :Nuake<cr><c-\><c-n>:set scrolloff=999<cr>:<c-c>
 map <leader>oT :terminal<cr>
