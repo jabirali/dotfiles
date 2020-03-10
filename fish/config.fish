@@ -87,8 +87,12 @@ function e -d "Edit via $EDITOR" -w nvim
 	$EDITOR $argv
 end
 
-function man -d "Show manual" -w man
+function man -d "Show full manual" -w man
 	 $EDITOR +"Man $argv" +only
+end
+
+function tldr -d "Show tldr manual" -w sudo
+	 $EDITOR +"Tldr $argv" +only
 end
 
 function d -d 'File manager'

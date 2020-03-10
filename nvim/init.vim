@@ -177,6 +177,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'junegunn/fzf',                {'do': './install --bin'}
 	Plug 'junegunn/fzf.vim'             " Fuzzy finding of everything
 	Plug 'alok/notational-fzf-vim'      " Fuzzy finding of notes
+    Plug 'wlemuel/vim-tldr',            {'do': ':TldrUpdateDocs'}
 	" Version control
 	Plug 'tpope/vim-fugitive'           " Version control (general)
 	Plug 'jreybert/vimagit'             " Version control (commit)
