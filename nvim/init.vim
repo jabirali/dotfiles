@@ -201,14 +201,7 @@ set guifont=Iosevka\ SS09\ Light:h16
 silent! colorscheme moonlight
 
 " Activate LSP.
-lua require'nvim_lsp'.bashls.setup{}
-lua require'nvim_lsp'.pyls.setup{}
-lua require'nvim_lsp'.texlab.setup{}
-lua require'nvim_lsp'.vimls.setup{}
-
-" Disable unsolicited LSP diagnostics.
-lua function vim.lsp.util.buf_diagnostics_virtual_text() end
-
+luafile ~/.config/nvim/lsp.lua
 
 " #1 Keybindings
 " #2 Leader keys
