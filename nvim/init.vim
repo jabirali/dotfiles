@@ -132,6 +132,8 @@ augroup clean_highlights
 	autocmd ColorScheme * hi! MatchParen guifg=none gui=bold
 	autocmd ColorScheme * hi! CleverFDefaultLabel guifg=white gui=bold
 	autocmd ColorScheme * hi! SpellBad guifg=red gui=none
+	" Simplify the LSP diagnostics view.
+	autocmd ColorScheme * hi! link LspDiagnosticsUnderline SpellBad
 augroup END
 
 " #2 Installation
@@ -200,6 +202,9 @@ lua require'nvim_lsp'.bashls.setup{}
 lua require'nvim_lsp'.pyls.setup{}
 lua require'nvim_lsp'.texlab.setup{}
 lua require'nvim_lsp'.vimls.setup{}
+
+" Disable unsolicited LSP diagnostics.
+lua function vim.lsp.util.buf_diagnostics_virtual_text() end
 
 
 " #1 Keybindings
