@@ -200,7 +200,6 @@ lua require'nvim_lsp'.bashls.setup{}
 lua require'nvim_lsp'.pyls.setup{}
 lua require'nvim_lsp'.texlab.setup{}
 lua require'nvim_lsp'.vimls.setup{}
-autocmd Filetype sh,python,tex,vim setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
 
 " #1 Keybindings
@@ -376,11 +375,15 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
 
 " LSP bindings.
+set omnifunc=v:lua.vim.lsp.omnifunc
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<cr>
 nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
 nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<cr>
 nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<cr>
 nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<cr>
 nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<cr>
+nnoremap <silent> gF    <cmd>lua vim.lsp.buf.formatting()<cr>
+nnoremap <silent> gR    <cmd>lua vim.lsp.buf.rename()<cr>
 nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<cr>
 nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<cr>
+nnoremap <silent> ge    <cmd>lua vim.lsp.util.show_line_diagnostics()<cr>
