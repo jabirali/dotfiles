@@ -87,6 +87,10 @@ function e -d "Edit via $EDITOR" -w nvim
 	$EDITOR $argv
 end
 
+function man -d "Show manual" -w man
+	 $EDITOR +"Man $argv" +only
+end
+
 function d -d 'File manager'
     # Block nesting in subshells.
     if test -n NNNLVL
