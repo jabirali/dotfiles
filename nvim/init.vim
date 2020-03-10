@@ -177,8 +177,8 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'mcchrish/nnn.vim'             " File browser
 	" Python
 	Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+	Plug 'kalekundert/vim-coiled-snake'
 	Plug 'jmcantrell/vim-virtualenv'
-	Plug 'tmhedberg/SimpylFold'
 	Plug 'psf/black', {'tag': '19.10b0'}
 	" LaTeX
 	Plug 'lervag/vimtex'
