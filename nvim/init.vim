@@ -294,7 +294,6 @@ map <leader>s* :Ggrep <c-R><c-W><cr>
 map <leader>sg :Ggrep<space>
 map <leader>sn :NV<cr>
 map <leader>sp :GitCd<cr>:Rg<cr>
-map <leader>s] :BTags<cr>
 
 " Manage Vim.
 map <leader>qa :qa<cr>
@@ -311,13 +310,27 @@ map <leader>: :Commands<cr>
 map <leader>h :Helptags<cr>
 
 " #2 Editor keys
+" LSP bindings.
+set omnifunc=v:lua.vim.lsp.omnifunc
+nnoremap <silent> g=    <cmd>lua vim.lsp.buf.formatting()<cr>
+nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<cr>
+nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<cr>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<cr>
+nnoremap <silent> gR    <cmd>lua vim.lsp.buf.rename()<cr>
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
+inoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<cr>
+nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.hover()<cr><cmd>lua vim.lsp.util.show_line_diagnostics()<cr>
+
 " Better defaults.
+nnoremap ; :
 nnoremap ' `
+nnoremap 0 ^
 nnoremap Y y$
 noremap  j gj
 noremap  k gk
 nnoremap U <c-r>
-noremap  R :e<cr>
+noremap <c-j> J
+noremap <c-r> :e<cr>
 
 " Paging with HJKL.
 noremap H zH
@@ -325,35 +338,21 @@ noremap L zL
 noremap J <c-d>
 noremap K <c-u>
 
-" Org-like indentation.
-nmap <M-h> <<
-nmap <M-l> >>
-vmap <M-h> <gv
-vmap <M-l> >gv
-
-" Org-like dragging.
-nmap <M-j> ]e
-nmap <M-k> [e
-vmap <M-j> ]egv
-vmap <M-k> [egv
-
-" Ergonomic code folding.
+" Tab fold and indent.
 nmap <tab> <Plug>(fold-cycle-open)
 nnoremap <s-tab> zm
+vnoremap <tab>   >gv
+vnoremap <s-tab> <gv
 
 " Align expressions.
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
-" Relocated keys.
-noremap Q K
-noremap M J
-
-" Escape to normal mode with `jk`.
-inoremap jk <esc>
-
-" Escape to command mode with `;`.
-nnoremap ; :
+" Window movements.
+nnoremap <M-h> <c-w>h 
+nnoremap <M-j> <c-w>j 
+nnoremap <M-k> <c-w>k 
+nnoremap <M-l> <c-w>l 
 
 " Escape to normal mode in terminals.
 augroup terminal_escape
@@ -362,26 +361,8 @@ augroup terminal_escape
 	autocmd FileType fzf tunmap <buffer> <esc>
 augroup END
 
-" FZF bindings.
-imap <c-x><c-k> <plug>(fzf-complete-word)
-imap <c-x><c-f> <plug>(fzf-complete-path)
-imap <c-x><c-l> <plug>(fzf-complete-line)
-
 " TeX bindings.
 nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
 
 " Completion.
 inoremap <silent> <expr> <cr> mucomplete#ultisnips#expand_snippet("\<cr>")
-
-" LSP bindings.
-set omnifunc=v:lua.vim.lsp.omnifunc
-nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<cr>
-nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
-nnoremap <silent> Q     <cmd>lua vim.lsp.buf.hover()<cr><cmd>lua vim.lsp.util.show_line_diagnostics()<cr>
-nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<cr>
-nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<cr>
-nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<cr>
-nnoremap <silent> gF    <cmd>lua vim.lsp.buf.formatting()<cr>
-nnoremap <silent> gR    <cmd>lua vim.lsp.buf.rename()<cr>
-nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<cr>
-nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<cr>
