@@ -133,7 +133,10 @@ augroup clean_highlights
 	autocmd ColorScheme * hi! CleverFDefaultLabel guifg=white gui=bold
 	autocmd ColorScheme * hi! SpellBad guifg=red gui=none
 	" Simplify the LSP diagnostics view.
-	autocmd ColorScheme * hi! link LspDiagnosticsUnderline SpellBad
+	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineError LspDiagnosticsError
+	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineHint LspDiagnosticsHint
+	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineInformation LspDiagnosticsInformation
+	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineWarning LspDiagnosticsWarning
 augroup END
 
 " #2 Installation
