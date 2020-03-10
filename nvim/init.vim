@@ -69,7 +69,7 @@ let g:mucomplete#tab_when_no_results = 0
 let g:nnn#replace_netrw = 1
 let g:nuake_per_tab = 1
 let g:nuake_position = 'top'
-let g:nv_search_paths = ['~/projects/notes']
+let g:nv_search_paths = ['~/notes']
 let g:org_aggressive_conceal = 1
 let g:pandoc#folding#fdc = 0
 let g:semshi#mark_selected_nodes = 0
@@ -257,8 +257,8 @@ map <leader>tV :VirtualEnvDeactivate<cr>
 " Open stuff.
 map <leader>od :NnnPicker '%:p:h'<cr>
 map <leader>ol :bot lwindow<cr>
-map <leader>oo :tabedit ~/projects/notes/sintef.org<cr>
-map <leader>oO :tabedit ~/projects/notes/personal.org<cr>
+map <leader>oo :tabedit ~/notes/sintef.org<cr>
+map <leader>oO :tabedit ~/notes/personal.org<cr>
 map <leader>op :bot split term://htop<cr>i
 map <leader>ot :Nuake<cr><c-\><c-n>
 map <leader>oT :terminal<cr>
@@ -275,7 +275,7 @@ map <leader>fd :Files ~/.config/<cr>
 map <leader>fD :Files /etc/<cr>
 map <leader>fg :GFiles<cr>
 map <leader>fG :GFiles?<cr>
-map <leader>fn :Files ~/projects/notes/<cr>
+map <leader>fn :Files ~/notes/<cr>
 map <leader>fp :Files ~/projects/<cr>
 map <leader>fr :History<cr>
 map <leader>fz :Zotero!<cr>
