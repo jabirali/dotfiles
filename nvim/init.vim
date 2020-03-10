@@ -361,7 +361,7 @@ xmap ga <Plug>(EasyAlign)
 
 " Open terminals.
 nnoremap gt :Nuake<cr>
-vnoremap gt y:Nuake<cr><c-\><c-n>p
+vnoremap gt y:Nuake<cr><c-\><c-n>pA<cr><cr><c-\><c-n>
 nnoremap gT :terminal<cr>
 
 " Inspired by Firefox.
