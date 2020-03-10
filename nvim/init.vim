@@ -69,9 +69,11 @@ let g:mucomplete#tab_when_no_results = 0
 let g:nnn#replace_netrw = 1
 let g:nuake_per_tab = 1
 let g:nuake_position = 'top'
+let g:nuake_size = 0.20
 let g:nv_search_paths = ['~/notes']
 let g:org_aggressive_conceal = 1
 let g:pandoc#folding#fdc = 0
+let g:scratch_insert_autohide = 0
 let g:semshi#mark_selected_nodes = 0
 let g:tex_conceal = 'abdgm'
 let g:UltiSnipsExpandTrigger = '<noop>'
@@ -104,12 +106,12 @@ command! -bang Zotero call fzf#run(fzf#wrap(
 command! GitCd execute 'cd ./'.system('git rev-parse --show-cdup')
 
 " #2 Autocommands
-" Close pop-ups with `q` like Emacs.
-augroup quit_like_emacs
+" Close pop-ups with escape.
+augroup quit_like_doom
 	autocmd!
-	autocmd BufWinEnter quickfix noremap <buffer> q :q<cr>
-	autocmd TermOpen * noremap <buffer> q <c-\><c-n>:close<cr>
-	autocmd FileType help,man noremap <buffer> q :q<cr>
+	autocmd BufWinEnter quickfix noremap <buffer> <esc> :silent q<cr>
+	autocmd FileType help,man,scratch noremap <buffer> <esc> :silent q<cr>
+	autocmd TermOpen * noremap <buffer> <esc> <c-\><c-n>:silent close<cr>
 augroup END
 
 " Keep the terminals simple and clean.
@@ -189,9 +191,11 @@ call plug#begin('~/.local/share/nvim/plugins')
 	" IDE features
 	Plug 'neovim/nvim-lsp'              " Setup built-in language client
 	Plug 'lifepillar/vim-mucomplete'    " Setup built-in autocompletion
-	Plug 'sirver/ultisnips'             " Snippets (the engine)
-	Plug 'honza/vim-snippets'           " Snippets (collection)
-	Plug 'Lenovsky/nuake'               " Per-tab pop-up terminal
+	Plug 'honza/vim-snippets'           " Snippets collection
+	Plug 'sirver/ultisnips'             " Snippets engine
+	" Miscellaneous
+	Plug 'Lenovsky/nuake'               " Quake terminal
+	Plug 'mtth/scratch.vim'             " Scratch buffer
 	Plug 'mcchrish/nnn.vim'             " File browser
 	" Python
 	Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
@@ -260,7 +264,7 @@ map <leader>ol :bot lwindow<cr>
 map <leader>oo :tabedit ~/notes/sintef.org<cr>
 map <leader>oO :tabedit ~/notes/personal.org<cr>
 map <leader>op :bot split term://htop<cr>i
-map <leader>ot :Nuake<cr><c-\><c-n>
+map <leader>ot :Nuake<cr>
 map <leader>oT :terminal<cr>
 map <leader>ov <leader>tv
 map <leader>oV <leader>tV
@@ -354,6 +358,11 @@ vnoremap <s-tab> <gv
 " Align expressions.
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
+
+" Open terminals.
+nnoremap gt :Nuake<cr>
+vnoremap gt y:Nuake<cr><c-\><c-n>p
+nnoremap gT :terminal<cr>
 
 " Inspired by Firefox.
 nnoremap <c-r> :e<cr>
