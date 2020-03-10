@@ -261,76 +261,76 @@ nnoremap ]<tab> :tabnext<cr>
 nnoremap [<tab> :tabprev<cr>
 
 " Toggle stuff.
-nnoremap <leader>t yo
-nnoremap <leader>tg :Goyo<cr>
-nnoremap <leader>tv :VirtualEnvActivate<space>
-nnoremap <leader>tV :VirtualEnvDeactivate<cr>
+nmap <leader>t yo
+nmap <leader>tg :Goyo<cr>
+nmap <leader>tv :VirtualEnvActivate<space>
+nmap <leader>tV :VirtualEnvDeactivate<cr>
 
 " Open stuff.
-nnoremap <leader>od :NnnPicker '%:p:h'<cr>
-nnoremap <leader>ol :bot lwindow<cr>
-nnoremap <leader>oo :tabedit ~/notes/sintef.org<cr>
-nnoremap <leader>oO :tabedit ~/notes/personal.org<cr>
-nnoremap <leader>op :bot split term://htop<cr>i
-nnoremap <leader>os :Scratch<cr>
-nnoremap <leader>oS :Scratch!<cr>
-nnoremap <leader>ot :Nuake<cr>
-nnoremap <leader>oT :terminal<cr>
-nnoremap <leader>ov <leader>tv
-nnoremap <leader>oV <leader>tV
-nnoremap <leader>oq :bot cwindow<cr>
-nnoremap <leader>oz :top 10 Repl<cr>
+nmap <leader>od :NnnPicker '%:p:h'<cr>
+nmap <leader>ol :bot lwindow<cr>
+nmap <leader>oo :tabedit ~/notes/sintef.org<cr>
+nmap <leader>oO :tabedit ~/notes/personal.org<cr>
+nmap <leader>op :bot split term://htop<cr>i
+nmap <leader>os :Scratch<cr>
+nmap <leader>oS :Scratch!<cr>
+nmap <leader>ot :Nuake<cr>
+nmap <leader>oT :terminal<cr>
+nmap <leader>ov <leader>tv
+nmap <leader>oV <leader>tV
+nmap <leader>oq :bot cwindow<cr>
+nmap <leader>oz :top 10 Repl<cr>
 
 " Find files.
-nnoremap <leader>ff :Files ~/projects/<cr>
-nnoremap <leader>fo :Files ~/onedrive/<cr>
-nnoremap <leader>fF :Files ~/<cr>
-nnoremap <leader>fb :Buffers<cr>
-nnoremap <leader>fd :Files ~/.config/<cr>
-nnoremap <leader>fD :Files /etc/<cr>
-nnoremap <leader>fg :GFiles<cr>
-nnoremap <leader>fG :GFiles?<cr>
-nnoremap <leader>fn :Files ~/notes/<cr>
-nnoremap <leader>fp :Files ~/projects/<cr>
-nnoremap <leader>fr :History<cr>
-nnoremap <leader>fz :Zotero!<cr>
+nmap <leader>ff :Files ~/projects/<cr>
+nmap <leader>fo :Files ~/onedrive/<cr>
+nmap <leader>fF :Files ~/<cr>
+nmap <leader>fb :Buffers<cr>
+nmap <leader>fd :Files ~/.config/<cr>
+nmap <leader>fD :Files /etc/<cr>
+nmap <leader>fg :GFiles<cr>
+nmap <leader>fG :GFiles?<cr>
+nmap <leader>fn :Files ~/notes/<cr>
+nmap <leader>fp :Files ~/projects/<cr>
+nmap <leader>fr :History<cr>
+nmap <leader>fz :Zotero!<cr>
 
 " Version control.
-nnoremap <leader>gg :MagitOnly<cr>
-nnoremap <leader>gb :GBlame<cr>
-nnoremap <leader>gc :BCommits<cr>
-nnoremap <leader>gC :Commits<cr>
-nnoremap <leader>gd :Git difftool<cr>
-nnoremap <leader>gD :Gdelete<space>
-nnoremap <leader>gf :Gfetch<cr>
-nnoremap <leader>gl :Glog<cr>
-nnoremap <leader>gm :Git mergetool<cr>
-nnoremap <leader>gp :Gpush<cr>
-nnoremap <leader>gR :Gmove<space>
-map <leader>gs <Plug>(GitGutterStageHunk)
-map <leader>gu <Plug>(GitGutterUndoHunk)
-nnoremap <leader>gz :GitGutterSignsToggle<cr>:GitGutterFold<cr>
+nmap <leader>gg :MagitOnly<cr>
+nmap <leader>gb :GBlame<cr>
+nmap <leader>gc :BCommits<cr>
+nmap <leader>gC :Commits<cr>
+nmap <leader>gd :Git difftool<cr>
+nmap <leader>gD :Gdelete<space>
+nmap <leader>gf :Gfetch<cr>
+nmap <leader>gl :Glog<cr>
+nmap <leader>gm :Git mergetool<cr>
+nmap <leader>gp :Gpush<cr>
+nmap <leader>gR :Gmove<space>
+nmap <leader>gs <Plug>(GitGutterStageHunk)
+nmap <leader>gu <Plug>(GitGutterUndoHunk)
+nmap <leader>gz :GitGutterSignsToggle<cr>:GitGutterFold<cr>
 
 " Search content.
-nnoremap <leader>ss :BLines<cr>
-nnoremap <leader>s* :Ggrep <c-r><c-w><cr>
-nnoremap <leader>sg :Ggrep<space>
-nnoremap <leader>sn :NV<cr>
-nnoremap <leader>sp :GitCd<cr>:Rg<cr>
+nmap <leader>ss :BLines<cr>
+nmap <leader>s* :Ggrep <c-r><c-w><cr>
+nmap <leader>sg :Ggrep<space>
+nmap <leader>sn :NV<cr>
+nmap <leader>sp :GitCd<cr>:Rg<cr>
 
 " Manage Vim.
-nnoremap <leader>qa :qa<cr>
-nnoremap <leader>qr :source ~/.config/nvim/init.vim<cr>
-nnoremap <leader>qi :PlugInstall<cr>
-nnoremap <leader>qu :PlugUpdate<cr>
+nmap <leader>qa :qa<cr>
+nmap <leader>qr :source ~/.config/nvim/init.vim<cr>
+nmap <leader>qi :PlugInstall<cr>
+nmap <leader>qu :PlugUpdate<cr>
 
 " Leader-based speed keys.
-nnoremap <leader><leader> <leader>fg
-nnoremap <leader>, <leader>fb
-nnoremap <leader>. <leader>od
-nnoremap <leader>/ <leader>s]
-nnoremap <leader>: :Commands<cr>
-nnoremap <leader>h :Helptags<cr>
+nmap <leader><leader> <leader>fg
+nmap <leader>, <leader>fb
+nmap <leader>. <leader>od
+nmap <leader>/ <leader>s]
+nmap <leader>: :Commands<cr>
+nmap <leader>h :Helptags<cr>
 
 " #2 Editor keys
 " LSP bindings.
