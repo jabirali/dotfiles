@@ -126,6 +126,10 @@ augroup clean_highlights
 	autocmd ColorScheme * hi! InactiveWindow guibg=none
 	autocmd ColorScheme * hi! ActiveWindow guibg='#23253a'
 	set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow
+	" Remove highlighting of active tab.
+	autocmd ColorScheme * hi! TabLine guibg=none
+	autocmd ColorScheme * hi! TabLineFill guibg=none
+	autocmd ColorScheme * hi! TabLineSel guibg=none gui=bold
 	" Tone down too heavy default highlighting.
 	autocmd ColorScheme * hi! LineNr guibg=none
 	autocmd ColorScheme * hi! link CursorLineNr LineNr
@@ -224,8 +228,8 @@ nnoremap <silent> <leader>      :WhichKey '<space>'<cr>
 nnoremap <silent> <localleader> :WhichKey ','<cr>
 
 " Window splits.
-map <leader>w <c-w>
-map <leader>wd :close<cr>
+nnoremap <leader>w <c-w>
+nnoremap <leader>wd :close<cr>
 
 " Tabs/Workspaces.
 map <leader><tab>1 :1tabnext<cr>
@@ -294,7 +298,7 @@ map <leader>gz :GitGutterSignsToggle<cr>:GitGutterFold<cr>
 
 " Search content.
 map <leader>ss :BLines<cr>
-map <leader>s* :Ggrep <c-R><c-W><cr>
+map <leader>s* :Ggrep <c-r><c-w><cr>
 map <leader>sg :Ggrep<space>
 map <leader>sn :NV<cr>
 map <leader>sp :GitCd<cr>:Rg<cr>
@@ -334,7 +338,6 @@ noremap  j gj
 noremap  k gk
 nnoremap U <c-r>
 noremap <c-j> J
-noremap <c-r> :e<cr>
 
 " Paging with HJKL.
 noremap H zH
@@ -352,11 +355,14 @@ vnoremap <s-tab> <gv
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
-" Window movements.
-nnoremap <M-h> <c-w>h 
-nnoremap <M-j> <c-w>j 
-nnoremap <M-k> <c-w>k 
-nnoremap <M-l> <c-w>l 
+" Inspired by Firefox.
+nnoremap <c-r> :e<cr>
+
+" Inspired by i3.
+nnoremap <m-h> <c-w>h 
+nnoremap <m-j> <c-w>j 
+nnoremap <m-k> <c-w>k 
+nnoremap <m-l> <c-w>l 
 
 " Escape to normal mode in terminals.
 augroup terminal_escape
