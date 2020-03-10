@@ -114,34 +114,6 @@ augroup quit_like_doom
 	autocmd TermOpen * noremap <buffer> <esc> <c-\><c-n>:silent close<cr>
 augroup END
 
-" Keep the terminals simple and clean.
-augroup terminal_settings
-	autocmd!
-	autocmd TermOpen  * setlocal scrolloff=0 nonumber norelativenumber
-	autocmd TermLeave * setlocal scrolloff=999
-augroup END
-
-" Escape to normal mode in terminals.
-augroup terminal_escape
-	autocmd!
-	autocmd TermOpen * tnoremap <buffer> <esc> <c-\><c-n>
-	autocmd FileType fzf tunmap <buffer> <esc>
-augroup END
-
-" Navigate prompts like sections.
-augroup terminal_prompts
-	autocmd!
-	autocmd TermOpen * nnoremap <buffer> [[ ?❯<cr>:nohlsearch<cr>:<esc>
-	autocmd TermOpen * nnoremap <buffer> ]] /❯<cr>:nohlsearch<cr>:<esc>
-augroup END
-
-" REPL integration.
-augroup zepl
-    autocmd!
-    autocmd FileType python let b:repl_config = { 'cmd': 'python3' }
-    autocmd FileType julia  let b:repl_config = { 'cmd': 'julia' }
-augroup END
-
 " Improve the default highlight colors.
 augroup clean_highlights
 	autocmd!
@@ -167,10 +139,28 @@ augroup clean_highlights
 	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineWarning LspDiagnosticsWarning
 augroup END
 
-" Automatic triggering of plugins.
-augroup plugin_hooks
+" Improve the default terminal settings.
+augroup terminal_settings
 	autocmd!
+	" Keep the terminals simple and clean.
+	autocmd TermOpen  * setlocal scrolloff=0 nonumber norelativenumber
+	autocmd TermLeave * setlocal scrolloff=999
+	" Escape to normal mode in terminals.
+	autocmd TermOpen * tnoremap <buffer> <esc> <c-\><c-n>
+	autocmd FileType fzf tunmap <buffer> <esc>
+	" Navigate prompts like sections.
+	autocmd TermOpen * nnoremap <buffer> [[ ?❯<cr>:nohlsearch<cr>:<esc>
+	autocmd TermOpen * nnoremap <buffer> ]] /❯<cr>:nohlsearch<cr>:<esc>
+augroup END
+
+" Python integration.
+augroup python_settings
+    autocmd!
 	autocmd BufWritePre *.py execute ':Black'
+	autocmd FileType python runtime zepl/contrib/python.vim
+	autocmd FileType python let b:repl_config =
+				\ { 'cmd': 'fish -c python3',
+				\   'formatter': function("zepl#contrib#python#formatter") }
 augroup END
 
 
@@ -236,11 +226,11 @@ call plug#begin('~/.local/share/nvim/plugins')
 call plug#end()
 
 " #2 Miscellaneous
+" Load LSP support.
+luafile ~/.config/nvim/lsp.lua
+
 " Load color scheme.
 silent! colorscheme moonlight
-
-" Load LSP settings.
-luafile ~/.config/nvim/lsp.lua
 
 
 " #1 Keybindings
