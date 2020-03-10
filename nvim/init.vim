@@ -35,7 +35,7 @@ set tabstop=4
 set termguicolors
 set tildeop
 set undofile
-set updatetime=100
+set updatetime=3000
 set virtualedit=block
 set wildmode=longest:full,full
 set winaltkeys=no
@@ -106,6 +106,12 @@ command! -bang Zotero call fzf#run(fzf#wrap(
 command! GitCd execute 'cd ./'.system('git rev-parse --show-cdup')
 
 " #2 Autocommands
+" Normal mode after timeout.
+augroup normal_timeout
+	autocmd!
+	autocmd CursorHoldI * stopinsert
+augroup END
+
 " Close pop-ups with escape.
 augroup quit_like_doom
 	autocmd!
