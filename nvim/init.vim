@@ -121,6 +121,13 @@ augroup terminal_settings
 	autocmd TermLeave * setlocal scrolloff=999
 augroup END
 
+" REPL integration.
+augroup zepl
+    autocmd!
+    autocmd FileType python let b:repl_config = { 'cmd': 'python3' }
+    autocmd FileType julia  let b:repl_config = { 'cmd': 'julia' }
+augroup END
+
 " Improve the default highlight colors.
 augroup clean_highlights
 	autocmd!
@@ -191,6 +198,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	" IDE features
 	Plug 'neovim/nvim-lsp'              " Setup built-in language client
 	Plug 'lifepillar/vim-mucomplete'    " Setup built-in autocompletion
+	Plug 'axvr/zepl.vim'                " Minimal REPL integration
 	Plug 'honza/vim-snippets'           " Snippets collection
 	Plug 'sirver/ultisnips'             " Snippets engine
 	" Miscellaneous
@@ -236,90 +244,93 @@ nnoremap <leader>w <c-w>
 nnoremap <leader>wd :close<cr>
 
 " Tabs/Workspaces.
-map <leader><tab>1 :1tabnext<cr>
-map <leader><tab>2 :2tabnext<cr>
-map <leader><tab>3 :3tabnext<cr>
-map <leader><tab>4 :4tabnext<cr>
-map <leader><tab>5 :5tabnext<cr>
-map <leader><tab>6 :6tabnext<cr>
-map <leader><tab>7 :7tabnext<cr>
-map <leader><tab>8 :8tabnext<cr>
-map <leader><tab>9 :9tabnext<cr>
-map <leader><tab>d :tabclose<cr>
-map <leader><tab>n :tabnew<cr>
-map <leader><tab>] :tabnext<cr>
-map <leader><tab>[ :tabprev<cr>
-map ]<tab> :tabnext<cr>
-map [<tab> :tabprev<cr>
+nnoremap <leader><tab>1 :1tabnext<cr>
+nnoremap <leader><tab>2 :2tabnext<cr>
+nnoremap <leader><tab>3 :3tabnext<cr>
+nnoremap <leader><tab>4 :4tabnext<cr>
+nnoremap <leader><tab>5 :5tabnext<cr>
+nnoremap <leader><tab>6 :6tabnext<cr>
+nnoremap <leader><tab>7 :7tabnext<cr>
+nnoremap <leader><tab>8 :8tabnext<cr>
+nnoremap <leader><tab>9 :9tabnext<cr>
+nnoremap <leader><tab>d :tabclose<cr>
+nnoremap <leader><tab>n :tabnew<cr>
+nnoremap <leader><tab>] :tabnext<cr>
+nnoremap <leader><tab>[ :tabprev<cr>
+nnoremap ]<tab> :tabnext<cr>
+nnoremap [<tab> :tabprev<cr>
 
 " Toggle stuff.
-map <leader>t yo
-map <leader>tg :Goyo<cr>
-map <leader>tv :VirtualEnvActivate<space>
-map <leader>tV :VirtualEnvDeactivate<cr>
+nnoremap <leader>t yo
+nnoremap <leader>tg :Goyo<cr>
+nnoremap <leader>tv :VirtualEnvActivate<space>
+nnoremap <leader>tV :VirtualEnvDeactivate<cr>
 
 " Open stuff.
-map <leader>od :NnnPicker '%:p:h'<cr>
-map <leader>ol :bot lwindow<cr>
-map <leader>oo :tabedit ~/notes/sintef.org<cr>
-map <leader>oO :tabedit ~/notes/personal.org<cr>
-map <leader>op :bot split term://htop<cr>i
-map <leader>ot :Nuake<cr>
-map <leader>oT :terminal<cr>
-map <leader>ov <leader>tv
-map <leader>oV <leader>tV
-map <leader>oq :bot cwindow<cr>
+nnoremap <leader>od :NnnPicker '%:p:h'<cr>
+nnoremap <leader>ol :bot lwindow<cr>
+nnoremap <leader>oo :tabedit ~/notes/sintef.org<cr>
+nnoremap <leader>oO :tabedit ~/notes/personal.org<cr>
+nnoremap <leader>op :bot split term://htop<cr>i
+nnoremap <leader>os :Scratch<cr>
+nnoremap <leader>oS :Scratch!<cr>
+nnoremap <leader>ot :Nuake<cr>
+nnoremap <leader>oT :terminal<cr>
+nnoremap <leader>ov <leader>tv
+nnoremap <leader>oV <leader>tV
+nnoremap <leader>oq :bot cwindow<cr>
+nnoremap <leader>oz :top 10 Repl<cr>
 
 " Find files.
-map <leader>ff :Files ~/projects/<cr>
-map <leader>fo :Files ~/onedrive/<cr>
-map <leader>fF :Files ~/<cr>
-map <leader>fb :Buffers<cr>
-map <leader>fd :Files ~/.config/<cr>
-map <leader>fD :Files /etc/<cr>
-map <leader>fg :GFiles<cr>
-map <leader>fG :GFiles?<cr>
-map <leader>fn :Files ~/notes/<cr>
-map <leader>fp :Files ~/projects/<cr>
-map <leader>fr :History<cr>
-map <leader>fz :Zotero!<cr>
+nnoremap <leader>ff :Files ~/projects/<cr>
+nnoremap <leader>fo :Files ~/onedrive/<cr>
+nnoremap <leader>fF :Files ~/<cr>
+nnoremap <leader>fb :Buffers<cr>
+nnoremap <leader>fd :Files ~/.config/<cr>
+nnoremap <leader>fD :Files /etc/<cr>
+nnoremap <leader>fg :GFiles<cr>
+nnoremap <leader>fG :GFiles?<cr>
+nnoremap <leader>fn :Files ~/notes/<cr>
+nnoremap <leader>fp :Files ~/projects/<cr>
+nnoremap <leader>fr :History<cr>
+nnoremap <leader>fz :Zotero!<cr>
 
 " Version control.
-map <leader>gg :MagitOnly<cr>
-map <leader>gb :GBlame<cr>
-map <leader>gc :BCommits<cr>
-map <leader>gC :Commits<cr>
-map <leader>gd :Git difftool<cr>
-map <leader>gD :Gdelete<space>
-map <leader>gf :Gfetch<cr>
-map <leader>gl :Glog<cr>
-map <leader>gm :Git mergetool<cr>
-map <leader>gp :Gpush<cr>
-map <leader>gR :Gmove<space>
+nnoremap <leader>gg :MagitOnly<cr>
+nnoremap <leader>gb :GBlame<cr>
+nnoremap <leader>gc :BCommits<cr>
+nnoremap <leader>gC :Commits<cr>
+nnoremap <leader>gd :Git difftool<cr>
+nnoremap <leader>gD :Gdelete<space>
+nnoremap <leader>gf :Gfetch<cr>
+nnoremap <leader>gl :Glog<cr>
+nnoremap <leader>gm :Git mergetool<cr>
+nnoremap <leader>gp :Gpush<cr>
+nnoremap <leader>gR :Gmove<space>
 map <leader>gs <Plug>(GitGutterStageHunk)
 map <leader>gu <Plug>(GitGutterUndoHunk)
-map <leader>gz :GitGutterSignsToggle<cr>:GitGutterFold<cr>
+nnoremap <leader>gz :GitGutterSignsToggle<cr>:GitGutterFold<cr>
 
 " Search content.
-map <leader>ss :BLines<cr>
-map <leader>s* :Ggrep <c-r><c-w><cr>
-map <leader>sg :Ggrep<space>
-map <leader>sn :NV<cr>
-map <leader>sp :GitCd<cr>:Rg<cr>
+nnoremap <leader>ss :BLines<cr>
+nnoremap <leader>s* :Ggrep <c-r><c-w><cr>
+nnoremap <leader>sg :Ggrep<space>
+nnoremap <leader>sn :NV<cr>
+nnoremap <leader>sp :GitCd<cr>:Rg<cr>
 
 " Manage Vim.
-map <leader>qa :qa<cr>
-map <leader>qr :source ~/.config/nvim/init.vim<cr>
-map <leader>qi :PlugInstall<cr>
-map <leader>qu :PlugUpdate<cr>
+nnoremap <leader>qa :qa<cr>
+nnoremap <leader>qr :source ~/.config/nvim/init.vim<cr>
+nnoremap <leader>qi :PlugInstall<cr>
+nnoremap <leader>qu :PlugUpdate<cr>
 
 " Leader-based speed keys.
-map <leader><leader> <leader>fg
-map <leader>, <leader>fb
-map <leader>. <leader>od
-map <leader>/ <leader>s]
-map <leader>: :Commands<cr>
-map <leader>h :Helptags<cr>
+nnoremap <leader><leader> <leader>fg
+nnoremap <leader>, <leader>fb
+nnoremap <leader>. <leader>od
+nnoremap <leader>/ <leader>s]
+nnoremap <leader>: :Commands<cr>
+nnoremap <leader>h :Helptags<cr>
 
 " #2 Editor keys
 " LSP bindings.
@@ -358,11 +369,6 @@ vnoremap <s-tab> <gv
 " Align expressions.
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
-
-" Open terminals.
-nnoremap gt :Nuake<cr>
-vnoremap gt y:Nuake<cr><c-\><c-n>pA<cr><cr><c-\><c-n>
-nnoremap gT :terminal<cr>
 
 " Inspired by Firefox.
 nnoremap <c-r> :e<cr>
