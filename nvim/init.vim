@@ -121,6 +121,20 @@ augroup terminal_settings
 	autocmd TermLeave * setlocal scrolloff=999
 augroup END
 
+" Escape to normal mode in terminals.
+augroup terminal_escape
+	autocmd!
+	autocmd TermOpen * tnoremap <buffer> <esc> <c-\><c-n>
+	autocmd FileType fzf tunmap <buffer> <esc>
+augroup END
+
+" Navigate prompts like sections.
+augroup terminal_prompts
+	autocmd!
+	autocmd TermOpen * nnoremap <buffer> [[ ?❯<cr>:nohlsearch<cr>:<esc>
+	autocmd TermOpen * nnoremap <buffer> ]] /❯<cr>:nohlsearch<cr>:<esc>
+augroup END
+
 " REPL integration.
 augroup zepl
     autocmd!
@@ -379,15 +393,9 @@ nnoremap <m-j> <c-w>j
 nnoremap <m-k> <c-w>k 
 nnoremap <m-l> <c-w>l 
 
-" Escape to normal mode in terminals.
-augroup terminal_escape
-	autocmd!
-	autocmd TermOpen * tnoremap <buffer> <esc> <c-\><c-n>
-	autocmd FileType fzf tunmap <buffer> <esc>
-augroup END
-
 " TeX bindings.
 nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
 
 " Completion.
 inoremap <silent> <expr> <cr> mucomplete#ultisnips#expand_snippet("\<cr>")
+
