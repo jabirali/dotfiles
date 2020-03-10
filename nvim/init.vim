@@ -4,7 +4,7 @@
 " #2 Configuration
 set autochdir
 set clipboard+=unnamedplus
-set completeopt=longest,menuone,noselect
+set completeopt=longest,menuone,noinsert
 set concealcursor=nc
 set conceallevel=2
 set confirm
@@ -97,6 +97,8 @@ let g:fzf_colors =
 let g:fzf_history_dir = '~/.local/share/fzf'
 let g:loaded_netrw = 1
 let g:magit_default_fold_level = 1
+let g:mucomplete#tab_when_no_results = 0
+let g:mucomplete#chains = { 'default': ['ulti', 'omni', 'path', 'dict', 'spel'] }
 let g:nnn#replace_netrw = 1
 let g:nuake_per_tab = 1
 let g:nuake_position = 'top'
@@ -105,7 +107,7 @@ let g:org_aggressive_conceal = 1
 let g:pandoc#folding#fdc = 0
 let g:semshi#mark_selected_nodes = 0
 let g:tex_conceal = 'abdgm'
-let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsExpandTrigger = '<noop>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 let g:vimade = {'fadelevel': 0.7}
@@ -169,10 +171,10 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'jreybert/vimagit'             " Version control (commit)
 	Plug 'airblade/vim-gitgutter'       " Version control (buffer)
 	" IDE features
-	Plug 'neovim/nvim-lsp'              " Built-in LSP (configs)
+	Plug 'neovim/nvim-lsp'              " Setup built-in language client
+	Plug 'lifepillar/vim-mucomplete'    " Setup built-in autocompletion
 	Plug 'sirver/ultisnips'             " Snippets (the engine)
 	Plug 'honza/vim-snippets'           " Snippets (collection)
-	" Plug 'lifepillar/vim-mucomplete'    " Minimalist autocompletion
 	Plug 'Lenovsky/nuake'               " Per-tab pop-up terminal
 	Plug 'mcchrish/nnn.vim'             " File browser
 	" Python
@@ -377,6 +379,9 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 
 " TeX bindings.
 nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
+
+" Completion.
+inoremap <silent> <expr> <cr> mucomplete#ultisnips#expand_snippet("\<cr>")
 
 " LSP bindings.
 set omnifunc=v:lua.vim.lsp.omnifunc
