@@ -74,10 +74,6 @@ command! -bang Zotero call fzf#run(fzf#wrap(
 " #1 Plugin settings
 " #2 Configuration
 " Plugin parameters.
-let g:ale_fixers = {'*': ['trim_whitespace'], 'python': ['black', 'isort']}
-let g:ale_fix_on_save = 1
-let g:ale_linters = {'python': [], 'tex': [], 'bash': []}
-let g:ale_set_quickfix = 1
 let g:clever_f_chars_match_any_signs = ' '
 let g:clever_f_smart_case = 1
 let g:coiled_snake_foldtext_flags = []
@@ -174,7 +170,6 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'airblade/vim-gitgutter'       " Version control (buffer)
 	" IDE features
 	Plug 'neovim/nvim-lsp'              " Built-in LSP (configs)
-	Plug 'dense-analysis/ale'           " Linters and formatters
 	Plug 'sirver/ultisnips'             " Snippets (the engine)
 	Plug 'honza/vim-snippets'           " Snippets (collection)
 	" Plug 'lifepillar/vim-mucomplete'    " Minimalist autocompletion
@@ -184,6 +179,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 	Plug 'jmcantrell/vim-virtualenv'
 	Plug 'tmhedberg/SimpylFold'
+	Plug 'psf/black', {'tag': '19.10b0'}
 	" LaTeX
 	Plug 'lervag/vimtex'
 	Plug 'PietroPate/vim-tex-conceal'
@@ -202,6 +198,13 @@ silent! colorscheme moonlight
 
 " Activate LSP.
 luafile ~/.config/nvim/lsp.lua
+
+" Activate hooks.
+augroup plugin_hooks
+	autocmd!
+	autocmd BufWritePre *.py execute ':Black'
+augroup END
+
 
 " #1 Keybindings
 " #2 Leader keys
