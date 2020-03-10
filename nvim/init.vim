@@ -47,10 +47,11 @@ augroup quit_like_emacs
 	autocmd FileType help noremap <buffer> q :q<cr>
 augroup END
 
-" Don't show line numbers in terminals.
+" Customize terminal settings.
 augroup terminal_settings
 	autocmd!
-	autocmd TermOpen * setlocal nonumber norelativenumber scrolloff=0
+	autocmd TermOpen  * setlocal scrolloff=0 nonumber norelativenumber
+	autocmd TermLeave * setlocal scrolloff=999
 augroup END
 
 " Define a simple custom folding style. For filetypes that don't have custom
@@ -250,9 +251,8 @@ map <leader>od :NnnPicker '%:p:h'<cr>
 map <leader>ol :bot lwindow<cr>
 map <leader>oo :tabedit ~/projects/notes/sintef.org<cr>
 map <leader>oO :tabedit ~/projects/notes/personal.org<cr>
-map <leader>on :NV<cr>
 map <leader>op :bot split term://htop<cr>i
-map <leader>ot :Nuake<cr><c-\><c-n>:set scrolloff=999<cr>:<c-c>
+map <leader>ot :Nuake<cr><c-\><c-n>
 map <leader>oT :terminal<cr>
 map <leader>ov <leader>tv
 map <leader>oV <leader>tV
@@ -273,7 +273,7 @@ map <leader>fr :History<cr>
 map <leader>fz :Zotero!<cr>
 
 " Version control.
-map <leader>gg :MagitOnly<cr>:set scrolloff=999<cr>
+map <leader>gg :MagitOnly<cr>
 map <leader>gb :GBlame<cr>
 map <leader>gc :BCommits<cr>
 map <leader>gC :Commits<cr>
@@ -292,7 +292,7 @@ map <leader>gz :GitGutterSignsToggle<cr>:GitGutterFold<cr>
 map <leader>ss :BLines<cr>
 map <leader>s* :Ggrep <c-R><c-W><cr>
 map <leader>sg :Ggrep<space>
-map <leader>sn :cd ~/projects/notes/<cr>:Rg<cr>
+map <leader>sn :NV<cr>
 map <leader>sp :GitCd<cr>:Rg<cr>
 map <leader>s] :BTags<cr>
 
