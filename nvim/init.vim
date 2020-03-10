@@ -317,7 +317,7 @@ nnoremap Y y$
 noremap  j gj
 noremap  k gk
 nnoremap U <c-r>
-noremap  R :silent bunload<cr>:silent buffer #<cr>
+noremap  R :e<cr>
 
 " Paging with HJKL.
 noremap H zH
@@ -336,16 +336,6 @@ nmap <M-j> ]e
 nmap <M-k> [e
 vmap <M-j> ]egv
 vmap <M-k> [egv
-
-" Look around.
-" noremap <M-h> zH
-" noremap <M-j> <C-d>
-" noremap <M-k> <C-u>
-" noremap <M-l> zL
-
-" Ergononmic matching jumps.
-" map <bs> %
-" map <cr> *
 
 " Ergonomic code folding.
 nmap <tab> <Plug>(fold-cycle-open)
@@ -387,7 +377,7 @@ inoremap <silent> <expr> <cr> mucomplete#ultisnips#expand_snippet("\<cr>")
 set omnifunc=v:lua.vim.lsp.omnifunc
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<cr>
 nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
-nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<cr><cmd>lua vim.lsp.util.show_line_diagnostics()<cr>
+nnoremap <silent> Q     <cmd>lua vim.lsp.buf.hover()<cr><cmd>lua vim.lsp.util.show_line_diagnostics()<cr>
 nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<cr>
 nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<cr>
 nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<cr>
