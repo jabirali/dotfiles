@@ -1,8 +1,9 @@
 " ~/.config/nvim/init.vim vim: foldmethod=marker foldmarker="\ #,"###
 
-" #1 Neovim settings
-" #2 Configuration
+" #1 Settings
+" #2 Builtin
 set autochdir
+set background=dark
 set clipboard+=unnamedplus
 set completeopt=longest,menuone,noinsert
 set concealcursor=nc
@@ -12,6 +13,7 @@ set fillchars=fold:\ ,stl:\ ,stlnc:\ ,vert:\ ,eob:\ ,
 set foldlevel=0
 set foldmethod=syntax
 set gdefault
+set guifont=Iosevka\ SS09\ Light:h16
 set hidden
 set ignorecase
 set inccommand=nosplit
@@ -38,43 +40,7 @@ set virtualedit=block
 set wildmode=longest:full,full
 set winaltkeys=no
 
-" #2 Miscellaneous
-" Close pop-ups with `q` like Emacs.
-augroup quit_like_emacs
-	autocmd!
-	autocmd BufWinEnter quickfix noremap <buffer> q :q<cr>
-	autocmd TermOpen * noremap <buffer> q <c-\><c-n>:close<cr>
-	autocmd FileType help noremap <buffer> q :q<cr>
-augroup END
-
-" Customize terminal settings.
-augroup terminal_settings
-	autocmd!
-	autocmd TermOpen  * setlocal scrolloff=0 nonumber norelativenumber
-	autocmd TermLeave * setlocal scrolloff=999
-augroup END
-
-" Define a simple custom folding style. For filetypes that don't have custom
-" folding packages loaded, this is much less noisy than the NeoVim defaults.
-set foldtext=SimpleFoldText()
-function! SimpleFoldText()
-	return getline(v:foldstart)
-endfunction
-
-" Jump to the Git project root.
-command! GitCd execute 'cd ./'.system('git rev-parse --show-cdup')
-
-" Search through Zotero library.
-command! -bang Zotero call fzf#run(fzf#wrap(
-			\ 'zotero',
-			\ { 'source':  'fdfind -t f -e pdf . ~/.zotero/',
-			\   'sink':    'silent !zathura --fork',
-			\   'options': '-m -d / --with-nth=-1' },
-			\ <bang>0))
-
-" #1 Plugin settings
-" #2 Configuration
-" Plugin parameters.
+" #2 Plugins
 let g:clever_f_chars_match_any_signs = ' '
 let g:clever_f_smart_case = 1
 let g:coiled_snake_foldtext_flags = []
@@ -98,8 +64,8 @@ let g:fzf_colors =
 let g:fzf_history_dir = '~/.local/share/fzf'
 let g:loaded_netrw = 1
 let g:magit_default_fold_level = 1
-let g:mucomplete#tab_when_no_results = 0
 let g:mucomplete#chains = { 'default': ['ulti', 'omni', 'path', 'dict', 'spel'] }
+let g:mucomplete#tab_when_no_results = 0
 let g:nnn#replace_netrw = 1
 let g:nuake_per_tab = 1
 let g:nuake_position = 'top'
@@ -109,15 +75,51 @@ let g:pandoc#folding#fdc = 0
 let g:semshi#mark_selected_nodes = 0
 let g:tex_conceal = 'abdgm'
 let g:UltiSnipsExpandTrigger = '<noop>'
-let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
-let g:vimade = {'fadelevel': 0.7}
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_view_method = 'zathura'
 let loaded_netrwPlugin = 1
 
-" Syntax highlights.
+
+" #1 Commands
+" #2 New commands
+" Define a simple custom folding style. For filetypes that don't have custom
+" folding packages loaded, this is much less noisy than the Neovim defaults.
+set foldtext=SimpleFoldText()
+function! SimpleFoldText()
+	return getline(v:foldstart)
+endfunction
+
+" Search through Zotero library.
+command! -bang Zotero call fzf#run(fzf#wrap(
+			\ 'zotero',
+			\ { 'source':  'fdfind -t f -e pdf . ~/.zotero/',
+			\   'sink':    'silent !zathura --fork',
+			\   'options': '-m -d / --with-nth=-1' },
+			\ <bang>0))
+
+" Jump to the Git project root.
+command! GitCd execute 'cd ./'.system('git rev-parse --show-cdup')
+
+" #2 Autocommands
+" Close pop-ups with `q` like Emacs.
+augroup quit_like_emacs
+	autocmd!
+	autocmd BufWinEnter quickfix noremap <buffer> q :q<cr>
+	autocmd TermOpen * noremap <buffer> q <c-\><c-n>:close<cr>
+	autocmd FileType help,man noremap <buffer> q :q<cr>
+augroup END
+
+" Keep the terminals simple and clean.
+augroup terminal_settings
+	autocmd!
+	autocmd TermOpen  * setlocal scrolloff=0 nonumber norelativenumber
+	autocmd TermLeave * setlocal scrolloff=999
+augroup END
+
+" Improve the default highlight colors.
 augroup clean_highlights
 	autocmd!
 	" Suddle highlighting of active window.
@@ -138,14 +140,22 @@ augroup clean_highlights
 	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineWarning LspDiagnosticsWarning
 augroup END
 
-" #2 Installation
-" Bootstrap procedure.
+" Automatic triggering of plugins.
+augroup plugin_hooks
+	autocmd!
+	autocmd BufWritePre *.py execute ':Black'
+augroup END
+
+
+" #1 External
+" #2 Plugin manager
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-	silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     autocmd VimEnter * nested PlugInstall --sync | source $MYVIMRC
 endif
 
-" Load the plugins.
+" #2 Load plugins
 call plug#begin('~/.local/share/nvim/plugins')
 	" User interface
 	Plug 'Brettm12345/moonlight.vim'    " Moonlight colorscheme
@@ -194,19 +204,12 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'cespare/vim-toml'
 call plug#end()
 
-" Activate themes.
-set background=dark
-set guifont=Iosevka\ SS09\ Light:h16
+" #2 Miscellaneous
+" Load color scheme.
 silent! colorscheme moonlight
 
-" Activate LSP.
+" Load LSP settings.
 luafile ~/.config/nvim/lsp.lua
-
-" Activate hooks.
-augroup plugin_hooks
-	autocmd!
-	autocmd BufWritePre *.py execute ':Black'
-augroup END
 
 
 " #1 Keybindings
