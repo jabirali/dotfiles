@@ -34,6 +34,8 @@ set statusline=%#VertSplit#%=
 set tabstop=4
 set termguicolors
 set tildeop
+set title 
+set titlestring=%<%t
 set undofile
 set updatetime=3000
 set virtualedit=block
