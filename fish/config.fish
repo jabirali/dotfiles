@@ -87,6 +87,10 @@ function e -d "Edit via $EDITOR" -w nvim
 	$EDITOR $argv
 end
 
+function i -d "Show image" -w feh
+	kitty +kitten icat $argv
+end
+
 function man -d "Show full manual" -w man
 	 $EDITOR +"Man $argv" +only
 end
@@ -152,4 +156,22 @@ end
 
 function wget! -d 'Scrape all linked documents from a website'
     wget -r -l 1 -e robots=off
+end
+
+function fish_title
+    set -l command (echo $_)
+    if test $command = "fish"
+        if git rev-parse --git-dir > /dev/null ^ /dev/null
+            set -l git_dir (git rev-parse --git-dir)
+            if test $git_dir = ".git"
+                echo (basename (pwd))
+            else
+                echo (basename (dirname $git_dir))
+            end
+        else
+            echo (pwd)
+        end
+    else
+        echo $command
+    end
 end
