@@ -18,7 +18,7 @@ end
 starship init fish | source
 set fish_greeting ""
 
-# NeoVim integration.
+# Neovim integration.
 if [ -e "$NVIM_LISTEN_ADDRESS" ]
 	set -x EDITOR nvr
 else
@@ -158,8 +158,8 @@ function wget! -d 'Scrape all linked documents from a website'
     wget -r -l 1 -e robots=off
 end
 
-function nup -d 'Update NeoVim plugins'
-    nvim +PlugInstall +PlugUpdate +PlugUpgrade +UpdateRemotePlugins +qa
+function nup -d 'Update Neovim plugins'
+    nvim +PlugStatus +only +PlugInstall +PlugUpdate +PlugUpgrade +UpdateRemotePlugins +qa
 end
 
 function fish_title

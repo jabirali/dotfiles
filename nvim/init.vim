@@ -64,7 +64,6 @@ let g:fzf_colors =
     \ 'spinner': ['fg', 'Label'],
     \ 'header':  ['fg', 'Comment'] }
 let g:fzf_history_dir = '~/.local/share/fzf'
-let g:loaded_netrw = 1
 let g:magit_default_fold_level = 1
 let g:mucomplete#chains = { 'default': ['ulti', 'omni', 'path', 'dict', 'spel'] }
 let g:mucomplete#tab_when_no_results = 0
@@ -84,7 +83,6 @@ let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_view_method = 'zathura'
-let loaded_netrwPlugin = 1
 
 
 " #1 Commands
