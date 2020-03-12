@@ -2,7 +2,6 @@
 
 " #1 Settings
 " #2 Builtin
-set autochdir
 set background=dark
 set clipboard+=unnamedplus
 set completeopt=longest,menuone,noinsert
@@ -94,7 +93,15 @@ function! SimpleFoldText()
 	return getline(v:foldstart)
 endfunction
 
-" Search through Zotero library.
+" Search for a project.
+command! -bang Project call fzf#run(fzf#wrap(
+			\ 'project',
+			\ { 'source':  'ls -d ~/projects/*',
+			\   'sink':    'cd',
+			\   'options': '-d / --with-nth=-1 --preview="bat --style=plain --color=always {..}/README{.md,.org,.txt,} 2>/dev/null"' },
+			\ <bang>0))
+
+" Search Zotero library.
 command! -bang Zotero call fzf#run(fzf#wrap(
 			\ 'zotero',
 			\ { 'source':  'fdfind -t f -e pdf . ~/.zotero/',
@@ -292,7 +299,7 @@ nmap <leader>oq :bot cwindow<cr>
 nmap <leader>oz :top 10 Repl<cr>
 
 " Find files.
-nmap <leader>ff :Files ~/projects/<cr>
+nmap <leader>ff :Files %:p:h<cr>
 nmap <leader>fo :Files ~/onedrive/<cr>
 nmap <leader>fF :Files ~/<cr>
 nmap <leader>fb :Buffers<cr>
@@ -301,7 +308,7 @@ nmap <leader>fD :Files /etc/<cr>
 nmap <leader>fg :GFiles<cr>
 nmap <leader>fG :GFiles?<cr>
 nmap <leader>fn :Files ~/notes/<cr>
-nmap <leader>fp :Files ~/projects/<cr>
+nmap <leader>fp :Project!<cr>
 nmap <leader>fr :History<cr>
 nmap <leader>fz :Zotero!<cr>
 
@@ -337,8 +344,8 @@ nmap <leader>qu :PlugUpdate<cr>
 " Leader-based speed keys.
 nmap <leader><leader> <leader>fg
 nmap <leader>, <leader>fb
-nmap <leader>. <leader>od
-nmap <leader>/ <leader>s]
+nmap <leader>. <leader>ff
+nmap <leader>/ <leader>sp
 nmap <leader>: :Commands<cr>
 nmap <leader>h :Helptags<cr>
 
