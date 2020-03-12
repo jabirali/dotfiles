@@ -1,9 +1,8 @@
 #!/bin/bash
 
-# This is a small script to edit any text selection
-# in Wayland via a pop-up terminal with Neovim in it.
-# This version of the script edits the file as a
-# Markdown format, and converts to HTML mime after.
+# This is a small script to edit any text selection in Wayland via a 
+# pop-up terminal with Neovim in it.  This version of the script edits
+# the file as a Markdown format, and converts to HTML mime after.
 
 # Create temporary file.
 tmp=$(mktemp)
