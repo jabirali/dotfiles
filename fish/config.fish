@@ -128,8 +128,8 @@ function o -d 'Open in system app'
     xdg-open $argv &
 end
 
-function p -d 'Open project folder'
-	cd (fd -t d . ~/projects/ | fzf --prompt='Project: ')
+function p -d 'Open project'
+	cd (ls -d ~/projects/* | fzf --prompt='Project: ' -d / --with-nth=-1)
 end
 
 function z -d 'Open library file'
