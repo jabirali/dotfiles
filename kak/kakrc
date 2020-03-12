@@ -2,7 +2,8 @@
 
 # Quickstart:
 # - Clone `andreyorst/plug.kak` into ~/.config/plugins/plug.kak;
-# - Run `:plug-install` to install all the plugins listed below.
+# - Run `:plug-install` to install all the plugins listed below;
+# - Start `kak` in `tmux` to get fzf and repl in window splits.
 
 # External modules.
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
