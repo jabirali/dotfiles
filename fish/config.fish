@@ -50,7 +50,6 @@ alias fd  'fdfind'
 
 # Define environment variables.
 set -x TERMINFO /usr/lib/terminfo
-set -x TERM xterm
 set -x PATH ~/.emacs.d/bin/ ~/.poetry/bin ~/.local/bin/ /opt/zotero/ /opt/nomad/bin/ /opt/mpw/bin /snap/bin $PATH
 set -x POETRY_VIRTUALENVS_PATH ~/.virtualenvs
 set -x LC_ALL en_US.UTF-8
@@ -156,6 +155,10 @@ end
 
 function wget! -d 'Scrape all linked documents from a website'
     wget -r -l 1 -e robots=off
+end
+
+function nup -d 'Update NeoVim plugins'
+    nvim +PlugInstall +PlugUpdate +PlugUpgrade +UpdateRemotePlugins +qa
 end
 
 function fish_title
