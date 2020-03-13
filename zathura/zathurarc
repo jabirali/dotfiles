@@ -1,42 +1,36 @@
 # ~/.config/zathura/zathurarc 
 
-# Moonlight colorscheme
-set notification-error-bg       "#212337"
-set notification-error-fg       "#ff537f"
-set notification-warning-bg     "#212337"
-set notification-warning-fg     "#73f59b"
-set notification-bg             "#212337"
-set notification-fg             "#ffc777"
+# Base16/Gruvbox colorscheme
+set default-bg                  "#1d2021"
+set default-fg                  "#3c3836"
 
-set completion-bg               "#3c4361"
-set completion-fg               "#afbeee"
-set completion-group-bg         "#212337"
-set completion-group-fg         "#7e8eda"
-set completion-highlight-bg     "#82aaff"
-set completion-highlight-fg     "#3c4361"
+set statusbar-fg                "#bdae93"
+set statusbar-bg                "#504945"
 
-set index-bg                    "#3c4361"
-set index-fg                    "#afbeee"
-set index-active-bg             "#82aaff"
-set index-active-fg             "#3c4361"
+set inputbar-bg                 "#1d2021"
+set inputbar-fg                 "#fbf1c7"
 
-set inputbar-bg                 "#212337"
-set inputbar-fg                 "#afbeee"
+set notification-bg             "#1d2021"
+set notification-fg             "#fbf1c7"
 
-set statusbar-bg                "#3c4361"
-set statusbar-fg                "#afbeee"
+set notification-error-bg       "#1d2021"
+set notification-error-fg       "#fb4934"
 
-set highlight-color             "#73f59b"
-set highlight-active-color      "#73f59b"
+set notification-warning-bg     "#1d2021"
+set notification-warning-fg     "#fb4934"
 
-set default-bg                  "#212337"
-set default-fg                  "#afbeee"
-set render-loading              true
-set render-loading-bg           "#212337"
-set render-loading-fg           "#afbeee"
+set highlight-color             "#fabd2f"
+set highlight-active-color      "#83a598"
 
-set recolor-lightcolor          "#212337"
-set recolor-darkcolor           "#afbeee"
+set completion-bg               "#3c3836"
+set completion-fg               "#83a598"
+
+set completion-highlight-fg     "#fbf1c7"
+set completion-highlight-bg     "#83a598"
+
+set recolor-lightcolor          "#1d2021"
+set recolor-darkcolor           "#ebdbb2"
+
 set recolor                     "true"
 
 # Keybindings

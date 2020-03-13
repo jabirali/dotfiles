@@ -131,7 +131,7 @@
       split-height-threshold nil)
 
 ;; Select what colors to use for the gui.
-(setq doom-theme 'doom-moonlight)
+(setq doom-theme 'doom-gruvbox)
 
 ;; Disable line numbers. They look nice in regular buffers, but they look bad in
 ;; terminals, look strange in buffers with variable line height, and cause issues

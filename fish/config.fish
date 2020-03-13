@@ -7,6 +7,11 @@ if not functions -q fisher
     fish -c fisher
 end
 
+# Color scheme.
+source ~/.config/fisher/github.com/tomyun/base16-fish/functions/base16-gruvbox-dark-hard.fish
+source ~/.config/fisher/github.com/nicodebo/base16-fzf/fish/base16-gruvbox-dark-hard.fish
+set -x BAT_THEME 'base16'
+
 # Fancy prompt.
 if not [ (which starship) ];
    set file (mktemp);
@@ -55,31 +60,8 @@ set -x POETRY_VIRTUALENVS_PATH ~/.virtualenvs
 set -x LC_ALL en_US.UTF-8
 set -x LC_NUMERIC en_US.UTF-8
 set -x FZF_DEFAULT_COMMAND 'fdfind --type f'
-set -x FZF_DEFAULT_OPTS '--color fg:-1,bg:-1,fg+:-1,bg+:#2a2e48,hl:#f79a62,hl+:#ffc777,pointer:#ffc777,marker:#c3a2ff,info:#c3a2ff,prompt:#7e8eda,border:#7e8eda,spinner:#7e8eda,header:#7e8eda --layout=reverse'
 set -x NNN_TRASH = 1
 set -x NNN_USE_EDITOR = 1
-
-# Moonlight colorscheme.
-set fish_color_autosuggestion "#5b6395"
-set fish_color_cancel -r
-set fish_color_command "#77e0c6" --bold
-set fish_color_comment "#7e8eda" --italics
-set fish_color_cwd cyan
-set fish_color_end magenta
-set fish_color_error red --bold
-set fish_color_escape "#89DDFF"
-set fish_color_match "#38456A" --bold
-set fish_color_operator "#89DDFF" --underline --bold
-set fish_color_param blue
-set fish_color_quote blue
-set fish_color_redirection "#8fd6ff"
-set fish_color_search_match --background=brblack
-set fish_color_status magenta
-set fish_color_user brred
-set fish_color_valid_path cyan --underline
-set fish_pager_color_completion white
-set fish_pager_color_description brblack
-set fish_pager_color_prefix yellow
 
 # Functions and aliases.
 function e -d "Edit via $EDITOR" -w nvim

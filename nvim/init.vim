@@ -17,9 +17,9 @@ set hidden
 set ignorecase
 set inccommand=nosplit
 set laststatus=0
+set mouse=a
 set noshowmode
 set nowrap
-set relativenumber
 set scrolloff=999
 set shiftwidth=4
 set shortmess+=c
@@ -48,21 +48,9 @@ let g:coiled_snake_foldtext_flags = []
 let g:fold_cycle_default_mapping = 0
 let g:fzf_action = { 'ctrl-s': 'split', 'ctrl-v': 'vsplit' }
 let g:fzf_layout = { 'window': 'enew' }
-let g:fzf_colors =
-  \ { 'fg':      ['fg', 'Normal'],
-    \ 'bg':      ['bg', 'Normal'],
-    \ 'hl':      ['fg', 'Comment'],
-    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-    \ 'hl+':     ['fg', 'Statement'],
-    \ 'info':    ['fg', 'PreProc'],
-    \ 'border':  ['fg', 'Ignore'],
-    \ 'prompt':  ['fg', 'Conditional'],
-    \ 'pointer': ['fg', 'Exception'],
-    \ 'marker':  ['fg', 'Keyword'],
-    \ 'spinner': ['fg', 'Label'],
-    \ 'header':  ['fg', 'Comment'] }
 let g:fzf_history_dir = '~/.local/share/fzf'
+let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_italic = 1
 let g:magit_default_fold_level = 1
 let g:mucomplete#chains = { 'default': ['user', 'ulti', 'omni', 'path', 'dict', 'spel'] }
 let g:mucomplete#tab_when_no_results = 0
@@ -129,27 +117,27 @@ augroup END
 
 " Improve the default highlight colors.
 augroup clean_highlights
-	autocmd!
-	" Suddle highlighting of active window.
-	autocmd ColorScheme * hi! InactiveWindow guibg=none
-	autocmd ColorScheme * hi! ActiveWindow guibg='#23253a'
+ 	autocmd!
+ 	" Subtle highlighting of active window.
+ 	autocmd ColorScheme * hi! InactiveWindow guibg=none
+ 	autocmd ColorScheme * hi! ActiveWindow guibg='#222526'
 	set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow
-	" Remove highlighting of active tab.
-	autocmd ColorScheme * hi! TabLine guibg=none
-	autocmd ColorScheme * hi! TabLineFill guibg=none
-	autocmd ColorScheme * hi! TabLineSel guibg=none gui=bold
-	" Tone down too heavy default highlighting.
-	autocmd ColorScheme * hi! LineNr guibg=none
-	autocmd ColorScheme * hi! link CursorLineNr LineNr
-	autocmd ColorScheme * hi! Conceal guifg=none guibg=none
-	autocmd ColorScheme * hi! MatchParen guifg=none gui=bold
-	autocmd ColorScheme * hi! CleverFDefaultLabel guifg=white gui=bold
-	autocmd ColorScheme * hi! SpellBad guifg=red gui=none
-	" Simplify the LSP diagnostics view.
-	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineError LspDiagnosticsError
-	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineHint LspDiagnosticsHint
-	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineInformation LspDiagnosticsInformation
-	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineWarning LspDiagnosticsWarning
+ 	" Remove highlighting of active tab.
+ 	autocmd ColorScheme * hi! link TabLine InactiveWindow
+ 	autocmd ColorScheme * hi! link TabLineFill InactiveWindow
+ 	autocmd ColorScheme * hi! TabLineSel guibg=none gui=bold
+ 	" Tone down too heavy default highlighting.
+	autocmd ColorScheme * hi! link Folded Comment
+ 	autocmd ColorScheme * hi! LineNr guibg=none
+ 	autocmd ColorScheme * hi! link CursorLineNr LineNr
+	" More consistent highlighting.
+ 	autocmd ColorScheme * hi! link MatchParen Search
+ 	autocmd ColorScheme * hi! link CleverFDefaultLabel Search
+ 	" Simplify the LSP diagnostics view.
+ 	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineError SpellCap
+ 	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineWarning SpellBad
+ 	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineHint SpellRare
+ 	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineInformation SpellRare
 augroup END
 
 " Improve the default terminal settings.
@@ -188,7 +176,7 @@ endif
 " #2 Load plugins
 call plug#begin('~/.local/share/nvim/plugins')
 	" User interface
-	Plug 'Brettm12345/moonlight.vim'    " Moonlight colorscheme
+	Plug 'morhetz/gruvbox'              " Gruvbox colorscheme
  	Plug 'arecarn/vim-fold-cycle'       " Org-like recursive folding
 	Plug 'Konfekt/FastFold'             " More optimized code folding
 	Plug 'liuchengxu/vim-which-key'     " Interactive keybinding help
@@ -244,7 +232,7 @@ call plug#end()
 luafile ~/.config/nvim/lsp.lua
 
 " Load color scheme.
-silent! colorscheme moonlight
+silent! colorscheme gruvbox
 
 
 " #1 Keybindings
