@@ -98,7 +98,7 @@ command! -bang Project call fzf#run(fzf#wrap(
 			\ 'project',
 			\ { 'source':  'ls -d ~/projects/*',
 			\   'sink':    'cd',
-			\   'options': '-d / --with-nth=-1 --preview="bat --style=plain --color=always {..}/README{.md,.org,.txt,} 2>/dev/null"' },
+			\   'options': '--prompt "Project> " -d / --with-nth=-1 --preview="bat --style=plain --color=always {..}/README{.md,.org,.txt,} 2>/dev/null"' },
 			\ <bang>0))
 
 " Search Zotero library.
@@ -106,7 +106,7 @@ command! -bang Zotero call fzf#run(fzf#wrap(
 			\ 'zotero',
 			\ { 'source':  'fdfind -t f -e pdf . ~/.zotero/',
 			\   'sink':    'silent !zathura --fork',
-			\   'options': '-m -d / --with-nth=-1' },
+			\   'options': '--prompt "Zotero> " -m -d / --with-nth=-1' },
 			\ <bang>0))
 
 " Jump to the Git project root.
@@ -229,7 +229,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'psf/black', {'tag': '19.10b0'}
 	" LaTeX
 	Plug 'lervag/vimtex'
-	Plug 'PietroPate/vim-tex-conceal'
+	Plug 'KeitaNakamura/tex-conceal.vim'
 	" Markup
 	Plug 'vim-pandoc/vim-pandoc-syntax'
 	Plug 'vim-pandoc/vim-pandoc'
@@ -346,6 +346,7 @@ nmap <leader><leader> <leader>fg
 nmap <leader>, <leader>fb
 nmap <leader>. <leader>ff
 nmap <leader>/ <leader>sp
+nmap <leader>p <leader>fp
 nmap <leader>: :Commands<cr>
 nmap <leader>h :Helptags<cr>
 
@@ -365,11 +366,12 @@ nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.hover()<cr><cmd>lua vim.lsp.util.sh
 nnoremap ; :
 nnoremap ' `
 nnoremap 0 ^
+nnoremap ^ 0
 nnoremap Y y$
-noremap  j gj
-noremap  k gk
 nnoremap U <c-r>
 noremap <c-j> J
+noremap <expr> j (v:count? 'j' : 'gj')
+noremap <expr> k (v:count? 'k' : 'gk')
 
 " Paging with HJKL.
 noremap H zH
