@@ -133,9 +133,19 @@ function p -d 'Open project'
 end
 
 function z -d 'Open library file'
-	for f in (fd -t f -e pdf . ~/.zotero/ | fzf -m -d '/' --with-nth=-1 --prompt='Zotero: ')
+	for f in (fd -t f -e pdf . ~/.zotero/ | fzf -m -d '/' --with-nth=-1 --prompt='Zotero> ')
 		zathura $f &
 	end
+end
+
+function vpn -d 'Connect to VPN'
+	expressvpn disconnect
+	expressvpn connect \
+		( expressvpn list all \
+		| tail -n +5 \
+		| sed -e 's/[a-z0-9]*\s*\([A-Z].*\)(.*/\1/' -e '/^[a-z]/d' \
+		| uniq \
+		| fzf --prompt='ExpressVPN> ' )
 end
 
 function venv -d 'Python virtual environments'
