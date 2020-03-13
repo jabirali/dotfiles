@@ -129,8 +129,7 @@ function o -d 'Open in system app'
 end
 
 function p -d 'Open project'
-	cd (ls -d ~/projects/* | fzf -d / --with-nth=-1 --prompt='Project: ' \
-		--preview="bat --style=plain --color=always {..}/README{.md,.org,.txt,} 2>/dev/null")
+	$EDITOR +Project
 end
 
 function z -d 'Open library file'
