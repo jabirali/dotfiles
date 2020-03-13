@@ -64,7 +64,7 @@ let g:fzf_colors =
     \ 'header':  ['fg', 'Comment'] }
 let g:fzf_history_dir = '~/.local/share/fzf'
 let g:magit_default_fold_level = 1
-let g:mucomplete#chains = { 'default': ['ulti', 'omni', 'path', 'dict', 'spel'] }
+let g:mucomplete#chains = { 'default': ['user', 'ulti', 'omni', 'path', 'dict', 'spel'] }
 let g:mucomplete#tab_when_no_results = 0
 let g:nnn#replace_netrw = 1
 let g:nuake_per_tab = 1
@@ -222,6 +222,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'Lenovsky/nuake'               " Quake terminal
 	Plug 'mtth/scratch.vim'             " Scratch buffer
 	Plug 'mcchrish/nnn.vim'             " File browser
+	Plug 'adborden/vim-notmuch-address' " Mail address
 	" Python
 	Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 	Plug 'kalekundert/vim-coiled-snake'
