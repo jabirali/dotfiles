@@ -110,8 +110,8 @@ augroup END
 " Close pop-ups with escape.
 augroup quit_like_doom
 	autocmd!
-	autocmd BufWinEnter quickfix noremap <buffer> <esc> :silent q<cr>
-	autocmd FileType help,man,scratch noremap <buffer> <esc> :silent q<cr>
+	autocmd BufWinEnter quickfix noremap <buffer> <esc> :silent close<cr>
+	autocmd FileType help,man,scratch noremap <buffer> <esc> :silent close<cr>
 	autocmd TermOpen * noremap <buffer> <esc> <c-\><c-n>:silent close<cr>
 augroup END
 
