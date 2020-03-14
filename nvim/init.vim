@@ -60,6 +60,10 @@ let g:nnn#set_default_mappings = 0
 let g:nv_search_paths = ['~/notes']
 let g:org_aggressive_conceal = 1
 let g:pandoc#folding#fdc = 0
+let g:pandoc#folding#fold_fenced_codeblocks = 1
+let g:pandoc#syntax#conceal#blacklist = ['titleblock', 'block', 'subscript', 'superscript', 'strikeout', 'atx', 'codeblock_start', 'codeblock_delim', 'footnote', 'definition', 'list', 'newline', 'dashes', 'ellipses', 'inlinecode']
+let g:pandoc#syntax#style#underline_special = 0
+let g:pandoc#syntax#conceal#urls = 1
 let g:scratch_insert_autohide = 0
 let g:semshi#mark_selected_nodes = 0
 let g:tex_conceal = 'abdgm'
@@ -169,6 +173,12 @@ augroup python_settings
 	autocmd FileType python let b:repl_config =
 				\ { 'cmd': 'fish -c python3',
 				\   'formatter': function("zepl#contrib#python#formatter") }
+augroup END
+
+" Cleaner folding syntax.
+augroup fold_settings
+	autocmd!
+	autocmd BufEnter *.md,*.tex setlocal foldtext=SimpleFoldText()
 augroup END
 
 
