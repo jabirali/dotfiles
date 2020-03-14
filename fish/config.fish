@@ -155,6 +155,10 @@ function nup -d 'Update Neovim plugins'
     nvim +PlugStatus +only +PlugInstall +PlugUpdate +PlugUpgrade +UpdateRemotePlugins +qa
 end
 
+function hours -d 'SINTEF work hours'
+	spy ts summary|sed 's/^Download.*/--  --/;s/\s\s\s*/|/g;s/---*/---/g;s/\(.*\)/|\1|/g;s/||/|---|---|/g'
+end
+
 function fish_title
     set -l command (echo $_)
 	if git rev-parse --git-dir > /dev/null ^ /dev/null
