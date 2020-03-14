@@ -26,6 +26,7 @@ set shortmess+=c
 set sidescrolloff=5
 set signcolumn=no
 set smartcase
+set showtabline=0
 set spelllang=en,nb
 set splitbelow
 set splitright
