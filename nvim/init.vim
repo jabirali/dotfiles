@@ -37,7 +37,7 @@ set tildeop
 set title
 set titlestring=vim:\ %{fnamemodify(substitute(getcwd(),$HOME,'~',''),':t')}
 set undofile
-set updatetime=3000
+set updatetime=4000
 set virtualedit=block
 set wildmode=longest:full,full
 set winaltkeys=no
@@ -108,12 +108,13 @@ augroup normal_timeout
 	autocmd CursorHoldI * stopinsert
 augroup END
 
-" Close pop-ups with q.
+" Close pop-ups with q or esc.
 augroup quit_like_emacs
 	autocmd!
 	autocmd BufWinEnter quickfix noremap <buffer> q :silent close<cr>
-	autocmd FileType help,man,scratch noremap <buffer> q :silent q!<cr>
-	autocmd TermOpen * noremap <buffer> q <c-\><c-n>:silent close<cr>
+	autocmd FileType help,man noremap <buffer> q :silent q!<cr>
+	autocmd FileType scratch noremap <buffer> <esc> :silent close<cr>
+	autocmd TermOpen * noremap <buffer> <esc> <c-\><c-n>:silent close<cr>
 augroup END
 
 " Improve the default highlight colors.
@@ -251,21 +252,21 @@ nnoremap <leader>w <c-w>
 nnoremap <leader>wd :close<cr>
 
 " Tabs/Workspaces.
-nnoremap <leader><tab>1 :1tabnext<cr>
-nnoremap <leader><tab>2 :2tabnext<cr>
-nnoremap <leader><tab>3 :3tabnext<cr>
-nnoremap <leader><tab>4 :4tabnext<cr>
-nnoremap <leader><tab>5 :5tabnext<cr>
-nnoremap <leader><tab>6 :6tabnext<cr>
-nnoremap <leader><tab>7 :7tabnext<cr>
-nnoremap <leader><tab>8 :8tabnext<cr>
-nnoremap <leader><tab>9 :9tabnext<cr>
-nnoremap <leader><tab>d :tabclose<cr>
-nnoremap <leader><tab>n :tabnew<cr>
-nnoremap <leader><tab>] :tabnext<cr>
-nnoremap <leader><tab>[ :tabprev<cr>
-nnoremap ]<tab> :tabnext<cr>
-nnoremap [<tab> :tabprev<cr>
+" nnoremap <leader><tab>1 :1tabnext<cr>
+" nnoremap <leader><tab>2 :2tabnext<cr>
+" nnoremap <leader><tab>3 :3tabnext<cr>
+" nnoremap <leader><tab>4 :4tabnext<cr>
+" nnoremap <leader><tab>5 :5tabnext<cr>
+" nnoremap <leader><tab>6 :6tabnext<cr>
+" nnoremap <leader><tab>7 :7tabnext<cr>
+" nnoremap <leader><tab>8 :8tabnext<cr>
+" nnoremap <leader><tab>9 :9tabnext<cr>
+" nnoremap <leader><tab>d :tabclose<cr>
+" nnoremap <leader><tab>n :tabnew<cr>
+" nnoremap <leader><tab>] :tabnext<cr>
+" nnoremap <leader><tab>[ :tabprev<cr>
+" nnoremap ]<tab> :tabnext<cr>
+" nnoremap [<tab> :tabprev<cr>
 
 " Toggle stuff.
 nmap <leader>t yo
@@ -274,19 +275,19 @@ nmap <leader>tv :VirtualEnvActivate<space>
 nmap <leader>tV :VirtualEnvDeactivate<cr>
 
 " Open stuff.
-nmap <leader>od :NnnPicker '%:p:h'<cr>
-nmap <leader>ol :bot lwindow<cr>
-nmap <leader>oo :tabedit ~/notes/sintef.org<cr>
-nmap <leader>oO :tabedit ~/notes/personal.org<cr>
-nmap <leader>op :bot split term://htop<cr>i
-nmap <leader>os :Scratch<cr>
-nmap <leader>oS :Scratch!<cr>
-nmap <leader>ot :Nuake<cr>
-nmap <leader>oT :terminal<cr>
-nmap <leader>ov <leader>tv
-nmap <leader>oV <leader>tV
-nmap <leader>oq :bot cwindow<cr>
-nmap <leader>oz :top 10 Repl<cr>
+" nmap <leader>od :NnnPicker '%:p:h'<cr>
+" nmap <leader>ol :bot lwindow<cr>
+" nmap <leader>oo :tabedit ~/notes/sintef.org<cr>
+" nmap <leader>oO :tabedit ~/notes/personal.org<cr>
+" nmap <leader>op :bot split term://htop<cr>i
+" nmap <leader>os :Scratch<cr>
+" nmap <leader>oS :Scratch!<cr>
+" nmap <leader>ot :Nuake<cr>
+" nmap <leader>oT :terminal<cr>
+" nmap <leader>ov <leader>tv
+" nmap <leader>oV <leader>tV
+" nmap <leader>oq :bot cwindow<cr>
+" nmap <leader>oz :top 10 Repl<cr>
 
 " Find files.
 nmap <leader>ff :Files %:p:h<cr>
@@ -298,7 +299,6 @@ nmap <leader>fD :Files /etc/<cr>
 nmap <leader>fg :GFiles<cr>
 nmap <leader>fG :GFiles?<cr>
 nmap <leader>fn :Files ~/notes/<cr>
-nmap <leader>fp :Project!<cr>
 nmap <leader>fr :History<cr>
 nmap <leader>fz :Zotero!<cr>
 
@@ -332,11 +332,13 @@ nmap <leader>qi :PlugInstall<cr>
 nmap <leader>qu :PlugUpdate<cr>
 
 " Leader-based speed keys.
-nmap <leader><leader> <leader>fg
+nmap <leader><leader> :Nuake<cr>
+nmap <leader><tab> :Buffers<cr>
 nmap <leader>, <leader>fb
 nmap <leader>. <leader>ff
 nmap <leader>/ <leader>sp
-nmap <leader>p <leader>fp
+nmap <leader>p :Project!<cr>
+nmap <leader>o :GFiles!<cr>
 nmap <leader>: :Commands<cr>
 nmap <leader>h :Helptags<cr>
 
