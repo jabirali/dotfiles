@@ -13,6 +13,8 @@ ssl              = yes
 [Account personal]
 localrepository  = personal-local
 remoterepository = personal-remote
+presynchook      = ~/.config/offlineimap/presync.sh
+postsynchook     = ~/.config/offlineimap/postsync.sh
 
 [Repository personal-local]
 type             = Maildir

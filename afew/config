@@ -1,0 +1,25 @@
+# ~/.config/afew/config
+
+[MeFilter]
+me_tag = vip
+
+[SpamFilter]
+
+[KillThreadsFilter]
+
+[ArchiveSentMailsFilter]
+
+[FolderNameFilter]
+folder_lowercases = true
+
+[InboxFilter]
+
+[MailMover]
+folders = INBOX Spam Trash
+Spam    = 'NOT tag:spam AND tag:inbox':INBOX 
+          'NOT tag:spam':Archive
+Trash   = 'NOT tag:trash AND tag:inbox':INBOX 
+          'NOT tag:trash':Archive
+INBOX   = 'tag:spam':Spam
+          'tag:trash':Trash
+          'NOT tag:inbox AND NOT tag:spam AND NOT tag:trash':Archive
