@@ -56,6 +56,7 @@ let g:magit_default_fold_level = 1
 let g:mucomplete#chains = { 'default': ['user', 'ulti', 'omni', 'path', 'dict', 'spel'] }
 let g:mucomplete#tab_when_no_results = 0
 let g:nnn#replace_netrw = 1
+let g:nnn#set_default_mappings = 0
 let g:nv_search_paths = ['~/notes']
 let g:org_aggressive_conceal = 1
 let g:pandoc#folding#fdc = 0
@@ -85,6 +86,14 @@ command! -bang Project call fzf#run(fzf#wrap(
 			\ { 'source':  'fdfind -HIt d "^\.git$" ~/projects/ | sed "s|/\.git$||"',
 			\   'sink':    'cd',
 			\   'options': '--prompt "Project> " -d / --with-nth=-1 --preview="bat --style=plain --color=always {..}/README{.md,.org,.txt,} 2>/dev/null"' },
+			\ <bang>0))
+
+" Search for a note file.
+command! -bang Notes call fzf#run(fzf#wrap(
+			\ 'project',
+			\ { 'source':  'fdfind -t f . ~/notes/',
+			\   'sink':    'edit',
+			\   'options': '--prompt "Notes> " -d / --with-nth=-1 --preview="rg \"^[#*][#*]*\s\" {..}"' },
 			\ <bang>0))
 
 " Search Zotero library.
@@ -293,7 +302,6 @@ nmap <leader>fd :Files ~/.config/<cr>
 nmap <leader>fD :Files /etc/<cr>
 nmap <leader>fg :GFiles<cr>
 nmap <leader>fG :GFiles?<cr>
-nmap <leader>fn :Files ~/notes/<cr>
 nmap <leader>fr :History<cr>
 nmap <leader>fz :Zotero!<cr>
 
@@ -330,13 +338,10 @@ nmap <leader>qu :PlugUpdate<cr>
 nmap <leader><leader> :Buffers<cr>
 nmap <leader><tab> <c-^>
 nmap <leader><cr> :terminal<cr>a
-nmap <leader>, <leader>fb
-nmap <leader>. <leader>ff
-nmap <leader>/ <leader>sp
-nmap <leader>p :Project!<cr>
-nmap <leader>o :GFiles!<cr>
-nmap <leader>: :Commands<cr>
 nmap <leader>h :Helptags<cr>
+nmap <leader>n :Notes!<cr>
+nmap <leader>o :GFiles!<cr>
+nmap <leader>p :Project!<cr>
 
 " #2 Editor keys
 " LSP bindings.
