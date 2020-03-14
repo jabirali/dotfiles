@@ -163,6 +163,6 @@ function fish_title
 			echo git: (basename (pwd))
 		end
 	else
-		echo (pwd | sed "s|$HOME|~|" )
+		echo dir: (pwd | sed "s|$HOME|~|" )
 	end
 end

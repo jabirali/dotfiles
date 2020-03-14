@@ -34,7 +34,7 @@ set tabstop=4
 set termguicolors
 set tildeop
 set title
-set titlestring=vim:\ %{fnamemodify(getcwd(),':t')}
+set titlestring=vim:\ %{fnamemodify(substitute(getcwd(),$HOME,'~',''),':t')}
 set undofile
 set updatetime=3000
 set virtualedit=block
