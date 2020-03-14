@@ -93,7 +93,7 @@ command! -bang Notes call fzf#run(fzf#wrap(
 			\ 'project',
 			\ { 'source':  'fdfind -t f . ~/notes/',
 			\   'sink':    'edit',
-			\   'options': '--prompt "Notes> " -d / --with-nth=-1 --preview="rg \"^[#*][#*]*\s\" {..}"' },
+			\   'options': '--prompt "Notes> " -d / --with-nth=-1 --preview="rg \"^[#*][#*]*\s\" {..}" --bind "ctrl-m:print-query"' },
 			\ <bang>0))
 
 " Search Zotero library.
