@@ -319,8 +319,8 @@ nmap <leader>gz :GitGutterSignsToggle<cr>:GitGutterFold<cr>
 
 " Search content.
 nmap <leader>ss :BLines<cr>
-nmap <leader>s* :Ggrep <c-r><c-w><cr>
-nmap <leader>sg :Ggrep<space>
+nmap <leader>sr :%s/\<<C-r><C-w>\>//c<left><left>
+nmap <leader>sg :Ggrep <c-r><c-w><cr>
 nmap <leader>sn :NV<cr>
 nmap <leader>sp :GitCd<cr>:Rg<cr>
 
@@ -359,6 +359,7 @@ nnoremap ^ 0
 nnoremap Y y$
 nnoremap U <c-r>
 noremap <c-j> J
+noremap <c-l> :nohlsearch<cr><c-l>
 noremap <expr> j (v:count? 'j' : 'gj')
 noremap <expr> k (v:count? 'k' : 'gk')
 
@@ -373,6 +374,9 @@ nmap <tab> <Plug>(fold-cycle-open)
 nnoremap <s-tab> zm
 vnoremap <tab>   >gv
 vnoremap <s-tab> <gv
+
+" Open externally.
+nnoremap gx :silent !xdg-open "<cfile>:p"<cr>
 
 " Align expressions.
 nmap ga <Plug>(EasyAlign)
