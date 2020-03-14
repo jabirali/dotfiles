@@ -9,7 +9,10 @@ local nvim_lsp = require('nvim_lsp')
 -- Bash support.
 nvim_lsp.bashls.setup{}
 
--- Python support.
+-- Python support (Microsoft).
+-- nvim_lsp.pyls_ms.setup{}
+
+-- Python support (Palantir).
 nvim_lsp.pyls.setup{
 	settings = {
 		pyls = {

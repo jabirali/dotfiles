@@ -61,8 +61,9 @@ set -x LC_ALL en_US.UTF-8
 set -x LC_NUMERIC en_US.UTF-8
 set -x FZF_DEFAULT_COMMAND 'fdfind --type f'
 set -x FZF_DEFAULT_OPTS $FZF_DEFAULT_OPTS --layout=reverse
-set -x NNN_TRASH = 1
-set -x NNN_USE_EDITOR = 1
+set -x NNN_TRASH 1
+set -x NNN_USE_EDITOR 1
+set -x DOTNET_CLI_TELEMETRY_OPTOUT 1
 
 # Functions and aliases.
 function e -d "Edit via $EDITOR" -w nvim
