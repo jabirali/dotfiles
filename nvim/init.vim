@@ -107,12 +107,12 @@ augroup normal_timeout
 	autocmd CursorHoldI * stopinsert
 augroup END
 
-" Close pop-ups with escape.
-augroup quit_like_doom
+" Close pop-ups with q.
+augroup quit_like_emacs
 	autocmd!
-	autocmd BufWinEnter quickfix noremap <buffer> <esc> :silent close<cr>
-	autocmd FileType help,man,scratch noremap <buffer> <esc> :silent close<cr>
-	autocmd TermOpen * noremap <buffer> <esc> <c-\><c-n>:silent close<cr>
+	autocmd BufWinEnter quickfix noremap <buffer> q :silent close<cr>
+	autocmd FileType help,man,scratch noremap <buffer> q :silent q!<cr>
+	autocmd TermOpen * noremap <buffer> q <c-\><c-n>:silent close<cr>
 augroup END
 
 " Improve the default highlight colors.

@@ -73,11 +73,11 @@ function i -d "Show image" -w feh
 end
 
 function man -d "Show full manual" -w man
-	 $EDITOR +"Man $argv" +only
+	 e +"Man $argv"
 end
 
 function tldr -d "Show tldr manual" -w sudo
-	 $EDITOR +"Tldr $argv" +only
+	 e +"Tldr $argv"
 end
 
 function d -d 'File manager'
