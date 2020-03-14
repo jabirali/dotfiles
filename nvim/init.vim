@@ -56,9 +56,6 @@ let g:magit_default_fold_level = 1
 let g:mucomplete#chains = { 'default': ['user', 'ulti', 'omni', 'path', 'dict', 'spel'] }
 let g:mucomplete#tab_when_no_results = 0
 let g:nnn#replace_netrw = 1
-let g:nuake_per_tab = 1
-let g:nuake_position = 'top'
-let g:nuake_size = 0.20
 let g:nv_search_paths = ['~/notes']
 let g:org_aggressive_conceal = 1
 let g:pandoc#folding#fdc = 0
@@ -108,13 +105,12 @@ augroup normal_timeout
 	autocmd CursorHoldI * stopinsert
 augroup END
 
-" Close pop-ups with q or esc.
+" Close pop-ups with q.
 augroup quit_like_emacs
 	autocmd!
 	autocmd BufWinEnter quickfix noremap <buffer> q :silent close<cr>
 	autocmd FileType help,man noremap <buffer> q :silent q!<cr>
 	autocmd FileType scratch noremap <buffer> <esc> :silent close<cr>
-	autocmd TermOpen * noremap <buffer> <esc> <c-\><c-n>:silent close<cr>
 augroup END
 
 " Improve the default highlight colors.
@@ -209,7 +205,6 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'honza/vim-snippets'           " Snippets collection
 	Plug 'sirver/ultisnips'             " Snippets engine
 	" Miscellaneous
-	Plug 'Lenovsky/nuake'               " Quake terminal
 	Plug 'mtth/scratch.vim'             " Scratch buffer
 	Plug 'mcchrish/nnn.vim'             " File browser
 	Plug 'adborden/vim-notmuch-address' " Mail address
@@ -332,8 +327,9 @@ nmap <leader>qi :PlugInstall<cr>
 nmap <leader>qu :PlugUpdate<cr>
 
 " Leader-based speed keys.
-nmap <leader><leader> :Nuake<cr>
-nmap <leader><tab> :Buffers<cr>
+nmap <leader><leader> :Buffers<cr>
+nmap <leader><tab> <c-^>
+nmap <leader><cr> :terminal<cr>
 nmap <leader>, <leader>fb
 nmap <leader>. <leader>ff
 nmap <leader>/ <leader>sp
