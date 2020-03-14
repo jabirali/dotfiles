@@ -159,6 +159,17 @@ function hours -d 'SINTEF work hours'
 	spy ts summary|sed 's/^Download.*/--  --/;s/\s\s\s*/|/g;s/---*/---/g;s/\(.*\)/|\1|/g;s/||/|---|---|/g'
 end
 
+function mpz -d 'MasterPassword via FZF'
+	read -slP 'MasterPassword> ' pw
+	while [ 1 ]
+		echo $pw | mpw (/bin/cat ~/.mpw.d/*.mpsites|sed -ne 's/^[^#]\S*\s*\S*\s*\S*\s*\(.*\)/\1/p' | sort | uniq | fzf --prompt 'Website> ' --bind 'alt-enter:print-query') 2>/dev/null | wl-copy
+		clear
+		echo 'Press Ctrl-C again to quit.'
+		sleep 1
+	end
+end
+
+
 function fish_title
     set -l command (echo $_)
 	if git rev-parse --git-dir > /dev/null ^ /dev/null
