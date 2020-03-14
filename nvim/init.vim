@@ -33,8 +33,8 @@ set statusline=%#VertSplit#%=
 set tabstop=4
 set termguicolors
 set tildeop
-set title 
-set titlestring=%<%t
+set title
+set titlestring=vim:\ %{fnamemodify(getcwd(),':t')}
 set undofile
 set updatetime=3000
 set virtualedit=block
