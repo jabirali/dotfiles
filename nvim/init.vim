@@ -396,14 +396,25 @@ nnoremap gx :silent !xdg-open "<cfile>:p"<cr>
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
-" Inspired by Firefox.
-nnoremap <c-r> :e<cr>
-
 " Inspired by i3.
 nnoremap <m-h> <c-w>h 
 nnoremap <m-j> <c-w>j 
 nnoremap <m-k> <c-w>k 
 nnoremap <m-l> <c-w>l 
+nnoremap <m-left>  <c-w>h 
+nnoremap <m-down>  <c-w>j 
+nnoremap <m-up>    <c-w>k 
+nnoremap <m-right> <c-w>l 
+
+" Inspired by Firefox.
+nnoremap <c-r> :e<cr>
+
+" Inspired by Emacs/Fish.
+inoremap <c-a>     <esc>I
+inoremap <c-e>     <esc>A
+inoremap <m-bs>    <c-w>
+inoremap <m-left>  <esc>bi
+inoremap <m-right> <esc>ea
 
 " TeX bindings.
 nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
