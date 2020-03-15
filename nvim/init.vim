@@ -73,6 +73,10 @@ let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_view_method = 'zathura'
+let g:wiki_filetypes = ['md']
+let g:wiki_root = '~/notes/'
+let g:wiki_link_target_type = 'md'
+let g:wiki_mappings_use_defaults = 0
 
 
 " #1 Commands
@@ -212,7 +216,8 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'junegunn/fzf',                {'do': './install --bin'}
 	Plug 'junegunn/fzf.vim'             " Fuzzy finding of everything
 	Plug 'alok/notational-fzf-vim'      " Fuzzy finding of notes
-    Plug 'wlemuel/vim-tldr',            {'do': ':TldrUpdateDocs'}
+	Plug 'lervag/wiki.vim'              " Wiki features in notes
+	Plug 'wlemuel/vim-tldr',            {'do': ':TldrUpdateDocs'}
 	" Version control
 	Plug 'tpope/vim-fugitive'           " Version control (general)
 	Plug 'jreybert/vimagit'             " Version control (commit)
