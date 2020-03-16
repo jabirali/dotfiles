@@ -1,0 +1,20 @@
+p {
+  margin-bottom: 0.5em;
+}
+
+a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #447777;
+}
+
+code {
+  color: #336633;
+}
+
+blockquote {
+  color: #666666;
+  margin-left: 0;
+  padding-left: 1em;
+  border-left: 0.25em #EEE solid;
+}
