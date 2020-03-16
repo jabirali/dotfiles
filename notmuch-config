@@ -1,7 +1,7 @@
 # ~/.notmuch-config
 
 [database]
-path=/home/jabirali/.mail/Personal
+path=/home/jabirali/mail
 
 [user]
 name=Jabir Ali Ouassou

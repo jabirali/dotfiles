@@ -1,25 +1,33 @@
 # ~/.config/afew/config
 
-[MeFilter]
-me_tag = vip
-
 [SpamFilter]
-
-[KillThreadsFilter]
 
 [ArchiveSentMailsFilter]
 
 [FolderNameFilter]
 folder_lowercases = true
+folder_transforms = 'personal/inbox':inbox 
+                    'personal/archive':archive 
+                    'personal/sent':sent
+                    'personal/spam':spam 
+                    'personal/trash':killed 
 
 [InboxFilter]
 
 [MailMover]
-folders = INBOX Spam Trash
-Spam    = 'NOT tag:spam AND tag:inbox':INBOX 
-          'NOT tag:spam':Archive
-Trash   = 'NOT tag:trash AND tag:inbox':INBOX 
-          'NOT tag:trash':Archive
-INBOX   = 'tag:spam':Spam
-          'tag:trash':Trash
-          'NOT tag:inbox AND NOT tag:spam AND NOT tag:trash':Archive
+folders = personal/inbox
+          personal/sent 
+          personal/archive 
+          personal/trash
+          personal/spam
+
+personal/inbox   = 'tag:killed':personal/trash
+                   'tag:sent':personal/sent
+                   'tag:spam':personal/spam
+                   'tag:archive':personal/archive
+                   'NOT tag:inbox':personal/archive
+personal/sent    = 'tag:killed':personal/trash
+personal/archive = 'tag:killed':personal/trash
+personal/trash   = 'tag:archive':personal/archive
+personal/spam    = 'tag:archive':personal/archive
+                   'tag:killed':personal/trash    
