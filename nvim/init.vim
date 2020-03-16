@@ -146,7 +146,7 @@ augroup clean_highlights
  	autocmd ColorScheme * hi! LineNr guibg=none
  	autocmd ColorScheme * hi! link CursorLineNr LineNr
 	" More consistent highlighting.
- 	autocmd ColorScheme * hi! link MatchParen Search
+ 	autocmd ColorScheme * hi! link MatchParen Cursor
  	autocmd ColorScheme * hi! link CleverFDefaultLabel Search
  	" Simplify the LSP diagnostics view.
  	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineError SpellCap
@@ -270,23 +270,6 @@ nnoremap <silent> <localleader> :WhichKey ','<cr>
 nnoremap <leader>w <c-w>
 nnoremap <leader>wd :close<cr>
 
-" Tabs/Workspaces.
-" nnoremap <leader><tab>1 :1tabnext<cr>
-" nnoremap <leader><tab>2 :2tabnext<cr>
-" nnoremap <leader><tab>3 :3tabnext<cr>
-" nnoremap <leader><tab>4 :4tabnext<cr>
-" nnoremap <leader><tab>5 :5tabnext<cr>
-" nnoremap <leader><tab>6 :6tabnext<cr>
-" nnoremap <leader><tab>7 :7tabnext<cr>
-" nnoremap <leader><tab>8 :8tabnext<cr>
-" nnoremap <leader><tab>9 :9tabnext<cr>
-" nnoremap <leader><tab>d :tabclose<cr>
-" nnoremap <leader><tab>n :tabnew<cr>
-" nnoremap <leader><tab>] :tabnext<cr>
-" nnoremap <leader><tab>[ :tabprev<cr>
-" nnoremap ]<tab> :tabnext<cr>
-" nnoremap [<tab> :tabprev<cr>
-
 " Toggle stuff.
 nmap <leader>t yo
 nmap <leader>tg :Goyo<cr>
@@ -377,16 +360,20 @@ nnoremap 0 ^
 nnoremap ^ 0
 nnoremap Y y$
 nnoremap U <c-r>
-noremap <c-j> J
+nnoremap R :e<cr>
+noremap j gj
+noremap k gk
 noremap <c-l> :nohlsearch<cr><c-l>
-noremap <expr> j (v:count? 'j' : 'gj')
-noremap <expr> k (v:count? 'k' : 'gk')
 
 " Paging with HJKL.
-noremap H zH
-noremap L zL
 noremap J <c-d>
 noremap K <c-u>
+noremap H zH
+noremap L zL
+
+noremap <c-j> J
+noremap zH H
+noremap zL L
 
 " Tab fold and indent.
 nmap <tab> <Plug>(fold-cycle-open)
@@ -406,24 +393,19 @@ nnoremap <m-h> <c-w>h
 nnoremap <m-j> <c-w>j 
 nnoremap <m-k> <c-w>k 
 nnoremap <m-l> <c-w>l 
-nnoremap <m-left>  <c-w>h 
-nnoremap <m-down>  <c-w>j 
-nnoremap <m-up>    <c-w>k 
-nnoremap <m-right> <c-w>l 
 
-" Inspired by Firefox.
-nnoremap <c-r> :e<cr>
+nnoremap <m-K> :aboveleft split<cr>
+nnoremap <m-J> :belowright split<cr>
+nnoremap <m-H> :leftabove vsplit<cr>
+nnoremap <m-L> :rightbelow vsplit<cr>
 
 " Inspired by Emacs/Fish.
 inoremap <c-a>     <esc>I
 inoremap <c-e>     <esc>A
 inoremap <m-bs>    <c-w>
-inoremap <m-left>  <esc>bi
-inoremap <m-right> <esc>ea
 
 " TeX bindings.
 nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
 
 " Completion.
 inoremap <silent> <expr> <cr> mucomplete#ultisnips#expand_snippet("\<cr>")
-
