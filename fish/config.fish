@@ -1,5 +1,17 @@
 # ~/.config/fish/config.fish vim: foldmethod=marker
 
+# Define environment variables.
+set -x TERMINFO /usr/lib/terminfo
+set -x PATH ~/.emacs.d/bin/ ~/.poetry/bin ~/.local/bin/ /opt/zotero/ /opt/nomad/bin/ /opt/mpw/bin /snap/bin $PATH
+set -x POETRY_VIRTUALENVS_PATH ~/.virtualenvs
+set -x LC_ALL en_US.UTF-8
+set -x LC_NUMERIC en_US.UTF-8
+set -x FZF_DEFAULT_COMMAND 'fdfind --type f'
+set -x FZF_DEFAULT_OPTS $FZF_DEFAULT_OPTS --layout=reverse
+set -x NNN_TRASH 1
+set -x NNN_USE_EDITOR 1
+set -x DOTNET_CLI_TELEMETRY_OPTOUT 1
+
 # Package manager.
 if not functions -q fisher
     set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
@@ -52,18 +64,6 @@ abbr -ga vi   'nvim'
 alias bat 'bat -p'
 alias exa 'exa --git --git-ignore --group-directories-first --time-style=long-iso'
 alias fd  'fdfind'
-
-# Define environment variables.
-set -x TERMINFO /usr/lib/terminfo
-set -x PATH ~/.emacs.d/bin/ ~/.poetry/bin ~/.local/bin/ /opt/zotero/ /opt/nomad/bin/ /opt/mpw/bin /snap/bin $PATH
-set -x POETRY_VIRTUALENVS_PATH ~/.virtualenvs
-set -x LC_ALL en_US.UTF-8
-set -x LC_NUMERIC en_US.UTF-8
-set -x FZF_DEFAULT_COMMAND 'fdfind --type f'
-set -x FZF_DEFAULT_OPTS $FZF_DEFAULT_OPTS --layout=reverse
-set -x NNN_TRASH 1
-set -x NNN_USE_EDITOR 1
-set -x DOTNET_CLI_TELEMETRY_OPTOUT 1
 
 # Functions and aliases.
 function e -d "Edit via $EDITOR" -w nvim
