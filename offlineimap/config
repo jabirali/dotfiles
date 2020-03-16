@@ -3,7 +3,7 @@
 [general]
 accounts         = personal
 metadata         = ~/.cache/offlineimap
-pythonfile       = ~/.dotfiles/offlineimap/auth.py
+pythonfile       = ~/.config/offlineimap/auth.py
 status_backend   = sqlite
 autorefresh      = 3
 quick            = 9
@@ -18,7 +18,8 @@ postsynchook     = ~/.config/offlineimap/postsync.sh
 
 [Repository personal-local]
 type             = Maildir
-localfolders     = ~/.mail/Personal
+localfolders     = ~/mail/personal
+nametrans        = lambda x: x.upper() if x == "inbox" else x.capitalize()
 
 [Repository personal-remote]
 type             = IMAP
@@ -26,3 +27,5 @@ remotehost       = imap.kolabnow.com
 remoteuser       = jabirali@switzerlandmail.ch
 remotepasseval   = keyring('jabirali@switzerlandmail.ch')
 sslcacertfile    = /etc/ssl/certs/ca-certificates.crt
+folderfilter     = lambda f: f in ["INBOX", "Archive", "Sent", "Spam", "Trash"]
+nametrans        = lambda f: f.lower()
