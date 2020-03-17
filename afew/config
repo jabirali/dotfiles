@@ -12,6 +12,11 @@ folder_transforms = 'personal/inbox':inbox
                     'personal/spam':spam 
                     'personal/trash':killed 
 
+[Filter.1]
+message = 'already tagged'
+query = 'tag:killed OR tag:sent OR tag:spam OR tag:archive OR tag:trash'
+tags = -new;-inbox
+
 [InboxFilter]
 
 [MailMover]
@@ -26,8 +31,12 @@ personal/inbox   = 'tag:killed':personal/trash
                    'tag:spam':personal/spam
                    'tag:archive':personal/archive
                    'NOT tag:inbox':personal/archive
+
 personal/sent    = 'tag:killed':personal/trash
+
 personal/archive = 'tag:killed':personal/trash
+
 personal/trash   = 'tag:archive':personal/archive
+
 personal/spam    = 'tag:archive':personal/archive
                    'tag:killed':personal/trash    

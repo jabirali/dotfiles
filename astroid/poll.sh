@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# Specify where to find Notmuch config.
-export NOTMUCH_CONFIG=~/.config/notmuch.ini
-
 # Exit as soon as one of the commands fail.
 set -e
 

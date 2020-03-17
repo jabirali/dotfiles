@@ -3,7 +3,7 @@
         "config": {
             "version": "11"
         },
-        "notmuch_config": "~/.config/notmuch.ini",
+        "notmuch_config": "~/.notmuch-config",
         "debug": {
             "dryrun_sending": "false"
         },
