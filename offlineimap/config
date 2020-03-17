@@ -25,5 +25,5 @@ remotehost       = imap.kolabnow.com
 remoteuser       = jabirali@switzerlandmail.ch
 remotepasseval   = keyring('jabirali@switzerlandmail.ch')
 sslcacertfile    = /etc/ssl/certs/ca-certificates.crt
-folderfilter     = lambda f: f in ["INBOX", "Archive", "Sent", "Spam", "Trash"]
+folderfilter     = lambda f: f in ["INBOX", "Archive", "Sent", "Spam", "Trash", "Notes"]
 nametrans        = lambda f: f.lower()
