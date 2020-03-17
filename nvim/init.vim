@@ -76,8 +76,8 @@ let g:vimtex_view_method = 'zathura'
 let g:wiki_filetypes = ['md']
 let g:wiki_root = '~/notes/'
 let g:wiki_link_target_type = 'md'
+let g:wiki_zotero_root = '~/.zotero'
 let g:wiki_mappings_use_defaults = 0
-
 
 " #1 Commands
 " #2 New commands
@@ -231,7 +231,6 @@ call plug#begin('~/.local/share/nvim/plugins')
 	" Miscellaneous
 	Plug 'mtth/scratch.vim'             " Scratch buffer
 	Plug 'mcchrish/nnn.vim'             " File browser
-	Plug 'adborden/vim-notmuch-address' " Mail address
 	" Python
 	Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 	Plug 'kalekundert/vim-coiled-snake'
