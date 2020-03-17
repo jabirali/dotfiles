@@ -75,7 +75,11 @@ function i -d "Show image" -w feh
 end
 
 function man -d "Show full manual" -w man
-	 e +"Man $argv"
+	if [ -e "$NVIM_LISTEN_ADDRESS" ]
+		e +"Man $argv"
+	else
+		e +"Man $argv" +only
+	end
 end
 
 function tldr -d "Show tldr manual" -w sudo
