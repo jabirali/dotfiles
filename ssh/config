@@ -1,7 +1,31 @@
 # ~/.ssh/config
 
-Host *
+Host babacup
+  Hostname babacup.lan
   User jabirali
+
+Host sintef
+  Hostname vsl142.energy.sintef.no
+  ProxyJump stepstone
+  User jabiro
+
+Host stepstone
+  Hostname stepstone.sintef.no
+  User jabiro
+
+Host pvv
+  Hostname monty.pvv.org
+  User jabirali
+
+Host ntnu
+  Hostname login.stud.ntnu.no
+  User jabirali
+
+Host hpc
+  Hostname vilje.hpc.ntnu.no
+  User jabirali
+
+Host *
   Protocol 2
   CheckHostIP no
   Compression no
@@ -9,15 +33,3 @@ Host *
   ControlMaster auto
   ControlPath ~/.ssh/mux_%h_%p_%r
   ControlPersist 5m
-
-Host babacup
-  Hostname 10.0.0.134
-
-Host vilje
-  Hostname vilje.hpc.ntnu.no
-
-Host ntnu
-  Hostname login.stud.ntnu.no
-
-Host pvv
-  Hostname monty.pvv.org
