@@ -1,6 +1,14 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
-SETUVAR --export FZF_DEFAULT_OPTS:\x0a\x20\x20\x2d\x2dcolor\x3dbg\x2b\x3a\x23eee8d5\x2cbg\x3a\x23fdf6e3\x2cspinner\x3a\x232aa198\x2chl\x3a\x23268bd2\x0a\x20\x20\x2d\x2dcolor\x3dfg\x3a\x23657b83\x2cheader\x3a\x23268bd2\x2cinfo\x3a\x23b58900\x2cpointer\x3a\x232aa198\x0a\x20\x20\x2d\x2dcolor\x3dmarker\x3a\x232aa198\x2cfg\x2b\x3a\x23073642\x2cprompt\x3a\x23b58900\x2chl\x2b\x3a\x23268bd2\x0a
+SETUVAR --export BAT_THEME:ansi\x2ddark
+SETUVAR --export DOTNET_CLI_TELEMETRY_OPTOUT:1
+SETUVAR --export FZF_DEFAULT_COMMAND:fdfind\x20\x2d\x2dtype\x20f
+SETUVAR --export FZF_DEFAULT_OPTS:\x2d\x2dcolor\x3dbg\x2b\x3a\x23eee8d5\x2cbg\x3a\x23fdf6e3\x2cspinner\x3a\x232aa198\x2chl\x3a\x23268bd2\x0a\x20\x20\x2d\x2dcolor\x3dfg\x3a\x23657b83\x2cheader\x3a\x23268bd2\x2cinfo\x3a\x23b58900\x2cpointer\x3a\x232aa198\x0a\x20\x20\x2d\x2dcolor\x3dmarker\x3a\x232aa198\x2cfg\x2b\x3a\x23073642\x2cprompt\x3a\x23b58900\x2chl\x2b\x3a\x23268bd2\x0a\x1e\x2d\x2dlayout\x3dreverse
+SETUVAR --export LC_ALL:en_DK\x2eUTF\x2d8
+SETUVAR --export NNN_TRASH:1
+SETUVAR --export NNN_USE_EDITOR:1
+SETUVAR --export --path POETRY_VIRTUALENVS_PATH:\x7e/\x2evirtualenvs
+SETUVAR __fish_init_2_39_8:\x1d
 SETUVAR __fish_init_2_3_0:\x1d
 SETUVAR __fish_init_3_x:\x1d
 SETUVAR fish_color_autosuggestion:93a1a1

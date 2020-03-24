@@ -1,28 +1,7 @@
 # ~/.config/fish/config.fish vim: foldmethod=marker
 
 # Define environment variables.
-set -x TERMINFO /usr/lib/terminfo
-set -x PATH ~/.emacs.d/bin/ ~/.poetry/bin ~/.local/bin/ /opt/zotero/ /opt/nomad/bin/ /opt/mpw/bin /snap/bin $PATH
-set -x POETRY_VIRTUALENVS_PATH ~/.virtualenvs
-set -x LC_ALL en_US.UTF-8
-set -x LC_NUMERIC en_US.UTF-8
-set -x FZF_DEFAULT_COMMAND 'fdfind --type f'
-set -x FZF_DEFAULT_OPTS $FZF_DEFAULT_OPTS --layout=reverse
-set -x NNN_TRASH 1
-set -x NNN_USE_EDITOR 1
-set -x DOTNET_CLI_TELEMETRY_OPTOUT 1
-
-# Package manager.
-if not functions -q fisher
-    set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
-    curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
-    fish -c fisher
-end
-
-# Color scheme.
-source ~/.config/fisher/github.com/tomyun/base16-fish/functions/base16-solarized-light.fish
-source ~/.config/fisher/github.com/nicodebo/base16-fzf/fish/base16-solarized-light.fish
-set -x BAT_THEME 'ansi-dark'
+set -x PATH ~/.poetry/bin ~/.local/bin/ /opt/zotero/ /opt/mpw/bin /snap/bin $PATH
 
 # Fancy prompt.
 if not [ (which starship) ];
@@ -180,7 +159,6 @@ function mpz -d 'MasterPassword via FZF'
 		sleep 1
 	end
 end
-
 
 function fish_title
     set -l command (echo $_)
