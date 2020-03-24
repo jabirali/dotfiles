@@ -111,7 +111,7 @@ command! -bang Notes call fzf#run(fzf#wrap(
 " Search Zotero library.
 command! -bang Zotero call fzf#run(fzf#wrap(
 			\ 'zotero',
-			\ { 'source':  'fdfind -t f -e pdf . ~/.zotero/',
+			\ { 'source':  'fdfind -t f -e pdf . ~/snap/zotero-snap/',
 			\   'sink':    'silent !zathura --fork',
 			\   'options': '--prompt "Zotero> " -m -d / --with-nth=-1' },
 			\ <bang>0))
@@ -158,8 +158,8 @@ augroup END
 augroup terminal_settings
 	autocmd!
 	" Keep the terminals simple and clean.
-	autocmd TermOpen  * setlocal scrolloff=0 nonumber norelativenumber
-	autocmd TermLeave * setlocal scrolloff=999
+	autocmd TermOpen  * setlocal scrolloff=0 sidescrolloff=0 nonumber norelativenumber
+	autocmd TermLeave * setlocal scrolloff=999 sidescrolloff=5
 	" Escape to normal mode in terminals.
 	autocmd TermOpen * tnoremap <buffer> <esc> <c-\><c-n>
 	autocmd FileType fzf tunmap <buffer> <esc>
