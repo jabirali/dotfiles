@@ -233,6 +233,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'mtth/scratch.vim'             " Scratch buffer
 	Plug 'mcchrish/nnn.vim'             " File browser
 	" Python
+	Plug 'vim-python/python-syntax'
 	Plug 'kalekundert/vim-coiled-snake'
 	Plug 'jmcantrell/vim-virtualenv'
 	Plug 'psf/black', {'tag': '19.10b0'}
