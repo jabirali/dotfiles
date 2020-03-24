@@ -375,6 +375,10 @@ noremap <c-j> J
 noremap zH H
 noremap zL L
 
+" Search and replace.
+nnoremap S :%s/
+vnoremap S :s/
+
 " Tab fold and indent.
 nmap <tab> <Plug>(fold-cycle-open)
 nnoremap <s-tab> zm
