@@ -20,11 +20,12 @@ set laststatus=0
 set mouse=a
 set noshowmode
 set nowrap
+set ruler
 set scrolloff=999
 set shiftwidth=4
 set shortmess+=c
 set sidescrolloff=5
-set signcolumn=no
+set signcolumn=yes
 set smartcase
 set showtabline=0
 set spelllang=en,nb
@@ -37,7 +38,7 @@ set tildeop
 set title
 set titlestring=vim:\ %{fnamemodify(substitute(getcwd(),$HOME,'~',''),':t')}
 set undofile
-set updatetime=4000
+set updatetime=100
 set virtualedit=block
 set wildmode=longest:full,full
 set winaltkeys=no
@@ -50,8 +51,6 @@ let g:fold_cycle_default_mapping = 0
 let g:fzf_action = { 'ctrl-s': 'split', 'ctrl-v': 'vsplit' }
 let g:fzf_layout = { 'window': 'enew' }
 let g:fzf_history_dir = '~/.local/share/fzf'
-let g:gruvbox_contrast_dark = 'hard'
-let g:gruvbox_italic = 1
 let g:magit_default_fold_level = 1
 let g:mucomplete#chains = { 'default': ['user', 'ulti', 'omni', 'path', 'dict', 'spel'] }
 let g:mucomplete#tab_when_no_results = 0
@@ -65,7 +64,6 @@ let g:pandoc#syntax#conceal#blacklist = ['titleblock', 'block', 'subscript', 'su
 let g:pandoc#syntax#style#underline_special = 0
 let g:pandoc#syntax#conceal#urls = 1
 let g:scratch_insert_autohide = 0
-let g:semshi#mark_selected_nodes = 0
 let g:tex_conceal = 'abdgm'
 let g:UltiSnipsExpandTrigger = '<noop>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
@@ -118,11 +116,6 @@ command! GitCd execute 'cd ./'.system('git rev-parse --show-cdup')
 
 " #2 Autocommands
 " Normal mode after timeout.
-augroup normal_timeout
-	autocmd!
-	autocmd CursorHoldI * stopinsert
-augroup END
-
 " Close pop-ups with q.
 augroup quit_like_emacs
 	autocmd!
@@ -235,7 +228,6 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'mtth/scratch.vim'             " Scratch buffer
 	Plug 'mcchrish/nnn.vim'             " File browser
 	" Python
-	Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 	Plug 'kalekundert/vim-coiled-snake'
 	Plug 'jmcantrell/vim-virtualenv'
 	Plug 'psf/black', {'tag': '19.10b0'}
