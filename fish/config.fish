@@ -20,9 +20,9 @@ if not functions -q fisher
 end
 
 # Color scheme.
-source ~/.config/fisher/github.com/tomyun/base16-fish/functions/base16-gruvbox-dark-hard.fish
-source ~/.config/fisher/github.com/nicodebo/base16-fzf/fish/base16-gruvbox-dark-hard.fish
-set -x BAT_THEME 'base16'
+source ~/.config/fisher/github.com/tomyun/base16-fish/functions/base16-solarized-light.fish
+source ~/.config/fisher/github.com/nicodebo/base16-fzf/fish/base16-solarized-light.fish
+set -x BAT_THEME 'ansi-dark'
 
 # Fancy prompt.
 if not [ (which starship) ];
@@ -121,9 +121,17 @@ function p -d 'Open project'
 end
 
 function z -d 'Open library file'
-	for f in (fd -t f -e pdf . ~/.zotero/ | fzf -m -d '/' --with-nth=-1 --prompt='Zotero> ')
+	for f in (fd -t f -e pdf . ~/snap/zotero-snap/ | fzf -m -d '/' --with-nth=-1 --prompt='Zotero> ')
 		zathura $f &
 	end
+end
+
+function weather -d 'Check the weather forecast'
+	curl wttr.in 2>/dev/null | grep -v @
+end
+
+function checkip -d 'Check the public IP address'
+	curl ifconfig.co
 end
 
 function vpn -d 'Connect to VPN'

@@ -2,7 +2,7 @@
 
 " #1 Settings
 " #2 Builtin
-set background=dark
+set background=light
 set clipboard+=unnamedplus
 set completeopt=longest,menuone,noinsert
 set concealcursor=nc
@@ -70,6 +70,7 @@ let g:tex_conceal = 'abdgm'
 let g:UltiSnipsExpandTrigger = '<noop>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:vimade = {'fadelevel': 0.6}
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_view_method = 'zathura'
@@ -133,18 +134,18 @@ augroup END
 " Improve the default highlight colors.
 augroup clean_highlights
  	autocmd!
- 	" Subtle highlighting of active window.
- 	autocmd ColorScheme * hi! InactiveWindow guibg=none
- 	autocmd ColorScheme * hi! ActiveWindow guibg='#222526'
-	set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow
  	" Remove highlighting of active tab.
- 	autocmd ColorScheme * hi! link TabLine InactiveWindow
- 	autocmd ColorScheme * hi! link TabLineFill InactiveWindow
+ 	autocmd ColorScheme * hi! TabLine guibg=none
+ 	autocmd ColorScheme * hi! TabLineFill guibg=none
  	autocmd ColorScheme * hi! TabLineSel guibg=none gui=bold
+	" Don't emphasize window borders.
+	autocmd ColorScheme * hi! link VertSplit InactiveWindow
  	" Tone down too heavy default highlighting.
+	autocmd ColorScheme * hi! SignColumn guibg=none
+	autocmd ColorScheme * hi! LineNr guibg=none
 	autocmd ColorScheme * hi! link Folded Comment
- 	autocmd ColorScheme * hi! LineNr guibg=none
- 	autocmd ColorScheme * hi! link CursorLineNr LineNr
+ 	" autocmd ColorScheme * hi! LineNr guibg=none
+ 	" autocmd ColorScheme * hi! link CursorLineNr LineNr
 	" More consistent highlighting.
  	autocmd ColorScheme * hi! link MatchParen Cursor
  	autocmd ColorScheme * hi! link CleverFDefaultLabel Search
@@ -197,7 +198,9 @@ endif
 " #2 Load plugins
 call plug#begin('~/.local/share/nvim/plugins')
 	" User interface
-	Plug 'morhetz/gruvbox'              " Gruvbox colorscheme
+	Plug 'psliwka/vim-smoothie'         " Smooth scrolling
+	Plug 'romainl/flattened'            " Solarized colorscheme
+	Plug 'TaDaa/vimade'                 " Fade inactive windows
  	Plug 'arecarn/vim-fold-cycle'       " Org-like recursive folding
 	Plug 'Konfekt/FastFold'             " More optimized code folding
 	Plug 'liuchengxu/vim-which-key'     " Interactive keybinding help
@@ -252,7 +255,8 @@ call plug#end()
 luafile ~/.config/nvim/lsp.lua
 
 " Load color scheme.
-silent! colorscheme gruvbox
+set background=light
+silent! colorscheme flattened_light
 
 
 " #1 Keybindings
