@@ -19,7 +19,7 @@ set laststatus=0
 set mouse=a
 set noshowmode
 set nowrap
-set ruler
+set noruler
 set scrolloff=999
 set shiftwidth=4
 set shortmess+=c
@@ -137,6 +137,7 @@ augroup clean_highlights
  	autocmd ColorScheme * hi! TabLineSel guibg=none gui=bold
 	autocmd ColorScheme * hi! NormalNC guibg='#f9f2df'
 	autocmd ColorScheme * hi! link VertSplit NormalNC
+	autocmd ColorScheme * hi! link MsgArea NormalNC
  	" Tone down too heavy default highlighting.
 	autocmd ColorScheme * hi! SignColumn guibg=none
 	autocmd ColorScheme * hi! LineNr guibg=none
