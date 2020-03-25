@@ -12,7 +12,6 @@ set fillchars=fold:\ ,stl:\ ,stlnc:\ ,vert:\ ,eob:\ ,
 set foldlevel=0
 set foldmethod=syntax
 set gdefault
-set guifont=Iosevka\ SS09\ Light:h16
 set hidden
 set ignorecase
 set inccommand=nosplit
@@ -132,18 +131,16 @@ augroup END
 " Improve the default highlight colors.
 augroup clean_highlights
  	autocmd!
- 	" Remove highlighting of active tab.
+ 	" Simplify highlighting of active tab/window.
  	autocmd ColorScheme * hi! TabLine guibg=none
  	autocmd ColorScheme * hi! TabLineFill guibg=none
  	autocmd ColorScheme * hi! TabLineSel guibg=none gui=bold
-	" Don't emphasize window borders.
-	autocmd ColorScheme * hi! link VertSplit InactiveWindow
+	autocmd ColorScheme * hi! NormalNC guibg='#f9f2df'
+	autocmd ColorScheme * hi! link VertSplit NormalNC
  	" Tone down too heavy default highlighting.
 	autocmd ColorScheme * hi! SignColumn guibg=none
 	autocmd ColorScheme * hi! LineNr guibg=none
 	autocmd ColorScheme * hi! link Folded Comment
- 	" autocmd ColorScheme * hi! LineNr guibg=none
- 	" autocmd ColorScheme * hi! link CursorLineNr LineNr
 	" More consistent highlighting.
  	autocmd ColorScheme * hi! link MatchParen Cursor
  	autocmd ColorScheme * hi! link CleverFDefaultLabel Search
