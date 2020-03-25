@@ -191,7 +191,6 @@ endif
 " #2 Load plugins
 call plug#begin('~/.local/share/nvim/plugins')
 	" User interface
-	Plug 'psliwka/vim-smoothie'         " Smooth scrolling
 	Plug 'romainl/flattened'            " Solarized colorscheme
 	Plug 'TaDaa/vimade'                 " Fade inactive windows
  	Plug 'arecarn/vim-fold-cycle'       " Org-like recursive folding
@@ -360,8 +359,8 @@ noremap k gk
 noremap <c-l> :nohlsearch<cr><c-l>
 
 " Paging with HJKL.
-map J <c-d>
-map K <c-u>
+noremap J <c-d>
+noremap K <c-u>
 noremap H zH
 noremap L zL
 
