@@ -56,7 +56,7 @@ let g:gitgutter_sign_modified_removed = '│'
 let g:gitgutter_sign_removed = '_'
 let g:gitgutter_sign_removed_first_line = '‾'
 let g:magit_default_fold_level = 1
-let g:mucomplete#chains = { 'default': ['user', 'ulti', 'omni', 'path', 'dict', 'spel'] }
+let g:mucomplete#chains = { 'default': ['user', 'omni', 'path', 'dict', 'spel'] }
 let g:mucomplete#tab_when_no_results = 0
 let g:nnn#replace_netrw = 1
 let g:nnn#set_default_mappings = 0
@@ -69,9 +69,6 @@ let g:pandoc#syntax#style#underline_special = 0
 let g:pandoc#syntax#conceal#urls = 1
 let g:scratch_insert_autohide = 0
 let g:tex_conceal = 'abdgm'
-let g:UltiSnipsExpandTrigger = '<noop>'
-let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
-let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:vimade = {'fadelevel': 0.9}
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
@@ -225,8 +222,6 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'neovim/nvim-lsp'              " Setup built-in language client
 	Plug 'lifepillar/vim-mucomplete'    " Setup built-in autocompletion
 	Plug 'axvr/zepl.vim'                " Minimal REPL integration
-	Plug 'honza/vim-snippets'           " Snippets collection
-	Plug 'sirver/ultisnips'             " Snippets engine
 	" Miscellaneous
 	Plug 'mtth/scratch.vim'             " Scratch buffer
 	Plug 'mcchrish/nnn.vim'             " File browser
@@ -409,6 +404,3 @@ inoremap <m-bs>    <c-w>
 
 " TeX bindings.
 nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
-
-" Completion.
-inoremap <silent> <expr> <cr> mucomplete#ultisnips#expand_snippet("\<cr>")
