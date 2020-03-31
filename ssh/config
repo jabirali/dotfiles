@@ -1,5 +1,9 @@
 # ~/.ssh/config
 
+Host home
+  Hostname vwv.duckdns.org
+  User jabirali
+
 Host babacup
   Hostname babacup.lan
   User jabirali
