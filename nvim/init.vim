@@ -69,7 +69,7 @@ let g:pandoc#syntax#conceal#urls = 1
 let g:scratch_insert_autohide = 0
 let g:tex_conceal = 'abdgm'
 let g:tmux_navigator_no_mappings = 1
-let g:vimade = {'fadelevel': 0.9}
+let g:vimade = {'fadelevel': 0.5}
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_view_method = 'zathura'
@@ -132,9 +132,7 @@ augroup clean_highlights
  	autocmd ColorScheme * hi! TabLine guibg=none
  	autocmd ColorScheme * hi! TabLineFill guibg=none
  	autocmd ColorScheme * hi! TabLineSel guibg=none gui=bold
-	autocmd ColorScheme * hi! NormalNC guibg='#f9f2df'
-	autocmd ColorScheme * hi! link VertSplit NormalNC
-	autocmd ColorScheme * hi! link MsgArea NormalNC
+	autocmd ColorScheme * hi! VertSplit guifg='#d7d7af' guibg=none
  	" Tone down too heavy default highlighting.
 	autocmd ColorScheme * hi! SignColumn guibg=none
 	autocmd ColorScheme * hi! LineNr guibg=none
