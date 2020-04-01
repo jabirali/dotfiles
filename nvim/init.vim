@@ -93,7 +93,7 @@ command! -bang Project call fzf#run(fzf#wrap(
 			\ 'project',
 			\ { 'source':  'fdfind -HIt d "^\.git$" ~/projects/ | sed "s|/\.git$||"',
 			\   'sink':    'cd',
-			\   'options': '--prompt "Project> " -d / --with-nth=-1 --preview="bat --style=plain --color=always {..}/README{.md,.org,.txt,} 2>/dev/null"' },
+			\   'options': '--prompt "Project> " -d / --with-nth=-1 --preview="bat --style=plain --color=always --theme=ansi-dark {..}/README{.md,.org,.txt,} 2>/dev/null"' },
 			\ <bang>0))
 
 " Search for a note file.
