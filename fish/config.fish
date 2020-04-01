@@ -123,6 +123,10 @@ function vpn -d 'Connect to VPN'
 		| fzf --prompt='ExpressVPN> ' )
 end
 
+function ssh-fzf -d 'Connect via SSH'
+	exec ssh ( sed -ne 's/^\s*Host \([^*].*\)/\1/p' ~/.ssh/config | fzf --prompt "SSH> ")
+end
+
 function venv -d 'Python virtual environments'
     if not count $argv > /dev/null
         echo "Virtual environments:"

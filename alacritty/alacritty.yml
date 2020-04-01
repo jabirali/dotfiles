@@ -66,3 +66,6 @@ shell:
 
 mouse:
   hide_when_typing: true
+
+key_bindings:
+  - { key: Return, mods: Alt, command: { program: "alacritty", args: ["-t", "Remote", "-e", "fish", "-C", "ssh-fzf"] } }
