@@ -1,12 +1,13 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
-SETUVAR --export BAT_THEME:ansi\x2ddark
+SETUVAR --export BAT_THEME:ansi\x2dlight
 SETUVAR --export DOTNET_CLI_TELEMETRY_OPTOUT:1
 SETUVAR --export FZF_DEFAULT_COMMAND:fdfind\x20\x2d\x2dtype\x20f
-SETUVAR --export FZF_DEFAULT_OPTS:\x2d\x2dcolor\x3dbg\x2b\x3a\x2d1\x2cbg\x3a\x2d1\x2cspinner\x3a\x232aa198\x2chl\x3a\x23268bd2\x2cfg\x3a\x23657b83\x2cheader\x3a\x23268bd2\x2cinfo\x3a\x23b58900\x2cpointer\x3a\x232aa198\x2cmarker\x3a\x232aa198\x2cfg\x2b\x3a\x23073642\x2cprompt\x3a\x23b58900\x2chl\x2b\x3a\x23268bd2\x20\x2d\x2dlayout\x3dreverse
+SETUVAR --export FZF_DEFAULT_OPTS:\x2d\x2dcolor\x3dbg\x2b\x3a\x2d1\x2cbg\x3a\x2d1\x2cspinner\x3a\x232aa198\x2chl\x3a\x23268bd2\x2cfg\x3a\x23657b83\x2cheader\x3a\x23268bd2\x2cinfo\x3a\x23b58900\x2cborder\x3a\x23d7d7af\x2cpointer\x3a\x232aa198\x2cmarker\x3a\x232aa198\x2cfg\x2b\x3a\x23073642\x2cprompt\x3a\x23b58900\x2chl\x2b\x3a\x23268bd2\x1e\x2d\x2dlayout\x3dreverse
 SETUVAR --export LC_ALL:en_DK\x2eUTF\x2d8
 SETUVAR --export NNN_TRASH:1
 SETUVAR --export NNN_USE_EDITOR:1
+SETUVAR --export NNN_CONTEXT_COLORS:5555
 SETUVAR --export --path POETRY_VIRTUALENVS_PATH:\x7e/\x2evirtualenvs
 SETUVAR __fish_init_2_39_8:\x1d
 SETUVAR __fish_init_2_3_0:\x1d
@@ -33,6 +34,7 @@ SETUVAR fish_color_selection:white\x1e\x2d\x2dbold\x1e\x2d\x2dbackground\x3dblac
 SETUVAR fish_color_status:red
 SETUVAR fish_color_user:brgreen
 SETUVAR fish_color_valid_path:
+SETUVAR fish_greeting:
 SETUVAR fish_key_bindings:fish_default_key_bindings
 SETUVAR fish_pager_color_completion:green
 SETUVAR fish_pager_color_description:B3A06D

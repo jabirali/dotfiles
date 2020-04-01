@@ -91,12 +91,14 @@ function d -d 'File manager'
     end
 end
 
-function o -d 'Open in system app'
+function open -d 'Open in system app'
     xdg-open $argv &
 end
 
-function p -d 'Open project'
-	$EDITOR +Project
+function project -d 'Open project'
+	cd ( fdfind -HIt d '^\.git$' ~/projects/ | sed 's|/\.git$||' \
+	   | fzf --prompt 'Project> ' -d / --with-nth=-1 --preview-window right:65% \
+	         --preview='bat -p --color=always {..}/README{.md,.org,.txt,} 2>/dev/null' )
 end
 
 function z -d 'Open library file'
@@ -124,7 +126,8 @@ function vpn -d 'Connect to VPN'
 end
 
 function ssh-fzf -d 'Connect via SSH'
-	exec ssh ( sed -ne 's/^\s*Host \([^*].*\)/\1/p' ~/.ssh/config | fzf --prompt "SSH> ")
+	exec ssh ( sed -ne 's/^\s*Host \([^*].*\)/\1/p' ~/.ssh/config | fzf --prompt "SSH> ") \
+	         -tt "fish -c \"tmux attach || tmux\" || tmux attach || tmux || fish || bash"
 end
 
 function venv -d 'Python virtual environments'
