@@ -147,28 +147,10 @@ augroup clean_highlights
  	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineInformation SpellRare
 augroup END
 
-" Improve the default terminal settings.
-augroup terminal_settings
-	autocmd!
-	" Keep the terminals simple and clean.
-	autocmd TermOpen  * setlocal scrolloff=0 sidescrolloff=0 nonumber norelativenumber
-	autocmd TermLeave * setlocal scrolloff=999 sidescrolloff=5
-	" Escape to normal mode in terminals.
-	autocmd TermOpen * tnoremap <buffer> <esc> <c-\><c-n>
-	autocmd FileType fzf tunmap <buffer> <esc>
-	" Navigate prompts like sections.
-	autocmd TermOpen * nnoremap <buffer> [[ ?❯<cr>:nohlsearch<cr>:<esc>
-	autocmd TermOpen * nnoremap <buffer> ]] /❯<cr>:nohlsearch<cr>:<esc>
-augroup END
-
 " Python integration.
 augroup python_settings
     autocmd!
 	autocmd BufWritePre *.py execute ':Black'
-	autocmd FileType python runtime zepl/contrib/python.vim
-	autocmd FileType python let b:repl_config =
-				\ { 'cmd': 'fish -c python3',
-				\   'formatter': function("zepl#contrib#python#formatter") }
 augroup END
 
 " Cleaner folding syntax.
@@ -218,7 +200,6 @@ call plug#begin('~/.local/share/nvim/plugins')
 	" IDE features
 	Plug 'neovim/nvim-lsp'                " Setup built-in language client
 	Plug 'lifepillar/vim-mucomplete'      " Setup built-in autocompletion
-	Plug 'axvr/zepl.vim'                  " Minimal REPL integration
 	" Miscellaneous
 	Plug 'christoomey/vim-tmux-navigator' " Tmux consistency
 	Plug 'tpope/vim-rsi'                  " Readline consistency
@@ -274,11 +255,8 @@ nmap <leader>tV :VirtualEnvDeactivate<cr>
 " nmap <leader>ol :bot lwindow<cr>
 " nmap <leader>oo :tabedit ~/notes/sintef.org<cr>
 " nmap <leader>oO :tabedit ~/notes/personal.org<cr>
-" nmap <leader>op :bot split term://htop<cr>i
 " nmap <leader>os :Scratch<cr>
 " nmap <leader>oS :Scratch!<cr>
-" nmap <leader>ot :Nuake<cr>
-" nmap <leader>oT :terminal<cr>
 " nmap <leader>ov <leader>tv
 " nmap <leader>oV <leader>tV
 " nmap <leader>oq :bot cwindow<cr>
@@ -328,7 +306,6 @@ nmap <leader>qu :PlugUpdate<cr>
 " Leader-based speed keys.
 nmap <leader><leader> :Buffers<cr>
 nmap <leader><tab> <c-^>
-nmap <leader><cr> :terminal<cr>a
 nmap <leader>h :Helptags<cr>
 nmap <leader>n :Notes!<cr>
 nmap <leader>o :GFiles!<cr>
@@ -386,10 +363,10 @@ nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
 " Tmux integration.
-nnoremap <silent> <m-h> :TmuxNavigateLeft<cr>
-nnoremap <silent> <m-j> :TmuxNavigateDown<cr>
-nnoremap <silent> <m-k> :TmuxNavigateUp<cr>
-nnoremap <silent> <m-l> :TmuxNavigateRight<cr>
+noremap <silent> <m-h> :TmuxNavigateLeft<cr>
+noremap <silent> <m-j> :TmuxNavigateDown<cr>
+noremap <silent> <m-k> :TmuxNavigateUp<cr>
+noremap <silent> <m-l> :TmuxNavigateRight<cr>
 
 " TeX bindings.
 nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
