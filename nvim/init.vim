@@ -69,6 +69,7 @@ let g:pandoc#syntax#style#underline_special = 0
 let g:pandoc#syntax#conceal#urls = 1
 let g:scratch_insert_autohide = 0
 let g:tex_conceal = 'abdgm'
+let g:tmux_navigator_no_mappings = 1
 let g:vimade = {'fadelevel': 0.9}
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
@@ -191,39 +192,41 @@ endif
 " #2 Load plugins
 call plug#begin('~/.local/share/nvim/plugins')
 	" User interface
-	Plug 'romainl/flattened'            " Solarized colorscheme
-	Plug 'TaDaa/vimade'                 " Fade inactive windows
- 	Plug 'arecarn/vim-fold-cycle'       " Org-like recursive folding
-	Plug 'Konfekt/FastFold'             " More optimized code folding
-	Plug 'liuchengxu/vim-which-key'     " Interactive keybinding help
-	Plug 'tpope/vim-repeat'             " Repeat more things with `.`
-	Plug 'tpope/vim-unimpaired'         " Browse more things with `[]`
-	Plug 'junegunn/goyo.vim'            " Center buffer when writing
+	Plug 'romainl/flattened'              " Solarized colorscheme
+	Plug 'TaDaa/vimade'                   " Fade inactive windows
+ 	Plug 'arecarn/vim-fold-cycle'         " Org-like recursive folding
+	Plug 'Konfekt/FastFold'               " More optimized code folding
+	Plug 'liuchengxu/vim-which-key'       " Interactive keybinding help
+	Plug 'tpope/vim-repeat'               " Repeat more things with `.`
+	Plug 'tpope/vim-unimpaired'           " Browse more things with `[]`
+	Plug 'junegunn/goyo.vim'              " Center buffer when writing
 	" Text editing
-	Plug 'andymass/vim-matchup'         " Smarter `%` jumps and highlights
-	Plug 'junegunn/vim-slash'           " Smarter `*` jumps and highlights
-	Plug 'rhysd/clever-f.vim'           " Smarter `f` jumps and highlights
-	Plug 'machakann/vim-sandwich'       " More intuitive `surround` plugin
-	Plug 'tpope/vim-commentary'         " Faster (un)commenting with `gc`
-	Plug 'junegunn/vim-easy-align'      " Faster code alignment with `ga`
-	Plug 'tpope/vim-speeddating'        " Better c-a/c-x actions for dates
+	Plug 'andymass/vim-matchup'           " Smarter `%` jumps and highlights
+	Plug 'junegunn/vim-slash'             " Smarter `*` jumps and highlights
+	Plug 'rhysd/clever-f.vim'             " Smarter `f` jumps and highlights
+	Plug 'machakann/vim-sandwich'         " More intuitive `surround` plugin
+	Plug 'tpope/vim-commentary'           " Faster (un)commenting with `gc`
+	Plug 'junegunn/vim-easy-align'        " Faster code alignment with `ga`
+	Plug 'tpope/vim-speeddating'          " Better c-a/c-x actions for dates
 	" Searching
-	Plug 'junegunn/fzf',                {'do': './install --bin'}
-	Plug 'junegunn/fzf.vim'             " Fuzzy finding of everything
-	Plug 'alok/notational-fzf-vim'      " Fuzzy finding of notes
-	Plug 'lervag/wiki.vim'              " Wiki features in notes
-	Plug 'wlemuel/vim-tldr',            {'do': ':TldrUpdateDocs'}
+	Plug 'junegunn/fzf',                  {'do': './install --bin'}
+	Plug 'junegunn/fzf.vim'               " Fuzzy finding of everything
+	Plug 'alok/notational-fzf-vim'        " Fuzzy finding of notes
+	Plug 'lervag/wiki.vim'                " Wiki features in notes
+	Plug 'wlemuel/vim-tldr',              {'do': ':TldrUpdateDocs'}
 	" Version control
-	Plug 'tpope/vim-fugitive'           " Version control (general)
-	Plug 'jreybert/vimagit'             " Version control (commit)
-	Plug 'airblade/vim-gitgutter'       " Version control (buffer)
+	Plug 'tpope/vim-fugitive'             " Version control (general)
+	Plug 'jreybert/vimagit'               " Version control (commit)
+	Plug 'airblade/vim-gitgutter'         " Version control (buffer)
 	" IDE features
-	Plug 'neovim/nvim-lsp'              " Setup built-in language client
-	Plug 'lifepillar/vim-mucomplete'    " Setup built-in autocompletion
-	Plug 'axvr/zepl.vim'                " Minimal REPL integration
+	Plug 'neovim/nvim-lsp'                " Setup built-in language client
+	Plug 'lifepillar/vim-mucomplete'      " Setup built-in autocompletion
+	Plug 'axvr/zepl.vim'                  " Minimal REPL integration
 	" Miscellaneous
-	Plug 'mtth/scratch.vim'             " Scratch buffer
-	Plug 'mcchrish/nnn.vim'             " File browser
+	Plug 'christoomey/vim-tmux-navigator' " Tmux consistency
+	Plug 'tpope/vim-rsi'                  " Readline consistency
+	Plug 'mtth/scratch.vim'               " Scratch buffer
+	Plug 'mcchrish/nnn.vim'               " File browser
 	" Python
 	Plug 'vim-python/python-syntax'
 	Plug 'kalekundert/vim-coiled-snake'
@@ -385,21 +388,11 @@ nnoremap gx :silent !xdg-open "<cfile>:p"<cr>
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
-" Inspired by i3.
-nnoremap <m-h> <c-w>h 
-nnoremap <m-j> <c-w>j 
-nnoremap <m-k> <c-w>k 
-nnoremap <m-l> <c-w>l 
-
-nnoremap <m-K> :aboveleft split<cr>
-nnoremap <m-J> :belowright split<cr>
-nnoremap <m-H> :leftabove vsplit<cr>
-nnoremap <m-L> :rightbelow vsplit<cr>
-
-" Inspired by Emacs/Fish.
-inoremap <c-a>     <esc>I
-inoremap <c-e>     <esc>A
-inoremap <m-bs>    <c-w>
+" Tmux integration.
+nnoremap <silent> <m-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <m-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <m-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <m-l> :TmuxNavigateRight<cr>
 
 " TeX bindings.
 nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
