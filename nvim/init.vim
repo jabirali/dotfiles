@@ -79,6 +79,9 @@ let g:wiki_link_target_type = 'md'
 let g:wiki_zotero_root = '~/.zotero'
 let g:wiki_mappings_use_defaults = 0
 
+" #2 Envvars
+let $BAT_THEME = 'ansi-dark'
+
 " #1 Commands
 " #2 New commands
 " Define a simple custom folding style. For filetypes that don't have custom
@@ -93,7 +96,7 @@ command! -bang Project call fzf#run(fzf#wrap(
 			\ 'project',
 			\ { 'source':  'fdfind -HIt d "^\.git$" ~/projects/ | sed "s|/\.git$||"',
 			\   'sink':    'cd',
-			\   'options': '--prompt "Project> " -d / --with-nth=-1 --preview="bat --style=plain --color=always --theme=ansi-dark {..}/README{.md,.org,.txt,} 2>/dev/null"' },
+			\   'options': '--prompt "Project> " -d / --with-nth=-1 --preview="bat --style=plain --color=always {..}/README{.md,.org,.txt,} 2>/dev/null"' },
 			\ <bang>0))
 
 " Search for a note file.
