@@ -31,7 +31,7 @@ font:
 
 colors:
   primary:
-    background: '#ffffd7'
+    background: '#fdf6e3'
     foreground: '#657b83'
   cursor:
     text:   '#fdf6e3'
