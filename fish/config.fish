@@ -163,17 +163,3 @@ function mpz -d 'MasterPassword via FZF'
 		sleep 1
 	end
 end
-
-function fish_title
-    set -l command (echo $_)
-	if git rev-parse --git-dir > /dev/null ^ /dev/null
-		set -l git_dir (git rev-parse --git-dir)
-		if [ $git_dir != ".git" ]
-			echo git: (basename (dirname $git_dir))
-		else
-			echo git: (basename (pwd))
-		end
-	else
-		echo dir: (pwd | sed "s|$HOME|~|" )
-	end
-end
