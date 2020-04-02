@@ -49,6 +49,7 @@ let g:fold_cycle_default_mapping = 0
 let g:fzf_action = { 'ctrl-s': 'split', 'ctrl-v': 'vsplit' }
 let g:fzf_layout = { 'window': 'enew' }
 let g:fzf_history_dir = '~/.local/share/fzf'
+let g:gitgutter_map_keys = 0
 let g:gitgutter_sign_added = '│'
 let g:gitgutter_sign_modified = '│'
 let g:gitgutter_sign_modified_removed = '│'
@@ -309,10 +310,11 @@ nmap <leader>qu :PlugUpdate<cr>
 " Leader-based speed keys.
 nmap <leader><leader> :Buffers<cr>
 nmap <leader><tab> <c-^>
-nmap <leader>h :Helptags<cr>
+ map <leader>? :Helptags<cr>
 nmap <leader>n :Notes!<cr>
 nmap <leader>o :GFiles!<cr>
 nmap <leader>p :Project!<cr>
+nmap <leader>. :cd %:p:h<cr>
 
 " #2 Editor keys
 " LSP bindings.
@@ -370,6 +372,12 @@ noremap <silent> <m-h> :TmuxNavigateLeft<cr>
 noremap <silent> <m-j> :TmuxNavigateDown<cr>
 noremap <silent> <m-k> :TmuxNavigateUp<cr>
 noremap <silent> <m-l> :TmuxNavigateRight<cr>
+
+" Window splitting.
+noremap <silent> <leader>h :leftabove vsplit<cr>
+noremap <silent> <leader>j :below split<cr>
+noremap <silent> <leader>k :above split<cr>
+noremap <silent> <leader>l :rightbelow vsplit<cr>
 
 " TeX bindings.
 nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
