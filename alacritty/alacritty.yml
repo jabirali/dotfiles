@@ -4,7 +4,7 @@ window:
   padding:
     x: 0
     y: 0
-  dynamic_padding: false
+  dynamic_padding: true
   decorations: none
   startup_mode: Maximized
   gtk_theme_variant: dark
@@ -31,8 +31,8 @@ font:
 
 colors:
   primary:
-    background: '#fdf6e3'
-    foreground: '#657b83'
+    background: '#1d1d1d'
+    foreground: '#fdf6e3'
   cursor:
     text:   '#fdf6e3'
     cursor: '#657b83'
