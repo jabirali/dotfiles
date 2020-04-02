@@ -26,9 +26,6 @@ if [ -e "$VIRTUAL_ENV" ]
 	source $VIRTUAL_ENV/bin/activate.fish
 end
 
-# Prettier paging.
-set -x PAGER 'bat -p'
-
 # Fuzzy-finder integration.
 fzf_key_bindings
 
@@ -130,6 +127,22 @@ function venv -d 'Python virtual environments'
         echo "The specified virtual environment does not exist."
         echo "Create with `python -m venv ~/.virtualenvs/<name>`."
     end
+end
+
+function man -d "Show long manual" -w man
+	if [ -e "$NVIM_LISTEN_ADDRESS" ]
+		e +"Man $argv"
+	else
+		e +"Man $argv" +only
+	end
+end
+
+function tldr -d "Show short manual" -w sudo
+	if [ -e "$NVIM_LISTEN_ADDRESS" ]
+		e +"Tldr $argv"
+	else
+		e +"Tldr $argv" +only
+	end
 end
 
 function wget! -d 'Scrape all linked documents from a website'
