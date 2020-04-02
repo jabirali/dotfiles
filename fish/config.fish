@@ -2,6 +2,7 @@
 
 # Define environment variables.
 set -x PATH ~/.poetry/bin ~/.local/bin/ /opt/zotero/ /opt/mpw/bin /snap/bin $PATH
+set -x FISH_TTY (tty)
 
 # Fancy prompt.
 if not [ (which starship) ];

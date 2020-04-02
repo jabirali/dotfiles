@@ -1,5 +1,4 @@
 " ~/.config/nvim/init.vim vim: foldmethod=marker foldmarker="\ #,"###
-
 " #1 Settings
 " #2 Builtin
 set background=light
@@ -237,6 +236,18 @@ luafile ~/.config/nvim/lsp.lua
 set background=light
 silent! colorscheme flattened_light
 
+" Integrate clipboards via OSC-52.
+function! Osc52Yank()
+    let buffer=system('base64 -w0', @0)
+    let buffer=substitute(buffer, "\n$", "", "")
+    let buffer='\e]52;c;'.buffer.'\x07'
+    silent exe "!echo -ne ".shellescape(buffer)." > ".shellescape($FISH_TTY)
+endfunction
+
+augroup Clipboard
+    autocmd!
+    autocmd TextYankPost * if v:event.operator ==# 'y' | call Osc52Yank() | endif
+augroup END
 
 " #1 Keybindings
 " #2 Leader keys
