@@ -26,6 +26,9 @@ if [ -e "$VIRTUAL_ENV" ]
 	source $VIRTUAL_ENV/bin/activate.fish
 end
 
+# Prettier paging.
+set -x PAGER 'bat -p'
+
 # Fuzzy-finder integration.
 fzf_key_bindings
 
@@ -47,22 +50,6 @@ alias fd  'fdfind'
 # Functions and aliases.
 function e -d "Edit via $EDITOR" -w nvim
 	$EDITOR $argv
-end
-
-function i -d "Show image" -w feh
-	kitty +kitten icat $argv
-end
-
-function man -d "Show full manual" -w man
-	if [ -e "$NVIM_LISTEN_ADDRESS" ]
-		e +"Man $argv"
-	else
-		e +"Man $argv" +only
-	end
-end
-
-function tldr -d "Show tldr manual" -w sudo
-	 e +"Tldr $argv"
 end
 
 function d -d 'File manager'
