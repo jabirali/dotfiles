@@ -55,10 +55,10 @@ let g:gitgutter_sign_modified = '│'
 let g:gitgutter_sign_modified_removed = '│'
 let g:gitgutter_sign_removed = '_'
 let g:gitgutter_sign_removed_first_line = '‾'
-let g:LspDiagnosticsErrorSign = ' '
-let g:LspDiagnosticsWarningSign = ' '
-let g:LspDiagnosticsInformationSign = ' '
-let g:LspDiagnosticsHintSign = ' '
+let g:LspDiagnosticsErrorSign = '!'
+let g:LspDiagnosticsWarningSign = '·'
+let g:LspDiagnosticsInformationSign = '·'
+let g:LspDiagnosticsHintSign = '·'
 let g:magit_default_fold_level = 1
 let g:mucomplete#chains = { 'default': ['user', 'omni', 'path', 'dict', 'spel'] }
 let g:mucomplete#tab_when_no_results = 0
@@ -312,12 +312,12 @@ nmap <leader>qi :PlugInstall<cr>
 nmap <leader>qu :PlugUpdate<cr>
 
 " Leader-based speed keys.
-nmap <leader><leader> :Buffers<cr>
 nmap <leader><tab> <c-^>
  map <leader>? :Helptags<cr>
 nmap <leader>n :Notes!<cr>
-nmap <leader>o :GFiles!<cr>
 nmap <leader>p :Project!<cr>
+nmap <leader>o :GFiles!<cr>
+nmap <leader>i :Buffers<cr>
 nmap <leader>. :cd %:p:h<cr>
 
 " #2 Editor keys
@@ -329,8 +329,9 @@ nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<cr>
 nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<cr>
 nnoremap <silent> gR    <cmd>lua vim.lsp.buf.rename()<cr>
 nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
-inoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<cr>
-nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.hover()<cr><cmd>lua vim.lsp.util.show_line_diagnostics()<cr>
+inoremap <silent> <c-h> <cmd>lua vim.lsp.buf.signature_help()<cr>
+nnoremap <silent> <c-h> <cmd>lua vim.lsp.buf.hover()<cr>
+nnoremap <silent> <leader><leader> <cmd>lua vim.lsp.util.show_line_diagnostics()<cr>
 
 " Better defaults.
 nnoremap ; :
