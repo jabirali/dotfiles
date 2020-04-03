@@ -1,0 +1,15 @@
+# ~/snap/spt/current/.config/spotify-tui/config.yml
+
+theme:
+  active: Black
+  banner: Black
+  error_border: Black
+  error_text: Black
+  hint: Black
+  hovered: Magenta
+  inactive: Black
+  playbar_background: Black
+  playbar_progress: Magenta
+  playbar_text: White
+  selected: Magenta
+  text: Black
