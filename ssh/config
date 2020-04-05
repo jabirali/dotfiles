@@ -33,7 +33,7 @@ Host *
   Protocol 2
   CheckHostIP no
   Compression no
-  ForwardX11 yes
+  ForwardX11 no
   ControlMaster auto
   ControlPath ~/.ssh/mux_%h_%p_%r
   ControlPersist 5m
