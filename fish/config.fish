@@ -112,7 +112,7 @@ end
 
 function ssh-fzf -d 'Connect via SSH'
 	exec ssh ( sed -ne 's/^\s*Host \([^*].*\)/\1/p' ~/.ssh/config \
-	         | fzf --prompt "SSH> " --preview="echo -e '\e[31m# Tmux windows\e[0m'; ssh {} tmux list-windows 2>/dev/null || echo 'None.'") \
+	         | fzf --prompt "SSH> " --preview="echo -e '\e[31m# Workspaces\e[0m'; ssh {} tmux list-windows 2>/dev/null || echo 'None.'") \
 	         -tt "fish -c \"tmux attach || tmux\" || tmux attach || tmux || fish || bash"
 end
 
