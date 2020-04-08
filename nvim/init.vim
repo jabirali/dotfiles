@@ -212,6 +212,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	" Miscellaneous
 	Plug 'christoomey/vim-tmux-navigator' " Tmux consistency
 	Plug 'tpope/vim-rsi'                  " Readline consistency
+	Plug 'tpope/vim-obsession'            " Session backups
 	Plug 'mtth/scratch.vim'               " Scratch buffer
 	Plug 'mcchrish/nnn.vim'               " File browser
 	" Python
