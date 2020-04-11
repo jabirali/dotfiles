@@ -71,4 +71,5 @@ mouse:
 
 key_bindings:
   - { key: F12, command: { program: "alacritty", args: ["-t", "Remote", "-e", "fish", "-C", "ssh-fzf"] } }
+  - { key: Return, mods: Alt, action: ReceiveChar }
   - { key: P, mods: Alt, action: Paste }
