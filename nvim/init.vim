@@ -343,8 +343,8 @@ nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<cr>
 nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<cr>
 nnoremap <silent> gR    <cmd>lua vim.lsp.buf.rename()<cr>
 nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
-inoremap <silent> <c-h> <cmd>lua vim.lsp.buf.signature_help()<cr>
-nnoremap <silent> <c-h> <cmd>lua vim.lsp.buf.hover()<cr>
+inoremap <silent> <c-_> <cmd>lua vim.lsp.buf.signature_help()<cr>
+nnoremap <silent> <c-_> <cmd>lua vim.lsp.buf.hover()<cr>
 nnoremap <silent> <leader><leader> <cmd>lua vim.lsp.util.show_line_diagnostics()<cr>
 
 " Better defaults.
