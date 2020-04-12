@@ -34,7 +34,7 @@ font:
 colors:
   primary:
     background: '#1d1d1d'
-    foreground: '#fdf6e3'
+    foreground: '#073642'
   cursor:
     text:   '#fdf6e3'
     cursor: '#657b83'
@@ -64,7 +64,7 @@ shell:
   args:
     - -l
     - -c
-    - "tmux attach || tmux"
+    - "tmux attach || tmux || fish || bash"
 
 mouse:
   hide_when_typing: true

@@ -369,6 +369,10 @@ noremap <c-j> J
 noremap zH H
 noremap zL L
 
+" Emacs-like search.
+nnoremap /     <C-s>
+cnoremap <C-s> <C-g>
+
 " Search and replace.
 nnoremap S :%s/
 vnoremap S :s/
