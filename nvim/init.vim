@@ -360,18 +360,12 @@ noremap k gk
 noremap <c-l> :nohlsearch<cr><c-l>
 
 " Paging with HJKL.
-noremap J <c-d>
-noremap K <c-u>
 noremap H zH
 noremap L zL
 
 noremap <c-j> J
 noremap zH H
 noremap zL L
-
-" Emacs-like search.
-nnoremap /     <C-s>
-cnoremap <C-s> <C-g>
 
 " Search and replace.
 nnoremap S :%s/
