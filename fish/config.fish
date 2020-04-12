@@ -1,49 +1,88 @@
-# ~/.config/fish/config.fish vim: foldmethod=marker
+# ~/.config/fish/config.fish 
+# vim: foldmethod=marker
 
-# Define environment variables.
-set -x PATH ~/.poetry/bin ~/.local/bin/ /opt/zotero/ /opt/mpw/bin /snap/bin $PATH
-set -x FISH_TTY (tty)
+# Environment variables {{{
+	# Most of these are set in the `fish_variables` file; however,
+	# the ones most commonly changed manually are collected here.
+	set -x PATH ~/.local/bin/ ~/.poetry/bin /snap/bin $PATH
+# }}}
 
-# Fancy prompt.
-if not [ (which starship) ];
-   set file (mktemp);
-   curl -fsSL https://starship.rs/install.sh > $file;
-   mkdir -p ~/.local/bin/;
-   bash $file -y -b ~/.local/bin/;
-   rm $file;
-end
-starship init fish | source
-set fish_greeting ""
+# Bootstrap procedure {{{
+	# This section of the config file collects various startup
+	# activities, including responding to the environment where
+	# fish was started (e.g. within neovim or a virtual env).
+	
+	# Fancy prompt.
+	if not type -q starship
+	   set file (mktemp);
+	   curl -fsSL https://starship.rs/install.sh > $file;
+	   mkdir -p ~/.local/bin/;
+	   bash $file -y -b ~/.local/bin/;
+	   rm $file;
+	end
+	starship init fish | source
+	set fish_greeting ""
+	
+	# Neovim integration.
+	if [ -e "$NVIM_LISTEN_ADDRESS" ]
+		set -x EDITOR nvr
+	else
+		set -x EDITOR nvim
+	end
+	
+	# Virtualenv integration.
+	if [ -e "$VIRTUAL_ENV" ]
+		source $VIRTUAL_ENV/bin/activate.fish
+	end
+	
+	# Fuzzy-finder integration.
+	fzf_key_bindings
+	
+	# Needed for OSC-52.
+	set -x FISH_TTY (tty)
+# }}}
 
-# Neovim integration.
-if [ -e "$NVIM_LISTEN_ADDRESS" ]
-	set -x EDITOR nvr
-else
-	set -x EDITOR nvim
-end
-
-# Virtualenv integration.
-if [ -e "$VIRTUAL_ENV" ]
-	source $VIRTUAL_ENV/bin/activate.fish
-end
-
-# Fuzzy-finder integration.
-fzf_key_bindings
-
-# Use abbreviations to switch from UNIX classics.
-abbr -ga cat  'bat'
-abbr -ga find 'fd'
-abbr -ga grep 'rg'
-abbr -ga ll   'exa -l'
-abbr -ga ls   'exa'
-abbr -ga tree 'exa -T'
-abbr -ga vim  'nvim'
-abbr -ga vi   'nvim'
+# Abbreviations {{{
+	# The code below automatically replaces classic and portable UNIX tools
+	# with modern alternatives that tend to be faster and prettier. However,
+	# it does so in a portable way, i.e. only when these are available.
+	
+	if type -q fdfind
+		alias 'fd' 'fdfind'
+		abbr -ga 'find' 'fd'
+	end
+	
+	if type -q fd
+		abbr -ga 'find' 'fd'
+	end
+	
+	if type -q rg
+		abbr -ga 'grep' 'rg'
+	end
+	
+	if type -q exa
+		abbr -ga 'ls'   'exa'
+		abbr -ga 'll'   'exa -l'
+		abbr -ga 'tree' 'exa -T'
+	end
+	
+	if type -q vim
+		abbr -ga 'vi' 'vim'
+	end
+	
+	if type -q nvim
+		abbr -ga 'vi'  'nvim'
+		abbr -ga 'vim' 'nvim'
+	end
+	
+	if type -q bat
+		abbr -ga cat 'bat'
+	end
+# }}}
 
 # Use aliases to provide sensible default arguments.
-alias bat 'bat -p'
-alias exa 'exa --git-ignore --group-directories-first --time-style=long-iso'
-alias fd  'fdfind'
+alias 'bat' 'bat -p'
+alias 'exa' 'exa --git-ignore --group-directories-first --time-style=long-iso'
 
 # Functions and aliases.
 function e -d "Edit via $EDITOR" -w nvim
@@ -51,33 +90,33 @@ function e -d "Edit via $EDITOR" -w nvim
 end
 
 function d -d 'File manager'
-    # Block nesting in subshells.
-    if test -n NNNLVL
-        if [ (expr $NNNLVL + 0) -ge 1 ]
-            echo "nnn is already running"
-            return
-        end
-    end
-
-    # Output file for `cd` info.
-    if [ -n "$XDG_CONFIG_HOME" ]
-        set -x NNN_TMPFILE "$XDG_CONFIG_HOME/nnn/.lastd"
-    else
-        set -x NNN_TMPFILE "$HOME/.config/nnn/.lastd"
+	# Block nesting in subshells.
+	if test -n NNNLVL
+		if [ (expr $NNNLVL + 0) -ge 1 ]
+			echo "nnn is already running"
+			return
+		end
 	end
-
+	
+	# Output file for `cd` info.
+	if [ -n "$XDG_CONFIG_HOME" ]
+		set -x NNN_TMPFILE "$XDG_CONFIG_HOME/nnn/.lastd"
+	else
+		set -x NNN_TMPFILE "$HOME/.config/nnn/.lastd"
+	end
+	
 	# Launch `nnn`.
 	nnn $argv
-
+	
 	# Implement `cd` on quit.
-    if [ -e $NNN_TMPFILE ]
-        source $NNN_TMPFILE
-        rm $NNN_TMPFILE
-    end
+	if [ -e $NNN_TMPFILE ]
+		source $NNN_TMPFILE
+		rm $NNN_TMPFILE
+	end
 end
 
 function open -d 'Open in system app'
-    xdg-open $argv &
+	xdg-open $argv &
 end
 
 function project -d 'Open project'
@@ -113,24 +152,24 @@ end
 function ssh-fzf -d 'Connect via SSH'
 	while true
 		ssh ( sed -ne 's/^\s*Host \([^*].*\)/\1/p' ~/.ssh/config \
-		    | fzf --prompt "SSH> " --preview="echo -e '\e[31m# Workspaces\e[0m'; ssh {} tmux list-windows 2>/dev/null || echo 'None.'") \
-		          -tt "fish -c \"tmux attach || tmux\" || tmux attach || tmux || fish || bash"
+			| fzf --prompt "SSH> " --preview="echo -e '\e[31m# Workspaces\e[0m'; ssh {} tmux list-windows 2>/dev/null || echo 'None.'") \
+				  -tt "fish -c \"tmux attach || tmux\" || tmux attach || tmux || fish || bash"
 	end
 end
 
 function venv -d 'Python virtual environments'
-    if not count $argv > /dev/null
-        echo "Virtual environments:"
-        for i in (ls ~/.virtualenvs)
-            echo "-" $i
-        end
-    else if [ -d ~/.virtualenvs/$argv[1] ]
-        echo "Activating virtual environment."
-        source ~/.virtualenvs/$argv/bin/activate.fish
-    else
-        echo "The specified virtual environment does not exist."
-        echo "Create with `python -m venv ~/.virtualenvs/<name>`."
-    end
+	if not count $argv > /dev/null
+		echo "Virtual environments:"
+		for i in (ls ~/.virtualenvs)
+			echo "-" $i
+		end
+	else if [ -d ~/.virtualenvs/$argv[1] ]
+		echo "Activating virtual environment."
+		source ~/.virtualenvs/$argv/bin/activate.fish
+	else
+		echo "The specified virtual environment does not exist."
+		echo "Create with `python -m venv ~/.virtualenvs/<name>`."
+	end
 end
 
 function man -d "Show long manual" -w man
@@ -150,11 +189,11 @@ function tldr -d "Show short manual" -w sudo
 end
 
 function wget! -d 'Scrape all linked documents from a website'
-    wget -r -l 1 -e robots=off
+	wget -r -l 1 -e robots=off
 end
 
 function nup -d 'Update Neovim plugins'
-    nvim +PlugStatus +only +PlugInstall +PlugUpdate +PlugUpgrade +UpdateRemotePlugins +qa
+	nvim +PlugStatus +only +PlugInstall +PlugUpdate +PlugUpgrade +UpdateRemotePlugins +qa
 end
 
 function hours -d 'SINTEF work hours'
