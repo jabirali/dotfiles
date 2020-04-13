@@ -244,7 +244,7 @@ function! Osc52Yank()
     let buffer=system('base64 -w0', @0)
     let buffer=substitute(buffer, "\n$", "", "")
     let buffer='\e]52;c;'.buffer.'\x07'
-    silent exe "!echo -ne ".shellescape(buffer)." > ".shellescape($FISH_TTY)
+    silent exe "!echo -ne ".shellescape(buffer)." > ".system("tmux display -p '#{pane_tty}'")
 endfunction
 
 augroup Clipboard

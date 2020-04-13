@@ -37,9 +37,6 @@
 	
 	# Fuzzy-finder integration.
 	fzf_key_bindings
-	
-	# Needed for OSC-52.
-	set -x FISH_TTY (tty)
 # }}}
 
 # Abbreviations {{{
