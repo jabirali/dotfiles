@@ -75,7 +75,6 @@ let g:pandoc#syntax#conceal#urls = 1
 let g:scratch_insert_autohide = 0
 let g:tex_conceal = 'abdgm'
 let g:tmux_navigator_no_mappings = 1
-let g:vimade = {'fadelevel': 0.5}
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_view_method = 'zathura'
@@ -181,7 +180,6 @@ endif
 call plug#begin('~/.local/share/nvim/plugins')
 	" User interface
 	Plug 'romainl/flattened'              " Solarized colorscheme
-	Plug 'TaDaa/vimade'                   " Fade inactive windows
  	Plug 'arecarn/vim-fold-cycle'         " Org-like recursive folding
 	Plug 'Konfekt/FastFold'               " More optimized code folding
 	Plug 'liuchengxu/vim-which-key'       " Interactive keybinding help
