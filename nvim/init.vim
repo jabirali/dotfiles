@@ -356,6 +356,7 @@ nnoremap R :e<cr>
 noremap j gj
 noremap k gk
 noremap <c-l> :nohlsearch<cr><c-l>
+cnoremap <C-r> <C-e><C-u>History:<cr>
 
 " Paging with HJKL.
 noremap H zH
