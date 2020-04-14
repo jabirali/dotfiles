@@ -65,7 +65,6 @@ let g:mucomplete#chains = { 'default': ['user', 'omni', 'path', 'dict', 'spel'] 
 let g:mucomplete#tab_when_no_results = 0
 let g:nnn#replace_netrw = 1
 let g:nnn#set_default_mappings = 0
-let g:nv_search_paths = ['~/notes']
 let g:org_aggressive_conceal = 1
 let g:pandoc#folding#fdc = 0
 let g:pandoc#folding#fold_fenced_codeblocks = 1
@@ -197,7 +196,6 @@ call plug#begin('~/.local/share/nvim/plugins')
 	" Searching
 	Plug 'junegunn/fzf',                  {'do': './install --bin'}
 	Plug 'junegunn/fzf.vim'               " Fuzzy finding of everything
-	Plug 'alok/notational-fzf-vim'        " Fuzzy finding of notes
 	Plug 'lervag/wiki.vim'                " Wiki features in notes
 	Plug 'wlemuel/vim-tldr',              {'do': ':TldrUpdateDocs'}
 	" Version control
