@@ -75,6 +75,12 @@
 	if type -q bat
 		abbr -ga cat 'bat'
 	end
+
+	# Provide further abbreviations of common commands.
+	abbr -ga 'ga' 'git add'
+	abbr -ga 'gc' 'git commit'
+	abbr -ga 'gd' 'git diff'
+	abbr -ga 'gs' 'git status'
 	
 	# Use aliases to provide sensible default arguments.
 	alias 'bat' 'bat -p'
