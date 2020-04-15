@@ -12,16 +12,11 @@
 	# activities, including responding to the environment where
 	# fish was started (e.g. within neovim or a virtual env).
 	
-	# Fancy prompt.
-	if not type -q starship
-	   set file (mktemp);
-	   curl -fsSL https://starship.rs/install.sh > $file;
-	   mkdir -p ~/.local/bin/;
-	   bash $file -y -b ~/.local/bin/;
-	   rm $file;
+	# Package manager.
+	if not functions -q fisher
+		curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
+		fish -c fisher
 	end
-	starship init fish | source
-	set fish_greeting ""
 	
 	# Neovim integration.
 	if [ -e "$NVIM_LISTEN_ADDRESS" ]
@@ -81,6 +76,8 @@
 	abbr -ga 'gc' 'git commit'
 	abbr -ga 'gd' 'git diff'
 	abbr -ga 'gs' 'git status'
+	abbr -ga 'p'  'project'
+	abbr -ga 'z'  'zotero'
 	
 	# Use aliases to provide sensible default arguments.
 	alias 'bat' 'bat -p'
@@ -128,7 +125,7 @@
 		         --preview='bat -p --color=always {..}/README{.md,.org,.txt,} 2>/dev/null' )
 	end
 	
-	function z -d 'Open library file'
+	function zotero -d 'Open library file'
 		for f in (fd -t f -e pdf . ~/snap/zotero-snap/ | fzf -m -d '/' --with-nth=-1 --prompt='Zotero> ')
 			zathura $f &
 		end
