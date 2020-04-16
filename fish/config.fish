@@ -52,10 +52,17 @@
 		abbr -ga 'grep' 'rg'
 	end
 	
+	# if type -q exa
+	# 	abbr -ga 'ls'   'exa'
+	# 	abbr -ga 'll'   'exa -l'
+	# 	abbr -ga 'tree' 'exa -T'
+	# end
+	
 	if type -q exa
-		abbr -ga 'ls'   'exa'
-		abbr -ga 'll'   'exa -l'
-		abbr -ga 'tree' 'exa -T'
+		alias 'ls'   'exa'
+		alias 'll'   'exa -l'
+		alias 'la'   'exa -a'
+		alias 'tree' 'exa -T'
 	end
 	
 	if type -q vim
@@ -76,6 +83,7 @@
 	abbr -ga 'gc' 'git commit'
 	abbr -ga 'gd' 'git diff'
 	abbr -ga 'gs' 'git status'
+	abbr -ga 'gl' 'git log --pretty=format:"%h%Cgreen     %ad%Cblue   %x09%an%x09%Cred%s" --date=relative'
 	abbr -ga 'p'  'project'
 	abbr -ga 'z'  'zotero'
 	
