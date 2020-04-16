@@ -5,6 +5,7 @@
 	# Most of these are set in the `fish_variables` file; however,
 	# the ones most commonly changed manually are collected here.
 	set -x PATH ~/.local/bin/ ~/.poetry/bin /snap/bin $PATH
+	set -g pure_symbol_prompt  "❯"
 # }}}
 
 # Bootstrap procedure {{{
