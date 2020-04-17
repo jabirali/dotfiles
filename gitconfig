@@ -1,0 +1,12 @@
+# ~/.gitconfig
+
+[user]
+	email = jabirali@switzerlandmail.ch
+	name = Jabir Ali Ouassou
+[core]
+	excludesfile = /home/jabirali/.ignore
+	editor = nvr --remote-wait-silent
+[log]
+	date = relative
+[format]
+	pretty = format:%C(auto,yellow)%h%C(auto,magenta)% G? %C(auto,blue)%>(14,trunc)%ad %C(auto,green)%<(18,trunc)%aN%C(auto,reset)%s%C(auto,red)% gD% D
