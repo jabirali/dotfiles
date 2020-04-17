@@ -344,7 +344,7 @@ nnoremap <silent> <c-_> <cmd>lua vim.lsp.buf.hover()<cr>
 nnoremap <silent> <leader><leader> <cmd>lua vim.lsp.util.show_line_diagnostics()<cr>
 
 " Better defaults.
-nnoremap ; :
+noremap ; :
 nnoremap ' `
 nnoremap 0 ^
 nnoremap ^ 0
