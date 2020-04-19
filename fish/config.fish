@@ -13,21 +13,25 @@
 	# activities, including responding to the environment where
 	# fish was started (e.g. within neovim or a virtual env).
 	
-	# Package manager.
+	# Fish package manager.
 	if not functions -q fisher
 		curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
 		fish -c fisher
 	end
 	
-	# Neovim integration.
+	# Autoselect best editor.
 	if type -q nvr
 		if [ -n "$TMUX" ]
 			set -x EDITOR nvr
-			set -x NVIM_LISTEN_ADDRESS ~/.cache/nvim/nvr(tmux display -p '#{window_id}')
 		else
 			set -x EDITOR nvim
-			set -e NVIM_LISTEN_ADDRESS
 		end
+	else if type -q nvim
+		set -x EDITOR nvim
+	else if type -q vim
+		set -x EDITOR vim
+	else
+		set -x EDITOR vi
 	end
 	
 	# Virtualenv integration.
@@ -92,8 +96,17 @@
 # }}}
 
 # Functions {{{
+	function fish_right_prompt -d "Update environment variables"
+		# Sync the Neovim session to the Tmux workspace, so running `nvr` always reuses 
+		# the Neovim of the current workspace. This code is placed in the prompt function 
+		# so that it remains up-to-date even after moving Tmux panes between workspaces.
+		if [ "$EDITOR" = "nvr" ]
+			set -gx NVIM_LISTEN_ADDRESS ~/.cache/nvim/nvr(tmux display -p '#{window_id}')
+		end
+	end
+	
 	function e -d "Edit via $EDITOR" -w nvim
-		$EDITOR $argv
+		$EDITOR $argv 2> /dev/null
 	end
 	
 	function d -d 'File manager'
