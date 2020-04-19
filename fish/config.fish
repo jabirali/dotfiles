@@ -21,7 +21,7 @@
 	
 	# Neovim integration.
 	if type -q nvr
-		if [ -e "$TMUX" ]
+		if [ -n "$TMUX" ]
 			set -x EDITOR nvr
 			set -x NVIM_LISTEN_ADDRESS ~/.cache/nvim/nvr(tmux display -p '#{window_id}')
 		else
