@@ -20,10 +20,14 @@
 	end
 	
 	# Neovim integration.
-	if [ -e "$NVIM_LISTEN_ADDRESS" ]
-		set -x EDITOR nvr
-	else
-		set -x EDITOR nvim
+	if type -q nvr
+		if [ -e "$TMUX" ]
+			set -x EDITOR nvr
+			set -x NVIM_LISTEN_ADDRESS ~/.cache/nvim/nvr(tmux display -p '#{window_id}')
+		else
+			set -x EDITOR nvim
+			set -e NVIM_LISTEN_ADDRESS
+		end
 	end
 	
 	# Virtualenv integration.
@@ -72,7 +76,7 @@
 	if type -q bat
 		abbr -ga cat 'bat'
 	end
-
+	
 	# Provide further abbreviations of common commands.
 	abbr -ga 'ga' 'git add'
 	abbr -ga 'gc' 'git commit'
