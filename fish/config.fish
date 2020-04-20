@@ -87,6 +87,8 @@
 	abbr -ga 'gd' 'git diff'
 	abbr -ga 'gs' 'git status'
 	abbr -ga 'gl' 'git log'
+	abbr -ga 'e'  'edit'
+	abbr -ga 'o'  'open'
 	abbr -ga 'p'  'project'
 	abbr -ga 'z'  'zotero'
 	
@@ -105,7 +107,7 @@
 		end
 	end
 	
-	function e -d "Edit via $EDITOR" -w nvim
+	function edit -d "Edit via $EDITOR" -w nvim
 		$EDITOR $argv 2> /dev/null
 	end
 	
