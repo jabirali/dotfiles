@@ -132,6 +132,12 @@ augroup quit_like_emacs
 	autocmd FileType scratch noremap <buffer> <esc> :silent close<cr>
 augroup END
 
+" Some apps require buffer deletion.
+augroup delete_on_quit
+	autocmd!
+	autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
+augroup END
+
 " Improve the default highlight colors.
 augroup clean_highlights
  	autocmd!
