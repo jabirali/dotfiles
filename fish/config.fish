@@ -4,14 +4,13 @@
 # Environment variables {{{
 	# Most of these are set in the `fish_variables` file; however,
 	# the ones most commonly changed manually are collected here.
+	set -x FZF_DEFAULT_OPTS '--color=bg+:-1,bg:-1,spinner:#2aa198,hl:#268bd2,fg:#657b83,header:#268bd2,info:#b58900,border:#d7d7af,pointer:#2aa198,marker:#2aa198,fg+:#073642,prompt:#b58900,hl+:#268bd2 --layout=reverse'
 	set -x PATH ~/.local/bin/ ~/.poetry/bin /snap/bin $PATH
 	set -g pure_symbol_prompt  "❯"
 # }}}
 
 # Bootstrap procedure {{{
-	# This section of the config file collects various startup
-	# activities, including responding to the environment where
-	# fish was started (e.g. within neovim or a virtual env).
+	# This section of the config file collects essential startup activities.
 	
 	# Fish package manager.
 	if not functions -q fisher
@@ -19,7 +18,21 @@
 		fish -c fisher
 	end
 	
-	# Autoselect best editor.
+	# Virtualenv integration.
+	if [ -e "$VIRTUAL_ENV" ]
+		source $VIRTUAL_ENV/bin/activate.fish
+	end
+	
+	# Fuzzy-finder integration.
+	fzf_key_bindings
+# }}}
+
+# Editor integration {{{
+	# This section automatically determines what $EDITOR to use, and uses
+	# abbreviations to ensure that I use that one.  Moreover, it provides
+	# automatic integration of tmux and the neovim remote when applicable.
+	
+	# Autoselect the best $EDITOR.
 	if type -q nvr
 		if [ -n "$TMUX" ]
 			set -x EDITOR nvr
@@ -34,33 +47,57 @@
 		set -x EDITOR vi
 	end
 	
-	# Virtualenv integration.
-	if [ -e "$VIRTUAL_ENV" ]
-		source $VIRTUAL_ENV/bin/activate.fish
+	# Simplify the use of $EDITOR.
+	abbr -ga e edit
+	function edit -d "Edit via $EDITOR" -w $EDITOR
+		$EDITOR $argv 2> /dev/null
 	end
 	
-	# Fuzzy-finder integration.
-	fzf_key_bindings
+	# Force the use of $EDITOR.
+	abbr -ga vi   edit
+	abbr -ga vim  edit
+	abbr -ga nvim edit
+	abbr -ga nvr  edit
+	
+	# Integrate Tmux and Neovim. This is done by syncing the Neovim instance to the
+	# Tmux window, so running `nvr` always reuses a currently visible Neovim instance.
+	# Placing this in the prompt keeps it up-to-date after moving panes between windows.
+	if [ "$EDITOR" = "nvr" ]
+		function fish_right_prompt -d "Sync `tmux` windows and `nvim` instances."
+			set -gx NVIM_LISTEN_ADDRESS (tmux display -p '#{HOME}/.cache/nvim/nvr#{session_id}#{window_id}')
+		end
+	end
 # }}}
 
-# Abbreviations {{{
+# System integration {{{
 	# The code below automatically replaces classic and portable UNIX tools
 	# with modern alternatives that tend to be faster and prettier. However,
 	# it does so in a portable way, i.e. only when these are available.
 	
+	# Easily open files with its default viewer.
+	abbr -ga 'o' 'open'
+	function open -d 'Open in system app'
+		xdg-open $argv &
+	end
+	
+	# Better replacement for `find`.
 	if type -q fdfind
+		set -x FZF_DEFAULT_COMMAND 'fdfind --type f'
 		alias 'fd' 'fdfind'
 		abbr -ga 'find' 'fd'
 	end
 	
 	if type -q fd
+		set -x FZF_DEFAULT_COMMAND 'fd --type f'
 		abbr -ga 'find' 'fd'
 	end
 	
+	# Better replacement for `grep`.
 	if type -q rg
 		abbr -ga 'grep' 'rg'
 	end
 	
+	# Better replacement for `ls`.
 	if type -q exa
 		abbr -ga 'ls'   'exa'
 		abbr -ga 'll'   'exa -l'
@@ -68,48 +105,23 @@
 		abbr -ga 'tree' 'exa -T'
 	end
 	
-	if type -q vim
-		abbr -ga 'vi' 'vim'
-	end
-	
-	if type -q nvim
-		abbr -ga 'vi'  'nvim'
-		abbr -ga 'vim' 'nvim'
-	end
-	
+	# Better replacement for `cat`.
 	if type -q bat
 		abbr -ga cat 'bat'
 	end
-	
-	# Provide further abbreviations of common commands.
-	abbr -ga 'ga' 'git add'
-	abbr -ga 'gc' 'git commit'
-	abbr -ga 'gd' 'git diff'
-	abbr -ga 'gs' 'git status'
-	abbr -ga 'gl' 'git log'
-	abbr -ga 'e'  'edit'
-	abbr -ga 'o'  'open'
-	abbr -ga 'p'  'project'
-	abbr -ga 'z'  'zotero'
 	
 	# Use aliases to provide sensible default arguments.
 	alias 'bat' 'bat -p'
 	alias 'exa' 'exa --git-ignore --group-directories-first --time-style=long-iso'
 # }}}
 
-# Functions {{{
-	function fish_right_prompt -d "Update environment variables"
-		# Sync the Neovim session to the Tmux workspace, so running `nvr` always reuses 
-		# the Neovim of the current workspace. This code is placed in the prompt function 
-		# so that it remains up-to-date even after moving Tmux panes between workspaces.
-		if [ "$EDITOR" = "nvr" ]
-			set -gx NVIM_LISTEN_ADDRESS (tmux display -p '~/.cache/nvim/nvr#{session_id}#{window_id}')
-		end
-	end
-	
-	function edit -d "Edit via $EDITOR" -w nvim
-		$EDITOR $argv 2> /dev/null
-	end
+# Convenience functions {{{
+	# Easy access to Git.
+	abbr -ga 'ga' 'git add'
+	abbr -ga 'gc' 'git commit'
+	abbr -ga 'gd' 'git diff'
+	abbr -ga 'gs' 'git status'
+	abbr -ga 'gl' 'git log'
 	
 	function d -d 'File manager'
 		# Block nesting in subshells.
@@ -137,10 +149,7 @@
 		end
 	end
 	
-	function open -d 'Open in system app'
-		xdg-open $argv &
-	end
-	
+	abbr -ga 'p'  'project'
 	function project -d 'Open project'
 		cd ( fdfind -HIt d '^\.git$' ~/projects/ | sed 's|/\.git$||' \
 		   | fzf --prompt 'Project> ' -d / --with-nth=-1 --preview-window right:65% \
