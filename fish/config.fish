@@ -3,14 +3,15 @@
 
 # Environment variables {{{
 	# System settings.
-	set -x LC_ALL 'C'
+	set -x LANG 'en_US'
+	set -x LC_ALL 'en_DK.UTF-8'
 	set -x NNN_TRASH 1
 	set -x NNN_USE_EDITOR 1
 	set -x POETRY_VIRTUALENVS_PATH ~/.virtualenvs
 	set -x DOTNET_CLI_TELEMETRY_OPTOUT 1
 	
 	# Theme settings.
-	set -x pure_symbol_prompt  ">"
+	set -x pure_symbol_prompt  "❯"
 	set -x BAT_THEME 'ansi-light'
 	set -x FZF_DEFAULT_OPTS '--color=bg+:-1,bg:-1,spinner:#2aa198,hl:#268bd2,fg:#657b83,header:#268bd2,info:#b58900,border:#d7d7af,pointer:#2aa198,marker:#2aa198,fg+:#073642,prompt:#b58900,hl+:#268bd2 --layout=reverse'
 	set -x NNN_CONTEXT_COLORS 5555
@@ -228,17 +229,17 @@
 	
 	function man -d "Show long manual" -w man
 		if [ -e "$NVIM_LISTEN_ADDRESS" ]
-			e +"Man $argv"
+			edit +"Man $argv"
 		else
-			e +"Man $argv" +only
+			edit +"Man $argv" +only
 		end
 	end
 	
 	function tldr -d "Show short manual" -w sudo
 		if [ -e "$NVIM_LISTEN_ADDRESS" ]
-			e +"Tldr $argv"
+			edit +"Tldr $argv"
 		else
-			e +"Tldr $argv" +only
+			edit +"Tldr $argv" +only
 		end
 	end
 	
