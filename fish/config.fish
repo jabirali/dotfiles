@@ -10,7 +10,7 @@
 	set -x DOTNET_CLI_TELEMETRY_OPTOUT 1
 	
 	# Theme settings.
-	set -g pure_symbol_prompt  ">"
+	set -x pure_symbol_prompt  ">"
 	set -x BAT_THEME 'ansi-light'
 	set -x FZF_DEFAULT_OPTS '--color=bg+:-1,bg:-1,spinner:#2aa198,hl:#268bd2,fg:#657b83,header:#268bd2,info:#b58900,border:#d7d7af,pointer:#2aa198,marker:#2aa198,fg+:#073642,prompt:#b58900,hl+:#268bd2 --layout=reverse'
 	set -x NNN_CONTEXT_COLORS 5555
@@ -218,10 +218,11 @@
 			end
 		else if [ -d ~/.virtualenvs/$argv[1] ]
 			echo "Activating virtual environment."
-			source ~/.virtualenvs/$argv/bin/activate.fish
+			source ~/.virtualenvs/$argv[1]/bin/activate.fish
 		else
-			echo "The specified virtual environment does not exist."
-			echo "Create with `python -m venv ~/.virtualenvs/<name>`."
+			echo "Creating virtual environment!"
+			python3 -m venv ~/.virtualenvs/$argv[1]
+			source ~/.virtualenvs/$argv[1]/bin/activate.fish
 		end
 	end
 	
