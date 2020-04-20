@@ -103,7 +103,7 @@
 		# the Neovim of the current workspace. This code is placed in the prompt function 
 		# so that it remains up-to-date even after moving Tmux panes between workspaces.
 		if [ "$EDITOR" = "nvr" ]
-			set -gx NVIM_LISTEN_ADDRESS ~/.cache/nvim/nvr(tmux display -p '#{session_id}#{window_id}')
+			set -gx NVIM_LISTEN_ADDRESS (tmux display -p '~/.cache/nvim/nvr#{session_id}#{window_id}')
 		end
 	end
 	
