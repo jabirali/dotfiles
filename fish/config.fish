@@ -84,6 +84,7 @@
 	# Tmux window, so running `nvr` always reuses a currently visible Neovim instance.
 	# Placing this in the prompt keeps it up-to-date after moving panes between windows.
 	if [ "$EDITOR" = "nvr" ]
+		mkdir -p ~/.cache/nvim
 		function fish_right_prompt -d "Sync `tmux` windows and `nvim` instances."
 			set -gx NVIM_LISTEN_ADDRESS (tmux display -p '#{HOME}/.cache/nvim/nvr#{session_id}#{window_id}')
 		end
