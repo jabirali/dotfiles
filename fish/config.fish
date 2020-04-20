@@ -133,6 +133,11 @@
 		abbr -ga cat 'bat'
 	end
 	
+	# Automatic file monitoring.
+	if type -q entr
+		abbr -ga pytest 'fd \'.py$\' | entr pytest'
+	end
+	
 	# Use aliases to provide sensible default arguments.
 	alias 'bat' 'bat -p'
 	alias 'exa' 'exa --git-ignore --group-directories-first --time-style=long-iso'
