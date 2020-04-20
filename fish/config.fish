@@ -2,11 +2,32 @@
 # vim: foldmethod=marker
 
 # Environment variables {{{
-	# Most of these are set in the `fish_variables` file; however,
-	# the ones most commonly changed manually are collected here.
+	# System settings.
+	set -x LC_ALL 'C'
+	set -x NNN_TRASH 1
+	set -x NNN_USE_EDITOR 1
+	set -x POETRY_VIRTUALENVS_PATH ~/.virtualenvs
+	set -x DOTNET_CLI_TELEMETRY_OPTOUT 1
+	
+	# Theme settings.
+	set -g pure_symbol_prompt  ">"
+	set -x BAT_THEME 'ansi-light'
 	set -x FZF_DEFAULT_OPTS '--color=bg+:-1,bg:-1,spinner:#2aa198,hl:#268bd2,fg:#657b83,header:#268bd2,info:#b58900,border:#d7d7af,pointer:#2aa198,marker:#2aa198,fg+:#073642,prompt:#b58900,hl+:#268bd2 --layout=reverse'
-	set -x PATH ~/.local/bin/ ~/.poetry/bin /snap/bin $PATH
-	set -g pure_symbol_prompt  "❯"
+	set -x NNN_CONTEXT_COLORS 5555
+	
+	# ANSI colors.
+	set fish_color_autosuggestion normal
+	set fish_color_command magenta
+	set fish_color_comment brred
+	set fish_color_end brmagenta
+	set fish_color_error brred
+	set fish_color_escape bryellow --bold
+	set fish_color_normal normal
+	set fish_color_operator bryellow
+	set fish_color_param black
+	set fish_color_quote yellow
+	set fish_color_redirection green
+	set fish_color_user brgreen
 # }}}
 
 # Bootstrap procedure {{{
@@ -81,14 +102,14 @@
 	end
 	
 	# Better replacement for `find`.
+	if type -q fd
+		set -x FZF_DEFAULT_COMMAND 'fd --type f'
+		abbr -ga 'find' 'fd'
+	end
+
 	if type -q fdfind
 		set -x FZF_DEFAULT_COMMAND 'fdfind --type f'
 		alias 'fd' 'fdfind'
-		abbr -ga 'find' 'fd'
-	end
-	
-	if type -q fd
-		set -x FZF_DEFAULT_COMMAND 'fd --type f'
 		abbr -ga 'find' 'fd'
 	end
 	
