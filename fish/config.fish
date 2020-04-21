@@ -70,10 +70,49 @@
 	end
 	
 	# Simplify the use of $EDITOR.
-	abbr -ga e edit
-	function edit -d "Edit via $EDITOR" -w $EDITOR
-		$EDITOR $argv 2> /dev/null
+	if [ "$EDITOR" = "nvr" ]
+		# When the $EDITOR is set to `nvr`, we can define different functions 
+		# for accessing a file via `:edit`, `:split`, `:vsplit`, and `:tabedit`.
+		function edit -w nvr
+			nvr $argv 2> /dev/null
+		end
+		
+		function split -w nvr
+			nvr -cc split $argv 2> /dev/null
+		end
+		
+		function vsplit -w nvr
+			nvr -cc split $argv 2> /dev/null
+		end
+		
+		function tabedit -w nvr
+			nvr -cc split $argv 2> /dev/null
+		end
+	else
+		# When the $EDITOR is not `nvr`, the best we can do is to is to open the
+		# specified files in a new instance as separate splits, vsplits, or tabs.
+		function edit -w $EDITOR
+			$EDITOR $argv
+		end
+		
+		function split -w $EDITOR
+			$EDITOR -o $argv
+		end
+		
+		function vsplit -w $EDITOR
+			$EDITOR -O $argv
+		end
+		
+		function tabedit -w $EDITOR
+			$EDITOR -p $argv
+		end
 	end
+	
+	# Replicate the Vim short-hand commands.
+	abbr -ga e  edit
+	abbr -ga sp split
+	abbr -ga vs vsplit
+	abbr -ga tabe tabedit
 	
 	# Force the use of $EDITOR.
 	abbr -ga vi   edit
