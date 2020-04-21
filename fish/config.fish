@@ -84,10 +84,21 @@
 	# Integrate Tmux and Neovim. This is done by syncing the Neovim instance to the
 	# Tmux window, so running `nvr` always reuses a currently visible Neovim instance.
 	# Placing this in the prompt keeps it up-to-date after moving panes between windows.
-	if [ "$EDITOR" = "nvr" ]
+	if [ -n "$TMUX" ]
+		# Ensure that the cache directory exists.
 		mkdir -p ~/.cache/nvim
-		function fish_right_prompt -d "Sync `tmux` windows and `nvim` instances."
+		
+		# Make a backup of the existing prompt.
+		functions -c fish_prompt _nvr_old_prompt
+		
+		# Update the prompt to check `tmux` window. This is done to ensure that 
+		# the window information remains up to date even if the pane is relocated.
+		function fish_prompt
+			# Sync the `nvim` instance to the `tmux` session and window.
 			set -gx NVIM_LISTEN_ADDRESS (tmux display -p '#{HOME}/.cache/nvim/nvr#{session_id}#{window_id}')
+			
+			# Restore the old prompt.
+			_nvr_old_prompt
 		end
 	end
 # }}}
@@ -193,7 +204,6 @@
 	function weather -d 'Check the weather forecast'
 		curl wttr.in 2>/dev/null | grep -v @
 	end
-	
 	function checkip -d 'Check the public IP address'
 		curl ifconfig.co
 	end
