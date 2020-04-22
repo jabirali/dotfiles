@@ -18,7 +18,7 @@
 	
 	# ANSI colors.
 	set fish_color_autosuggestion normal
-	set fish_color_command magenta
+	set fish_color_command blue
 	set fish_color_comment brred
 	set fish_color_end brmagenta
 	set fish_color_error brred

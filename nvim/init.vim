@@ -7,7 +7,7 @@ set completeopt=longest,menuone,noinsert
 set concealcursor=nc
 set conceallevel=2
 set confirm
-set fillchars=fold:\ ,stl:\ ,stlnc:\ ,vert:\ ,eob:\ ,
+set fillchars=fold:\ ,stl:-,stlnc:-,eob:\ ,
 set list
 set listchars=tab:╎\ ,
 set foldlevel=0
