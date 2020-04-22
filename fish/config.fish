@@ -108,39 +108,14 @@
 	abbr -ga 'gs' 'git status'
 	abbr -ga 'gl' 'git log'
 	
-	function d -d 'File manager'
-		# Block nesting in subshells.
-		if test -n NNNLVL
-			if [ (expr $NNNLVL + 0) -ge 1 ]
-				echo "nnn is already running"
-				return
-			end
-		end
-		
-		# Output file for `cd` info.
-		if [ -n "$XDG_CONFIG_HOME" ]
-			set -x NNN_TMPFILE "$XDG_CONFIG_HOME/nnn/.lastd"
-		else
-			set -x NNN_TMPFILE "$HOME/.config/nnn/.lastd"
-		end
-		
-		# Launch `nnn`.
-		nnn $argv
-		
-		# Implement `cd` on quit.
-		if [ -e $NNN_TMPFILE ]
-			source $NNN_TMPFILE
-			rm $NNN_TMPFILE
-		end
-	end
-	
-	abbr -ga 'p'  'project'
+	abbr -ga 'p' 'project'
 	function project -d 'Open project'
 		cd ( fdfind -HIt d '^\.git$' ~/projects/ | sed 's|/\.git$||' \
 		   | fzf --prompt 'Project> ' -d / --with-nth=-1 --preview-window right:65% \
 		         --preview='bat -p --color=always {..}/README{.md,.org,.txt,} 2>/dev/null' )
 	end
 	
+	abbr -ga 'z' 'zotero'
 	function zotero -d 'Open library file'
 		for f in (fd -t f -e pdf . ~/snap/zotero-snap/ | fzf -m -d '/' --with-nth=-1 --prompt='Zotero> ')
 			zathura $f &
@@ -172,6 +147,7 @@
 		end
 	end
 	
+	abbr -ga 'v' 'venv'
 	function venv -d 'Python virtual environments'
 		if not count $argv > /dev/null
 			echo "Virtual environments:"
