@@ -119,9 +119,34 @@
 	
 	abbr -ga 'p' 'project'
 	function project -d 'Open project'
-		cd ( fdfind -HIt d '^\.git$' ~/projects/ | sed 's|/\.git$||' \
-		   | fzf --prompt 'Project> ' -d / --with-nth=-1 --preview-window right:65% \
-		         --preview='bat -p --color=always {..}/README{.md,.org,.txt,} 2>/dev/null' )
+		# Discover and select projects.
+		set -l dir \
+			( fd -HIt d '^\.git$' ~/projects/ \
+			| sed 's|/\.git$||'               \
+			| fzf --prompt 'Project> '        \
+			      --query="$argv"             \
+			      --delimiter=/ --with-nth=-1 \
+			      --preview-window right:65%  \
+			      --preview='bat -p --color=always {..}/README{.md,.org,.txt,} 2>/dev/null' )
+		
+		# Handle the choice made above.
+		if [ -n "$dir" ]
+			# Switch to the selected project.
+			cd "$dir"
+			set -l name (basename (pwd))
+			set -l venv ~/.virtualenvs/$name
+			echo "Switching to \"$name\"."
+			
+			# Load associated virtualenv.
+			if [ -e "$venv" ]
+				echo "Activating virtualenv."
+				source $venv/bin/activate.fish
+			else if type -q deactivate
+				echo "Deactivating virtualenv."
+				deactivate
+			end
+		end
+		
 	end
 	
 	abbr -ga 'z' 'zotero'
