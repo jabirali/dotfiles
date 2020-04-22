@@ -164,22 +164,6 @@
 		end
 	end
 	
-	function man -d "Show long manual" -w man
-		if [ -e "$NVIM_LISTEN_ADDRESS" ]
-			edit +"Man $argv"
-		else
-			edit +"Man $argv" +only
-		end
-	end
-	
-	function tldr -d "Show short manual" -w sudo
-		if [ -e "$NVIM_LISTEN_ADDRESS" ]
-			edit +"Tldr $argv"
-		else
-			edit +"Tldr $argv" +only
-		end
-	end
-	
 	function wget! -d 'Scrape all linked documents from a website'
 		wget -r -l 1 -e robots=off
 	end
