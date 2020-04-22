@@ -63,18 +63,23 @@
 	# Better replacement for `find`.
 	if type -q fd
 		set -x FZF_DEFAULT_COMMAND 'fd --type f'
-		abbr -ga 'find' 'fd'
-	end
-
-	if type -q fdfind
+		abbr -ga 'find'   'fd'
+		abbr -ga 'fdfind' 'fd'
+	else if type -q fdfind
 		set -x FZF_DEFAULT_COMMAND 'fdfind --type f'
 		alias 'fd' 'fdfind'
-		abbr -ga 'find' 'fd'
+		abbr -ga 'find'   'fd'
+		abbr -ga 'fdfind' 'fd'
+	else
+		abbr -ga 'fd'     'find'
+		abbr -ga 'fdfind' 'find'
 	end
 	
 	# Better replacement for `grep`.
 	if type -q rg
 		abbr -ga 'grep' 'rg'
+	else
+		abbr -ga 'rg'   'grep'
 	end
 	
 	# Better replacement for `ls`.
@@ -83,11 +88,15 @@
 		abbr -ga 'll'   'exa -l'
 		abbr -ga 'la'   'exa -a'
 		abbr -ga 'tree' 'exa -T'
+	else
+		abbr -ga 'exa'  'ls'
 	end
 	
 	# Better replacement for `cat`.
 	if type -q bat
-		abbr -ga cat 'bat'
+		abbr -ga 'cat' 'bat'
+	else
+		abbr -ga 'bat' 'cat'
 	end
 	
 	# Automatic file monitoring.
