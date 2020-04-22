@@ -121,7 +121,7 @@
 	function project -d 'Open project'
 		# Discover and select projects.
 		set -l dir \
-			( fd -HIt d '^\.git$' ~/projects/ \
+			( fd -HIt d '^\.git$' ~/.config/ ~/notes/ ~/projects/ \
 			| sed 's|/\.git$||'               \
 			| fzf --prompt 'Project> '        \
 			      --query="$argv"             \
