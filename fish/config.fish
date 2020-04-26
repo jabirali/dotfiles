@@ -94,6 +94,10 @@
 	
 	# Better replacement for `cat`.
 	if type -q bat
+		alias 'bat' 'bat -p'
+		abbr -ga 'cat' 'bat'
+	else if type -q batcat
+		alias 'bat' 'batcat -p'
 		abbr -ga 'cat' 'bat'
 	else
 		abbr -ga 'bat' 'cat'
@@ -105,7 +109,6 @@
 	end
 	
 	# Use aliases to provide sensible default arguments.
-	alias 'bat' 'bat -p'
 	alias 'exa' 'exa --git-ignore --group-directories-first --time-style=long-iso'
 # }}}
 
@@ -119,6 +122,15 @@
 	
 	abbr -ga 'p' 'project'
 	function project -d 'Open project'
+		# Check what previewer to use.
+		if [ (command -v bat) ]
+			set preview "bat -p --color=always"
+		else if [ (command -v batcat) ]
+			set preview "batcat -p --color=always"
+		else
+			set preview "cat"
+		end
+		
 		# Discover and select projects.
 		set -l dir \
 			( fd -HIt d '^\.git$' ~/.config/ ~/Documents/ \
@@ -127,7 +139,7 @@
 			      --query="$argv"             \
 			      --delimiter=/ --with-nth=-1 \
 			      --preview-window right:65%  \
-			      --preview='bat -p --color=always {..}/README{.md,.org,.txt,} 2>/dev/null' )
+			      --preview="$preview {..}/README{.md,.org,.txt,} 2>/dev/null" )
 		
 		# Handle the choice made above.
 		if [ -n "$dir" ]
