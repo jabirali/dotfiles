@@ -121,7 +121,7 @@
 	function project -d 'Open project'
 		# Discover and select projects.
 		set -l dir \
-			( fd -HIt d '^\.git$' ~/.config/ ~/projects/ \
+			( fd -HIt d '^\.git$' ~/.config/ ~/Documents/ \
 			| sed 's|/\.git$||'               \
 			| fzf --prompt 'Project> '        \
 			      --query="$argv"             \
@@ -183,19 +183,19 @@
 	
 	abbr -ga 'v' 'venv'
 	function venv -d 'Python virtual environments'
-		if not count $argv > /dev/null
-			echo "Virtual environments:"
-			for i in (ls ~/.virtualenvs)
-				echo "-" $i
-			end
-		else if [ -d ~/.virtualenvs/$argv[1] ]
-			echo "Activating virtual environment."
-			source ~/.virtualenvs/$argv[1]/bin/activate.fish
-		else
-			echo "Creating virtual environment!"
-			python3 -m venv ~/.virtualenvs/$argv[1]
-			source ~/.virtualenvs/$argv[1]/bin/activate.fish
+		# Determine the venv name.
+		set -l name (basename (pwd))
+		set -l venv ~/.virtualenvs/$name
+		
+		# Create the venv if neccessary.
+		if [ ! -d "$venv" ]
+			echo "Creating virtual environment."
+			python3 -m venv "$venv"
 		end
+		
+		# Activate the venv in any case.
+		echo "Activating virtual environment."
+		source "$venv/bin/activate.fish"
 	end
 	
 	function wget! -d 'Scrape all linked documents from a website'
