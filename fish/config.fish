@@ -87,6 +87,8 @@
 		abbr -ga 'la'   'exa -a'
 		abbr -ga 'tree' 'exa -T'
 	else
+		abbr -ga 'll'   'ls -l'
+		abbr -ga 'la'   'ls -a'
 		abbr -ga 'exa'  'ls'
 	end
 	
