@@ -1,6 +1,10 @@
 # ~/.config/fish/config.fish 
 # vim: foldmethod=marker
 
+# Note that much of my `config.fish` has since been exported as separate Fish 
+# plugins on github.com/jabirali/fish-*, which can be installed via `fisher`.
+# Thus, what you find below is perhaps less interesting than those plugins.
+
 # Environment variables {{{
 	# System settings.
 	set -x LANG 'en_US'
@@ -35,18 +39,11 @@
 	set -x projector_pip  numpy
 # }}}
 
-# Bootstrap procedure {{{
-	# This section of the config file collects essential startup activities.
-	
-	# Fish package manager. Note that quite a bit of my Fish config has now
-	# been exported to Github fisher plugins on github.com/jabirali/fish-*.
+# Package manager {{{
 	if not functions -q fisher
 		curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
 		fish -c fisher
 	end
-	
-	# Fuzzy-finder integration.
-	fzf_key_bindings
 # }}}
 
 # System integration {{{
@@ -60,49 +57,6 @@
 		xdg-open $argv &
 	end
 	
-	# Better replacement for `find`.
-	if type -q fdfind
-		alias 'fd' 'fdfind'
-		abbr -ga 'find'   'fd'
-		abbr -ga 'fdfind' 'fd'
-	else if type -q fd
-		abbr -ga 'find'   'fd'
-		abbr -ga 'fdfind' 'fd'
-	else
-		abbr -ga 'fd'     'find'
-		abbr -ga 'fdfind' 'find'
-	end
-	
-	# Better replacement for `grep`.
-	if type -q rg
-		abbr -ga 'grep' 'rg'
-	else
-		abbr -ga 'rg'   'grep'
-	end
-	
-	# Better replacement for `ls`.
-	if type -q exa
-		abbr -ga 'ls'   'exa'
-		abbr -ga 'll'   'exa -l'
-		abbr -ga 'la'   'exa -a'
-		abbr -ga 'tree' 'exa -T'
-	else
-		abbr -ga 'll'   'ls -l'
-		abbr -ga 'la'   'ls -a'
-		abbr -ga 'exa'  'ls'
-	end
-	
-	# Better replacement for `cat`.
-	if type -q batcat
-		alias 'bat' 'batcat -p'
-		abbr -ga 'cat' 'bat'
-	else if type -q bat
-		alias 'bat' 'bat -p'
-		abbr -ga 'cat' 'bat'
-	else
-		abbr -ga 'bat' 'cat'
-	end
-	
 	# Automatic file monitoring.
 	if type -q entr
 		abbr -ga pytest 'fd \'.py$\' | entr pytest'
@@ -110,6 +64,9 @@
 	
 	# Use aliases to provide sensible default arguments.
 	alias 'exa' 'exa --git-ignore --group-directories-first --time-style=long-iso'
+	
+	# Fuzzy-finder integration.
+	fzf_key_bindings
 # }}}
 
 # Convenience functions {{{
