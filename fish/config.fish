@@ -29,6 +29,10 @@
 	set fish_color_quote yellow
 	set fish_color_redirection green
 	set fish_color_user brgreen
+	
+	# Plugin settings.
+	set -x projector_path ~/.config ~/Documents
+	set -x projector_pip  numpy
 # }}}
 
 # Bootstrap procedure {{{
@@ -126,48 +130,6 @@
 	abbr -ga 'aa' 'sudo apt autoremove'
 	abbr -ga 'as' 'apt search'
 	
-	# Project management.
-	abbr -ga 'p' 'project'
-	function project -d 'Open project'
-		# Check what previewer to use.
-		if [ (command -v bat) ]
-			set preview "bat -p --color=always"
-		else if [ (command -v batcat) ]
-			set preview "batcat -p --color=always"
-		else
-			set preview "cat"
-		end
-		
-		# Discover and select projects.
-		set -l dir \
-			( fd -HIt d '^\.git$' ~/.config/ ~/Documents/ \
-			| sed 's|/\.git$||'               \
-			| fzf --prompt 'Project> '        \
-			      --query="$argv"             \
-			      --delimiter=/ --with-nth=-1 \
-			      --preview-window right:65%  \
-			      --preview="$preview {..}/README{.md,.org,.txt,} 2>/dev/null" )
-		
-		# Handle the choice made above.
-		if [ -n "$dir" ]
-			# Switch to the selected project.
-			cd "$dir"
-			set -l name (basename (pwd))
-			set -l venv ~/.virtualenvs/$name
-			echo "Switching to \"$name\"."
-			
-			# Load associated virtualenv.
-			if [ -e "$venv" ]
-				echo "Activating virtualenv."
-				source $venv/bin/activate.fish
-			else if type -q deactivate
-				echo "Deactivating virtualenv."
-				deactivate
-			end
-		end
-		
-	end
-	
 	abbr -ga 'z' 'zotero'
 	function zotero -d 'Open library file'
 		for f in (fd -t f -e pdf . ~/snap/zotero-snap/ | fzf -m -d '/' --with-nth=-1 --prompt='Zotero> ')
@@ -198,34 +160,6 @@
 				| fzf --prompt "SSH> " --preview="echo -e '\e[31m# Workspaces\e[0m'; ssh {} tmux list-windows 2>/dev/null || echo 'None.'") \
 					  -tt "fish -c \"tmux attach || tmux\" || tmux attach || tmux || fish || bash"
 		end
-	end
-	
-	abbr -ga 'v' 'venv'
-	function venv -d 'Python virtual environments'
-		# Determine the venv name.
-		set -l name (basename (pwd))
-		set -l venv ~/.virtualenvs/$name
-		
-		# Setup git if necessary.
-		if [ ! -d ".git" ]
-			echo "Creating Git repository."
-			git init .
-		end
-		
-		# Setup venv if necessary.
-		if [ ! -d "$venv" ]
-			# Create the venv itself.
-			echo "Creating virtual environment."
-			python3 -m venv "$venv"
-			
-			# Bootstrap the venv.
-			echo "Setting up virtual environment."
-			pip3 install black poetry python-language-server[all]
-		end
-		
-		# Activate the venv in any case.
-		echo "Activating virtual environment."
-		source "$venv/bin/activate.fish"
 	end
 	
 	function wget! -d 'Scrape all linked documents from a website'
