@@ -38,15 +38,11 @@
 # Bootstrap procedure {{{
 	# This section of the config file collects essential startup activities.
 	
-	# Fish package manager.
+	# Fish package manager. Note that quite a bit of my Fish config has now
+	# been exported to Github fisher plugins on github.com/jabirali/fish-*.
 	if not functions -q fisher
 		curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
 		fish -c fisher
-	end
-	
-	# Virtualenv integration.
-	if [ -e "$VIRTUAL_ENV" ]
-		source $VIRTUAL_ENV/bin/activate.fish
 	end
 	
 	# Fuzzy-finder integration.
