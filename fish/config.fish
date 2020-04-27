@@ -213,7 +213,7 @@
 			
 			# Bootstrap the venv.
 			echo "Setting up virtual environment."
-			pip3 install black poetry
+			pip3 install black poetry python-language-server[all]
 		end
 		
 		# Activate the venv in any case.
