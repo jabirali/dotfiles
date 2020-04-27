@@ -120,6 +120,13 @@
 	abbr -ga 'gs' 'git status'
 	abbr -ga 'gl' 'git log'
 	
+	# Easy access to APT.
+	abbr -ga 'ai' 'sudo apt install'
+	abbr -ga 'ar' 'sudo apt purge'
+	abbr -ga 'aa' 'sudo apt autoremove'
+	abbr -ga 'as' 'apt search'
+	
+	# Project management.
 	abbr -ga 'p' 'project'
 	function project -d 'Open project'
 		# Check what previewer to use.
