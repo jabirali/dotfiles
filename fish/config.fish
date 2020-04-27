@@ -1,9 +1,15 @@
 # ~/.config/fish/config.fish 
 # vim: foldmethod=marker
 
-# Note that much of my `config.fish` has since been exported as separate Fish 
-# plugins on github.com/jabirali/fish-*, which can be installed via `fisher`.
-# Thus, what you find below is perhaps less interesting than those plugins.
+# The most interesting parts of my `config.fish` has been exported as separate 
+# Fish plugins on github.com/jabirali/fish-*, which can be installed via `fisher`.
+# The specific list of Fish plugins that I use are registered in my `fishfile`.
+
+# Fish package manager.
+if not functions -q fisher
+	curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
+	fish -c fisher
+end
 
 # Environment variables {{{
 	# System settings.
@@ -39,18 +45,7 @@
 	set -x projector_pip  numpy
 # }}}
 
-# Package manager {{{
-	if not functions -q fisher
-		curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
-		fish -c fisher
-	end
-# }}}
-
-# System integration {{{
-	# The code below automatically replaces classic and portable UNIX tools
-	# with modern alternatives that tend to be faster and prettier. However,
-	# it does so in a portable way, i.e. only when these are available.
-	
+# Aliases and abbreviations {{{
 	# Easily open files with its default viewer.
 	abbr -ga 'o' 'open'
 	function open -d 'Open in system app'
@@ -64,12 +59,7 @@
 	
 	# Use aliases to provide sensible default arguments.
 	alias 'exa' 'exa --git-ignore --group-directories-first --time-style=long-iso'
-	
-	# Fuzzy-finder integration.
-	fzf_key_bindings
-# }}}
 
-# Convenience functions {{{
 	# Easy access to Git.
 	abbr -ga 'ga' 'git add'
 	abbr -ga 'gc' 'git commit'
@@ -83,6 +73,11 @@
 	abbr -ga 'aa' 'sudo apt autoremove'
 	abbr -ga 'as' 'apt search'
 	
+	# Fuzzy-finder integration.
+	fzf_key_bindings
+# }}}
+
+# Convenience functions {{{
 	abbr -ga 'z' 'zotero'
 	function zotero -d 'Open library file'
 		for f in (fd -t f -e pdf . ~/snap/zotero-snap/ | fzf -m -d '/' --with-nth=-1 --prompt='Zotero> ')
