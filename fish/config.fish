@@ -61,13 +61,11 @@
 	end
 	
 	# Better replacement for `find`.
-	if type -q fd
-		set -x FZF_DEFAULT_COMMAND 'fd --type f'
+	if type -q fdfind
+		alias 'fd' 'fdfind'
 		abbr -ga 'find'   'fd'
 		abbr -ga 'fdfind' 'fd'
-	else if type -q fdfind
-		set -x FZF_DEFAULT_COMMAND 'fdfind --type f'
-		alias 'fd' 'fdfind'
+	else if type -q fd
 		abbr -ga 'find'   'fd'
 		abbr -ga 'fdfind' 'fd'
 	else
@@ -93,11 +91,11 @@
 	end
 	
 	# Better replacement for `cat`.
-	if type -q bat
-		alias 'bat' 'bat -p'
-		abbr -ga 'cat' 'bat'
-	else if type -q batcat
+	if type -q batcat
 		alias 'bat' 'batcat -p'
+		abbr -ga 'cat' 'bat'
+	else if type -q bat
+		alias 'bat' 'bat -p'
 		abbr -ga 'cat' 'bat'
 	else
 		abbr -ga 'bat' 'cat'
