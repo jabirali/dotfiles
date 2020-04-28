@@ -42,7 +42,7 @@ end
 	
 	# Plugin settings.
 	set -x projector_dir ~/Documents
-	set -x projector_pip  numpy
+	set -x projector_pip poetry black
 # }}}
 
 # Aliases and abbreviations {{{
