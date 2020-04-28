@@ -41,7 +41,7 @@ end
 	set fish_color_user brgreen
 	
 	# Plugin settings.
-	set -x projector_path ~/.config ~/Documents
+	set -x projector_dir ~/Documents
 	set -x projector_pip  numpy
 # }}}
 
