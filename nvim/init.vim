@@ -4,8 +4,8 @@
 set background=light
 set clipboard+=unnamedplus
 set completeopt=longest,menuone,noinsert
-set concealcursor=nc
-set conceallevel=2
+" set concealcursor=nc
+" set conceallevel=2
 set confirm
 set fillchars=fold:\ ,stl:-,stlnc:-,eob:\ ,
 set list

@@ -68,10 +68,16 @@ end
 	abbr -ga 'gl' 'git log'
 	
 	# Easy access to APT.
-	abbr -ga 'ai' 'sudo apt install'
-	abbr -ga 'ar' 'sudo apt purge'
-	abbr -ga 'aa' 'sudo apt autoremove'
 	abbr -ga 'as' 'apt search'
+	abbr -ga 'ai' 'sudo apt install'
+	abbr -ga 'ar' 'sudo apt autoremove'
+	abbr -ga 'au' 'sudo apt upgrade'
+
+	# Easy access to Snap.
+	abbr -ga 'ss' 'snap search'
+	abbr -ga 'si' 'sudo snap install'
+	abbr -ga 'sr' 'sudo snap remove'
+	abbr -ga 'su' 'sudo snap refresh'
 	
 	# Fuzzy-finder integration.
 	fzf_key_bindings
@@ -114,8 +120,18 @@ end
 		wget -r -l 1 -e robots=off
 	end
 	
-	function nup -d 'Update Neovim plugins'
+	abbr -ga u update
+	function update -d 'Update all command-line tools'
+		echo -e "\n\e[1m:: Neovim plugins\e[0m"
 		nvim +PlugStatus +only +PlugInstall +PlugUpdate +PlugUpgrade +UpdateRemotePlugins +qa
+		
+		echo -e "\n\e[1m:: Fish plugins\e[0m"
+		fisher
+		
+		echo -e "\n\e[1m:: Tmux plugins\e[0m"
+		~/.tmux/plugins/tpm/bin/install_plugins
+		echo
+		~/.tmux/plugins/tpm/bin/update_plugins all
 	end
 	
 	function hours -d 'SINTEF work hours'
