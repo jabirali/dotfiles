@@ -21,7 +21,6 @@ end
 	set -x DOTNET_CLI_TELEMETRY_OPTOUT 1
 	
 	# Theme settings.
-	set -x pure_symbol_prompt  "❯"
 	set -x BAT_THEME 'ansi-light'
 	set -x FZF_DEFAULT_OPTS '--color=bg+:-1,bg:-1,spinner:#2aa198,hl:#268bd2,fg:#657b83,header:#268bd2,info:#b58900,border:#d7d7af,pointer:#2aa198,marker:#2aa198,fg+:#073642,prompt:#b58900,hl+:#268bd2 --layout=reverse'
 	set -x NNN_CONTEXT_COLORS 5555
@@ -130,19 +129,5 @@ end
 		~/.tmux/plugins/tpm/bin/install_plugins
 		echo
 		~/.tmux/plugins/tpm/bin/update_plugins all
-	end
-	
-	function hours -d 'SINTEF work hours'
-		spy ts summary|sed 's/^Download.*/--  --/;s/\s\s\s*/|/g;s/---*/---/g;s/\(.*\)/|\1|/g;s/||/|---|---|/g'
-	end
-	
-	function mpz -d 'MasterPassword via FZF'
-		read -slP 'MasterPassword> ' pw
-		while [ 1 ]
-			echo $pw | mpw (/bin/cat ~/.mpw.d/*.mpsites|sed -ne 's/^[^#]\S*\s*\S*\s*\S*\s*\(.*\)/\1/p' | sort | uniq | fzf --prompt 'Website> ' --bind 'alt-enter:print-query') 2>/dev/null | wl-copy
-			clear
-			echo 'Press Ctrl-C again to quit.'
-			sleep 1
-		end
 	end
 # }}}
