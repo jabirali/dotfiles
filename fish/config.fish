@@ -94,9 +94,6 @@ end
 	function weather -d 'Check the weather forecast'
 		curl wttr.in 2>/dev/null | grep -v @
 	end
-	function checkip -d 'Check the public IP address'
-		curl ifconfig.co
-	end
 	
 	function vpn -d 'Connect to VPN'
 		expressvpn disconnect
@@ -129,6 +126,7 @@ end
 		fisher
 		
 		echo -e "\n\e[1m:: Tmux plugins\e[0m"
+		echo -e 'Installing plugins!\n'
 		~/.tmux/plugins/tpm/bin/install_plugins
 		echo
 		~/.tmux/plugins/tpm/bin/update_plugins all
