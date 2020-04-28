@@ -42,6 +42,7 @@ end
 	# Plugin settings.
 	set -x projector_dir ~/Documents
 	set -x projector_pip poetry black
+	set -x zotfile_root ~/snap/zotero-snap
 # }}}
 
 # Aliases and abbreviations {{{
@@ -58,7 +59,7 @@ end
 	
 	# Use aliases to provide sensible default arguments.
 	alias 'exa' 'exa --git-ignore --group-directories-first --time-style=long-iso'
-
+	
 	# Easy access to Git.
 	abbr -ga 'ga' 'git add'
 	abbr -ga 'gc' 'git commit'
@@ -71,29 +72,21 @@ end
 	abbr -ga 'ai' 'sudo apt install'
 	abbr -ga 'ar' 'sudo apt autoremove'
 	abbr -ga 'au' 'sudo apt upgrade'
-
+	
 	# Easy access to Snap.
 	abbr -ga 'ss' 'snap search'
 	abbr -ga 'si' 'sudo snap install'
 	abbr -ga 'sr' 'sudo snap remove'
 	abbr -ga 'su' 'sudo snap refresh'
 	
+	# Misc abbreviations.
+	abbr -ga 'z' 'zotfile'
+	
 	# Fuzzy-finder integration.
 	fzf_key_bindings
 # }}}
 
 # Convenience functions {{{
-	abbr -ga 'z' 'zotero'
-	function zotero -d 'Open library file'
-		for f in (fd -t f -e pdf . ~/snap/zotero-snap/ | fzf -m -d '/' --with-nth=-1 --prompt='Zotero> ')
-			zathura $f &
-		end
-	end
-	
-	function weather -d 'Check the weather forecast'
-		curl wttr.in 2>/dev/null | grep -v @
-	end
-	
 	function vpn -d 'Connect to VPN'
 		expressvpn disconnect
 		expressvpn connect \
