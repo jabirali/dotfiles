@@ -57,7 +57,8 @@ end
 	end
 	
 	# Use aliases to provide sensible default arguments.
-	alias 'exa' 'exa --git-ignore --group-directories-first --time-style=long-iso'
+	alias 'exa'  'exa --git-ignore --group-directories-first --time-style=long-iso'
+	alias 'wget' 'wget -e robots=off'
 	
 	# Easy access to Git.
 	abbr -ga 'ga' 'git add'
@@ -114,10 +115,6 @@ end
 				| fzf --prompt "SSH> " --preview="echo -e '\e[31m# Workspaces\e[0m'; ssh {} tmux list-windows 2>/dev/null || echo 'None.'") \
 					  -tt "fish -c \"tmux attach || tmux\" || tmux attach || tmux || fish || bash"
 		end
-	end
-	
-	function wget! -d 'Scrape all linked documents from a website'
-		wget -r -l 1 -e robots=off
 	end
 	
 	abbr -ga u update
