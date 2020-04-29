@@ -90,28 +90,12 @@ function! SimpleFoldText()
 	return getline(v:foldstart)
 endfunction
 
-" Search for a project.
-command! -bang Project call fzf#run(fzf#wrap(
-			\ 'project',
-			\ { 'source':  'fdfind -HIt d "^\.git$" ~/projects/ | sed "s|/\.git$||"',
-			\   'sink':    'cd',
-			\   'options': '--prompt "Project> " -d / --with-nth=-1 --preview="bat --style=plain --color=always {..}/README{.md,.org,.txt,} 2>/dev/null"' },
-			\ <bang>0))
-
 " Search for a note file.
 command! -bang Notes call fzf#run(fzf#wrap(
 			\ 'project',
 			\ { 'source':  'fdfind -t f . ~/notes/',
 			\   'sink':    'edit',
 			\   'options': '--prompt "Notes> " -d / --with-nth=-1 --preview="sed -ne \"s|^title:\s*.\(.*\).\s*$|[31m\1[0m\n|p\" -e \"/^#/p\" {..}"' },
-			\ <bang>0))
-
-" Search Zotero library.
-command! -bang Zotero call fzf#run(fzf#wrap(
-			\ 'zotero',
-			\ { 'source':  'fdfind -t f -e pdf . ~/snap/zotero-snap/',
-			\   'sink':    'silent !zathura --fork',
-			\   'options': '--prompt "Zotero> " -m -d / --with-nth=-1' },
 			\ <bang>0))
 
 " Jump to the Git project root.
