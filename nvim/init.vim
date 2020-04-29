@@ -4,8 +4,7 @@
 set background=light
 set clipboard+=unnamedplus
 set completeopt=longest,menuone,noinsert
-" set concealcursor=nc
-" set conceallevel=2
+set autochdir
 set confirm
 set fillchars=fold:\ ,stl:-,stlnc:-,eob:\ ,
 set list
@@ -65,14 +64,10 @@ let g:mucomplete#chains = { 'default': ['user', 'omni', 'path', 'dict', 'spel'] 
 let g:mucomplete#tab_when_no_results = 0
 let g:nnn#replace_netrw = 1
 let g:nnn#set_default_mappings = 0
-let g:org_aggressive_conceal = 1
 let g:pandoc#folding#fdc = 0
 let g:pandoc#folding#fold_fenced_codeblocks = 1
-let g:pandoc#syntax#conceal#blacklist = ['titleblock', 'block', 'subscript', 'superscript', 'strikeout', 'atx', 'codeblock_start', 'codeblock_delim', 'footnote', 'definition', 'list', 'newline', 'dashes', 'ellipses', 'inlinecode']
 let g:pandoc#syntax#style#underline_special = 0
-let g:pandoc#syntax#conceal#urls = 1
 let g:scratch_insert_autohide = 0
-let g:tex_conceal = 'abdgm'
 let g:tmux_navigator_no_mappings = 1
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
@@ -224,7 +219,6 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'psf/black', {'tag': '19.10b0'}
 	" LaTeX
 	Plug 'lervag/vimtex'
-	Plug 'KeitaNakamura/tex-conceal.vim'
 	" Markup
 	Plug 'vim-pandoc/vim-pandoc-syntax'
 	Plug 'vim-pandoc/vim-pandoc'
