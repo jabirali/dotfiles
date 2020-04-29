@@ -2,7 +2,8 @@
 
 function vpn -d 'Connect to VPN'
 	# Disconnect from current server.
-	expressvpn disconnect
+	echo Disconnecting...
+	expressvpn disconnect &>/dev/null
 	
 	# Select an ExpressVPN server via FZF.
 	set line (expressvpn list all 1>| sed -e '1,/^---/ d' | fzf --prompt='ExpressVPN> ')
