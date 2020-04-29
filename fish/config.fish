@@ -91,13 +91,21 @@ end
 
 # Convenience functions {{{
 	function vpn -d 'Connect to VPN'
+		# Disconnect from current server.
 		expressvpn disconnect
-		expressvpn connect \
-			( expressvpn list all \
-			| tail -n +5 \
-			| sed -e 's/[a-z0-9]*\s*\([A-Z].*\)(.*/\1/' -e '/^[a-z]/d' \
-			| uniq \
-			| fzf --prompt='ExpressVPN> ' )
+		
+		# Select an ExpressVPN server via FZF.
+		set line (expressvpn list all 1>| sed -e '1,/^---/ d' | fzf --prompt='ExpressVPN> ')
+		
+		# If a choice was made, extract name.
+		if [ -n "$line" ]
+			set name (echo $line | sed -e 's/\(\S*\).*/\1/')
+		else
+			return 1
+		end
+		
+		# Connect to the chosen server.
+		expressvpn connect $name
 	end
 	
 	function ssh-fzf -d 'Connect via SSH'
