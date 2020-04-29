@@ -41,7 +41,6 @@ end
 	
 	# Plugin settings.
 	set -x projector_dir ~/Documents
-	set -x projector_pip poetry black
 	set -x zotfile_root ~/snap/zotero-snap
 # }}}
 
@@ -78,6 +77,10 @@ end
 	abbr -ga 'si' 'sudo snap install'
 	abbr -ga 'sr' 'sudo snap remove'
 	abbr -ga 'su' 'sudo snap refresh'
+	
+	# Easy virtualenv creation.
+	abbr -ga 'v' 'mkvenv'
+	alias 'mkvenv' 'python3 -m venv ~/.virtualenvs/(basename (pwd))'
 	
 	# Misc abbreviations.
 	abbr -ga 'z' 'zotfile'
