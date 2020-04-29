@@ -1,9 +1,6 @@
 # ~/.config/alacritty/alacritty.yml
 
 window:
-  padding:
-    x: 0
-    y: 0
   dynamic_padding: true
   decorations: none
   startup_mode: Maximized
@@ -13,10 +10,6 @@ scrolling:
   history: 0
 
 font:
-  glyph_offset:
-    y: 1
-  offset:
-    y: 1
   normal:
     family: Iosevka Fixed SS09
     style: Regular
