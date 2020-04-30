@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Share ignore patterns with `fd`, `rg`, `exa`.
+ln -sf ~/.config/git/ignore ~/.gitignore
+
+# These do not follow XDG rules.
+ln -sf ~/.config/tmux.conf ~/.tmux.conf
+ln -sf ~/.config/XCompose ~/.XCompose
+
