@@ -39,8 +39,9 @@ set fish_color_redirection green
 set fish_color_user brgreen
 
 # Plugin settings.
-set -x projector_dir ~/Documents
-set -x zotfile_root ~/snap/zotero-snap
+set projector_dir ~/Documents
+set zotfile_root ~/snap/zotero-snap
+set expressvpn_relink on
 
 # Aliases for common actions.
 alias 'exa'    'exa --git-ignore --group-directories-first --time-style=long-iso'
