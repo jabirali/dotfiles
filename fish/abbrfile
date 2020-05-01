@@ -6,6 +6,7 @@ gc: git commit
 gd: git diff
 gf: git fetch
 gh: git help
+gm: git merge
 gp: git push
 gs: git status
 gr: git reset

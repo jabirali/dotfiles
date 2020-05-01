@@ -50,15 +50,5 @@ alias 'open'   'xdg-open'
 alias 'pytest' 'fd \'.py$\' | entr pytest'
 alias 'wget'   'wget -e robots=off'
 
-# Abbreviate common commands.
-for line in (sed '/^#/d' ~/.config/fish/abbrfile)
-	set -l dict (string split : $line)
-	if [ (count $dict) -ge 2 ]
-		set -l key (string trim $dict[1])
-		set -l val (string trim (string join : $dict[2..-1]))
-		abbr -ga $key $val
-	end
-end
-
 # Fuzzy-finder integration.
 fzf_key_bindings
