@@ -1,19 +1,30 @@
-o:  open
-u:  update
-v:  vpn
-z:  zotfile
-
+# Version control.
 g:  git
-gc: git clone
+ga: git add
+gb: git branch
+gc: git commit
+gd: git diff
 gf: git fetch
 gh: git help
 gp: git push
 gs: git status
-gd: git diff
+gr: git reset
+
+# Package management.
+a:  sudo apt
+ai: sudo apt install
+ar: sudo apt autoremove
+as: apt search
+ah: apt help
 
 s:  sudo snap
 si: sudo snap install
-ss: snap search
-sr: snap remove
+sr: sudp snap remove
 sh: snap help
+ss: snap search
 
+# Miscellaneous.
+o:  xdg-open
+u:  update
+v:  vpn
+z:  zotfile

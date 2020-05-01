@@ -33,7 +33,7 @@ set fish_color_error brred
 set fish_color_escape bryellow --bold
 set fish_color_normal normal
 set fish_color_operator bryellow
-set fish_color_param black
+set fish_color_param normal
 set fish_color_quote yellow
 set fish_color_redirection green
 set fish_color_user brgreen
@@ -51,8 +51,8 @@ alias 'pytest' 'fd \'.py$\' | entr pytest'
 alias 'wget'   'wget -e robots=off'
 
 # Abbreviate common commands.
-for line in (cat ~/.config/fish/abbrfile)
-	set -l dict (string split ':' $line)
+for line in (sed '/^#/d' ~/.config/fish/abbrfile)
+	set -l dict (string split : $line)
 	if [ (count $dict) -ge 2 ]
 		set -l key (string trim $dict[1])
 		set -l val (string trim (string join : $dict[2..-1]))
