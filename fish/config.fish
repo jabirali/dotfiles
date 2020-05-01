@@ -51,13 +51,14 @@ alias 'pytest' 'fd \'.py$\' | entr pytest'
 alias 'wget'   'wget -e robots=off'
 
 # Abbreviate common commands.
-abbr -ga 'a' 'sudo apt'
-abbr -ga 'g' 'git'
-abbr -ga 'o' 'open'
-abbr -ga 's' 'sudo snap'
-abbr -ga 'u' 'update'
-abbr -ga 'v' 'mkvenv'
-abbr -ga 'z' 'zotfile'
+for line in (cat ~/.config/fish/abbrfile)
+	set -l dict (string split ':' $line)
+	if [ (count $dict) -ge 2 ]
+		set -l key (string trim $dict[1])
+		set -l val (string trim (string join : $dict[2..-1]))
+		abbr -ga $key $val
+	end
+end
 
 # Fuzzy-finder integration.
 fzf_key_bindings

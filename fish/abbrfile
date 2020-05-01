@@ -1,0 +1,19 @@
+o:  open
+u:  update
+v:  vpn
+z:  zotfile
+
+g:  git
+gc: git clone
+gf: git fetch
+gh: git help
+gp: git push
+gs: git status
+gd: git diff
+
+s:  sudo snap
+si: sudo snap install
+ss: snap search
+sr: snap remove
+sh: snap help
+
