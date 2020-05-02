@@ -5,7 +5,6 @@ gb  git branch
 gc  git commit
 gd  git diff
 gf  git fetch
-gh  git help
 gm  git merge
 gp  git push
 gs  git status
@@ -17,12 +16,10 @@ aa  sudo apt autoremove
 ai  sudo apt install
 ar  sudo apt purge
 as  apt search
-ah  apt help
 
 s   sudo snap
 si  sudo snap install
 sr  sudp snap remove
-sh  snap help
 ss  snap search
 
 # Miscellaneous.

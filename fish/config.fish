@@ -1,9 +1,7 @@
-# ~/.config/fish/config.fish 
 # vim: foldmethod=marker
 
-# The most interesting parts of my `config.fish` has been exported as separate 
-# Fish plugins on github.com/jabirali/fish-*, which can be installed via `fisher`.
-# The specific list of Fish plugins that I use are registered in my `fishfile`.
+# Fish configuration file. Note that much of my interesting modifications have
+# been exported to separate plugins, which are now hosted on github.com/jabirali.
 
 # Fish package manager.
 if not functions -q fisher
