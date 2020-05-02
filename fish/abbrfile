@@ -13,8 +13,9 @@ gr  git reset
 
 # Package management.
 a   sudo apt
+aa  sudo apt autoremove
 ai  sudo apt install
-ar  sudo apt autoremove
+ar  sudo apt purge
 as  apt search
 ah  apt help
 
