@@ -1,5 +1,3 @@
-# ~/.msmtprc
-
 defaults
 syslog         on
 auth           on

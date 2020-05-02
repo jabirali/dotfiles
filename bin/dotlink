@@ -1,9 +1,13 @@
 #!/bin/sh
 
-# Share ignore patterns with `fd`, `rg`, `exa`.
+# These do not follow XDG conventions.
+ln -sf ~/.config/XCompose ~/.XCompose
+ln -sf ~/.config/ssh/config ~/.ssh/config
+
+# Share Git ignore patterns with `fd`, `rg`, `exa`.
+# The last of these do not support ~/.config/ignore.
 ln -sf ~/.config/git/ignore ~/.gitignore
 
-# These do not follow XDG rules.
-ln -sf ~/.config/tmux.conf ~/.tmux.conf
-ln -sf ~/.config/XCompose ~/.XCompose
-
+# Link not required after v3.1a:
+# https://github.com/tmux/tmux/commit/15d7e564ddab575dd3ac803989cc99ac13b57198
+ln -sf ~/.config/tmux/tmux.conf ~/.tmux.conf
