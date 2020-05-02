@@ -168,7 +168,6 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'liuchengxu/vim-which-key'       " Interactive keybinding help
 	Plug 'tpope/vim-repeat'               " Repeat more things with `.`
 	Plug 'tpope/vim-unimpaired'           " Browse more things with `[]`
-	Plug 'junegunn/goyo.vim'              " Center buffer when writing
 	" Text editing
 	Plug 'andymass/vim-matchup'           " Smarter `%` jumps and highlights
 	Plug 'junegunn/vim-slash'             " Smarter `*` jumps and highlights
@@ -199,7 +198,6 @@ call plug#begin('~/.local/share/nvim/plugins')
 	" Python
 	Plug 'vim-python/python-syntax'
 	Plug 'kalekundert/vim-coiled-snake'
-	Plug 'jmcantrell/vim-virtualenv'
 	Plug 'psf/black', {'tag': '19.10b0'}
 	" LaTeX
 	Plug 'lervag/vimtex'
@@ -235,25 +233,9 @@ nnoremap <leader>wd :close<cr>
 
 " Toggle stuff.
 nmap <leader>t yo
-nmap <leader>tg :Goyo<cr>
-nmap <leader>tv :VirtualEnvActivate<space>
-nmap <leader>tV :VirtualEnvDeactivate<cr>
-
-" Open stuff.
-" nmap <leader>od :NnnPicker '%:p:h'<cr>
-" nmap <leader>ol :bot lwindow<cr>
-" nmap <leader>oo :tabedit ~/notes/sintef.org<cr>
-" nmap <leader>oO :tabedit ~/notes/personal.org<cr>
-" nmap <leader>os :Scratch<cr>
-" nmap <leader>oS :Scratch!<cr>
-" nmap <leader>ov <leader>tv
-" nmap <leader>oV <leader>tV
-" nmap <leader>oq :bot cwindow<cr>
-" nmap <leader>oz :top 10 Repl<cr>
 
 " Find files.
 nmap <leader>ff :Files %:p:h<cr>
-nmap <leader>fo :Files ~/onedrive/<cr>
 nmap <leader>fF :Files ~/<cr>
 nmap <leader>fb :Buffers<cr>
 nmap <leader>fd :Files ~/.config/<cr>
@@ -261,7 +243,6 @@ nmap <leader>fD :Files /etc/<cr>
 nmap <leader>fg :GFiles<cr>
 nmap <leader>fG :GFiles?<cr>
 nmap <leader>fr :History<cr>
-nmap <leader>fz :Zotero!<cr>
 
 " Version control.
 nmap <leader>gg :MagitOnly<cr>
@@ -283,20 +264,16 @@ nmap <leader>gz :GitGutterSignsToggle<cr>:GitGutterFold<cr>
 nmap <leader>ss :BLines<cr>
 nmap <leader>sr :%s/\<<C-r><C-w>\>//c<left><left>
 nmap <leader>sg :Ggrep <c-r><c-w><cr>
-nmap <leader>sn :NV<cr>
 nmap <leader>sp :GitCd<cr>:Rg<cr>
 
 " Manage Vim.
 nmap <leader>qa :qa<cr>
 nmap <leader>qr :source ~/.config/nvim/init.vim<cr>
-nmap <leader>qi :PlugInstall<cr>
-nmap <leader>qu :PlugUpdate<cr>
 
 " Leader-based speed keys.
 nmap <leader><tab> <c-^>
  map <leader>? :Helptags<cr>
 nmap <leader>n :Notes!<cr>
-nmap <leader>p :Project!<cr>
 nmap <leader>o :GFiles!<cr>
 nmap <leader>i :Buffers<cr>
 nmap <leader>. :cd %:p:h<cr>
@@ -326,14 +303,6 @@ noremap j gj
 noremap k gk
 noremap <c-l> :nohlsearch<cr><c-l>
 cnoremap <C-r> <C-e><C-u>History:<cr>
-
-" Paging with HJKL.
-noremap H zH
-noremap L zL
-
-noremap <c-j> J
-noremap zH H
-noremap zL L
 
 " Search and replace.
 nnoremap S :%s/
