@@ -24,6 +24,7 @@ ss  snap search
 
 # Miscellaneous.
 o   xdg-open
+n   nvim +WikiFzfPages
 u   update
 v   vpn
 z   zotfile

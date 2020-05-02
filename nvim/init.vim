@@ -72,9 +72,9 @@ let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_view_method = 'zathura'
 let g:wiki_filetypes = ['md']
-let g:wiki_root = '~/notes/'
+let g:wiki_root = '~/Documents/personal-notes/'
 let g:wiki_link_target_type = 'md'
-let g:wiki_zotero_root = '~/.zotero'
+let g:wiki_zotero_root = '~/snap/zotero-snap'
 let g:wiki_mappings_use_defaults = 0
 
 " #2 Envvars
@@ -88,14 +88,6 @@ set foldtext=SimpleFoldText()
 function! SimpleFoldText()
 	return getline(v:foldstart)
 endfunction
-
-" Search for a note file.
-command! -bang Notes call fzf#run(fzf#wrap(
-			\ 'project',
-			\ { 'source':  'fdfind -t f . ~/notes/',
-			\   'sink':    'edit',
-			\   'options': '--prompt "Notes> " -d / --with-nth=-1 --preview="sed -ne \"s|^title:\s*.\(.*\).\s*$|[31m\1[0m\n|p\" -e \"/^#/p\" {..}"' },
-			\ <bang>0))
 
 " Jump to the Git project root.
 command! GitCd execute 'cd ./'.system('git rev-parse --show-cdup')
@@ -163,7 +155,7 @@ endif
 call plug#begin('~/.local/share/nvim/plugins')
 	" User interface
 	Plug 'romainl/flattened'              " Solarized colorscheme
- 	Plug 'arecarn/vim-fold-cycle'         " Org-like recursive folding
+	Plug 'arecarn/vim-fold-cycle'         " Org-like recursive folding
 	Plug 'Konfekt/FastFold'               " More optimized code folding
 	Plug 'liuchengxu/vim-which-key'       " Interactive keybinding help
 	Plug 'tpope/vim-repeat'               " Repeat more things with `.`
@@ -250,12 +242,10 @@ nmap <leader>gb :GBlame<cr>
 nmap <leader>gc :BCommits<cr>
 nmap <leader>gC :Commits<cr>
 nmap <leader>gd :Git difftool<cr>
-nmap <leader>gD :Gdelete<space>
 nmap <leader>gf :Gfetch<cr>
 nmap <leader>gl :Glog<cr>
 nmap <leader>gm :Git mergetool<cr>
 nmap <leader>gp :Gpush<cr>
-nmap <leader>gR :Gmove<space>
 nmap <leader>gs <Plug>(GitGutterStageHunk)
 nmap <leader>gu <Plug>(GitGutterUndoHunk)
 nmap <leader>gz :GitGutterSignsToggle<cr>:GitGutterFold<cr>
@@ -267,16 +257,13 @@ nmap <leader>sg :Ggrep <c-r><c-w><cr>
 nmap <leader>sp :GitCd<cr>:Rg<cr>
 
 " Manage Vim.
-nmap <leader>qa :qa<cr>
-nmap <leader>qr :source ~/.config/nvim/init.vim<cr>
+nmap <leader>E :qa<cr>
+nmap <leader>C :source ~/.config/nvim/init.vim<cr>
 
 " Leader-based speed keys.
-nmap <leader><tab> <c-^>
+nmap <leader><tab> :Buffers<cr>
  map <leader>? :Helptags<cr>
-nmap <leader>n :Notes!<cr>
 nmap <leader>o :GFiles!<cr>
-nmap <leader>i :Buffers<cr>
-nmap <leader>. :cd %:p:h<cr>
 
 " #2 Editor keys
 " LSP bindings.
@@ -298,7 +285,6 @@ nnoremap 0 ^
 nnoremap ^ 0
 nnoremap Y y$
 nnoremap U <c-r>
-nnoremap R :e<cr>
 noremap j gj
 noremap k gk
 noremap <c-l> :nohlsearch<cr><c-l>
