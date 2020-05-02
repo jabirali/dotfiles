@@ -2,7 +2,6 @@
 " #1 Settings
 " #2 Builtin
 set background=light
-set clipboard+=unnamedplus
 set completeopt=longest,menuone,noinsert
 set autochdir
 set confirm
@@ -191,6 +190,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'neovim/nvim-lsp'                " Setup built-in language client
 	Plug 'lifepillar/vim-mucomplete'      " Setup built-in autocompletion
 	" Miscellaneous
+	Plug 'jabirali/vim-tmux-yank'         " Tmux clipboard
 	Plug 'christoomey/vim-tmux-navigator' " Tmux consistency
 	Plug 'tpope/vim-rsi'                  " Readline consistency
 	Plug 'tpope/vim-obsession'            " Session backups
@@ -218,19 +218,6 @@ luafile ~/.config/nvim/lsp.lua
 " Load color scheme.
 set background=light
 silent! colorscheme flattened_light
-
-" Integrate clipboards via OSC-52.
-function! Osc52Yank()
-    let buffer=system('base64 -w0', @0)
-    let buffer=substitute(buffer, "\n$", "", "")
-    let buffer='\e]52;c;'.buffer.'\x07'
-    silent exe "!echo -ne ".shellescape(buffer)." > ".system("tmux display -p '#{pane_tty}'")
-endfunction
-
-augroup Clipboard
-    autocmd!
-    autocmd TextYankPost * if v:event.operator ==# 'y' | call Osc52Yank() | endif
-augroup END
 
 " #1 Keybindings
 " #2 Leader keys

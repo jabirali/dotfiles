@@ -46,7 +46,6 @@ set expressvpn_relink on
 # Aliases for common actions.
 alias 'exa'    'exa --git-ignore --group-directories-first --time-style=long-iso'
 alias 'mkvenv' 'python3 -m venv ~/.virtualenvs/(basename (pwd))'
-alias 'open'   'xdg-open'
 alias 'pytest' 'fd \'.py$\' | entr pytest'
 alias 'wget'   'wget -e robots=off'
 
