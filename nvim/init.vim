@@ -67,7 +67,6 @@ let g:pandoc#folding#fdc = 0
 let g:pandoc#folding#fold_fenced_codeblocks = 1
 let g:pandoc#syntax#style#underline_special = 0
 let g:scratch_insert_autohide = 0
-let g:tmux_navigator_no_mappings = 1
 let g:vimtex_compiler_progname = 'nvr'
 let g:vimtex_fold_enabled = 1
 let g:vimtex_view_method = 'zathura'
@@ -181,8 +180,8 @@ call plug#begin('~/.local/share/nvim/plugins')
 	Plug 'neovim/nvim-lsp'                " Setup built-in language client
 	Plug 'lifepillar/vim-mucomplete'      " Setup built-in autocompletion
 	" Miscellaneous
+	Plug 'sunaku/tmux-navigate'           " Tmux navigation
 	Plug 'jabirali/vim-tmux-yank'         " Tmux clipboard
-	Plug 'christoomey/vim-tmux-navigator' " Tmux consistency
 	Plug 'tpope/vim-rsi'                  " Readline consistency
 	Plug 'tpope/vim-obsession'            " Session backups
 	Plug 'mtth/scratch.vim'               " Scratch buffer
@@ -306,12 +305,6 @@ nnoremap gx :silent !xdg-open "<cfile>:p"<cr>
 " Align expressions.
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
-
-" Tmux integration.
-noremap <silent> <m-h> :TmuxNavigateLeft<cr>
-noremap <silent> <m-j> :TmuxNavigateDown<cr>
-noremap <silent> <m-k> :TmuxNavigateUp<cr>
-noremap <silent> <m-l> :TmuxNavigateRight<cr>
 
 " Window splitting.
 noremap <silent> <leader>h :leftabove vsplit<cr>
