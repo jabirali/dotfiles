@@ -17,12 +17,13 @@ ai  sudo apt install
 ar  sudo apt purge
 as  apt search
 
-s   sudo snap
-si  sudo snap install
-sr  sudp snap remove
+s   snap
+si  snap install
+sr  snap remove
 ss  snap search
 
 # Miscellaneous.
+alsa   sudo alsa force-reload
 o   xdg-open
 n   nvim +WikiFzfPages
 u   update

@@ -102,10 +102,10 @@ augroup quit_like_emacs
 augroup END
 
 " Some apps require buffer deletion.
-augroup delete_on_quit
-	autocmd!
-	autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
-augroup END
+" augroup delete_on_quit
+" 	autocmd!
+" 	autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
+" augroup END
 
 " Improve the default highlight colors.
 augroup clean_highlights
@@ -293,6 +293,10 @@ cnoremap <C-r> <C-e><C-u>History:<cr>
 nnoremap S :%s/
 vnoremap S :s/
 
+" Jump back to previo
+nnoremap <cr> <cmd>lua vim.lsp.buf.definition()<cr>
+nmap <bs> <c-o>
+
 " Tab fold and indent.
 nmap <tab> <Plug>(fold-cycle-open)
 nnoremap <s-tab> zm
@@ -314,3 +318,8 @@ noremap <silent> <leader>l :rightbelow vsplit<cr>
 
 " TeX bindings.
 nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
+
+" #1 Commands
+
+" Useful when committing with Git, etc.
+command W write | bdelete
