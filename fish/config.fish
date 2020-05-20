@@ -44,10 +44,11 @@ set expressvpn_relink on
 
 # Aliases for common actions.
 alias exa    'exa --git-ignore --group-directories-first --time-style=long-iso'
-alias mkvenv 'echo layout_python > .envrc; direnv allow'
+alias mkvenv 'echo layout_python >> .envrc; direnv allow'
 alias pytest 'fd \'.py$\' | entr pytest'
 alias wget   'wget -e robots=off'
 
 # Integrate external tools.
 fzf_key_bindings
 eval (direnv hook fish)
+__direnv_export_eval
