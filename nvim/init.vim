@@ -323,3 +323,4 @@ nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
 
 " Useful when committing with Git, etc.
 command W write | bdelete
+command Q bdelete
