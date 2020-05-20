@@ -14,8 +14,8 @@ set -x LANG 'en_US'
 set -x LC_ALL 'en_DK.UTF-8'
 set -x NNN_TRASH 1
 set -x NNN_USE_EDITOR 1
-set -x POETRY_VIRTUALENVS_PATH ~/.virtualenvs
 set -x DOTNET_CLI_TELEMETRY_OPTOUT 1
+set -x DIRENV_LOG_FORMAT ""
 
 # Theme settings.
 set -x BAT_THEME 'ansi-light'
@@ -43,10 +43,11 @@ set zotfile_root ~/snap/zotero-snap
 set expressvpn_relink on
 
 # Aliases for common actions.
-alias 'exa'    'exa --git-ignore --group-directories-first --time-style=long-iso'
-alias 'mkvenv' 'python3 -m venv ~/.virtualenvs/(basename (pwd))'
-alias 'pytest' 'fd \'.py$\' | entr pytest'
-alias 'wget'   'wget -e robots=off'
+alias exa    'exa --git-ignore --group-directories-first --time-style=long-iso'
+alias mkvenv 'echo layout_python > .envrc; direnv allow'
+alias pytest 'fd \'.py$\' | entr pytest'
+alias wget   'wget -e robots=off'
 
-# Fuzzy-finder integration.
+# Integrate external tools.
 fzf_key_bindings
+eval (direnv hook fish)

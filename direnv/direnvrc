@@ -1,0 +1,12 @@
+layout_python() {
+	# Determine the virtualenv location.
+	local venv="$HOME/.cache/virtualenvs/$(basename $PWD)"
+		
+	# If the virtualenv does not exist, create it.
+	if [ ! -d "$venv" ]; then
+		python3 -m venv "$venv"
+	fi
+	
+	# Activate the created virtualenv.
+	source "$venv/bin/activate"
+}
