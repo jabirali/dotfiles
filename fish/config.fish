@@ -52,3 +52,9 @@ alias wget   'wget -e robots=off'
 fzf_key_bindings
 eval (direnv hook fish)
 __direnv_export_eval
+
+function venv-exec --description 'Run command in virtualenv'
+	source "$HOME/.cache/virtualenvs/$argv[1]/bin/activate.fish"
+	eval $argv[2..-1]
+	deactivate
+end
