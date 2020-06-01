@@ -47,6 +47,7 @@ alias exa    'exa --git-ignore --group-directories-first --time-style=long-iso'
 alias mkvenv 'echo layout_python >> .envrc; direnv allow'
 alias pytest 'fd \'.py$\' | entr pytest'
 alias wget   'wget -e robots=off'
+alias boox   'bluetooth-sendto --device=22:22:3B:D5:62:2C'
 
 # Integrate external tools.
 fzf_key_bindings
@@ -58,3 +59,13 @@ function venv-exec --description 'Run command in virtualenv'
 	eval $argv[2..-1]
 	deactivate
 end
+
+prefer 'exa -T'   'lsd --tree' 'tree'
+prefer 'exa -l'   'lsd -l'     'ls -l'  'll'
+prefer 'exa -la'  'lsd -la'    'ls -la' 'la'
+prefer 'exa'      'lsd'        'ls'     'l'
+prefer 'bat -p'   'batcat -p'  'cat'
+prefer 'fd'       'fdfind'     'find'
+prefer 'rg'       'ag'         'grep'
+prefer 'htop'     'top'
+prefer 'parallel' 'xargs'
