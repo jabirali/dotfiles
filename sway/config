@@ -1,26 +1,24 @@
-# vim: foldmethod=marker
+# vim: foldmethod=marker foldmarker={,}
 
-# Variables {{{
-    # Logo key. Use Mod1 for Alt.
+# Variables {
+    # Modifier key.
     set $mod Mod4
-    # Home row direction keys, like vim
-    set $left h
-    set $down j
-    set $up k
+
+    # Direction keys.
+    set $left  h
+    set $down  j
+    set $up    k
     set $right l
-    # Your preferred terminal emulator
+
+    # Applications.
     set $term alacritty
-    # Your preferred application launcher
-    # Note: pass the final command to swaymsg so that the resulting window can be opened
-    # on the original workspace that the command was run on.
     set $font Iosevka SS09 12
     set $mopt --fn '$font' --hf='#16a085' --tf='#16a085' -l 16 -p '❯' -i
-    # set $menu j4-dmenu-desktop --dmenu="bemenu $mopt" | xargs swaymsg exec --
     set $menu j4-dmenu-desktop --dmenu="bemenu $mopt" | xargs swaymsg exec --
     set $net networkmanager_dmenu $mopt
-# }}}
+# }
 
-# Hardware {{{
+# Hardware {
     # Output configuration.
     output * bg #222D31 solid_color
 
@@ -43,32 +41,28 @@
 
     # Lid configuration.
     bindswitch lid:on exec systemctl suspend
-# }}}
+# }
 
-# Key bindings {{{
-    # Basics {{{
-        # Start a terminal
-        bindsym $mod+Return exec $term
+# Key bindings {
+    # Start applications.
+    bindsym $mod+Return exec $term
+    bindsym $mod+d      exec $menu
+    bindsym $mod+n      exec $net
 
-        # Kill focused window
-        bindsym $mod+Shift+q kill
+    # Kill applications.
+    bindsym $mod+Shift+q kill
 
-        # Start your launcher
-        bindsym $mod+d exec $menu
-        bindsym $mod+n exec $net
+    # Reload config.
+    bindsym $mod+Shift+c reload
 
-        # Drag floating windows by holding down $mod and left mouse button.
-        # Resize them with right mouse button + $mod.
-        # Despite the name, also works for non-floating windows.
-        # Change normal to inverse to use left mouse button for resizing and right
-        # mouse button for dragging.
-        floating_modifier $mod normal
-
-        # Reload the configuration file
-        bindsym $mod+Shift+c reload
-    # }}}
- 
-    # Moving around {{{
+    # Drag floating windows by holding down $mod and left mouse button.
+    # Resize them with right mouse button + $mod.
+    # Despite the name, also works for non-floating windows.
+    # Change normal to inverse to use left mouse button for resizing and right
+    # mouse button for dragging.
+    floating_modifier $mod normal
+# }
+    # Moving around {
         # Vim-like motions.
         bindsym $mod+$left  focus left
         bindsym $mod+$down  focus down
@@ -90,9 +84,9 @@
         bindsym $mod+Shift+Down move down
         bindsym $mod+Shift+Up move up
         bindsym $mod+Shift+Right move right
-    # }}}
+    # }
 
-    # Workspaces {{{
+    # Workspaces {
         # Switch to workspace.
         bindsym $mod+1 workspace 1
         bindsym $mod+2 workspace 2
@@ -116,9 +110,9 @@
         bindsym $mod+Shift+8 move container to workspace 8
         bindsym $mod+Shift+9 move container to workspace 9
         bindsym $mod+Shift+0 move scratchpad
-    # }}}
+    # }
     
-    # Layout stuff {{{
+    # Layout stuff {
         # Basic layout control.
         bindsym $mod+s splith
         bindsym $mod+v splitv
@@ -132,33 +126,38 @@
         # Floating windows.
         bindsym $mod+Shift+space floating toggle
         bindsym $mod+space focus mode_toggle
-    # }}}
+    # }
 
-    # Resizing containers {{{
+    # Multimedia keys {
+        bindsym --locked XF86AudioRaiseVolume  exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+        bindsym --locked XF86AudioLowerVolume  exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+        bindsym --locked XF86AudioMute         exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+        bindsym --locked XF86AudioMicMute      exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+        bindsym --locked XF86MonBrightnessDown exec brightnessctl set  2%
+        bindsym --locked XF86MonBrightnessUp   exec brightnessctl set +5%
+        bindsym --locked XF86AudioPlay         exec playerctl play-pause
+        bindsym --locked XF86AudioNext         exec playerctl next
+        bindsym --locked XF86AudioPrev         exec playerctl previous
+    # }
+
+    # Mode: Resize containers.
     mode "resize" {
-        # left will shrink the containers width
-        # right will grow the containers width
-        # up will shrink the containers height
-        # down will grow the containers height
         bindsym $left  resize shrink width  10px
         bindsym $down  resize grow   height 10px
         bindsym $up    resize shrink height 10px
         bindsym $right resize grow   width 10px
 
-        # Ditto, with arrow keys
         bindsym Left  resize shrink width 10px
         bindsym Down  resize grow height 10px
         bindsym Up    resize shrink height 10px
         bindsym Right resize grow width 10px
 
-        # Return to default mode
         bindsym Return mode "default"
         bindsym Escape mode "default"
     }
     bindsym $mod+r mode "resize"
-    # }}}
     
-    # System menu {{{
+    # Mode: System management.
     set $mode_system System: (l) lock, (e) exit, (s) suspend, (r) reboot, (S) shutdown, (R) UEFI mode "$mode_system" 
     mode "$mode_system" {
         bindsym l       exec swaylock -f -c 000000, mode "default"
@@ -172,32 +171,12 @@
         bindsym Return mode "default"
         bindsym Escape mode "default"
     }
-    # }}}
     bindsym $mod+Shift+e mode "$mode_system"
+# }
 
-    # Multimedia keys {{{
-    bindsym --locked XF86AudioRaiseVolume  exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-    bindsym --locked XF86AudioLowerVolume  exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-    bindsym --locked XF86AudioMute         exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-    bindsym --locked XF86AudioMicMute      exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-    bindsym --locked XF86MonBrightnessDown exec brightnessctl set  2%
-    bindsym --locked XF86MonBrightnessUp   exec brightnessctl set +5%
-    bindsym --locked XF86AudioPlay         exec playerctl play-pause
-    bindsym --locked XF86AudioNext         exec playerctl next
-    bindsym --locked XF86AudioPrev         exec playerctl previous
-    # }}}
-# }}}
-
-# Status bar {{{
 bar {
     position top
-
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    #
     status_command i3status
-    # status_command while date +'%Y-%m-%d %H:%M'; do sleep 1; done
-
     colors {
         background #222D31
         statusline #F9FAF9
@@ -212,9 +191,7 @@ bar {
     }
 }
 
-# }}}
-
-# Theme settings {{{
+# Theme settings {
     # class                   border  backgr. text    indic.   child_border
     client.focused          #556064 #556064 #80FFF9 #FDF6E3
     client.focused_inactive #222D31 #222D31 #1ABC9C #454948
@@ -228,15 +205,13 @@ bar {
     hide_edge_borders smart
 
     font pango:$font
-# }}}
+# }
 
 # System settings.
 include /etc/sway/config.d/*
 
 # Startup apps.
-# exec_always killall waybar
-# exec_always waybar
 exec ~/.local/share/tresorit/tresorit-daemon
 exec redshift -m wayland
-exec mako
 exec pamac-tray-appindicator
+exec mako
