@@ -15,6 +15,7 @@
     # on the original workspace that the command was run on.
     set $font Iosevka SS09 12
     set $mopt --fn '$font' --hf='#16a085' --tf='#16a085' -l 16 -p '❯' -i
+    # set $menu j4-dmenu-desktop --dmenu="bemenu $mopt" | xargs swaymsg exec --
     set $menu j4-dmenu-desktop --dmenu="bemenu $mopt" | xargs swaymsg exec --
     set $net networkmanager_dmenu $mopt
 # }}}
@@ -65,10 +66,6 @@
 
         # Reload the configuration file
         bindsym $mod+Shift+c reload
-
-        # Exit sway (logs you out of your Wayland session)
-        bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
-
     # }}}
  
     # Moving around {{{
@@ -143,15 +140,15 @@
         # right will grow the containers width
         # up will shrink the containers height
         # down will grow the containers height
-        bindsym $left resize shrink width 10px
-        bindsym $down resize grow height 10px
-        bindsym $up resize shrink height 10px
-        bindsym $right resize grow width 10px
+        bindsym $left  resize shrink width  10px
+        bindsym $down  resize grow   height 10px
+        bindsym $up    resize shrink height 10px
+        bindsym $right resize grow   width 10px
 
         # Ditto, with arrow keys
-        bindsym Left resize shrink width 10px
-        bindsym Down resize grow height 10px
-        bindsym Up resize shrink height 10px
+        bindsym Left  resize shrink width 10px
+        bindsym Down  resize grow height 10px
+        bindsym Up    resize shrink height 10px
         bindsym Right resize grow width 10px
 
         # Return to default mode
@@ -159,6 +156,35 @@
         bindsym Escape mode "default"
     }
     bindsym $mod+r mode "resize"
+    # }}}
+    
+    # System menu {{{
+    set $mode_system System: (l) lock, (e) exit, (s) suspend, (r) reboot, (S) shutdown, (R) UEFI mode "$mode_system" 
+    mode "$mode_system" {
+        bindsym l       exec swaylock -f -c 000000, mode "default"
+        bindsym e       exit
+        bindsym s       exec --no-startup-id systemctl suspend, mode "default"
+        bindsym r       exec --no-startup-id systemctl reboot, mode "default"
+        bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+        bindsym Shift+r exec --no-startup-id systemctl reboot --firmware-setup, mode "default"
+
+        # return to default mode
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+    }
+    # }}}
+    bindsym $mod+Shift+e mode "$mode_system"
+
+    # Multimedia keys {{{
+    bindsym XF86AudioRaiseVolume  --locked exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+    bindsym XF86AudioLowerVolume  --locked exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+    bindsym XF86AudioMute         --locked exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+    bindsym XF86AudioMicMute      --locked exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+    bindsym XF86MonBrightnessDown --locked exec brightnessctl set  2%
+    bindsym XF86MonBrightnessUp   --locked exec brightnessctl set +5%
+    bindsym XF86AudioPlay         --locked exec playerctl play-pause
+    bindsym XF86AudioNext         --locked exec playerctl next
+    bindsym XF86AudioPrev         --locked exec playerctl previous
     # }}}
 # }}}
 
@@ -203,3 +229,4 @@ include /etc/sway/config.d/*
 
 # Startup apps.
 exec ~/.local/share/tresorit/tresorit-daemon
+exec redshift -m wayland
