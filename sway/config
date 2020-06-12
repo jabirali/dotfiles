@@ -18,9 +18,10 @@ set $term alacritty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_path | wofi --dmenu | xargs swaymsg exec --
 set $font Iosevka SS09 12
-
+set $mopt --fn "$font" --hf='#16a085' --tf='#16a085'
+set $menu bemenu-run $mopt -p 'Application:' | xargs swaymsg exec --
+set $net networkmanager_dmenu $mopt -p 'Network:'
 default_border pixel
 font pango:$font
 
@@ -72,6 +73,7 @@ input type:touchpad {
 
     # Start your launcher
     bindsym $mod+d exec $menu
+    bindsym $mod+n exec $net
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -207,7 +209,6 @@ bar {
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
     status_command while date +'%Y-%m-%d %H:%M'; do sleep 1; done
-    tray_output primary
 
     colors {
         background #222D31
