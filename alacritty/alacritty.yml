@@ -2,25 +2,23 @@
 
 window:
   dynamic_padding: true
-  decorations: none
   startup_mode: Maximized
-  gtk_theme_variant: dark
 
 scrolling:
   history: 0
 
 font:
   normal:
-    family: Iosevka Fixed SS09
+    family: Iosevka SS09
     style: Regular
   bold:
-    family: Iosevka Fixed SS09
+    family: Iosevka SS09
     style: Bold
   italic:
-    family: Iosevka Fixed SS09
+    family: Iosevka SS09
     style: Italic
   bold_italic:
-    family: Iosevka Fixed SS09
+    family: Iosevka SS09
     style: Bold Italic
   size: 14.0
 
