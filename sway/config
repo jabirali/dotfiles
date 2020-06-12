@@ -18,8 +18,11 @@ set $term alacritty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-# set $menu dmenu_path | dmenu | xargs swaymsg exec --
 set $menu dmenu_path | wofi --dmenu | xargs swaymsg exec --
+set $font Iosevka SS09 12
+
+default_border pixel
+font pango:$font
 
 ### Output configuration
 #
@@ -139,11 +142,10 @@ input type:touchpad {
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
-    bindsym $mod+b splith
+    bindsym $mod+s splith
     bindsym $mod+v splitv
 
     # Switch the current container between different layout styles
-    bindsym $mod+s layout stacking
     bindsym $mod+w layout tabbed
     bindsym $mod+e layout toggle split
 
@@ -204,13 +206,32 @@ bar {
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-    status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
+    status_command while date +'%Y-%m-%d %H:%M'; do sleep 1; done
+    tray_output primary
 
     colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
+        background #222D31
+        statusline #F9FAF9
+        separator  #454947
+        font pango:$font
+
+        focused_workspace  #16a085 #16a085 #292F34
+        active_workspace   #353836 #353836 #FDF6E3
+        inactive_workspace #222D31 #222D31 #EEE8D5
+        binding_mode       #2C2C2C #2C2C2C #F9FAF9
+        urgent_workspace   #FDF6E3 #FDF6E3 #E5201D
     }
 }
 
 include /etc/sway/config.d/*
+
+# Theme colors
+# class                   border  backgr. text    indic.   child_border
+client.focused          #556064 #556064 #80FFF9 #FDF6E3
+client.focused_inactive #2F3D44 #2F3D44 #1ABC9C #454948
+client.unfocused        #2F3D44 #2F3D44 #1ABC9C #454948
+client.urgent           #CB4B16 #FDF6E3 #1ABC9C #268BD2
+client.placeholder      #000000 #0c0c0c #ffffff #000000
+client.background       #2B2C2B
+
+
