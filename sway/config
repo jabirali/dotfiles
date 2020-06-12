@@ -14,8 +14,8 @@
     # Note: pass the final command to swaymsg so that the resulting window can be opened
     # on the original workspace that the command was run on.
     set $font Iosevka SS09 12
-    set $mopt --fn "$font" --hf='#16a085' --tf='#16a085'
-    set $menu bemenu-run $mopt -p 'Applications' | xargs swaymsg exec --
+    set $mopt --fn '$font' --hf='#16a085' --tf='#16a085' -l 16 -p '❯' -i
+    set $menu j4-dmenu-desktop --dmenu="bemenu $mopt" | xargs swaymsg exec --
     set $net networkmanager_dmenu $mopt
 # }}}
 
@@ -39,6 +39,9 @@
     input type:touchpad {
         natural_scroll enabled
     }
+
+    # Lid configuration.
+    bindswitch lid:on exec systemctl suspend
 # }}}
 
 # Key bindings {{{
@@ -103,7 +106,7 @@
         bindsym $mod+7 workspace 7
         bindsym $mod+8 workspace 8
         bindsym $mod+9 workspace 9
-        bindsym $mod+0 move scratchpad
+        bindsym $mod+0 scratchpad show
 
         # Move to workspace.
         bindsym $mod+Shift+1 move container to workspace 1
@@ -115,7 +118,7 @@
         bindsym $mod+Shift+7 move container to workspace 7
         bindsym $mod+Shift+8 move container to workspace 8
         bindsym $mod+Shift+9 move container to workspace 9
-        bindsym $mod+Shift+0 scratchpad show
+        bindsym $mod+Shift+0 move scratchpad
     # }}}
     
     # Layout stuff {{{
@@ -197,3 +200,6 @@ bar {
 
 # System settings.
 include /etc/sway/config.d/*
+
+# Startup apps.
+exec ~/.local/share/tresorit/tresorit-daemon
