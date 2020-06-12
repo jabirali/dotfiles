@@ -220,7 +220,11 @@ bar {
     client.urgent           #CB4B16 #FDF6E3 #1ABC9C #268BD2
     client.placeholder      #000000 #0c0c0c #ffffff #000000
     client.background       #2B2C2B
+
     default_border pixel
+    default_floating_border pixel
+    hide_edge_borders smart
+
     font pango:$font
 # }}}
 
@@ -230,3 +234,4 @@ include /etc/sway/config.d/*
 # Startup apps.
 exec ~/.local/share/tresorit/tresorit-daemon
 exec redshift -m wayland
+exec mako
