@@ -1,0 +1,5 @@
+default-timeout=3000
+ignore-timeout=1
+background-color=#222D31
+text-color=#1ABC9C
+font=Iosevka SS09 12
