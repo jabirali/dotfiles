@@ -35,7 +35,7 @@ set fish_color_redirection green
 set fish_color_user brgreen
 
 # Plugin settings.
-set projector_dir ~/Documents
+set projector_dir ~/Code
 set projector_cmd edit +GFiles
 set zotfile_root ~/snap/zotero-snap
 set expressvpn_relink on

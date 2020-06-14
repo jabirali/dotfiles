@@ -7,6 +7,9 @@
 # Generate filename.
 file="/tmp/vim-$(date +%F_%H:%M:%S)"
 
+# Send the standard "copy" keyboard shortcut.
+wtype -M ctrl c -m ctrl
+
 # Get primary selection from Wayland clipboard.
 wl-paste -t text/html -p > $file.html
 
@@ -15,7 +18,7 @@ format='markdown-raw_html-native_divs-native_spans-fenced_divs-bracketed_spans-h
 pandoc -f html --atx-headers --reference-links -t $format $file.html > $file.md
 
 # Open Kitty + Neovim to edit the selection.
-kitty --title 'vim: clip' -e nvim $file.md
+alacritty --title 'vim: clip' --command nvim $file.md
 
 # Convert back to HTML.
 pandoc -f markdown -t html -s --highlight-style=tango $file.md > $file.html
@@ -27,6 +30,9 @@ echo $meta | cat - $file.html | sponge $file.html
 # Flush the result back to the clipboard
 cat $file.html | wl-copy -t text/html
 cat $file.html | wl-copy -t text/html -p
+
+# Send the standard "paste" keyboard shortcut.
+wtype -M ctrl v -m ctrl
 
 # Make the files only readable for me.
 chmod 600 $file.{md,html}
