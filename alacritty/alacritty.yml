@@ -24,7 +24,7 @@ font:
 
 colors:
   primary:
-    background: '#222D31'
+    background: '#292f34'
     foreground: '#073642'
   cursor:
     text:   '#fdf6e3'
@@ -50,12 +50,12 @@ colors:
 
 live_config_reload: true
 
-shell:
-  program: /bin/bash
-  args:
-    - -l
-    - -c
-    - "tmux attach || tmux || fish || bash"
+# shell:
+#   program: /bin/bash
+#   args:
+#     - -l
+#     - -c
+#     - "tmux attach || tmux || fish || bash"
 
 mouse:
   hide_when_typing: true

@@ -14,7 +14,7 @@
     set $term alacritty
     set $font Iosevka SS09 12
     set $mopt --fn '$font' --hf='#16a085' --tf='#16a085' -l 16 -p '❯' -i
-    set $menu env XDG_CURRENT_DESKTOP=KDE j4-dmenu-desktop --dmenu="bemenu $mopt" | xargs swaymsg exec 
+    set $menu env XDG_CURRENT_DESKTOP=KDE j4-dmenu-desktop --dmenu="bemenu $mopt" | xargs swaymsg exec
     set $net networkmanager_dmenu $mopt
 # }
 
@@ -146,7 +146,7 @@
     # Mode: Resize containers.
     
     # Mode: System management.
-    set $mode_system System: (l) lock, (e) exit, (s) suspend, (r) reboot, (S) shutdown, (R) UEFI mode "$mode_system" 
+    set $mode_system System: (l) lock, (e) exit, (s) suspend, (r) reboot, (S) shutdown, (R) UEFI mode
     mode "$mode_system" {
         bindsym l       exec swaylock -f -c 000000, mode "default"
         bindsym e       exit
@@ -166,14 +166,14 @@ bar {
     position top
     status_command i3status
     colors {
-        background #222D31
+        background #292f34
         statusline #F9FAF9
         separator  #454947
         font pango:$font
 
         focused_workspace  #454947 #454947 #FFFFFF
-        active_workspace   #222D31 #222D31 #EEE8D5
-        inactive_workspace #222D31 #222D31 #EEE8D5
+        active_workspace   #292f34 #292f34 #EEE8D5
+        inactive_workspace #292f34 #292f34 #EEE8D5
         binding_mode       #2C2C2C #2C2C2C #F9FAF9
         urgent_workspace   #FDF6E3 #FDF6E3 #E5201D
     }
@@ -181,14 +181,14 @@ bar {
 
 # Theme settings {
     # class                   border  backgr. text    indic.   child_border
-    client.focused          #556064 #556064 #80FFF9 #FDF6E3
-    client.focused_inactive #222D31 #222D31 #1ABC9C #454948
-    client.unfocused        #222D31 #222D31 #1ABC9C #454948
+    client.focused          #1ABC9C #1ABC9C #80FFF9 #FDF6E3
+    client.focused_inactive #292f34 #292f34 #80FFF9 #FDF6E3
+    client.unfocused        #292f34 #292f34 #80FFF9 #FDF6E3
     client.urgent           #CB4B16 #FDF6E3 #1ABC9C #268BD2
     client.placeholder      #000000 #0c0c0c #ffffff #000000
     client.background       #2B2C2B
 
-    default_border pixel
+    default_border pixel 1
     default_floating_border pixel
     hide_edge_borders smart
 
@@ -199,8 +199,7 @@ bar {
 include /etc/sway/config.d/*
 
 # Startup apps.
-exec /home/jabiro/.local/share/tresorit/tresorit
+exec env QT_QPA_PLATFORM=xcb /home/jabiro/.local/share/tresorit/tresorit
 exec redshift -m wayland
 exec pamac-tray-appindicator
 exec mako
-# exec env GDK_BACKEND=wayland /usr/lib/firefox/firefox
