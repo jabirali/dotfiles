@@ -1,0 +1,17 @@
+# ~/.pam_environment
+
+# Set locale.
+LANG=en_US
+LC_ALL=en_DK.UTF-8
+
+# Enable Wayland.
+QT_QPA_PLATFORM=wayland
+GDK_BACKEND=wayland
+MOZ_ENABLE_WAYLAND=1
+
+# KDE environment.
+XDG_CURRENT_DESKTOP=KDE 
+DE=kde
+
+# Default applications.
+EDITOR=nvim

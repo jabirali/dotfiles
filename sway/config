@@ -14,7 +14,7 @@
     set $term alacritty
     set $font Iosevka SS09 12
     set $mopt --fn '$font' --hf='#16a085' --tf='#16a085' -l 16 -p '❯' -i
-    set $menu j4-dmenu-desktop --dmenu="bemenu $mopt" | xargs swaymsg exec --
+    set $menu env XDG_CURRENT_DESKTOP=KDE j4-dmenu-desktop --dmenu="bemenu $mopt" | xargs swaymsg exec 
     set $net networkmanager_dmenu $mopt
 # }
 
@@ -28,6 +28,8 @@
         timeout 600  'swaymsg "output * dpms off"' \
              resume  'swaymsg "output * dpms on"'  \
         before-sleep 'swaylock -f -c 000000'
+
+    for_window [app_id="firefox"] inhibit_idle fullscreen
 
     # Input configuration.
     input type:keyboard {
@@ -48,6 +50,7 @@
     bindsym $mod+Return exec $term
     bindsym $mod+d      exec $menu
     bindsym $mod+n      exec $net
+    bindcode --release 133 exec $menu
 
     # Kill applications.
     bindsym $mod+Shift+q kill
@@ -141,21 +144,6 @@
     # }
 
     # Mode: Resize containers.
-    mode "resize" {
-        bindsym $left  resize shrink width  10px
-        bindsym $down  resize grow   height 10px
-        bindsym $up    resize shrink height 10px
-        bindsym $right resize grow   width 10px
-
-        bindsym Left  resize shrink width 10px
-        bindsym Down  resize grow height 10px
-        bindsym Up    resize shrink height 10px
-        bindsym Right resize grow width 10px
-
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-    }
-    bindsym $mod+r mode "resize"
     
     # Mode: System management.
     set $mode_system System: (l) lock, (e) exit, (s) suspend, (r) reboot, (S) shutdown, (R) UEFI mode "$mode_system" 
@@ -183,8 +171,8 @@ bar {
         separator  #454947
         font pango:$font
 
-        focused_workspace  #16a085 #16a085 #292F34
-        active_workspace   #353836 #353836 #FDF6E3
+        focused_workspace  #454947 #454947 #FFFFFF
+        active_workspace   #222D31 #222D31 #EEE8D5
         inactive_workspace #222D31 #222D31 #EEE8D5
         binding_mode       #2C2C2C #2C2C2C #F9FAF9
         urgent_workspace   #FDF6E3 #FDF6E3 #E5201D
@@ -211,7 +199,8 @@ bar {
 include /etc/sway/config.d/*
 
 # Startup apps.
-exec ~/.local/share/tresorit/tresorit-daemon
+exec /home/jabiro/.local/share/tresorit/tresorit
 exec redshift -m wayland
 exec pamac-tray-appindicator
 exec mako
+# exec env GDK_BACKEND=wayland /usr/lib/firefox/firefox
