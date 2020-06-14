@@ -10,8 +10,6 @@ if not functions -q fisher
 end
 
 # System settings.
-set -x LANG 'en_US'
-set -x LC_ALL 'en_DK.UTF-8'
 set -x NNN_TRASH 1
 set -x NNN_USE_EDITOR 1
 set -x DOTNET_CLI_TELEMETRY_OPTOUT 1

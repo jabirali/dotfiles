@@ -38,12 +38,12 @@ cpu_usage {
 }
 
 battery all {
-    format = " bat: %status%percentage "
+    format = " bat: %percentage%status "
     format_down = ""
     integer_battery_capacity = true
     status_chr  = "+"
-    status_bat  = "-"
-    status_full = ">"
+    status_bat  = ""
+    status_full = "!"
     status_unk  = ""
     threshold_type = percentage
     low_threshold = 10
@@ -51,8 +51,8 @@ battery all {
 }
 
 volume master {
-    format = " snd: %volume "
-    format_muted = " snd: %volume "
+    format = " vol: %volume "
+    format_muted = " vol: %volume "
     device = "pulse"
     separator = false
 }

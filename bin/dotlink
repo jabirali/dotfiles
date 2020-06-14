@@ -3,6 +3,7 @@
 # These do not follow XDG conventions.
 ln -sf ~/.config/XCompose ~/.XCompose
 ln -sf ~/.config/ssh/config ~/.ssh/config
+ln -sf ~/.config/pam_environment ~/.pam_environment
 
 # Share Git ignore patterns with `fd`, `rg`, `exa`.
 # The last of these do not support ~/.config/ignore.
