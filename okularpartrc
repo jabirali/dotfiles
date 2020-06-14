@@ -1,3 +1,6 @@
+[Core General]
+ObeyDRM=false
+
 [Dlg Accessibility]
 RecolorBackground=253,246,227
 RecolorForeground=0,0,0

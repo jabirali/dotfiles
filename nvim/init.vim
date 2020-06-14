@@ -5,6 +5,7 @@ set background=light
 set completeopt=longest,menuone,noinsert
 set autochdir
 set confirm
+set expandtab
 set fillchars=fold:\ ,stl:-,stlnc:-,eob:\ ,
 set list
 set listchars=tab:╎\ ,
