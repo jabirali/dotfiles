@@ -1,27 +1,26 @@
 # vim: foldmethod=marker foldmarker={,}
 
 # Variables {
-    # Modifier key.
+    # Modifier: Logo key.
     set $mod Mod4
 
-    # Direction keys.
-    set $left  h
-    set $down  j
-    set $up    k
-    set $right l
+    # Global color theme.
+    set $fg+ #F9FAF9
+    set $bg+ #232F34
+    set $br+ #16A085
+    set $fg- #999999
+    set $bg- #232F34
+    set $br- #5F6367
 
     # Applications.
     set $term alacritty
     set $font Iosevka SS09 12
-    set $mopt --fn '$font' --hf='#16a085' --tf='#16a085' -l 16 -p '❯' -i
+    set $mopt --fn '$font' --hf='$br+' --tf='$br+' -l 16 -p '❯' -i
     set $menu env XDG_CURRENT_DESKTOP=KDE j4-dmenu-desktop --dmenu="bemenu $mopt" | xargs swaymsg exec
     set $net networkmanager_dmenu $mopt
 # }
 
 # Hardware {
-    # Output configuration.
-    output * bg #222D31 solid_color
-
     # Idle configuration.
     exec swayidle -w \
         timeout 300  'swaylock -f -c 000000'       \
@@ -71,15 +70,15 @@
 # }
     # Moving around {
         # Vim-like motions.
-        bindsym $mod+$left  focus left
-        bindsym $mod+$down  focus down
-        bindsym $mod+$up    focus up
-        bindsym $mod+$right focus right
+        bindsym $mod+h focus left
+        bindsym $mod+j focus down
+        bindsym $mod+k focus up
+        bindsym $mod+l focus right
 
-        bindsym $mod+Shift+$left  move left
-        bindsym $mod+Shift+$down  move down
-        bindsym $mod+Shift+$up    move up
-        bindsym $mod+Shift+$right move right
+        bindsym $mod+Shift+h move left
+        bindsym $mod+Shift+j move down
+        bindsym $mod+Shift+k move up
+        bindsym $mod+Shift+l move right
 
         # Arrow motions.
         bindsym $mod+Left  focus left
@@ -87,14 +86,15 @@
         bindsym $mod+Up    focus up
         bindsym $mod+Right focus right
 
-        bindsym $mod+Shift+Left move left
-        bindsym $mod+Shift+Down move down
-        bindsym $mod+Shift+Up move up
+        bindsym $mod+Shift+Left  move left
+        bindsym $mod+Shift+Down  move down
+        bindsym $mod+Shift+Up    move up
         bindsym $mod+Shift+Right move right
     # }
 
     # Workspaces {
-        # Switch to workspace.
+        # Switch to workspace. The `number` lets us reuse the same
+        # bindings even after renames (via the keybinding $mod+n).
         bindsym $mod+1 workspace number 1
         bindsym $mod+2 workspace number 2
         bindsym $mod+3 workspace number 3
@@ -106,7 +106,7 @@
         bindsym $mod+9 workspace number 9
         bindsym $mod+0 scratchpad show
 
-        # Move to workspace.
+        # Move to workspace. Again, we use `workspace number` here.
         bindsym $mod+Shift+1 move container to workspace number 1
         bindsym $mod+Shift+2 move container to workspace number 2
         bindsym $mod+Shift+3 move container to workspace number 3
@@ -121,8 +121,8 @@
     
     # Layout stuff {
         # Basic layout control.
-        bindsym $mod+s splith
-        bindsym $mod+v splitv
+        bindsym $mod+s splitv
+        bindsym $mod+v splith
         bindsym $mod+f fullscreen
 
         # Fancy layout control.
@@ -147,8 +147,6 @@
         bindsym --locked XF86AudioPrev         exec playerctl previous
     # }
 
-    # Mode: Resize containers.
-    
     # Mode: System management.
     set $mode_system System: (l) lock, (e) exit, (s) suspend, (r) reboot, (S) shutdown, (R) UEFI mode
     mode "$mode_system" {
@@ -166,37 +164,41 @@
     bindsym $mod+Shift+e mode "$mode_system"
 # }
 
+
 bar {
     position top
     status_command i3status
     colors {
-        background #292f34
-        statusline #F9FAF9
-        separator  #292f34
         font pango:$font
 
-        focused_workspace  #454947 #454947 #FFFFFF
-        active_workspace   #292f34 #292f34 #EEE8D5
-        inactive_workspace #292f34 #292f34 #EEE8D5
-        binding_mode       #2C2C2C #2C2C2C #F9FAF9
-        urgent_workspace   #FDF6E3 #FDF6E3 #E5201D
+        background $bg-
+        separator  $bg-
+        statusline $fg-
+
+        focused_workspace  $bg+ $bg+ $fg+
+        active_workspace   $bg+ $bg+ $fg+
+        inactive_workspace $bg- $bg- $fg-
+        urgent_workspace   $bg- $bg- $fg-
     }
 }
 
 # Theme settings {
-    # class                   border  backgr. text    indic.   child_border
-    client.focused          #1ABC9C #1ABC9C #80FFF9 #FDF6E3
-    client.focused_inactive #292f34 #292f34 #80FFF9 #FDF6E3
-    client.unfocused        #292f34 #292f34 #80FFF9 #FDF6E3
-    client.urgent           #CB4B16 #FDF6E3 #1ABC9C #268BD2
-    client.placeholder      #000000 #0c0c0c #ffffff #000000
-    client.background       #2B2C2B
+    font pango:$font
 
-    default_border pixel 1
+    client.focused          $br+ $br+ $fg+ $fg+
+    client.focused_inactive $br- $br- $fg- $fg+
+    client.unfocused        $br- $br- $fg- $fg+
+    client.urgent           $br- $br- $fg- $fg+
+
+    default_border pixel 2
     default_floating_border pixel
     hide_edge_borders smart
 
-    font pango:$font
+    gaps inner 16
+    smart_gaps on
+
+    output * bg #131F24 solid_color
+
 # }
 
 # System settings.
