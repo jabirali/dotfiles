@@ -172,7 +172,7 @@ bar {
     colors {
         background #292f34
         statusline #F9FAF9
-        separator  #454947
+        separator  #292f34
         font pango:$font
 
         focused_workspace  #454947 #454947 #FFFFFF
