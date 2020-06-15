@@ -49,8 +49,12 @@
     # Start applications.
     bindsym $mod+Return exec $term
     bindsym $mod+d      exec $menu
-    bindsym $mod+n      exec $net
-    bindcode --release 133 exec $menu
+    bindsym $mod+n      exec echo "" | bemenu $mopt -p 'Workspace name:' | xargs -r swaymsg rename workspace to $(swaymsg -t get_workspaces | jq -r '.[] | select(.focused)' | jq -r '.num')
+
+    # bindsym $mod+n      exec $net
+    bindsym $mod+F1 exec env FZF_DEFAULT_OPTS='--color=bg+:#fdf6e3,bg:#fdf6e3,spinner:#2aa198,hl:#268bd2,fg:#657b83,header:#268bd2,info:#b58900,border:#d7d7af,pointer:#2aa198,marker:#2aa198,fg+:#073642,prompt:#b58900,hl+:#268bd2' alacritty --class launcher --command "$HOME/.config/bin/fzf-nm"
+    # bindcode --release 133 exec $menu
+    # TODO: Try separate Alacritty conf file for OS launchers?
 
     # Kill applications.
     bindsym $mod+Shift+q kill
@@ -91,27 +95,27 @@
 
     # Workspaces {
         # Switch to workspace.
-        bindsym $mod+1 workspace 1
-        bindsym $mod+2 workspace 2
-        bindsym $mod+3 workspace 3
-        bindsym $mod+4 workspace 4
-        bindsym $mod+5 workspace 5
-        bindsym $mod+6 workspace 6
-        bindsym $mod+7 workspace 7
-        bindsym $mod+8 workspace 8
-        bindsym $mod+9 workspace 9
+        bindsym $mod+1 workspace number 1
+        bindsym $mod+2 workspace number 2
+        bindsym $mod+3 workspace number 3
+        bindsym $mod+4 workspace number 4
+        bindsym $mod+5 workspace number 5
+        bindsym $mod+6 workspace number 6
+        bindsym $mod+7 workspace number 7
+        bindsym $mod+8 workspace number 8
+        bindsym $mod+9 workspace number 9
         bindsym $mod+0 scratchpad show
 
         # Move to workspace.
-        bindsym $mod+Shift+1 move container to workspace 1
-        bindsym $mod+Shift+2 move container to workspace 2
-        bindsym $mod+Shift+3 move container to workspace 3
-        bindsym $mod+Shift+4 move container to workspace 4
-        bindsym $mod+Shift+5 move container to workspace 5
-        bindsym $mod+Shift+6 move container to workspace 6
-        bindsym $mod+Shift+7 move container to workspace 7
-        bindsym $mod+Shift+8 move container to workspace 8
-        bindsym $mod+Shift+9 move container to workspace 9
+        bindsym $mod+Shift+1 move container to workspace number 1
+        bindsym $mod+Shift+2 move container to workspace number 2
+        bindsym $mod+Shift+3 move container to workspace number 3
+        bindsym $mod+Shift+4 move container to workspace number 4
+        bindsym $mod+Shift+5 move container to workspace number 5
+        bindsym $mod+Shift+6 move container to workspace number 6
+        bindsym $mod+Shift+7 move container to workspace number 7
+        bindsym $mod+Shift+8 move container to workspace number 8
+        bindsym $mod+Shift+9 move container to workspace number 9
         bindsym $mod+Shift+0 move scratchpad
     # }
     
@@ -197,6 +201,8 @@ bar {
 
 # System settings.
 include /etc/sway/config.d/*
+
+for_window [app_id="^launcher$"] floating enable
 
 # Startup apps.
 exec env QT_QPA_PLATFORM=xcb /home/jabiro/.local/share/tresorit/tresorit
