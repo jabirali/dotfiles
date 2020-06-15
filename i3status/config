@@ -21,12 +21,12 @@ path_exists vpn {
 
 wireless _first_ {
     format_up = "  wifi: %essid "
-    format_down = "  wifi: none "
+    format_down = "  wifi: no "
 }
 
 ethernet _first_ {
     format_up = " lan: %ip "
-    format_down = " lan: none "
+    format_down = " lan: no "
 }
 
 memory {
