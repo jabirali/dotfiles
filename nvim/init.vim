@@ -189,7 +189,7 @@ call plug#begin('~/.local/share/nvim/plugins')
 	" Python
 	Plug 'vim-python/python-syntax'
 	Plug 'kalekundert/vim-coiled-snake'
-	Plug 'psf/black', {'tag': '19.10b0'}
+	Plug 'psf/black'
 	" LaTeX
 	Plug 'lervag/vimtex'
 	" Markup

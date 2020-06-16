@@ -1,14 +1,13 @@
 general {
     interval       = 5
     colors         = true
-    color_good     = "#2AA198"
-    color_bad      = "#586E75"
-    color_degraded = "#DC322F"
+    color_good     = "#82AAFF"
+    color_bad      = "#F07178"
+    color_degraded = "#FFCB6B"
 }
 
 order += "path_exists vpn"
 order += "wireless _first_"
-order += "ethernet _first_"
 order += "memory"
 order += "cpu_usage"
 order += "volume master"
