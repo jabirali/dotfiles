@@ -1,10 +1,12 @@
 # vim: foldmethod=marker foldmarker={,}
+# TODO: Move conf into separate subfiles.
 
 # Variables {
     # Modifier: Logo key.
     set $mod Mod4
 
     # Global color theme.
+    # TODO: Remove in favor of base16.
     set $fg+ #F9FAF9
     set $bg+ #232F34
     set $br+ #16A085
@@ -187,11 +189,11 @@ bar {
         statusline $base04
 
         # State             Border  BG      Text
-        focused_workspace   $base0D $base0D $base00
-        active_workspace    $base03 $base03 $base00
-        inactive_workspace  $base01 $base01 $base05
-        urgent_workspace    $base08 $base08 $base00
-        binding_mode        $base0A $base0A $base00
+        focused_workspace   $base00 $base00 $base0D
+        active_workspace    $base00 $base00 $base03
+        inactive_workspace  $base00 $base00 $base04
+        urgent_workspace    $base00 $base00 $base08
+        binding_mode        $base00 $base00 $base0A
     }
 }
 
