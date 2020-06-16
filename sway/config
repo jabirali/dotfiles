@@ -5,20 +5,11 @@
     # Modifier: Logo key.
     set $mod Mod4
 
-    # Global color theme.
-    # TODO: Remove in favor of base16.
-    set $fg+ #F9FAF9
-    set $bg+ #232F34
-    set $br+ #16A085
-    set $fg- #999999
-    set $bg- #232F34
-    set $br- #5F6367
-
     # Applications.
     set $term ~/.config/alacritty/spawn.sh
+    set $fzf  env XDG_CURRENT_DESKTOP=KDE alacritty --class fzf --command fish -c
     set $font Iosevka SS09 12
-    set $mopt --fn '$font' --hf='$br+' --tf='$br+' -l 16 -p '❯' -i
-    set $menu env XDG_CURRENT_DESKTOP=KDE j4-dmenu-desktop --dmenu="bemenu $mopt" | xargs swaymsg exec
+    set $menu j4-dmenu-desktop --dmenu=bemenu | xargs swaymsg exec -- &
     set $net networkmanager_dmenu $mopt
 # }
 
@@ -31,6 +22,7 @@
         before-sleep 'swaylock -f -c 000000'
 
     for_window [app_id="firefox"] inhibit_idle fullscreen
+    for_window [instance="matplotlib"] floating enable
 
     # Input configuration.
     input type:keyboard {
@@ -53,7 +45,7 @@
     bindsym $mod+n      exec echo "" | bemenu $mopt -p 'Workspace name:' | xargs -r swaymsg rename workspace to $(swaymsg -t get_workspaces | jq -r '.[] | select(.focused)' | jq -r '.num')
 
     # bindsym $mod+n      exec $net
-    bindsym $mod+F1 exec env FZF_DEFAULT_OPTS='--color=bg+:#fdf6e3,bg:#fdf6e3,spinner:#2aa198,hl:#268bd2,fg:#657b83,header:#268bd2,info:#b58900,border:#d7d7af,pointer:#2aa198,marker:#2aa198,fg+:#073642,prompt:#b58900,hl+:#268bd2' alacritty --class launcher --command "$HOME/.config/bin/fzf-nm"
+    bindsym $mod+F1 exec $fzf ~/.config/bin/fzf-nm
     # bindcode --release 133 exec $menu
     # TODO: Try separate Alacritty conf file for OS launchers?
 
@@ -219,7 +211,7 @@ bar {
 # System settings.
 include /etc/sway/config.d/*
 
-for_window [app_id="^launcher$"] floating enable
+for_window [app_id="^fzf$"] floating enable, resize set width 1024 height 512
 
 # Startup apps.
 exec env QT_QPA_PLATFORM=xcb /home/jabiro/.local/share/tresorit/tresorit

@@ -10,7 +10,7 @@ if not functions -q fisher
 end
 
 # Theme settings.
-# set -x FZF_DEFAULT_OPTS '--color=bg+:#fdf6e3,bg:#fdf6e3,spinner:#2aa198,hl:#268bd2,fg:#657b83,header:#268bd2,info:#b58900,border:#d7d7af,pointer:#2aa198,marker:#2aa198,fg+:#073642,prompt:#b58900,hl+:#268bd2 --layout=reverse'
+set -x FZF_DEFAULT_OPTS '--color=bg+:#444267,bg:#292D3E,spinner:#89DDFF,hl:#82AAFF,fg:#8796B0,header:#82AAFF,info:#FFCB6B,pointer:#89DDFF,marker:#89DDFF,fg+:#959DCB,prompt:#FFCB6B,hl+:#82AAFF --reverse'
 
 # ANSI colors.
 set fish_color_autosuggestion normal
