@@ -1,18 +1,27 @@
 # ~/.pam_environment
 
-# Set locale.
+# Locale settings.
 LANG=en_US
 LC_ALL=en_DK.UTF-8
 
-# Enable Wayland.
+# Wayland environment.
 QT_PLUGIN_PATH=/usr/lib/qt/plugins
 QT_QPA_PLATFORM=wayland
 GDK_BACKEND=wayland
 MOZ_ENABLE_WAYLAND=1
 
-# KDE environment.
+# Desktop environment.
 XDG_CURRENT_DESKTOP=KDE 
 DE=kde
 
 # Default applications.
 EDITOR=nvim
+PAGER=less
+
+# Application settings.
+set -x BAT_THEME 'base16'
+set -x DIRENV_LOG_FORMAT ""
+set -x DOTNET_CLI_TELEMETRY_OPTOUT 1
+set -x NNN_CONTEXT_COLORS 5555
+set -x NNN_TRASH 1
+set -x NNN_USE_EDITOR 1
