@@ -1,7 +1,6 @@
 " ~/.config/nvim/init.vim vim: foldmethod=marker foldmarker="\ #,"###
 " #1 Settings
 " #2 Builtin
-set background=light
 set completeopt=longest,menuone,noinsert
 set autochdir
 set confirm
@@ -154,7 +153,7 @@ endif
 " #2 Load plugins
 call plug#begin('~/.local/share/nvim/plugins')
 	" User interface
-	Plug 'romainl/flattened'              " Solarized colorscheme
+    Plug 'chriskempson/base16-vim'
 	Plug 'arecarn/vim-fold-cycle'         " Org-like recursive folding
 	Plug 'Konfekt/FastFold'               " More optimized code folding
 	Plug 'liuchengxu/vim-which-key'       " Interactive keybinding help
@@ -206,8 +205,8 @@ call plug#end()
 luafile ~/.config/nvim/lsp.lua
 
 " Load color scheme.
-set background=light
-silent! colorscheme flattened_light
+set background=dark
+silent! colorscheme base16-material-palenight
 
 " #1 Keybindings
 " #2 Leader keys

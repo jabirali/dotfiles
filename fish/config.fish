@@ -17,6 +17,7 @@ set -x DIRENV_LOG_FORMAT ""
 
 # Theme settings.
 set -x BAT_THEME 'ansi-light'
+# set -x FZF_DEFAULT_OPTS '--color=bg+:#fdf6e3,bg:#fdf6e3,spinner:#2aa198,hl:#268bd2,fg:#657b83,header:#268bd2,info:#b58900,border:#d7d7af,pointer:#2aa198,marker:#2aa198,fg+:#073642,prompt:#b58900,hl+:#268bd2 --layout=reverse'
 set -x NNN_CONTEXT_COLORS 5555
 
 # ANSI colors.
