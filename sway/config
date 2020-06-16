@@ -13,7 +13,7 @@
     set $br- #5F6367
 
     # Applications.
-    set $term alacritty
+    set $term ~/.config/alacritty/spawn.sh
     set $font Iosevka SS09 12
     set $mopt --fn '$font' --hf='$br+' --tf='$br+' -l 16 -p '❯' -i
     set $menu env XDG_CURRENT_DESKTOP=KDE j4-dmenu-desktop --dmenu="bemenu $mopt" | xargs swaymsg exec
