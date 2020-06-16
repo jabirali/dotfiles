@@ -183,15 +183,15 @@ bar {
         font pango:$font
 
         background $base00
-        separator  $base01
+        separator  $base00
         statusline $base04
 
         # State             Border  BG      Text
-        focused_workspace   $base05 $base0D $base00
-        active_workspace    $base05 $base03 $base00
-        inactive_workspace  $base03 $base01 $base05
+        focused_workspace   $base0D $base0D $base00
+        active_workspace    $base03 $base03 $base00
+        inactive_workspace  $base01 $base01 $base05
         urgent_workspace    $base08 $base08 $base00
-        binding_mode        $base00 $base0A $base00
+        binding_mode        $base0A $base0A $base00
     }
 }
 
