@@ -19,5 +19,6 @@ ShowLeftPanel=false
 
 [PageView]
 BackgroundColor=34,45,49
+MouseMode=TextSelect
 ShowScrollBars=false
 UseCustomBackgroundColor=true

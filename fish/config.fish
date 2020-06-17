@@ -10,7 +10,8 @@ if not functions -q fisher
 end
 
 # Environment variables.
-set -x FZF_DEFAULT_OPTS '--color=bg+:#444267,bg:#292D3E,spinner:#89DDFF,hl:#82AAFF,fg:#8796B0,header:#82AAFF,info:#FFCB6B,pointer:#89DDFF,marker:#89DDFF,fg+:#959DCB,prompt:#FFCB6B,hl+:#82AAFF --reverse'
+set -x FZF_DEFAULT_OPTS '--color=bg+:#292D3E,bg:#292D3E,spinner:#89DDFF,hl:#82AAFF,fg:#8796B0,header:#82AAFF,info:#FFCB6B,pointer:#89DDFF,marker:#89DDFF,fg+:#959DCB,prompt:#FFCB6B,hl+:#82AAFF --reverse --prompt="❯ " --pointer="❯" --marker="+"'
+set -x BEMENU_OPTS '--fn "Iosevka SS09 12" --tb "#292D3E" --tf "#82AAFF" --hb "#292D3E" --hf "#FFCB6B" --nb "#292D3E" --nf "#8796B0" --fb "#292D3E" --ff "#959DCB" --ignorecase -p "❯"'
 set -x XDG_CURRENT_DESKTOP kde
 
 # ANSI colors.

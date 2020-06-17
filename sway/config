@@ -1,15 +1,12 @@
 # This is my main Sway config file. It basically just defines some
 # variables, and then sources my more modular configuration files.
 
-# Choose modifier.
-set $mod Mod4
-
 # Choose applications.
 set $term ~/.config/alacritty/spawn.sh
 set $fzf  env XDG_CURRENT_DESKTOP=KDE alacritty --class fzf --command fish -c
 set $font Iosevka SS09 12
-set $menu env XDG_CURRENT_DESKTOP=KDE j4-dmenu-desktop --dmenu=bemenu | xargs swaymsg exec -- &
-set $net networkmanager_dmenu $mopt
+set $dmenu fish -c bemenu
+set $menu env XDG_CURRENT_DESKTOP=KDE j4-dmenu-desktop --dmenu="$dmenu" | xargs swaymsg exec -- &
 
 # Source settings.
 include ~/.config/sway/*.conf
