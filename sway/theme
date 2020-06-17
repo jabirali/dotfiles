@@ -1,7 +1,7 @@
 # This file contains the settings for Sway and Swaybar
 # related to visual theming: borders, gaps, colors, etc.
 
-include colorscheme
+include ~/.config/sway/base16/themes/base16-material-palenight.config
 
 default_border pixel 2
 default_floating_border pixel

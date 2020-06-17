@@ -11,10 +11,9 @@ set $font Iosevka SS09 12
 set $menu env XDG_CURRENT_DESKTOP=KDE j4-dmenu-desktop --dmenu=bemenu | xargs swaymsg exec -- &
 set $net networkmanager_dmenu $mopt
 
-
 # Source settings.
-include theme
-include hardware
-include keybindings
-include applications
+include ~/.config/sway/theme
+include ~/.config/sway/hardware
+include ~/.config/sway/keybindings
+include ~/.config/sway/applications
 include /etc/sway/config.d/*
