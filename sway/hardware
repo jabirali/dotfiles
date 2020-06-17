@@ -1,0 +1,14 @@
+# This file describes the hardware settings for Sway.
+
+# Input configuration.
+input type:keyboard {
+    xkb_layout us
+    xkb_options ctrl:nocaps,compose:ralt
+}
+
+input type:touchpad {
+    natural_scroll enabled
+}
+
+# Lid configuration.
+bindswitch lid:on exec systemctl suspend

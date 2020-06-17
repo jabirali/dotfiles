@@ -1,0 +1,39 @@
+# This file contains the settings for Sway and Swaybar
+# related to visual theming: borders, gaps, colors, etc.
+
+include colorscheme
+
+default_border pixel 2
+default_floating_border pixel
+hide_edge_borders smart
+
+gaps inner 16
+smart_gaps on
+
+font pango:$font
+output * bg $base02 solid_color
+
+client.focused          $base05 $base0D $base00 $base0D $base0D
+client.focused_inactive $base01 $base01 $base05 $base03 $base01
+client.unfocused        $base01 $base00 $base05 $base01 $base01
+client.urgent           $base08 $base08 $base00 $base08 $base08
+client.placeholder      $base00 $base00 $base05 $base00 $base00
+client.background       $base07
+
+bar {
+    position top
+    status_command i3status
+    colors {
+        font pango:$font
+
+        background $base00
+        separator  $base00
+        statusline $base04
+
+        focused_workspace   $base00 $base00 $base0D
+        active_workspace    $base00 $base00 $base03
+        inactive_workspace  $base00 $base00 $base04
+        urgent_workspace    $base00 $base00 $base08
+        binding_mode        $base00 $base00 $base0A
+    }
+}

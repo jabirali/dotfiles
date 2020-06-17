@@ -1,220 +1,33 @@
-# vim: foldmethod=marker foldmarker={,}
 # TODO: Move conf into separate subfiles.
 
-# Variables {
-    # Modifier: Logo key.
-    set $mod Mod4
+# Choose modifier.
+set $mod Mod4
 
-    # Applications.
-    set $term ~/.config/alacritty/spawn.sh
-    set $fzf  env XDG_CURRENT_DESKTOP=KDE alacritty --class fzf --command fish -c
-    set $font Iosevka SS09 12
-    set $menu j4-dmenu-desktop --dmenu=bemenu | xargs swaymsg exec -- &
-    set $net networkmanager_dmenu $mopt
-# }
+# Choose applications.
+set $term ~/.config/alacritty/spawn.sh
+set $fzf  env XDG_CURRENT_DESKTOP=KDE alacritty --class fzf --command fish -c
+set $font Iosevka SS09 12
+set $menu env XDG_CURRENT_DESKTOP=KDE j4-dmenu-desktop --dmenu=bemenu | xargs swaymsg exec -- &
+set $net networkmanager_dmenu $mopt
 
-# Hardware {
-    # Idle configuration.
-    exec swayidle -w \
-        timeout 300  'swaylock -f -c 000000'       \
-        timeout 600  'swaymsg "output * dpms off"' \
-             resume  'swaymsg "output * dpms on"'  \
-        before-sleep 'swaylock -f -c 000000'
-
-    for_window [app_id="firefox"] inhibit_idle fullscreen
-    for_window [instance="matplotlib"] floating enable
-
-    # Input configuration.
-    input type:keyboard {
-        xkb_layout us
-        xkb_options ctrl:nocaps,compose:ralt
-    }
-
-    input type:touchpad {
-        natural_scroll enabled
-    }
-
-    # Lid configuration.
-    bindswitch lid:on exec systemctl suspend
-# }
-
-# Key bindings {
-    # Start applications.
-    bindsym $mod+Return exec $term
-    bindsym $mod+d      exec $menu
-    bindsym $mod+n      exec echo "" | bemenu $mopt -p 'Workspace name:' | xargs -r swaymsg rename workspace to $(swaymsg -t get_workspaces | jq -r '.[] | select(.focused)' | jq -r '.num')
-
-    # bindsym $mod+n      exec $net
-    bindsym $mod+F1 exec $fzf ~/.config/bin/fzf-nm
-    # bindcode --release 133 exec $menu
-    # TODO: Try separate Alacritty conf file for OS launchers?
-
-    # Kill applications.
-    bindsym $mod+Shift+q kill
-
-    # Reload config.
-    bindsym $mod+Shift+c reload
-
-    # Drag floating windows by holding down $mod and left mouse button.
-    # Resize them with right mouse button + $mod.
-    # Despite the name, also works for non-floating windows.
-    # Change normal to inverse to use left mouse button for resizing and right
-    # mouse button for dragging.
-    floating_modifier $mod normal
-# }
-    # Moving around {
-        # Vim-like motions.
-        bindsym $mod+h focus left
-        bindsym $mod+j focus down
-        bindsym $mod+k focus up
-        bindsym $mod+l focus right
-
-        bindsym $mod+Shift+h move left
-        bindsym $mod+Shift+j move down
-        bindsym $mod+Shift+k move up
-        bindsym $mod+Shift+l move right
-
-        # Arrow motions.
-        bindsym $mod+Left  focus left
-        bindsym $mod+Down  focus down
-        bindsym $mod+Up    focus up
-        bindsym $mod+Right focus right
-
-        bindsym $mod+Shift+Left  move left
-        bindsym $mod+Shift+Down  move down
-        bindsym $mod+Shift+Up    move up
-        bindsym $mod+Shift+Right move right
-    # }
-
-    # Workspaces {
-        # Switch to workspace. The `number` lets us reuse the same
-        # bindings even after renames (via the keybinding $mod+n).
-        bindsym $mod+1 workspace number 1
-        bindsym $mod+2 workspace number 2
-        bindsym $mod+3 workspace number 3
-        bindsym $mod+4 workspace number 4
-        bindsym $mod+5 workspace number 5
-        bindsym $mod+6 workspace number 6
-        bindsym $mod+7 workspace number 7
-        bindsym $mod+8 workspace number 8
-        bindsym $mod+9 workspace number 9
-        bindsym $mod+0 scratchpad show
-
-        # Move to workspace. Again, we use `workspace number` here.
-        bindsym $mod+Shift+1 move container to workspace number 1
-        bindsym $mod+Shift+2 move container to workspace number 2
-        bindsym $mod+Shift+3 move container to workspace number 3
-        bindsym $mod+Shift+4 move container to workspace number 4
-        bindsym $mod+Shift+5 move container to workspace number 5
-        bindsym $mod+Shift+6 move container to workspace number 6
-        bindsym $mod+Shift+7 move container to workspace number 7
-        bindsym $mod+Shift+8 move container to workspace number 8
-        bindsym $mod+Shift+9 move container to workspace number 9
-        bindsym $mod+Shift+0 move scratchpad
-    # }
-    
-    # Layout stuff {
-        # Basic layout control.
-        bindsym $mod+s splitv
-        bindsym $mod+v splith
-        bindsym $mod+f fullscreen
-
-        # Fancy layout control.
-        bindsym $mod+e layout toggle split
-        bindsym $mod+t layout tabbed
-        bindsym $mod+a focus parent
-
-        # Floating windows.
-        bindsym $mod+Shift+space floating toggle
-        bindsym $mod+space focus mode_toggle
-    # }
-
-    # Multimedia keys {
-        bindsym --locked XF86AudioRaiseVolume  exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-        bindsym --locked XF86AudioLowerVolume  exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-        bindsym --locked XF86AudioMute         exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-        bindsym --locked XF86AudioMicMute      exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-        bindsym --locked XF86MonBrightnessDown exec brightnessctl set  2%
-        bindsym --locked XF86MonBrightnessUp   exec brightnessctl set +5%
-        bindsym --locked XF86AudioPlay         exec playerctl play-pause
-        bindsym --locked XF86AudioNext         exec playerctl next
-        bindsym --locked XF86AudioPrev         exec playerctl previous
-    # }
-
-    # Mode: System management.
-    set $mode_system System: (l) lock, (e) exit, (s) suspend, (r) reboot, (S) shutdown, (R) UEFI mode
-    mode "$mode_system" {
-        bindsym l       exec swaylock -f -c 000000, mode "default"
-        bindsym e       exit
-        bindsym s       exec --no-startup-id systemctl suspend, mode "default"
-        bindsym r       exec --no-startup-id systemctl reboot, mode "default"
-        bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
-        bindsym Shift+r exec --no-startup-id systemctl reboot --firmware-setup, mode "default"
-
-        # return to default mode
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-    }
-    bindsym $mod+Shift+e mode "$mode_system"
-# }
-
-include colorscheme
-
-# Basic color configuration using the Base16 variables for windows and borders.
-# Property Name         Border  BG      Text    Indicator Child Border
-client.focused          $base05 $base0D $base00 $base0D $base0D
-client.focused_inactive $base01 $base01 $base05 $base03 $base01
-client.unfocused        $base01 $base00 $base05 $base01 $base01
-client.urgent           $base08 $base08 $base00 $base08 $base08
-client.placeholder      $base00 $base00 $base05 $base00 $base00
-client.background       $base07
-
-
-bar {
-    position top
-    status_command i3status
-    colors {
-        font pango:$font
-
-        background $base00
-        separator  $base00
-        statusline $base04
-
-        # State             Border  BG      Text
-        focused_workspace   $base00 $base00 $base0D
-        active_workspace    $base00 $base00 $base03
-        inactive_workspace  $base00 $base00 $base04
-        urgent_workspace    $base00 $base00 $base08
-        binding_mode        $base00 $base00 $base0A
-    }
-}
-
-# Theme settings {
-    # font pango:$font
-
-    # client.focused          $br+ $br+ $fg+ $fg+
-    # client.focused_inactive $br- $br- $fg- $fg+
-    # client.unfocused        $br- $br- $fg- $fg+
-    # client.urgent           $br- $br- $fg- $fg+
-
-    default_border pixel 2
-    default_floating_border pixel
-    hide_edge_borders smart
-
-    gaps inner 16
-    smart_gaps on
-
-    output * bg #131F24 solid_color
-
-# }
-
-# System settings.
-include /etc/sway/config.d/*
-
+# Define window rules.
 for_window [app_id="^fzf$"] floating enable, resize set width 1024 height 512
+for_window [app_id="firefox"] inhibit_idle fullscreen
+for_window [instance="matplotlib"] floating enable
 
-# Startup apps.
+# Startup applications.
 exec env QT_QPA_PLATFORM=xcb /home/jabiro/.local/share/tresorit/tresorit
 exec redshift -m wayland
 exec pamac-tray-appindicator
 exec mako
+exec swayidle -w \
+    timeout 300  'swaylock -f -c 000000'       \
+    timeout 600  'swaymsg "output * dpms off"' \
+         resume  'swaymsg "output * dpms on"'  \
+    before-sleep 'swaylock -f -c 000000'
+
+# External settings.
+include theme
+include hardware
+include keybindings
+include /etc/sway/config.d/*
