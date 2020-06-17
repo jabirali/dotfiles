@@ -4,19 +4,15 @@
 LANG=en_US
 LC_ALL=en_DK.UTF-8
 
+# Default applications.
+EDITOR=nvim
+PAGER=less
+
 # Wayland environment.
 QT_PLUGIN_PATH=/usr/lib/qt/plugins
 QT_QPA_PLATFORM=wayland
 GDK_BACKEND=wayland
 MOZ_ENABLE_WAYLAND=1
-
-# Desktop environment.
-XDG_CURRENT_DESKTOP=KDE 
-DE=kde
-
-# Default applications.
-EDITOR=nvim
-PAGER=less
 
 # Application settings.
 set -x BAT_THEME 'base16'

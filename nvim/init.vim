@@ -77,7 +77,7 @@ let g:wiki_zotero_root = '~/snap/zotero-snap'
 let g:wiki_mappings_use_defaults = 0
 
 " #2 Envvars
-let $BAT_THEME = 'ansi-dark'
+let $BAT_THEME = 'base16'
 
 " #1 Commands
 " #2 New commands
@@ -110,18 +110,21 @@ augroup END
 " Improve the default highlight colors.
 augroup clean_highlights
  	autocmd!
- 	" Simplify highlighting of active tab/window.
- 	autocmd ColorScheme * hi! TabLine guibg=none
- 	autocmd ColorScheme * hi! TabLineFill guibg=none
- 	autocmd ColorScheme * hi! TabLineSel guibg=none gui=bold
-	autocmd ColorScheme * hi! VertSplit guifg='#d7d7af' guibg=none
- 	" Tone down too heavy default highlighting.
+" 	" Simplify highlighting of active tab/window.
+" 	autocmd ColorScheme * hi! TabLine guibg=none
+" 	autocmd ColorScheme * hi! TabLineFill guibg=none
+" 	autocmd ColorScheme * hi! TabLineSel guibg=none gui=bold
+"	autocmd ColorScheme * hi! VertSplit guifg='#d7d7af' guibg=none
+" 	" Tone down too heavy default highlighting.
 	autocmd ColorScheme * hi! SignColumn guibg=none
 	autocmd ColorScheme * hi! LineNr guibg=none
+	autocmd ColorScheme * hi! GitGutterAdd guibg=none
+	autocmd ColorScheme * hi! GitGutterChange guibg=none
+	autocmd ColorScheme * hi! GitGutterDelete guibg=none
 	autocmd ColorScheme * hi! link Folded Comment
-	" More consistent highlighting.
- 	autocmd ColorScheme * hi! link MatchParen Cursor
- 	autocmd ColorScheme * hi! link CleverFDefaultLabel Search
+"	" More consistent highlighting.
+" 	autocmd ColorScheme * hi! link MatchParen Cursor
+" 	autocmd ColorScheme * hi! link CleverFDefaultLabel Search
  	" Simplify the LSP diagnostics view.
  	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineError SpellCap
  	autocmd ColorScheme * hi! link LspDiagnosticsUnderlineWarning SpellBad

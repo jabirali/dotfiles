@@ -9,8 +9,9 @@ if not functions -q fisher
 	fish -c fisher
 end
 
-# Theme settings.
+# Environment variables.
 set -x FZF_DEFAULT_OPTS '--color=bg+:#444267,bg:#292D3E,spinner:#89DDFF,hl:#82AAFF,fg:#8796B0,header:#82AAFF,info:#FFCB6B,pointer:#89DDFF,marker:#89DDFF,fg+:#959DCB,prompt:#FFCB6B,hl+:#82AAFF --reverse'
+set -x XDG_CURRENT_DESKTOP kde
 
 # ANSI colors.
 set fish_color_autosuggestion normal
@@ -29,8 +30,7 @@ set fish_color_user brgreen
 # Plugin settings.
 set projector_dir ~/Code
 set projector_cmd edit +GFiles
-set zotfile_root ~/snap/zotero-snap
-set expressvpn_relink on
+set zotfile_root ~/.local/share/zotero
 
 # Aliases for common actions.
 alias exa    'exa --git-ignore --group-directories-first --time-style=long-iso'
