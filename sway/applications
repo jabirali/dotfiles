@@ -1,0 +1,18 @@
+# This file defines application behavior under Sway: which applications are
+# automatically started at login, and how are windows handled by default.
+
+# Define rules.
+for_window [app_id="^fzf$"] floating enable, resize set width 1024 height 512
+for_window [app_id="firefox"] inhibit_idle fullscreen
+for_window [instance="matplotlib"] floating enable
+
+# Startup apps.
+exec env QT_QPA_PLATFORM=xcb /home/jabiro/.local/share/tresorit/tresorit
+exec redshift -m wayland
+exec pamac-tray-appindicator
+exec mako
+exec swayidle -w \
+    timeout 300  'swaylock -f -c 000000'       \
+    timeout 600  'swaymsg "output * dpms off"' \
+         resume  'swaymsg "output * dpms on"'  \
+    before-sleep 'swaylock -f -c 000000'

@@ -1,4 +1,5 @@
-# TODO: Move conf into separate subfiles.
+# This is my main Sway config file. It basically just defines some
+# variables, and then sources my more modular configuration files.
 
 # Choose modifier.
 set $mod Mod4
@@ -10,24 +11,10 @@ set $font Iosevka SS09 12
 set $menu env XDG_CURRENT_DESKTOP=KDE j4-dmenu-desktop --dmenu=bemenu | xargs swaymsg exec -- &
 set $net networkmanager_dmenu $mopt
 
-# Define window rules.
-for_window [app_id="^fzf$"] floating enable, resize set width 1024 height 512
-for_window [app_id="firefox"] inhibit_idle fullscreen
-for_window [instance="matplotlib"] floating enable
 
-# Startup applications.
-exec env QT_QPA_PLATFORM=xcb /home/jabiro/.local/share/tresorit/tresorit
-exec redshift -m wayland
-exec pamac-tray-appindicator
-exec mako
-exec swayidle -w \
-    timeout 300  'swaylock -f -c 000000'       \
-    timeout 600  'swaymsg "output * dpms off"' \
-         resume  'swaymsg "output * dpms on"'  \
-    before-sleep 'swaylock -f -c 000000'
-
-# External settings.
+# Source settings.
 include theme
 include hardware
 include keybindings
+include applications
 include /etc/sway/config.d/*
