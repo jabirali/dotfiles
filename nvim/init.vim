@@ -11,10 +11,23 @@
 " Load plugins from the Git submodules in `pack`.
 packloadall
 
-" Load language server support via `nvim-lsp`.
-luafile ~/.config/nvim/lsp.lua
-
 " Load color scheme.
 set background=dark
-silent! colorscheme base16-material-palenight
+colorscheme base16-material-palenight
 
+" Load LSP support via `nvim-lsp`.
+luafile ~/.config/nvim/lsp.lua
+
+" Enable LSP keybindings.
+nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<cr>
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
+nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<cr>
+nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<cr>
+nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<cr>
+nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<cr>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<cr>
+nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<cr>
+nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
+
+" Enable LSP completion.
+autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
