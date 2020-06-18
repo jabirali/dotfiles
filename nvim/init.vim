@@ -31,3 +31,16 @@ nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
 
 " Enable LSP completion.
 autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
+
+" Built-in settings.
+set autochdir
+set expandtab
+set fillchars=fold:\ ,
+set foldmethod=syntax
+
+" Define a simple custom folding style. For filetypes that don't have custom
+" folding packages loaded, this is much less noisy than the Neovim defaults.
+set foldtext=SimpleFoldText()
+function! SimpleFoldText()
+	return getline(v:foldstart)
+endfunction
