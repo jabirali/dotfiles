@@ -1,4 +1,4 @@
-" ~/.config/nvim/init.vim vim: foldmethod=marker
+" ~/.config/nvim/init.vim
 
 " I'm in the process of migrating from `vim-plug` to `packadd`, since the
 " latter is built into `nvim`, and also works well with Git submodules. Both
@@ -28,11 +28,11 @@ set updatetime=100
 set winaltkeys=no
 
 " Plugin settings.
-let g:gitgutter_sign_added = '│'
-let g:gitgutter_sign_modified = '│'
-let g:gitgutter_sign_modified_removed = '│'
-let g:gitgutter_sign_removed = '_'
-let g:gitgutter_sign_removed_first_line = '‾'
+let g:gitgutter_sign_added = '🮇'
+let g:gitgutter_sign_modified = '🮇'
+let g:gitgutter_sign_modified_removed = '🮇'
+let g:gitgutter_sign_removed = '▁'
+let g:gitgutter_sign_removed_first_line = '▔'
 
 " Load plugins from the Git submodules in `pack`.
 packloadall
@@ -79,5 +79,5 @@ augroup clean_highlights
     autocmd ColorScheme * hi! link Folded Comment
 augroup END
 
-" Custom keybindings. TODO: FZF.
+" Custom keybindings. TODO: FZF here.
 nmap <m-tab> :buffers<cr>
