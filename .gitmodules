@@ -10,3 +10,9 @@
 [submodule "nvim/pack/project/start/vim-gitgutter"]
 	path = nvim/pack/project/start/vim-gitgutter
 	url = https://github.com/airblade/vim-gitgutter
+[submodule "nvim/pack/project/start/fzf"]
+	path = nvim/pack/project/start/fzf
+	url = https://github.com/junegunn/fzf
+[submodule "nvim/pack/project/start/fzf.vim"]
+	path = nvim/pack/project/start/fzf.vim
+	url = https://github.com/junegunn/fzf.vim

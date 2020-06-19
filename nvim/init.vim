@@ -28,6 +28,8 @@ set updatetime=100
 set winaltkeys=no
 
 " Plugin settings.
+let g:fzf_layout = { 'window': { 'width': 0.80, 'height': 0.65, 'xoffset': 0.50, 'yoffset': 0.45 } }
+
 let g:gitgutter_sign_added = '🮇'
 let g:gitgutter_sign_modified = '🮇'
 let g:gitgutter_sign_modified_removed = '🮇'
@@ -85,5 +87,14 @@ augroup clean_highlights
     autocmd ColorScheme * hi! link Folded Comment
 augroup END
 
-" Custom keybindings. TODO: FZF here.
-nmap <m-tab> :buffers<cr>
+" Custom keybindings.
+nnoremap <m-h>   <c-w>h
+nnoremap <m-j>   <c-w>j
+nnoremap <m-k>   <c-w>k
+nnoremap <m-l>   <c-w>l
+
+nnoremap <m-tab> :Buffers<cr>
+nnoremap <space> :GFiles<cr>
+
+nnoremap , ;
+nnoremap ; :
