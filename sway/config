@@ -9,5 +9,6 @@ set $dmenu fish -c bemenu
 set $menu env XDG_CURRENT_DESKTOP=KDE j4-dmenu-desktop --dmenu="$dmenu" | xargs swaymsg exec -- &
 
 # Source settings.
-include ~/.config/sway/*.conf
 include /etc/sway/config.d/*
+include ~/.config/sway/config.d/*.conf
+# include ~/.config/sway/`hostname`
