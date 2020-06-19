@@ -23,9 +23,11 @@ sr  snap remove
 ss  snap search
 
 # Miscellaneous.
-alsa   sudo alsa force-reload
 o   xdg-open
 n   nvim +WikiFzfPages
 u   update
 v   vpn
 z   zotfile
+
+alsa   sudo alsa force-reload
+# path   set -U fish_user_paths

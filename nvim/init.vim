@@ -36,6 +36,7 @@ let g:gitgutter_sign_removed_first_line = '‾'
 
 " Load plugins from the Git submodules in `pack`.
 packloadall
+silent! helptags ALL
 
 " Load color scheme.
 set background=dark
@@ -54,6 +55,7 @@ nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<cr>
 nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<cr>
 nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<cr>
 nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
+nnoremap <silent> `     <cmd>lua vim.lsp.util.show_line_diagnostics()<cr>
 
 " Enable LSP completion.
 autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
@@ -76,3 +78,6 @@ augroup clean_highlights
     autocmd ColorScheme * hi! GitGutterDelete guibg=none
     autocmd ColorScheme * hi! link Folded Comment
 augroup END
+
+" Custom keybindings. TODO: FZF.
+nmap <m-tab> :buffers<cr>
