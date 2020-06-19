@@ -17,7 +17,7 @@ set gdefault
 set ignorecase
 set inccommand=nosplit
 set nowrap
-set signcolumn=yes:2
+set signcolumn=yes:1
 set smartcase
 set spelllang=en,nb
 set splitbelow
@@ -56,6 +56,12 @@ nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<cr>
 nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<cr>
 nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
 nnoremap <silent> `     <cmd>lua vim.lsp.util.show_line_diagnostics()<cr>
+
+" Simplify LSP sign column.
+sign define LspDiagnosticsErrorSign text=🮇
+sign define LspDiagnosticsWarningSign text=🮇
+sign define LspDiagnosticsInformationSign text=🮇
+sign define LspDiagnosticsHintSign text=🮇
 
 " Enable LSP completion.
 autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
