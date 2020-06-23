@@ -1,5 +1,8 @@
 # ~/.config/alacritty/alacritty.yml
 
+# General settings.
+live_config_reload: true
+
 window:
   dynamic_padding: true
   startup_mode: Maximized
@@ -7,6 +10,7 @@ window:
 scrolling:
   history: 10240
 
+# Iosevka font.
 font:
   normal:
     family: Iosevka SS09
@@ -22,19 +26,16 @@ font:
     style: Bold Italic
   size: 14.0
 
-# Base16 Material Palenight
+# Base16 Palenight.
 colors:
-  # Default colors
   primary:
     background: '#292d3e'
     foreground: '#959dcb'
 
-  # Colors the cursor will use if `custom_cursor_colors` is true
   cursor:
     text: '#292d3e'
     cursor: '#959dcb'
 
-  # Normal colors
   normal:
     black:   '#292d3e'
     red:     '#f07178'
@@ -45,7 +46,6 @@ colors:
     cyan:    '#89ddff'
     white:   '#959dcb'
 
-  # Bright colors
   bright:
     black:   '#676e95'
     red:     '#f78c6c'
@@ -56,23 +56,17 @@ colors:
     cyan:    '#ff5370'
     white:   '#ffffff'
 
+custom_cursor_colors: true
 draw_bold_text_with_bright_colors: false
 
-live_config_reload: true
-
+# Interactive shell.
 shell:
   program: /usr/bin/fish
 
-mouse:
-  hide_when_typing: true
-
+# Enable `vim`-like keybindings for copy-paste. Unbinding Alt+Return
+# is necessary to access the "new split" function of `tmux-tilish`.
 key_bindings:
-  - { key: F12, command: { program: "alacritty", args: ["-t", "Remote", "-e", "fish", "-C", "ssh-fzf"] } }
   - { key: Return, mods: Alt, action: ReceiveChar }
-  - { key: P, mods: Alt, action: Paste }
+  - { key: Escape, mods: Alt, action: ToggleViMode }
   - { key: Y, mods: Alt, action: Copy }
-# - { key: U, mods: Alt, action: ScrollPageUp   }
-# - { key: D, mods: Alt, action: ScrollPageDown }
-# - { key: K, mods: Alt, action: ScrollLineUp   }
-# - { key: J, mods: Alt, action: ScrollLineDown }
-# - { key: V, mods: Alt, action: ToggleViMode }
+  - { key: P, mods: Alt, action: Paste }
