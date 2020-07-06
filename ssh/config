@@ -5,7 +5,7 @@ Host home
   User jabirali
 
 Host babacup
-  Hostname babacup.lan
+  Hostname 10.0.0.100
   User jabirali
 
 Host sintef

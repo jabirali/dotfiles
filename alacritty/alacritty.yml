@@ -6,6 +6,7 @@ live_config_reload: true
 window:
   dynamic_padding: true
   startup_mode: Maximized
+  decorations: none
 
 scrolling:
   history: 10240
@@ -29,7 +30,7 @@ font:
 # Base16 Palenight.
 colors:
   primary:
-    background: '#292d3e'
+    background: '#1b2224'
     foreground: '#959dcb'
 
   cursor:
@@ -62,11 +63,15 @@ draw_bold_text_with_bright_colors: false
 # Interactive shell.
 shell:
   program: /usr/bin/fish
+  args:
+    - -l
+    - -c
+    - tmux attach || tmux
 
 # Enable `vim`-like keybindings for copy-paste. Unbinding Alt+Return
 # is necessary to access the "new split" function of `tmux-tilish`.
 key_bindings:
   - { key: Return, mods: Alt, action: ReceiveChar }
-  - { key: Escape, mods: Alt, action: ToggleViMode }
+#  - { key: Escape, mods: Alt, action: ToggleViMode }
   - { key: Y, mods: Alt, action: Copy }
   - { key: P, mods: Alt, action: Paste }
