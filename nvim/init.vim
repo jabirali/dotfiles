@@ -29,12 +29,6 @@ set winaltkeys=no
 " Plugin settings.
 let g:fzf_layout = { 'window': { 'width': 0.80, 'height': 0.65, 'xoffset': 0.50, 'yoffset': 0.45 } }
 
-let g:gitgutter_sign_added = '+'
-let g:gitgutter_sign_modified = '~'
-let g:gitgutter_sign_modified_removed = '~'
-let g:gitgutter_sign_removed = '▁'
-let g:gitgutter_sign_removed_first_line = '▔'
-
 " Load plugins from the Git submodules in `pack`.
 packloadall
 silent! helptags ALL
@@ -46,8 +40,14 @@ colorscheme dim
 
 augroup colors
   autocmd!
+  " Further dim too strong colors.
   autocmd ColorScheme * highlight Visual ctermbg=black ctermfg=white cterm=NONE
-  autocmd ColorScheme * highlight SignColumn ctermbg=NONE
   autocmd ColorScheme * highlight StatusLine ctermbg=black cterm=NONE
   autocmd ColorScheme * highlight StatusLineNC ctermbg=black cterm=NONE
+  " Override the GitGutter colors.
+  autocmd ColorScheme * highlight SignColumn NONE
+  autocmd ColorScheme * highlight GitGutterAdd ctermfg=green
+  autocmd ColorScheme * highlight GitGutterChange ctermfg=yellow
+  autocmd ColorScheme * highlight GitGutterDelete ctermfg=red
+  autocmd ColorScheme * highlight GitGutterChangeDelete ctermfg=red
 augroup END
