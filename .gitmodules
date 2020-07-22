@@ -13,6 +13,9 @@
 [submodule "nvim/pack/style/start/vim-dim"]
 	path = nvim/pack/style/start/vim-dim
 	url = https://github.com/jeffkreeftmeijer/vim-dim.git
+[submodule "nvim/pack/system/start/vim-tmux-yank"]
+	path = nvim/pack/system/start/vim-tmux-yank
+	url = git@github.com:jabirali/vim-tmux-yank.git
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
