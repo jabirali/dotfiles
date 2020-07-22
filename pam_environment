@@ -8,14 +8,8 @@ LC_ALL=en_DK.UTF-8
 EDITOR=nvim
 PAGER=less
 
-# Wayland environment.
-QT_PLUGIN_PATH=/usr/lib/qt/plugins
-QT_QPA_PLATFORM=wayland
-GDK_BACKEND=wayland
-MOZ_ENABLE_WAYLAND=1
-
 # Application settings.
-set -x BAT_THEME 'base16'
+set -x BAT_THEME 'ansi-dark'
 set -x DIRENV_LOG_FORMAT ""
 set -x DOTNET_CLI_TELEMETRY_OPTOUT 1
 set -x NNN_CONTEXT_COLORS 5555
