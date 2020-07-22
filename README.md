@@ -9,6 +9,8 @@ separate plugins for Tmux, Fish, and Neovim. Most are hosted on [my GitHub][1].
 Note also that this repository references some external Git repositories for
 e.g. `nvim` plugins; thus, for a full clone of this repository including all
 dependencies (i.e. Git submodules), you have to use `git clone --recursive`.
+Since I have replaced `vim-plug` and `tpm` update scripts with Git submodules,
+updating all external plugins is now done via `git pull --recurse-submodules`.
 
 [1]: https://github.com/jabirali?tab=repositories&type=source
 
