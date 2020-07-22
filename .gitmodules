@@ -22,3 +22,6 @@
 [submodule "tmux/plugins/tmux-sensible"]
 	path = tmux/plugins/tmux-sensible
 	url = git@github.com:tmux-plugins/tmux-sensible.git
+[submodule "nvim/pack/style/start/vim-dim"]
+	path = nvim/pack/style/start/vim-dim
+	url = https://github.com/jeffkreeftmeijer/vim-dim.git
