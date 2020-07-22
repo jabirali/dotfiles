@@ -10,12 +10,15 @@
 [submodule "nvim/pack/project/start/fzf.vim"]
 	path = nvim/pack/project/start/fzf.vim
 	url = https://github.com/junegunn/fzf.vim
-[submodule "nvim/pack/style/start/vim-dim"]
-	path = nvim/pack/style/start/vim-dim
-	url = https://github.com/jeffkreeftmeijer/vim-dim.git
 [submodule "nvim/pack/system/start/vim-tmux-yank"]
 	path = nvim/pack/system/start/vim-tmux-yank
 	url = git@github.com:jabirali/vim-tmux-yank.git
+[submodule "nvim/pack/style/start/vim-minimono"]
+	path = nvim/pack/style/start/vim-minimono
+	url = git@github.com:jabirali/vim-minimono.git
+[submodule "nvim/pack/system/start/tmux-navigate"]
+	path = nvim/pack/system/start/tmux-navigate
+	url = https://github.com/sunaku/tmux-navigate.git
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
@@ -30,7 +33,4 @@
 	url = git@github.com:jabirali/tmux-normalmode.git
 [submodule "tmux/plugins/tmux-navigate"]
 	path = tmux/plugins/tmux-navigate
-	url = https://github.com/sunaku/tmux-navigate.git
-[submodule "nvim/pack/system/start/tmux-navigate"]
-	path = nvim/pack/system/start/tmux-navigate
 	url = https://github.com/sunaku/tmux-navigate.git

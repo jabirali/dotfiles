@@ -32,7 +32,7 @@ colors:
     white:   '#F4F4F4'
 
 window:
-  # decorations: none
+  decorations: none
   dynamic_padding: true
   padding:
     x: 8
