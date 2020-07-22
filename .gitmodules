@@ -1,6 +1,3 @@
-[submodule "sway/base16-sway"]
-	path = sway/base16
-	url = https://github.com/rkubosz/base16-sway
 [submodule "nvim/pack/project/start/nvim-lsp"]
 	path = nvim/pack/project/start/nvim-lsp
 	url = https://github.com/neovim/nvim-lsp
@@ -13,6 +10,9 @@
 [submodule "nvim/pack/project/start/fzf.vim"]
 	path = nvim/pack/project/start/fzf.vim
 	url = https://github.com/junegunn/fzf.vim
+[submodule "nvim/pack/style/start/vim-dim"]
+	path = nvim/pack/style/start/vim-dim
+	url = https://github.com/jeffkreeftmeijer/vim-dim.git
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
@@ -22,6 +22,3 @@
 [submodule "tmux/plugins/tmux-sensible"]
 	path = tmux/plugins/tmux-sensible
 	url = git@github.com:tmux-plugins/tmux-sensible.git
-[submodule "nvim/pack/style/start/vim-dim"]
-	path = nvim/pack/style/start/vim-dim
-	url = https://github.com/jeffkreeftmeijer/vim-dim.git
