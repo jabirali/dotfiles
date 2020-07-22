@@ -2,6 +2,7 @@
 
 # This Alacritty configuration sets up a PopOS colorscheme with slight
 # transparency, in addition to some Vim-like keybindings for copy/paste.
+# It is meant for use together with Tmux, and therefore autostarts that.
 
 background_opacity: 0.99
 
@@ -35,7 +36,7 @@ window:
   dynamic_padding: true
   padding:
     x: 8
-    y: 8
+    y: 4
 
 font:
   normal:
@@ -50,3 +51,10 @@ key_bindings:
   - { key: Return, mods: Alt, action: ReceiveChar }
   - { key: Y, mods: Alt, action: Copy }
   - { key: P, mods: Alt, action: Paste }
+
+shell:
+  program: /bin/bash
+  args:
+    - -l
+    - -c
+    - "tmux"
