@@ -25,3 +25,6 @@
 [submodule "tmux/plugins/tmux-sensible"]
 	path = tmux/plugins/tmux-sensible
 	url = git@github.com:tmux-plugins/tmux-sensible.git
+[submodule "tmux/plugins/tmux-normalmode"]
+	path = tmux/plugins/tmux-normalmode
+	url = git@github.com:jabirali/tmux-normalmode.git

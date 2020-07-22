@@ -49,7 +49,6 @@ font:
 
 key_bindings:
   - { key: Return, mods: Alt, action: ReceiveChar }
-  - { key: Y, mods: Alt, action: Copy }
   - { key: P, mods: Alt, action: Paste }
 
 shell:
