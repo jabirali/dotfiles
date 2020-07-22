@@ -1,77 +1,43 @@
 # ~/.config/alacritty/alacritty.yml
 
-# General settings.
-live_config_reload: true
+# This Alacritty configuration sets up a PopOS colorscheme with slight
+# transparency, in addition to some Vim-like keybindings for copy/paste.
 
-window:
-  dynamic_padding: true
-  startup_mode: Maximized
-  decorations: none
+background_opacity: 0.99
 
-scrolling:
-  history: 10240
-
-# Iosevka font.
-font:
-  normal:
-    family: Iosevka SS09
-    style: Regular
-  bold:
-    family: Iosevka SS09
-    style: Bold
-  italic:
-    family: Iosevka SS09
-    style: Italic
-  bold_italic:
-    family: Iosevka SS09
-    style: Bold Italic
-  size: 14.0
-
-# Base16 Palenight.
 colors:
   primary:
-    background: '#1b2224'
-    foreground: '#959dcb'
-
-  cursor:
-    text: '#292d3e'
-    cursor: '#959dcb'
+    background: '#2A2A2A'
+    foreground: '#F4F4F4'
 
   normal:
-    black:   '#292d3e'
-    red:     '#f07178'
-    green:   '#c3e88d'
-    yellow:  '#ffcb6b'
-    blue:    '#82aaff'
-    magenta: '#c792ea'
-    cyan:    '#89ddff'
-    white:   '#959dcb'
+    black:   '#363636'
+    red:     '#CC0000'
+    green:   '#4E9A06'
+    yellow:  '#C4A000'
+    blue:    '#3465A4'
+    magenta: '#75507B'
+    cyan:    '#06989A'
+    white:   '#ACACAC'
 
   bright:
-    black:   '#676e95'
-    red:     '#f78c6c'
-    green:   '#444267'
-    yellow:  '#32374d'
-    blue:    '#8796b0'
-    magenta: '#959dcb'
-    cyan:    '#ff5370'
-    white:   '#ffffff'
+    black:   '#4E4E4E'
+    red:     '#F15D22'
+    green:   '#73C48F'
+    yellow:  '#FFCE51'
+    blue:    '#48B9C7'
+    magenta: '#AD7FA8'
+    cyan:    '#34E2E2'
+    white:   '#F4F4F4'
 
-custom_cursor_colors: true
-draw_bold_text_with_bright_colors: false
+window:
+  # decorations: none
+  dynamic_padding: true
+  padding:
+    x: 8
+    y: 8
 
-# Interactive shell.
-shell:
-  program: /usr/bin/fish
-  args:
-    - -l
-    - -c
-    - tmux attach || tmux
-
-# Enable `vim`-like keybindings for copy-paste. Unbinding Alt+Return
-# is necessary to access the "new split" function of `tmux-tilish`.
 key_bindings:
   - { key: Return, mods: Alt, action: ReceiveChar }
-#  - { key: Escape, mods: Alt, action: ToggleViMode }
   - { key: Y, mods: Alt, action: Copy }
   - { key: P, mods: Alt, action: Paste }
