@@ -28,3 +28,9 @@
 [submodule "tmux/plugins/tmux-normalmode"]
 	path = tmux/plugins/tmux-normalmode
 	url = git@github.com:jabirali/tmux-normalmode.git
+[submodule "tmux/plugins/tmux-navigate"]
+	path = tmux/plugins/tmux-navigate
+	url = https://github.com/sunaku/tmux-navigate.git
+[submodule "nvim/pack/system/start/tmux-navigate"]
+	path = nvim/pack/system/start/tmux-navigate
+	url = https://github.com/sunaku/tmux-navigate.git
