@@ -37,6 +37,15 @@ window:
     x: 8
     y: 8
 
+font:
+  normal:
+    family: Source Code Pro
+  bold:
+    family: Source Code Pro
+  italic:
+    family: Source Code Pro
+  size: 12
+
 key_bindings:
   - { key: Return, mods: Alt, action: ReceiveChar }
   - { key: Y, mods: Alt, action: Copy }

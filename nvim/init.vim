@@ -42,7 +42,7 @@ silent! helptags ALL
 
 " Load color scheme.
 set background=dark
-colorscheme base16-material-palenight
+" colorscheme base16-material-palenight
 
 " Load LSP support via `nvim-lsp`.
 luafile ~/.config/nvim/lsp.lua
