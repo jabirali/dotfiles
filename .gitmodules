@@ -34,3 +34,6 @@
 [submodule "tmux/plugins/tmux-navigate"]
 	path = tmux/plugins/tmux-navigate
 	url = https://github.com/sunaku/tmux-navigate.git
+[submodule "tmux/plugins/tmux-popshell"]
+	path = tmux/plugins/tmux-popshell
+	url = git@github.com:jabirali/tmux-popshell.git
