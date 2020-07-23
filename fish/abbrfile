@@ -23,6 +23,11 @@ si  snap install
 sr  snap remove
 ss  snap search
 
+f   flatpak
+fi  flatpak install
+fr  flatpak uninstall
+fs  flatpak search
+
 # Miscellaneous.
 o   xdg-open
 n   nvim +WikiFzfPages
