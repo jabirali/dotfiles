@@ -1,0 +1,13 @@
+{
+    "workbench.colorTheme": "Solarized Light",
+    "window.menuBarVisibility": "toggle",
+    "python.pythonPath": "/usr/bin/python3",
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true,
+    "breadcrumbs.enabled": true,
+    "python.formatting.provider": "black",
+    "terminal.integrated.shell.linux": "/usr/bin/fish",
+    "workbench.enableExperiments": false,
+    "workbench.settings.enableNaturalLanguageSearch": false
+}
