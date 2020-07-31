@@ -35,7 +35,11 @@ colorscheme minimono
 
 " Custom keybindings. These bindings are not only used in Neovim, but also
 " loaded automatically by the `VSCodeVim` extension in Visual Studio Codium.
-nnoremap <backspace> <C-o>
-nnoremap <tab>       <C-i>
-nnoremap U           <C-r>
-nnoremap M           J
+" By rebinding control characters to regular symbols, I can use the control
+" keyboard shortcuts of IDE's like VSCode without having to remap everything.
+nnoremap U <C-r>
+nnoremap M J
+nnoremap K <C-v>k
+nnoremap J <C-v>j
+vnoremap K k
+vnoremap J j

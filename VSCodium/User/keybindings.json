@@ -1,16 +1,16 @@
 [
     // Vim-compatible keybindings for navigating splits.
     {
+        "key": "alt+h",
+        "command": "workbench.action.navigateLeft",
+    },
+    {
         "key": "alt+j",
         "command": "workbench.action.navigateDown",
     },
     {
         "key": "alt+k",
         "command": "workbench.action.navigateUp",
-    },
-    {
-        "key": "alt+h",
-        "command": "workbench.action.navigateLeft",
     },
     {
         "key": "alt+l",
@@ -31,8 +31,9 @@
         "command": "editor.action.insertCursorBelow",
         "when": "editorTextFocus && vim.mode != 'Insert'"
     },
-    // Miscellaneous.
-    {   "key": "ctrl+shift+enter",
-        "command": "workbench.action.toggleSidebarVisibility" 
+    {
+        "key": "shift+enter",
+        "command": "editor.action.selectHighlights",
+        "when": "editorTextFocus && vim.mode != 'Insert'"
     },
 ]
