@@ -7,7 +7,7 @@
   // Editor.
   "amVim.useSystemClipboard": true,
   // Interface.
-  "workbench.colorTheme": "Solarized Light",
+  "workbench.colorTheme": "Ayu Mojave",
   "editor.cursorBlinking": "solid",
   "window.menuBarVisibility": "toggle",
   "editor.minimap.enabled": false,

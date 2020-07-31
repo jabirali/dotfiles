@@ -2,6 +2,7 @@
 
 # Plugins retrieved from `codium --list-extensions`.
 EXTENSIONS=(
+    "ccy.ayu-adaptive" \
     "auiworks.amvim"   \
     "ms-python.python" \
 )
