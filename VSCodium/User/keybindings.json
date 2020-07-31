@@ -19,5 +19,8 @@
     {
         "key": "alt+enter",
         "command": "workbench.action.togglePanel"
+    },
+    {   "key": "alt+shift+enter",
+        "command": "workbench.action.toggleSidebarVisibility" 
     }
 ]
