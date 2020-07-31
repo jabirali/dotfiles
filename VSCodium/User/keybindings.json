@@ -15,5 +15,9 @@
     {
         "key": "alt+l",
         "command": "workbench.action.navigateRight",
+    },
+    {
+        "key": "alt+enter",
+        "command": "workbench.action.togglePanel"
     }
 ]
