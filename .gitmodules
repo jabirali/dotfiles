@@ -19,6 +19,15 @@
 [submodule "nvim/pack/system/start/tmux-navigate"]
 	path = nvim/pack/system/start/tmux-navigate
 	url = https://github.com/sunaku/tmux-navigate.git
+[submodule "nvim/pack/editor/start/vim-surround"]
+	path = nvim/pack/editor/start/vim-surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule "nvim/pack/editor/start/vim-commentary"]
+	path = nvim/pack/editor/start/vim-commentary
+	url = https://github.com/tpope/vim-commentary.git
+[submodule "nvim/pack/editor/start/vim-repeat"]
+	path = nvim/pack/editor/start/vim-repeat
+	url = https://github.com/tpope/vim-repeat.git
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
