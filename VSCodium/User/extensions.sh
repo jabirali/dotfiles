@@ -2,7 +2,7 @@
 
 # Plugins retrieved from `codium --list-extensions`.
 EXTENSIONS=(
-    "vscodevim.vim"    \
+    "auiworks.amvim"   \
     "ms-python.python" \
 )
 

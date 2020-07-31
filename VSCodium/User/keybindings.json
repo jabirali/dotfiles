@@ -1,6 +1,10 @@
 [
     // Vim-compatible keybindings for navigating splits.
     {
+        "key": "alt+enter",
+        "command": "workbench.action.togglePanel"
+    },
+    {
         "key": "alt+h",
         "command": "workbench.action.navigateLeft",
     },
@@ -15,25 +19,5 @@
     {
         "key": "alt+l",
         "command": "workbench.action.navigateRight",
-    },
-    {
-        "key": "alt+enter",
-        "command": "workbench.action.togglePanel"
-    },
-    // Vim-compatible keybindings for multiple cursors.
-    {
-        "key": "shift+k",
-        "command": "editor.action.insertCursorAbove",
-        "when": "editorTextFocus && vim.mode != 'Insert'"
-    },
-    {
-        "key": "shift+j",
-        "command": "editor.action.insertCursorBelow",
-        "when": "editorTextFocus && vim.mode != 'Insert'"
-    },
-    {
-        "key": "shift+enter",
-        "command": "editor.action.selectHighlights",
-        "when": "editorTextFocus && vim.mode != 'Insert'"
     },
 ]
