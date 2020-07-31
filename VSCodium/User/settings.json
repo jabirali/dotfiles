@@ -24,5 +24,8 @@
   "python.linting.enabled": true,
   "python.formatting.provider": "black",
   // Miscellaneous.
-  "terminal.integrated.shell.linux": "/usr/bin/fish"
+  "terminal.integrated.shell.linux": "/usr/bin/fish",
+  "files.associations": {
+    "*.txt": "markdown"
+  }
 }
