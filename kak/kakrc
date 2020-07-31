@@ -4,7 +4,7 @@
 # plugins, so as long as you do a recursive pull, most things should
 # work by themselves. However, to get the LSP plugin working, you
 # should install `cargo` (via e.g. `rustup`) and run `:plug-update`.
-#
+
 # External modules.
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
 plug "andreyorst/plug.kak" noload

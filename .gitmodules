@@ -40,9 +40,6 @@
 [submodule "tmux/plugins/tmux-navigate"]
 	path = tmux/plugins/tmux-navigate
 	url = https://github.com/sunaku/tmux-navigate.git
-[submodule "tmux/plugins/tmux-popshell"]
-	path = tmux/plugins/tmux-popshell
-	url = git@github.com:jabirali/tmux-popshell.git
 [submodule "kak/plugins/plug.kak"]
 	path = kak/plugins/plug.kak
 	url = https://github.com/andreyorst/plug.kak.git
@@ -52,3 +49,6 @@
 [submodule "kak/plugins/kak-lsp"]
 	path = kak/plugins/kak-lsp
 	url = https://github.com/ul/kak-lsp.git
+[submodule "tmux/plugins/tmux-tilish"]
+	path = tmux/plugins/tmux-tilish
+	url = git@github.com:jabirali/tmux-tilish.git
