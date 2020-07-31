@@ -32,3 +32,10 @@ silent! helptags ALL
 
 " ANSI color scheme "Vim Dim" with some customization.
 colorscheme minimono
+
+" Custom keybindings. These bindings are not only used in Neovim, but also
+loaded automatically by the `VSCodeVim` extension in Visual Studio Codium.
+nnoremap K <C-u>
+nnoremap J <C-d>
+nnoremap U <C-r>
+nnoremap M J

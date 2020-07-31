@@ -4,8 +4,19 @@
   "workbench.enableExperiments": false,
   "telemetry.enableCrashReporter": false,
   "workbench.settings.enableNaturalLanguageSearch": false,
+  // Vim emulation.
+  "vim.vimrc.enable": true,
+  "vim.vimrc.path": "~/.config/nvim/init.vim",
+  "vim.useCtrlKeys": false,
+  "vim.useSystemClipboard": true,
+  "vim.incsearch": true,
+  "vim.gdefault": true,
+  "vim.ignorecase": true,
+  "vim.smartcase": true,
+  "vim.foldfix": true,
   // User interface.
   "workbench.colorTheme": "Solarized Light",
+  "editor.cursorBlinking": "solid",
   "window.menuBarVisibility": "toggle",
   "editor.minimap.enabled": false,
   "editor.renderLineHighlight": "none",
@@ -15,8 +26,6 @@
   "workbench.editor.tabCloseButton": "off",
   "workbench.sideBar.location": "right",
   "workbench.statusBar.visible": true,
-  // Editor settings.
-  "vim.foldfix": true,
   // Python settings.
   "python.pythonPath": "/usr/bin/python3",
   "python.linting.pylintEnabled": false,

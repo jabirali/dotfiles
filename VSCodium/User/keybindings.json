@@ -20,7 +20,7 @@
         "key": "alt+enter",
         "command": "workbench.action.togglePanel"
     },
-    {   "key": "alt+shift+enter",
+    {   "key": "ctrl+shift+enter",
         "command": "workbench.action.toggleSidebarVisibility" 
     }
 ]
