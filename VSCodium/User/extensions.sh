@@ -2,9 +2,10 @@
 
 # Plugins retrieved from `codium --list-extensions`.
 EXTENSIONS=(
-    "ccy.ayu-adaptive" \
-    "auiworks.amvim"   \
-    "ms-python.python" \
+    "ccy.ayu-adaptive"        \
+    "auiworks.amvim"          \
+    "ms-python.python"        \
+    "james-yu.latex-workshop" \
 )
 
 # Install the plugins above for Visual Studio Codium.
