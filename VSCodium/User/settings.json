@@ -31,4 +31,5 @@
   "files.associations": {
     "*.txt": "markdown"
   },
+  "git.autofetch": true,
 }
