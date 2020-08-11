@@ -18,6 +18,11 @@ ai  sudo apt install
 ar  sudo apt purge
 as  apt search
 
+b   brew
+bi  brew install
+bu  brew uninstall
+bs  brew search
+
 s   snap
 si  snap install
 sr  snap remove
