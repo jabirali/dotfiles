@@ -10,7 +10,6 @@ brew "fzf"
 brew "nnn"
 
 # Standard commands.
-brew "coreutils"
 brew "moreutils"
 brew "ripgrep"
 brew "atool"
