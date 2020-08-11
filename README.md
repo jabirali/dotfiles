@@ -2,8 +2,7 @@
 This repository contains my Linux config files. Nearly all programs I use
 support the XDG specification, so e.g. `stow` is overkill for me. Instead,
 I just clone this repository to `~/.config`, and have an install script
-in `bin` that link the remaining few files to the right place. Use the
-command `brew bundle` to install all the programs I need from `Brewfile`.
+in `bin` that link the remaining few files to the right place.
 
 Note that the most interesting parts of my config files have been exported to
 separate plugins for Tmux, Fish, and Neovim. Most are hosted on [my GitHub][1].
@@ -13,5 +12,20 @@ dependencies (i.e. Git submodules), you have to use `git clone --recursive`.
 Since I have replaced `vim-plug` and `tpm` update scripts with Git submodules,
 updating all external plugins is now done via `git pull --recurse-submodules`.
 
-[1]: https://github.com/jabirali?tab=repositories&type=source
+## Quickstart
+After cloning to `~/.config`, install [Homebrew][2] for Linux or macOS:
 
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+Ensure that `brew shellenv` is correctly added to your shell init file
+as suggested in the output of the installation command above. Then use 
+`brew bundle` to install the remaining dependencies and applications.
+Finally, the script `dotlink` ensures all files are in the right place.
+
+    cd ~/.config
+    brew bundle
+    ./bin/dotlink
+
+
+[1]: https://github.com/jabirali?tab=repositories&type=source
+[2]: https://brew.sh/

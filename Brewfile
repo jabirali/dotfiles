@@ -6,6 +6,7 @@ brew "tmux"
 brew "fish"
 brew "neovim"
 brew "direnv"
+brew "entr"
 brew "fzf"
 brew "nnn"
 
