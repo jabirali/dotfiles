@@ -6,6 +6,7 @@ brew "tmux"
 brew "fish"
 brew "neovim"
 brew "direnv"
+brew "fzf"
 brew "nnn"
 
 # Standard commands.
@@ -13,6 +14,8 @@ brew "coreutils"
 brew "moreutils"
 brew "ripgrep"
 brew "atool"
+brew "lzip"
+brew "bat"
 brew "exa"
 brew "fd"
 
