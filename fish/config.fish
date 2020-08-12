@@ -45,13 +45,8 @@ alias pytest 'fd \'.py$\' | entr pytest'
 alias wget   'wget -e robots=off'
 alias boox   'bluetooth-sendto --device=22:22:3B:D5:62:2C'
 
-prefer 'nvim'     'vim'        'vi'     'e'
-prefer 'exa -T'   'lsd --tree' 'tree'
-prefer 'exa -l'   'lsd -l'     'ls -l'  'll'
-prefer 'exa -la'  'lsd -la'    'ls -la' 'la'
-prefer 'exa'      'lsd'        'ls'     'l'
-prefer 'bat -p'   'batcat -p'  'cat'
-prefer 'fd'       'fdfind'     'find'
-prefer 'rg'       'ag'         'grep'
-prefer 'htop'     'top'
-prefer 'parallel' 'xargs'
+# Abbreviations.
+# * These are located in `abbrfile`, and handled by my plugin `fish-abbrfile`.
+
+# Extensions.
+# * These are located in `fishfile`, and handled by the package manager `fisher`.

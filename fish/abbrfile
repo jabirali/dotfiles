@@ -1,3 +1,12 @@
+# Command replacements.
+vi    vim
+vi    nvim
+cat   bat -p
+find  fd
+grep  rg
+tree  exa -T
+ls    exa
+
 # Version control.
 g   git
 ga  git add
