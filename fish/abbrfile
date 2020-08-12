@@ -12,33 +12,21 @@ gr  git reset
 
 # Package management.
 a   sudo apt
-aa  sudo apt autoremove
-# aa  sudo apt autoremove --purge
 ai  sudo apt install
-ar  sudo apt purge
+au  sudo apt autoremove
 as  apt search
-
-b   brew
-bi  brew install
-bu  brew uninstall
-bs  brew search
 
 s   snap
 si  snap install
-sr  snap remove
+su  snap remove
 ss  snap search
 
 f   flatpak
 fi  flatpak install
-fr  flatpak uninstall
+fu  flatpak uninstall
 fs  flatpak search
 
 # Miscellaneous.
 o   xdg-open
 n   nvim +WikiFzfPages
-u   update
-v   vpn
 z   zotfile
-
-alsa   sudo alsa force-reload
-# path   set -U fish_user_paths
