@@ -12,3 +12,4 @@ $pdflatex='pdflatex -file-line-error -shell-escape -synctex=1 %O %S';
 
 # Continuous compilation by default.
 $preview_continuous_mode=1;
+$pdf_previewer = "start xdg-open %S";
