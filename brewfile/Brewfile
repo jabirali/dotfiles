@@ -23,3 +23,9 @@ brew "fd"
 brew "python"
 brew "poetry"
 brew "black"
+
+# Graphical apps.
+cask "alacritty"
+
+# Mac App Store.
+mas "Spotify", id: 0
