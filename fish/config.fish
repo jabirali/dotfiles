@@ -55,8 +55,3 @@ prefer 'fd'       'fdfind'     'find'
 prefer 'rg'       'ag'         'grep'
 prefer 'htop'     'top'
 prefer 'parallel' 'xargs'
-
-abbr -ga b   brew
-abbr -ga bi  brew bundle install --global
-abbr -ga bu  brew bundle cleanup --global --force
-abbr -ga bs  brew search

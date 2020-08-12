@@ -13,8 +13,13 @@ gr  git reset
 # Package management.
 a   sudo apt
 ai  sudo apt install
-au  sudo apt autoremove
+au  sudo apt autoremove --purge
 as  apt search
+
+b   brew
+bi  brew bundle install --global
+bu  brew bundle cleanup --global --force
+bs  brew search
 
 s   snap
 si  snap install

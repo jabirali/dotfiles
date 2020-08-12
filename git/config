@@ -5,7 +5,7 @@
 	name = Jabir Ali Ouassou
 [core]
 	excludesfile = /home/jabirali/.ignore
-	editor = nvr --remote-wait-silent
+	editor = nvim
 [log]
 	date = relative
 [alias]
