@@ -5,23 +5,32 @@
 " to migrate to an IDE for longer programming sessions, and retaining Neovim only
 " for quick edits in the terminal, this config is more barebones than my old ones.
 
-" Built-in settings.
+" Better defaults.
 set autochdir
-set expandtab
-set fillchars=fold:\ ,
 set foldmethod=syntax
+set spelllang=en,nb
+set tildeop
+
+" Interface settings.
+set fillchars=fold:\ ,
+set nowrap
+set signcolumn=yes:1
+set splitbelow
+set splitright
+set updatetime=100
+set winaltkeys=no
+
+" Search settings.
 set gdefault
 set ignorecase
 set inccommand=nosplit
-set nowrap
-set signcolumn=yes:1
 set smartcase
-set spelllang=en,nb
-set splitbelow
-set splitright
-set tildeop
-set updatetime=100
-set winaltkeys=no
+
+" Indent settings.
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
 
 " Plugin settings.
 let g:fzf_layout = { 'window': { 'width': 0.80, 'height': 0.65, 'xoffset': 0.50, 'yoffset': 0.45 } }
