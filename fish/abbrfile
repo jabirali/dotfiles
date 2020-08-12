@@ -1,3 +1,15 @@
+# This file defines aliases for `fish`, via the `fish-abbrfile` syntax.
+# For more information, see: https://github.com/jabirali/fish-abbrfile
+
+# Edit with best Vim.
+v  vi
+v  vim
+v  nvim
+
+# Open in default app.
+o  open
+o  xdg-open
+
 # Command replacements.
 vi    vim
 vi    nvim
@@ -43,6 +55,5 @@ fr  flatpak uninstall
 fs  flatpak search
 
 # Miscellaneous.
-o   xdg-open
 n   nvim +WikiFzfPages
 z   zotfile
