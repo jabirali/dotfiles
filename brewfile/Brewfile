@@ -26,6 +26,8 @@ brew "black"
 
 # Graphical apps.
 cask "alacritty"
+cask "firefox"
+cask "vlc"
 
 # Mac App Store.
 mas "Spotify", id: 0
