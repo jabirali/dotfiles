@@ -32,3 +32,6 @@ silent! helptags ALL
 
 " ANSI color scheme "Vim Dim" with some customization.
 colorscheme minimono
+
+" Keybindings.
+nmap <C-p> :GFiles<cr>
