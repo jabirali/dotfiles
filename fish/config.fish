@@ -45,6 +45,7 @@ alias pytest 'fd \'.py$\' | entr pytest'
 alias wget   'wget -e robots=off'
 alias boox   'bluetooth-sendto --device=22:22:3B:D5:62:2C'
 
+prefer 'nvim'     'vim'        'vi'     'e'
 prefer 'exa -T'   'lsd --tree' 'tree'
 prefer 'exa -l'   'lsd -l'     'ls -l'  'll'
 prefer 'exa -la'  'lsd -la'    'ls -la' 'la'
