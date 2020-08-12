@@ -22,22 +22,24 @@ gr  git reset
 # Package management.
 a   sudo apt
 ai  sudo apt install
-au  sudo apt autoremove --purge
+ar  sudo apt autoremove --purge
+au  sudo apt upgrade
 as  apt search
 
 b   brew
 bi  brew bundle install --global
-bu  brew bundle cleanup --global --force
+br  brew bundle cleanup --global --force
+bu  brew update
 bs  brew search
 
 s   snap
 si  snap install
-su  snap remove
+sr  snap remove
 ss  snap search
 
 f   flatpak
 fi  flatpak install
-fu  flatpak uninstall
+fr  flatpak uninstall
 fs  flatpak search
 
 # Miscellaneous.
