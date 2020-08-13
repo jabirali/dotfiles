@@ -1,16 +1,7 @@
 # This file defines aliases for `fish`, via the `fish-abbrfile` syntax.
 # For more information, see: https://github.com/jabirali/fish-abbrfile
 
-# Edit with best Vim.
-v  vi
-v  vim
-v  nvim
-
-# Open in default app.
-o  open
-o  xdg-open
-
-# Command replacements.
+# Better UNIX IDE.
 vi    vim
 vi    nvim
 cat   bat -p
@@ -19,7 +10,19 @@ grep  rg
 tree  exa -T
 ls    exa
 
-# Version control.
+# Shorter commands.
+a   sudo apt
+ai  sudo apt install
+ar  sudo apt autoremove --purge
+au  sudo apt update && sudo apt upgrade
+as  apt search
+
+b   brew
+bi  brew install
+br  brew remove
+bu  brew bundle install --global && brew bundle cleanup --global --force
+bs  brew search
+
 g   git
 ga  git add
 gb  git branch
@@ -31,29 +34,14 @@ gp  git push
 gs  git status
 gr  git reset
 
-# Package management.
-a   sudo apt
-ai  sudo apt install
-ar  sudo apt autoremove --purge
-au  sudo apt upgrade
-as  apt search
+l   ls
+l   exa
 
-b   brew
-bi  brew bundle install --global
-br  brew bundle cleanup --global --force
-bu  brew update
-bs  brew search
+o   open
+o   xdg-open
 
-s   snap
-si  snap install
-sr  snap remove
-ss  snap search
+v   vi
+v   vim
+v   nvim
 
-f   flatpak
-fi  flatpak install
-fr  flatpak uninstall
-fs  flatpak search
-
-# Miscellaneous.
-n   nvim +WikiFzfPages
 z   zotfile
