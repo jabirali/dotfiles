@@ -11,7 +11,7 @@ end
 
 # ANSI colors.
 set fish_color_autosuggestion normal
-set fish_color_command blue
+set fish_color_command brwhite --bold
 set fish_color_comment brred
 set fish_color_end brmagenta
 set fish_color_error brred
@@ -21,7 +21,6 @@ set fish_color_operator bryellow
 set fish_color_param normal
 set fish_color_quote yellow
 set fish_color_redirection green
-set fish_color_user brgreen
 
 # Integrate with `fzf`.
 fzf_key_bindings

@@ -20,10 +20,10 @@ brew "exa"
 brew "fd"
 
 # Python packages.
-brew "python"
-brew "tcl-tk"
-brew "poetry"
-brew "black"
+# brew "python"
+# brew "tcl-tk"
+# brew "poetry"
+# brew "black"
 
 # Graphical apps.
 cask "alacritty"
