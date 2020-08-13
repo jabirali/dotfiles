@@ -44,6 +44,9 @@ alias pytest 'fd \'.py$\' | entr pytest'
 alias wget   'wget -e robots=off'
 alias boox   'bluetooth-sendto --device=22:22:3B:D5:62:2C'
 
+# Keybindings for commands.
+bind \cp projector
+
 # Abbreviations.
 # * These are located in `abbrfile`, and handled by my plugin `fish-abbrfile`.
 
