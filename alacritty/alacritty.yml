@@ -4,8 +4,6 @@
 # transparency, in addition to some Vim-like keybindings for copy/paste.
 # It is meant for use together with Tmux, and therefore autostarts that.
 
-background_opacity: 1.00
-
 colors:
   primary:
     background: '#2A2A2A'
@@ -32,7 +30,6 @@ colors:
     white:   '#F4F4F4'
 
 window:
-  startup_mode: Fullscreen
   decorations: none
   dynamic_padding: true
   padding:

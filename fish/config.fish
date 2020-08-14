@@ -2,6 +2,8 @@
 
 # Fish configuration file. Note that much of my interesting modifications have
 # been exported to separate plugins, which are now hosted on github.com/jabirali.
+# Abbreviations are stored in `abbrfile` (handled by my plugin `fish-abbrfile`),
+# and plugins are located in `fishfile` (handled by a package manager `fisher`).
 
 # Fish package manager.
 if not functions -q fisher
@@ -46,9 +48,3 @@ alias boox   'bluetooth-sendto --device=22:22:3B:D5:62:2C'
 
 # Keybindings for commands.
 bind \cp projector
-
-# Abbreviations.
-# * These are located in `abbrfile`, and handled by my plugin `fish-abbrfile`.
-
-# Extensions.
-# * These are located in `fishfile`, and handled by the package manager `fisher`.
