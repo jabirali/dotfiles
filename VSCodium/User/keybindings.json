@@ -42,6 +42,12 @@
         "command": "workbench.action.quickOpenSelectNext",
         "when": "!editorFocus"
     },
+    // Simpler keybinding for "close sidebar".
+    {
+      "key": "escape",
+      "command": "workbench.action.toggleSidebarVisibility",
+      "when": "sideBarVisible"
+    },
     // Simpler keybinding for "jump in file".
     {
         "key": "ctrl+j",
