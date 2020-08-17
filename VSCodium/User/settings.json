@@ -32,5 +32,6 @@
     "*.txt": "markdown"
   },
   "git.autofetch": true,
-  "window.zoomLevel": 0,
+  "window.zoomLevel": 1,
+  "editor.smoothScrolling": true,
 }
