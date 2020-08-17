@@ -101,10 +101,4 @@
       "command": "workbench.action.toggleSidebarVisibility",
       "when": "sideBarVisible"
     },
-    // Simpler keybinding for "jump in file".
-    {
-        "key": "ctrl+j",
-        "command": "workbench.action.gotoSymbol",
-        "when": "editorFocus"
-    },
 ]

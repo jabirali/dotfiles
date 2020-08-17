@@ -6,6 +6,7 @@ EXTENSIONS=(
     "auiworks.amvim"          \
     "ms-python.python"        \
     "james-yu.latex-workshop" \
+    "bungcip.better-toml"     \
 )
 
 # Install the plugins above for Visual Studio Codium.
