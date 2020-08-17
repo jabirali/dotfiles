@@ -1,24 +1,40 @@
 [
-    // Vim-compatible keybindings for navigating splits.
+    // Tilish-compatible keybindings for navigating splits.
     {
         "key": "alt+enter",
         "command": "workbench.action.togglePanel"
     },
     {
         "key": "alt+h",
-        "command": "workbench.action.navigateLeft",
+        "command": "workbench.action.navigateLeft"
     },
     {
         "key": "alt+j",
-        "command": "workbench.action.navigateDown",
+        "command": "workbench.action.navigateDown"
     },
     {
         "key": "alt+k",
-        "command": "workbench.action.navigateUp",
+        "command": "workbench.action.navigateUp"
     },
     {
         "key": "alt+l",
-        "command": "workbench.action.navigateRight",
+        "command": "workbench.action.navigateRight"
+    },
+    {
+        "key": "shift+alt+h",
+        "command": "workbench.action.moveEditorToLeftGroup"
+    },
+    {
+        "key": "shift+alt+j",
+        "command": "workbench.action.moveEditorToBelowGroup"
+    },
+    {
+        "key": "shift+alt+k",
+        "command": "workbench.action.moveEditorToAboveGroup"
+    },
+    {
+        "key": "shift+alt+l",
+        "command": "workbench.action.moveEditorToRightGroup"
     },
     // Vim-compatible keybindings for autocompletion.
     {
