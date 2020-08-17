@@ -21,14 +21,6 @@
         "command": "workbench.action.navigateRight"
     },
     {
-        "key": "alt+[",
-        "command": "workbench.action.previousEditor"
-    },
-    {
-        "key": "alt+]",
-        "command": "workbench.action.nextEditor"
-    },
-    {
         "key": "shift+alt+h",
         "command": "workbench.action.moveEditorToLeftGroup"
     },
@@ -43,6 +35,15 @@
     {
         "key": "shift+alt+l",
         "command": "workbench.action.moveEditorToRightGroup"
+    },
+    // Tilish-compatible keybindings for navigating tabs.
+    {
+        "key": "alt+[",
+        "command": "workbench.action.previousEditor"
+    },
+    {
+        "key": "alt+]",
+        "command": "workbench.action.nextEditor"
     },
     {
         "key": "shift+alt+[",
@@ -73,6 +74,17 @@
         "key": "ctrl+j",
         "command": "workbench.action.quickOpenSelectNext",
         "when": "!editorFocus"
+    },
+    // Vim-compatible keybindings for search selection.
+    {
+        "key": "ctrl+j",
+        "command": "search.action.focusNextSearchResult",
+        "when": "hasSearchResult || inSearchEditor"
+    },
+    {
+        "key": "ctrl+k",
+        "command": "search.action.focusPreviousSearchResult",
+        "when": "hasSearchResult || inSearchEditor"
     },
     // Browser-compatible keybindings for history navigation.
     {
