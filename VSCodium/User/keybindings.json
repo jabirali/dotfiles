@@ -39,19 +39,33 @@
     // Tilish-compatible keybindings for navigating tabs.
     {
         "key": "alt+[",
-        "command": "workbench.action.previousEditor"
+        "command": "workbench.action.previousEditor",
+        "when": "editorFocus",
     },
     {
         "key": "alt+]",
-        "command": "workbench.action.nextEditor"
+        "command": "workbench.action.nextEditor",
+        "when": "editorFocus",
     },
     {
         "key": "shift+alt+[",
-        "command": "workbench.action.moveEditorLeftInGroup"
+        "command": "workbench.action.moveEditorLeftInGroup",
+        "when": "editorFocus",
     },
     {
         "key": "shift+alt+]",
-        "command": "workbench.action.moveEditorRightInGroup"
+        "command": "workbench.action.moveEditorRightInGroup",
+        "when": "editorFocus",
+    },
+    {
+        "key": "alt+]",
+        "command": "workbench.action.terminal.focusNext",
+        "when": "terminalFocus",
+    },
+    {
+        "key": "alt+[",
+        "command": "workbench.action.terminal.focusPrevious",
+        "when": "terminalFocus",
     },
     // Vim-compatible keybindings for autocompletion.
     {
