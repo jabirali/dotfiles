@@ -2,11 +2,12 @@
 
 # Plugins retrieved from `codium --list-extensions`.
 EXTENSIONS=(
-    "ccy.ayu-adaptive"        \
-    "auiworks.amvim"          \
-    "ms-python.python"        \
-    "james-yu.latex-workshop" \
-    "bungcip.better-toml"     \
+    "ccy.ayu-adaptive"                      \
+    "auiworks.amvim"                        \
+    "ms-python.python"                      \
+    "james-yu.latex-workshop"               \
+    "bungcip.better-toml"                   \
+    "streetsidesoftware.code-spell-checker" \
 )
 
 # Install the plugins above for Visual Studio Codium.

@@ -34,7 +34,7 @@ __direnv_export_eval
 # Plugin settings.
 set projector_dir ~/Code
 set projector_cmd edit +GFiles
-set zotfile_root ~/.local/share/zotero
+set zotfile_root ~/snap/zotero-snap
 
 # Common path options.
 set -gx PATH ~/.local/bin $PATH

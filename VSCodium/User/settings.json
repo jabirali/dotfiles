@@ -7,7 +7,7 @@
   // Editor.
   "amVim.useSystemClipboard": true,
   // Interface.
-  "workbench.colorTheme": "Ayu Mojave",
+  "workbench.colorTheme": "Better Solarized Light",
   "editor.cursorBlinking": "solid",
   "window.menuBarVisibility": "toggle",
   "editor.minimap.enabled": false,
@@ -32,6 +32,6 @@
     "*.txt": "markdown"
   },
   "git.autofetch": true,
-  "window.zoomLevel": 1,
+  "window.zoomLevel": 0,
   "editor.smoothScrolling": true,
 }
