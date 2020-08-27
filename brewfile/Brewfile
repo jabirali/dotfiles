@@ -27,6 +27,8 @@ brew "black"
 
 # Graphical apps.
 cask "vlc"
+cask "spotify"
 
 # Mac App Store.
 mas "Bear", id: 1091189122
+mas "Master Password", id: 662763204
