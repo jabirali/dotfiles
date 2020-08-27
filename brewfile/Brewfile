@@ -26,9 +26,13 @@ brew "poetry"
 brew "black"
 
 # Graphical apps.
-cask "vlc"
+cask "arq"
+cask "resilio-sync"
 cask "spotify"
+cask "vlc"
 
 # Mac App Store.
 mas "Bear", id: 1091189122
+mas "Diarly", id: 1387167765
 mas "Master Password", id: 662763204
+mas "News Explorer", id: 1032670789
