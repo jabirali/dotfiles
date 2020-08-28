@@ -34,6 +34,7 @@ cask "vscodium"
 
 # Third-party system apps.
 cask "arq"
+cask "expressvpn"
 cask "little-snitch"
 cask "micro-snitch"
 cask "mosaic"
