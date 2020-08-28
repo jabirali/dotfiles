@@ -38,9 +38,16 @@ cask "little-snitch"
 cask "micro-snitch"
 cask "mosaic"
 
-# Mac App Store.
+# Apple official apps.
+mas "Keynote", id: 409183694
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
+mas "iMovie", id: 408981434
+
+# Mac App Store apps.
 mas "Bear", id: 1091189122
 mas "Diarly", id: 1387167765
+mas "NotePlan", id: 1137020764
 mas "Master Password", id: 662763204
 mas "News Explorer", id: 1032670789
 
