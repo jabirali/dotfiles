@@ -25,14 +25,18 @@ brew "tcl-tk"
 brew "poetry"
 brew "black"
 
-# Graphical apps.
-cask "arq"
+# Third-party user apps.
 cask "iterm2"
-cask "mosaic"
 cask "resilio-sync"
 cask "spotify"
 cask "vlc"
 cask "vscodium"
+
+# Third-party system apps.
+cask "arq"
+cask "little-snitch"
+cask "micro-snitch"
+cask "mosaic"
 
 # Mac App Store.
 mas "Bear", id: 1091189122
@@ -42,3 +46,4 @@ mas "News Explorer", id: 1032670789
 
 # Safari extensions.
 mas "Vimari", id: 1480933944
+mas "Wipr", id: 1320666476
