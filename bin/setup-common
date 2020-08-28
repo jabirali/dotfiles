@@ -1,16 +1,19 @@
 #!/bin/sh
 
-# These do not follow XDG conventions.
-ln -sf ~/.config/XCompose ~/.XCompose
+# Dotfiles should be placed here.
+cd ~/.config || exit
+
+# SSH requires this location and user-only access.
+mkdir -p ~/.ssh
 ln -sf ~/.config/ssh/config ~/.ssh/config
-ln -sf ~/.config/pam_environment ~/.pam_environment
+chmod  600 ~/.ssh/config
 
 # `homebrew-file` reads ~/.config/brewfile/Brewfile,
 # while the bundled `brew bundle` reads ~/.Brewfile.
 ln -sf ~/.config/brewfile/Brewfile ~/.Brewfile
 
-# Share Git ignore patterns with `fd`, `rg`, `exa`.
-# The last of these do not support ~/.config/ignore.
+# Share Git ignore patterns with `fd`, `rg`, and `exa`.
+# The last of these does not support ~/.config/ignore.
 ln -sf ~/.config/git/ignore ~/.gitignore
 
 # Link not required after v3.1a:

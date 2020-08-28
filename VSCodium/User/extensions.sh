@@ -13,5 +13,5 @@ EXTENSIONS=(
 # Install the plugins above for Visual Studio Codium.
 for EXTENSION in ${EXTENSIONS[@]}
 do
-    codium --install-extension $EXTENSION
+    code --install-extension $EXTENSION
 done

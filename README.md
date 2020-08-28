@@ -19,12 +19,8 @@ After cloning to `~/.config`, install [Homebrew][2] for Linux or macOS:
 
 Ensure that `brew shellenv` is correctly added to your shell init file
 as suggested in the output of the installation command above. Then run
-the `dotlink` script to symlink config files with non-XDG locations into
-the right places, and call `brew bundle` to bootstrap your system:
-
-    ~/.config/bin/dotlink
-    brew bundle install --global
-
+either `~/.config/bin/setup-macos` or `~/.config/setup-linux`, followed
+by `brew bundle install --global`, to setup the whole system correctly.
 
 [1]: https://github.com/jabirali?tab=repositories&type=source
 [2]: https://brew.sh/

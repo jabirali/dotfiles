@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Common settings on Linux and macOS.
+source setup-common
+
+# This must be disabled for e.g. all apps using Vim keybindings to work,
+# since the "hold to select variant" feature interferes with key repeat.
+# Consider disabling it on a per-app basis instead of globally though.
+defaults write -g ApplePressAndHoldEnabled -bool false
+
+# Custom keybinding for entering full screen. Because not all apps have this...
+defaults write -g NSUserKeyEquivalents -dict-add 'Full Screen' '@^f'
+defaults write -g NSUserKeyEquivalents -dict-add 'Toggle Full Screen' '@^f'
+defaults write -g NSUserKeyEquivalents -dict-add 'Enter Full Screen' '@^f'
+defaults write -g NSUserKeyEquivalents -dict-add 'Exit Full Screen' '@^f'

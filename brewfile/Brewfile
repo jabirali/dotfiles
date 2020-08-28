@@ -27,12 +27,18 @@ brew "black"
 
 # Graphical apps.
 cask "arq"
+cask "iterm2"
+cask "mosaic"
 cask "resilio-sync"
 cask "spotify"
 cask "vlc"
+cask "vscodium"
 
 # Mac App Store.
 mas "Bear", id: 1091189122
 mas "Diarly", id: 1387167765
 mas "Master Password", id: 662763204
 mas "News Explorer", id: 1032670789
+
+# Safari extensions.
+mas "Vimari", id: 1480933944
