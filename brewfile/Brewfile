@@ -26,6 +26,7 @@ brew "poetry"
 brew "black"
 
 # Third-party user apps.
+cask "discord"
 cask "iterm2"
 cask "resilio-sync"
 cask "signal"
@@ -49,9 +50,10 @@ mas "iMovie", id: 408981434
 # Mac App Store apps.
 mas "Bear", id: 1091189122
 mas "Diarly", id: 1387167765
-mas "NotePlan", id: 1137020764
+mas "IM+", id: 1137958278
 mas "Master Password", id: 662763204
 mas "News Explorer", id: 1032670789
+mas "NotePlan", id: 1137020764
 
 # Safari extensions.
 mas "Vimari", id: 1480933944
