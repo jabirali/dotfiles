@@ -8,7 +8,7 @@ source setup-common
 # Consider disabling it on a per-app basis instead of globally though.
 defaults write -g ApplePressAndHoldEnabled -bool false
 
-# Custom keybinding for entering full screen. Because not all apps have this...
+# Global: Custom keybinding for entering full screen. Not all apps have this...
 defaults write -g NSUserKeyEquivalents -dict-add 'Full Screen' '@^f'
 defaults write -g NSUserKeyEquivalents -dict-add 'Toggle Full Screen' '@^f'
 defaults write -g NSUserKeyEquivalents -dict-add 'Enter Full Screen' '@^f'

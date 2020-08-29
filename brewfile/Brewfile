@@ -28,6 +28,7 @@ brew "black"
 # Third-party user apps.
 cask "iterm2"
 cask "resilio-sync"
+cask "signal"
 cask "spotify"
 cask "vlc"
 cask "vscodium"

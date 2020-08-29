@@ -20,7 +20,7 @@ as  apt search
 b   brew
 bi  brew install
 br  brew remove
-bu  brew bundle install --global && brew bundle cleanup --global --force
+bu  brew bundle install --global
 bs  brew search
 
 g   git
