@@ -1,5 +1,0 @@
-#!/bin/bash
-
-gnome-screenshot -af $HOME/.cache/screenshot.png
-tesseract -l "eng+nor" $HOME/.cache/screenshot.png $HOME/.cache/screenshot
-cat ~/.cache/screenshot.txt | wl-copy
