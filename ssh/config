@@ -1,39 +1,38 @@
 # ~/.ssh/config
 
-Host home
-  Hostname vwv.duckdns.org
-  User jabirali
+Host *
+  Protocol 2
+  ForwardX11 no
+  CheckHostIP no
+  Compression no
+  UseKeychain yes
+  AddKeysToAgent yes
+  ControlMaster auto
+  ControlPath ~/.ssh/mux_%h_%p_%r
+  ControlPersist 5m
 
 Host stuing
   Hostname 10.0.0.100
+  IdentityFile ~/.ssh/id_ed25519
+  User jabirali
+
+Host ntnu
+  Hostname login.stud.ntnu.no
+  IdentityFile ~/.ssh/id_ed25519
+  User jabirali
+
+Host pvv
+  Hostname monty.pvv.org
+  IdentityFile ~/.ssh/id_ed25519
   User jabirali
 
 Host sintef
   Hostname vsl142.energy.sintef.no
   ProxyJump stepstone
+  IdentityFile ~/.ssh/id_rsa
   User jabiro
 
 Host stepstone
   Hostname stepstone.sintef.no
+  IdentityFile ~/.ssh/id_rsa
   User jabiro
-
-Host pvv
-  Hostname monty.pvv.org
-  User jabirali
-
-Host ntnu
-  Hostname login.stud.ntnu.no
-  User jabirali
-
-Host hpc
-  Hostname vilje.hpc.ntnu.no
-  User jabirali
-
-Host *
-  Protocol 2
-  CheckHostIP no
-  Compression no
-  ForwardX11 no
-  ControlMaster auto
-  ControlPath ~/.ssh/mux_%h_%p_%r
-  ControlPersist 5m
