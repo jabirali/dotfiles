@@ -1,7 +1,5 @@
 # ~/.gvimrc
 
-# Better fonts.
+colorscheme macvim
 set guifont=Monaco:h12
-
-# Disable scrollbar.
 set guioptions=
