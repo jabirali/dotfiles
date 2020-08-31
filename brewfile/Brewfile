@@ -28,6 +28,7 @@ brew "black"
 
 # Third-party user apps.
 cask "discord"
+cask "macvim"
 cask "resilio-sync"
 cask "signal"
 cask "spotify"
