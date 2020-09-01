@@ -1,7 +1,7 @@
 # Dotfiles
-This repository contains my config files for Linux and Mac. Most apps
-I use support the XDG specification, so e.g. `stow` is overkill for me.
-Instead, I just clone this repository to `~/.config`, and have install
+This repo contains my config files for Linux and Mac. Most apps I
+use support the XDG specification, so e.g. `stow` is overkill for
+me. Instead, I just clone this repo to `~/.config`, and have install
 scripts in `bin` that link the remaining few files to the right place.
 Note that much of my config files have been exported to separate plugins
 hosted on [my GitHub][1], and that plugins are handled via Git submodules.
