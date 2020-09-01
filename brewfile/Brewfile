@@ -60,6 +60,11 @@ mas "Master Password", id: 662763204
 mas "News Explorer", id: 1032670789
 mas "NotePlan", id: 1137020764
 
+# Microsoft Office.
+mas "Microsoft Excel", id: 462058435
+mas "Microsoft Word", id: 462054704
+mas "Microsoft PowerPoint", id: 462062816
+
 # Safari extensions.
 mas "Vimari", id: 1480933944
 mas "Wipr", id: 1320666476
