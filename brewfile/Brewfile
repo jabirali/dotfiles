@@ -35,6 +35,7 @@ cask "spotify"
 cask "steam"
 cask "vlc"
 cask "vscodium"
+cask "zotero"
 
 # Third-party system apps.
 cask "arq"
