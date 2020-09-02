@@ -47,12 +47,6 @@ cask "micro-snitch"
 cask "mosaic"
 cask "vanilla"
 
-# Apple official apps.
-mas "Keynote", id: 409183694
-mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
-mas "iMovie", id: 408981434
-
 # Mac App Store apps.
 mas "Bear", id: 1091189122
 mas "Diarly", id: 1387167765
@@ -61,10 +55,18 @@ mas "Master Password", id: 662763204
 mas "News Explorer", id: 1032670789
 mas "NotePlan", id: 1137020764
 
-# Microsoft Office.
+# Apple official.
+mas "Keynote", id: 409183694
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
+mas "iMovie", id: 408981434
+
+# Microsoft office.
 mas "Microsoft Excel", id: 462058435
 mas "Microsoft Word", id: 462054704
 mas "Microsoft PowerPoint", id: 462062816
+mas "Microsoft Outlook", id: 985367838
+cask "microsoft-teams"
 
 # Safari extensions.
 mas "Vimari", id: 1480933944
