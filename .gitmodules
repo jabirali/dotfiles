@@ -49,3 +49,12 @@
 [submodule "nvim/pack/style/start/ayu-vim"]
 	path = nvim/pack/style/start/ayu-vim
 	url = https://github.com/ayu-theme/ayu-vim.git
+[submodule "nvim/pack/editor/start/vim-slash"]
+	path = nvim/pack/editor/start/vim-slash
+	url = https://github.com/junegunn/vim-slash
+[submodule "nvim/pack/project/start/ctrlsf.vim"]
+	path = nvim/pack/project/start/ctrlsf.vim
+	url = https://github.com/dyng/ctrlsf.vim
+[submodule "nvim/pack/python/start/python-syntax"]
+	path = nvim/pack/python/start/python-syntax
+	url = https://github.com/vim-python/python-syntax

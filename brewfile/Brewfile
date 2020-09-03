@@ -26,6 +26,9 @@ brew "tcl-tk"
 brew "poetry"
 brew "black"
 
+# Miscellaneous.
+brew "graphviz"
+
 # Third-party user apps.
 cask "discord"
 cask "macvim"
@@ -50,6 +53,7 @@ cask "mosaic"
 # Mac App Store apps.
 mas "Bear", id: 1091189122
 mas "Diarly", id: 1387167765
+mas "Focus Timer", id: 961632517
 mas "IM+", id: 1137958278
 mas "Master Password", id: 662763204
 mas "News Explorer", id: 1032670789
