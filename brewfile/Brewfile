@@ -40,12 +40,12 @@ cask "zotero"
 # Third-party system apps.
 cask "arq"
 cask "alfred"
+cask "bartender"
 cask "expressvpn"
 cask "iterm2"
 cask "little-snitch"
 cask "micro-snitch"
 cask "mosaic"
-cask "vanilla"
 
 # Mac App Store apps.
 mas "Bear", id: 1091189122

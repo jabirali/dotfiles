@@ -46,3 +46,6 @@
 [submodule "tmux/plugins/tmux-tilish"]
 	path = tmux/plugins/tmux-tilish
 	url = git@github.com:jabirali/tmux-tilish.git
+[submodule "nvim/pack/style/start/ayu-vim"]
+	path = nvim/pack/style/start/ayu-vim
+	url = https://github.com/ayu-theme/ayu-vim.git
