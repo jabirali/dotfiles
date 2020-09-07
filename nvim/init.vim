@@ -10,11 +10,12 @@ set autochdir
 set foldmethod=syntax
 set spelllang=en,nb
 set tildeop
+set termguicolors
 
 " Interface settings.
 set fillchars=fold:\ ,
 set nowrap
-set signcolumn=yes:1
+set signcolumn=yes
 set splitbelow
 set splitright
 set updatetime=100
@@ -23,20 +24,19 @@ set winaltkeys=no
 " Search settings.
 set gdefault
 set ignorecase
-set inccommand=nosplit
 set smartcase
 
 " Indent settings.
 set expandtab
-set shiftwidth=2
-set softtabstop=2
-set tabstop=2
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
 
 " Plugin settings.
-let g:fzf_layout = { 'window': { 'width': 0.80, 'height': 0.65, 'xoffset': 0.50, 'yoffset': 0.45 } }
+" let g:fzf_layout = { 'window': { 'width': 0.80, 'height': 0.65, 'xoffset': 0.50, 'yoffset': 0.45 } }
 
 " ANSI color scheme "Vim Dim" with some customization.
-colorscheme minimono
+"colorscheme minimono
 
 " Keybindings.
 nmap <C-p> :GFiles<cr>
