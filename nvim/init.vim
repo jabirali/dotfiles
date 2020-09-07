@@ -32,11 +32,12 @@ set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 
-" Plugin settings.
-" let g:fzf_layout = { 'window': { 'width': 0.80, 'height': 0.65, 'xoffset': 0.50, 'yoffset': 0.45 } }
+" Miscellaneous.
+set lines=999
+set columns=999
+set scrolloff=999
+set relativenumber
+set signcolumn=yes
 
-" ANSI color scheme "Vim Dim" with some customization.
-"colorscheme minimono
-
-" Keybindings.
-nmap <C-p> :GFiles<cr>
+" Custom colorscheme.
+colorscheme minimono

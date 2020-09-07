@@ -3,11 +3,6 @@
 " Aesthetic settings.
 set guifont=Monaco:h12
 set guioptions=egm
-set lines=999
-set columns=999
-set scrolloff=999
-set number
-set signcolumn=yes
 let ayucolors="mirage"
 colorscheme ayu
 
@@ -17,4 +12,6 @@ nnoremap <D-[> <C-w>W
 nnoremap <D-d> :vsplit<cr>
 nnoremap <D-D> :split<cr>
 
+" Sublime-like bindings.
 nnoremap <D-F> :CtrlSF 
+nnoremap <D-p> :GFiles<cr>
