@@ -64,7 +64,6 @@ mas "news-explorer", id: 1032670789
 cask "dash"
 cask "iterm2"
 cask "macvim"
-cask "papers"
 cask "vscodium"
 cask "zotero"
 mas "bear", id: 1091189122
