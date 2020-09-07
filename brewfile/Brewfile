@@ -1,77 +1,95 @@
 # Package list for the HomeBrew and LinuxBrew systems.
 # Activate this file using the command `brew bundle`.
 
-# Better UNIX IDE.
-brew "tmux"
-brew "fish"
-brew "neovim"
+# ------------------------------------------------------------ 
+# Command-line applications
+# ------------------------------------------------------------ 
+
+# UNIX IDE.
 brew "direnv"
 brew "entr"
+brew "fish"
 brew "fzf"
+brew "neovim"
 brew "nnn"
+brew "tmux"
 
-# Standard commands.
-brew "moreutils"
-brew "ripgrep"
+# Documents.
+brew "graphviz"
+brew "pandoc"
+brew "pandoc-citeproc"
+brew "pandoc-crossref"
+cask "mactex-no-gui"
+
+# Programming.
+brew "python"
+brew "black"
+brew "poetry"
+brew "tcl-tk"
+
+# Miscellaneous.
 brew "atool"
-brew "lzip"
-brew "htop"
 brew "bat"
 brew "exa"
 brew "fd"
+brew "htop"
+brew "lzip"
+brew "moreutils"
+brew "ripgrep"
 
-# Python packages.
-brew "python"
-brew "tcl-tk"
-brew "poetry"
-brew "black"
 
-# Miscellaneous.
-brew "graphviz"
+# ------------------------------------------------------------ 
+# Graphical applications
+# ------------------------------------------------------------ 
 
-# Third-party user apps.
-cask "dash"
+# User interface.
+cask "alfred"
+cask "bartender"
+cask "mosaic"
+mas "vimari", id: 1480933944
+
+# Communication.
 cask "discord"
-cask "macvim"
-cask "resilio-sync"
+cask "microsoft-teams"
 cask "signal"
+mas "im+", id: 1137958278
+
+# Entertainment.
 cask "spotify"
 cask "steam"
 cask "vlc"
+mas "news-explorer", id: 1032670789
+
+# Productivity.
+cask "dash"
+cask "iterm2"
+cask "macvim"
+cask "papers"
 cask "vscodium"
 cask "zotero"
+mas "bear", id: 1091189122
+mas "noteplan", id: 1137020764
+mas "pomodoro", id: 961632517
 
-# Third-party system apps.
-cask "arq"
-cask "alfred"
-cask "bartender"
+# Privacy.
 cask "expressvpn"
-cask "iterm2"
 cask "little-snitch"
 cask "micro-snitch"
-cask "mosaic"
+mas "master-password", id: 662763204
+mas "wipr", id: 1320666476
 
-# Mac App Store apps.
-mas "Bear", id: 1091189122
-mas "Focus Timer", id: 961632517
-mas "IM+", id: 1137958278
-mas "Master Password", id: 662763204
-mas "News Explorer", id: 1032670789
-mas "NotePlan", id: 1137020764
+# Apple.
+mas "imovie", id: 408981434
+mas "keynote", id: 409183694
+mas "numbers", id: 409203825
+mas "pages", id: 409201541
 
-# Apple official.
-mas "Keynote", id: 409183694
-mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
-mas "iMovie", id: 408981434
+# Microsoft.
+mas "excel", id: 462058435
+mas "word", id: 462054704
+mas "powerpoint", id: 462062816
+mas "outlook", id: 985367838
 
-# Microsoft office.
-mas "Microsoft Excel", id: 462058435
-mas "Microsoft Word", id: 462054704
-mas "Microsoft PowerPoint", id: 462062816
-mas "Microsoft Outlook", id: 985367838
-cask "microsoft-teams"
-
-# Safari extensions.
-mas "Vimari", id: 1480933944
-mas "Wipr", id: 1320666476
+# Backup.
+cask "arq"
+cask "resilio-sync"
