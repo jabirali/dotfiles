@@ -23,6 +23,8 @@ br  brew remove
 bu  brew bundle install --global
 bs  brew search
 
+c   cd ~/.config
+
 g   git
 ga  git add
 gb  git branch
@@ -33,6 +35,8 @@ gm  git merge
 gp  git push
 gs  git status
 gr  git reset
+
+p   projector
 
 l   ls
 l   exa
