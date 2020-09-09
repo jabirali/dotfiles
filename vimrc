@@ -6,7 +6,7 @@ set autoindent
 set autoread
 set background=dark
 set backspace=indent,eol,start
-set backupdir=~/.local/share/nvim/backup
+set backupdir=~/.local/share/nvim/backup/
 set belloff=all
 set cscopeverbose
 set directory=~/.local/share/nvim/swap/
@@ -32,7 +32,7 @@ set tabpagemax=50
 set tags=./tags;,tags
 set ttimeoutlen=50
 set ttyfast
-set undodir=~/.local/share/nvim/undo
+set undodir=~/.local/share/nvim/undo/
 set viminfo+=!
 set wildmenu
 

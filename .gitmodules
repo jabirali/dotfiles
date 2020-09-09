@@ -58,3 +58,6 @@
 [submodule "nvim/pack/python/start/python-syntax"]
 	path = nvim/pack/python/start/python-syntax
 	url = https://github.com/vim-python/python-syntax
+[submodule "nvim/pack/python/start/jedi-vim"]
+	path = nvim/pack/python/start/jedi-vim
+	url = https://github.com/davidhalter/jedi-vim.git

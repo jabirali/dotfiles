@@ -68,7 +68,7 @@ cask "vscodium"
 cask "zotero"
 mas "bear", id: 1091189122
 mas "noteplan", id: 1137020764
-mas "pomodoro", id: 961632517
+mas "be-focused", id: 961632517
 
 # Privacy.
 cask "expressvpn"
