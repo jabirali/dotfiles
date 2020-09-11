@@ -37,6 +37,8 @@ brew "lzip"
 brew "moreutils"
 brew "ripgrep"
 
+cask "qlstephen"
+
 
 # ------------------------------------------------------------ 
 # Graphical applications

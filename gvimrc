@@ -3,6 +3,7 @@
 " Aesthetic settings.
 set guifont=Monaco:h12
 set guioptions=egm
+set termguicolors
 let ayucolors="mirage"
 colorscheme ayu
 

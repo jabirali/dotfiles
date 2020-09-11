@@ -10,7 +10,6 @@ set autochdir
 set foldmethod=syntax
 set spelllang=en,nb
 set tildeop
-set termguicolors
 
 " Interface settings.
 set fillchars=fold:\ ,
