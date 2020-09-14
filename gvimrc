@@ -15,4 +15,4 @@ nnoremap <D-D> :split<cr>
 
 " Sublime-like bindings.
 nnoremap <D-F> :CtrlSF 
-nnoremap <D-P> :GFiles<cr>
+nnoremap <D-O> :GFiles<cr>

@@ -37,7 +37,6 @@ brew "lzip"
 brew "moreutils"
 brew "ripgrep"
 
-cask "qlstephen"
 
 
 # ------------------------------------------------------------ 
@@ -48,17 +47,20 @@ cask "qlstephen"
 cask "alfred"
 cask "bartender"
 cask "mosaic"
+cask "qlstephen"
 mas "vimari", id: 1480933944
 
 # Communication.
 cask "discord"
 cask "microsoft-teams"
 cask "signal"
+cask "zoomus"
 mas "im+", id: 1137958278
 
 # Entertainment.
 cask "spotify"
 cask "steam"
+cask "transmission"
 cask "vlc"
 mas "news-explorer", id: 1032670789
 
