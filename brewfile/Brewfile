@@ -49,6 +49,7 @@ cask "bartender"
 cask "command-tab-plus"
 cask "mosaic"
 cask "qlstephen"
+cask "command-tab-plus"
 mas "vimari", id: 1480933944
 
 # Communication.
