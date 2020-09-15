@@ -46,6 +46,7 @@ brew "ripgrep"
 # User interface.
 cask "alfred"
 cask "bartender"
+cask "command-tab-plus"
 cask "mosaic"
 cask "qlstephen"
 mas "vimari", id: 1480933944
