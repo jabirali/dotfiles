@@ -15,6 +15,7 @@ brew "nnn"
 brew "tmux"
 
 # Documents.
+brew "csvkit"
 brew "graphviz"
 brew "pandoc"
 brew "pandoc-citeproc"
@@ -36,6 +37,7 @@ brew "htop"
 brew "lzip"
 brew "moreutils"
 brew "ripgrep"
+brew "wget"
 
 
 
@@ -88,7 +90,8 @@ mas "keynote", id: 409183694
 mas "numbers", id: 409203825
 mas "pages", id: 409201541
 
-# Microsoft.
+# Office.
+cask "openconnect-gui"
 mas "excel", id: 462058435
 mas "word", id: 462054704
 mas "powerpoint", id: 462062816
