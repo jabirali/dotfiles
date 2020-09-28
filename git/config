@@ -11,5 +11,3 @@
 [alias]
 	graph = log --branches --remotes --tags --graph --oneline --decorate
 	change = remote set-url origin
-[pull]
-	rebase = true

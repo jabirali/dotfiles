@@ -82,6 +82,7 @@ cask "expressvpn"
 cask "little-snitch"
 cask "micro-snitch"
 mas "master-password", id: 662763204
+mas "otp-auth", id: 1471867429
 mas "wipr", id: 1320666476
 
 # Apple.
