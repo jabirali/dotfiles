@@ -81,18 +81,17 @@ mas "be-focused", id: 961632517
 cask "expressvpn"
 cask "little-snitch"
 cask "micro-snitch"
+mas "1password", id: 1333542190
 mas "master-password", id: 662763204
-mas "otp-auth", id: 1471867429
 mas "wipr", id: 1320666476
 
 # Apple.
 mas "imovie", id: 408981434
 mas "keynote", id: 409183694
-mas "numbers", id: 409203825
-mas "pages", id: 409201541
+# mas "numbers", id: 409203825
+# mas "pages", id: 409201541
 
-# Office.
-cask "openconnect-gui"
+# Microsoft.
 mas "excel", id: 462058435
 mas "word", id: 462054704
 mas "powerpoint", id: 462062816

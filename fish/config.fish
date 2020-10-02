@@ -40,7 +40,7 @@ set zotfile_root ~/snap/zotero-snap
 set -gx PATH ~/.local/bin $PATH
 
 # Aliases for common actions.
-alias exa    'exa --git-ignore --group-directories-first --time-style=long-iso'
+alias exa    'exa --group-directories-first --time-style=long-iso'
 alias mkvenv 'echo layout_python >> .envrc; direnv allow'
 alias pytest 'fd \'.py$\' | entr pytest'
 alias wget   'wget -e robots=off'
