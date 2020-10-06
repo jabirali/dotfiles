@@ -55,7 +55,6 @@ mas "vimari", id: 1480933944
 
 # Communication.
 cask "discord"
-cask "microsoft-teams"
 cask "signal"
 cask "zoomus"
 mas "im+", id: 1137958278
@@ -82,7 +81,6 @@ cask "expressvpn"
 cask "little-snitch"
 cask "micro-snitch"
 mas "1password", id: 1333542190
-mas "master-password", id: 662763204
 mas "wipr", id: 1320666476
 
 # Apple.
@@ -92,10 +90,11 @@ mas "keynote", id: 409183694
 # mas "pages", id: 409201541
 
 # Microsoft.
+# cask "microsoft-teams"
 mas "excel", id: 462058435
 mas "word", id: 462054704
 mas "powerpoint", id: 462062816
-mas "outlook", id: 985367838
+# mas "outlook", id: 985367838
 
 # Backup.
 cask "arq"

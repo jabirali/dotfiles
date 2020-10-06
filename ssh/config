@@ -36,3 +36,11 @@ Host stepstone
   Hostname stepstone.sintef.no
   IdentityFile ~/.ssh/id_rsa
   User jabiro
+
+Host babalab
+  Hostname 10.218.93.25
+  ProxyJump stepstone
+  IdentityFile ~/.ssh/id_ed25519
+  User jabirali
+  RequestTTY yes
+  RemoteCommand /home/linuxbrew/.linuxbrew/bin/tmux -CC new -A -s remote

@@ -5,6 +5,7 @@
 vi    vim
 vi    nvim
 cat   bat -p
+less  bat -p
 find  fd
 grep  rg
 tree  exa -T
@@ -44,6 +45,8 @@ l   exa
 
 o   open
 o   xdg-open
+
+O   qlmanage -p
 
 v   vi
 v   vim
