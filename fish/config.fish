@@ -25,7 +25,7 @@ set fish_color_quote yellow
 set fish_color_redirection green
 
 # Integrate with `fzf`.
-fzf_key_bindings
+# fzf_key_bindings
 
 # Integrate with `direnv`.
 eval (direnv hook fish)
