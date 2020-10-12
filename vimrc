@@ -34,6 +34,7 @@ set ttimeoutlen=50
 set ttyfast
 set undodir=~/.local/share/nvim/undo/
 set viminfo+=!
+set virtualedit
 set wildmenu
 
 " Neovim config.

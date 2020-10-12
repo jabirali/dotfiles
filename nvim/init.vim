@@ -32,11 +32,10 @@ set softtabstop=4
 set tabstop=4
 
 " Miscellaneous.
-set lines=999
-set columns=999
-set scrolloff=999
 set relativenumber
+set scrolloff=999
 set signcolumn=yes
+set virtualedit
 
 " Custom colorscheme.
 colorscheme minimono
