@@ -102,6 +102,10 @@ mas "word", id: 462054704
 mas "powerpoint", id: 462062816
 # mas "outlook", id: 985367838
 
+# Virtualization.
+cask "virtualbox"
+cask "virtualbox-extension-pack"
+
 # Backup.
 cask "arq"
 cask "resilio-sync"
