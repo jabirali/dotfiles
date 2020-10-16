@@ -23,20 +23,26 @@ brew "pandoc-crossref"
 cask "mactex-no-gui"
 
 # Programming.
-brew "python"
+brew "binutils"
 brew "black"
+brew "cloc"
+brew "gcc"
+brew "make"
 brew "poetry"
+brew "python"
 brew "tcl-tk"
 
 # Miscellaneous.
 brew "atool"
 brew "bat"
+brew "dos2unix"
 brew "exa"
 brew "fd"
 brew "htop"
 brew "lzip"
 brew "moreutils"
 brew "ripgrep"
+brew "unix2dos"
 brew "wget"
 
 
@@ -49,8 +55,8 @@ brew "wget"
 cask "alfred"
 cask "bartender"
 cask "command-tab-plus"
-cask "mosaic"
 cask "qlstephen"
+mas "magnet", id: 441258766
 mas "vimari", id: 1480933944
 
 # Communication.
