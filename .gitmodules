@@ -61,3 +61,6 @@
 [submodule "nvim/pack/python/start/jedi-vim"]
 	path = nvim/pack/python/start/jedi-vim
 	url = https://github.com/davidhalter/jedi-vim.git
+[submodule "nvim/pack/project/start/dash.vim"]
+	path = nvim/pack/project/start/dash.vim
+	url = https://github.com/rizzatti/dash.vim.git
