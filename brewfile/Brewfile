@@ -66,10 +66,11 @@ cask "zoomus"
 mas "im+", id: 1137958278
 
 # Entertainment.
+cask "airflow"
+cask "iina"
 cask "spotify"
 cask "steam"
 cask "transmission"
-cask "vlc"
 mas "news-explorer", id: 1032670789
 
 # Productivity.
@@ -101,10 +102,6 @@ mas "excel", id: 462058435
 mas "word", id: 462054704
 mas "powerpoint", id: 462062816
 # mas "outlook", id: 985367838
-
-# Virtualization.
-cask "virtualbox"
-cask "virtualbox-extension-pack"
 
 # Backup.
 cask "arq"
