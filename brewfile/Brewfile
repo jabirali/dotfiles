@@ -23,10 +23,10 @@ brew "pandoc-crossref"
 cask "mactex-no-gui"
 
 # Programming.
-brew "binutils"
 brew "black"
 brew "cloc"
 brew "gcc"
+brew "gh"
 brew "make"
 brew "poetry"
 brew "python"
