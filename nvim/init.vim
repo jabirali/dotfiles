@@ -39,3 +39,6 @@ set virtualedit=all
 
 " Custom colorscheme.
 colorscheme minimono
+
+" Plugin settings.
+let g:SimpylFold_fold_import = 0

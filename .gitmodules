@@ -70,3 +70,6 @@
 [submodule "nvim/pack/documents/start/vimtex"]
 	path = nvim/pack/documents/start/vimtex
 	url = https://github.com/lervag/vimtex.git
+[submodule "nvim/pack/python/start/SimpylFold"]
+	path = nvim/pack/python/start/SimpylFold
+	url = https://github.com/tmhedberg/SimpylFold
