@@ -35,7 +35,7 @@ set tabstop=4
 set relativenumber
 set scrolloff=999
 set signcolumn=yes
-set virtualedit
+set virtualedit=all
 
 " Custom colorscheme.
 colorscheme minimono
