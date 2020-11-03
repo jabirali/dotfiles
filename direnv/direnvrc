@@ -1,6 +1,6 @@
 layout_python() {
 	# Determine the virtualenv location.
-	local venv="$HOME/.cache/virtualenvs/$(basename $PWD)"
+	local venv="$HOME/.cache/virtualenvs/$(basename "$PWD")"
 		
 	# If the virtualenv does not exist, create it.
 	if [ ! -d "$venv" ]; then

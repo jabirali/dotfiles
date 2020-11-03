@@ -5,6 +5,9 @@
 " migrate to VSCode more advanced refactoring and debugging, and use Neovim mainly
 " for more basic day-to-day programming, my new config relatively vanilla.
 
+" Generate tags.
+helptags ALL
+
 " Better defaults.
 set autochdir
 set foldmethod=syntax
@@ -35,10 +38,18 @@ set tabstop=4
 set relativenumber
 set scrolloff=999
 set signcolumn=yes
-set virtualedit=all
+set virtualedit=block
 
 " Custom colorscheme.
 colorscheme minimono
 
 " Plugin settings.
 let g:SimpylFold_fold_import = 0
+let g:tex_flavor = 'latex'
+
+" Zettelkasten setup.
+let g:wiki_root = '~/Documents/Wiki'
+let g:wiki_link_target_type = 'md'
+autocmd BufNewFile,BufRead *.wiki :set filetype=markdown
+inoremap <C-\> [](<C-r>=printf("0x%08x", str2nr(strftime('%s')))<cr>)<esc>%hi
+vnoremap <C-\> <esc>`<i[<esc>`>la](<C-r>=printf("0x%08x", str2nr(strftime('%s')))<cr>)
