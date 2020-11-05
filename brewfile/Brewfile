@@ -79,7 +79,6 @@ cask "iterm2"
 cask "macvim"
 cask "vscodium"
 cask "zotero"
-mas "bear", id: 1091189122
 mas "noteplan", id: 1137020764
 mas "be-focused", id: 961632517
 
