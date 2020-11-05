@@ -35,6 +35,8 @@ set softtabstop=4
 set tabstop=4
 
 " Miscellaneous.
+set hidden
+set modifiable
 set relativenumber
 set scrolloff=999
 set signcolumn=yes
@@ -49,7 +51,11 @@ let g:tex_flavor = 'latex'
 
 " Zettelkasten setup.
 let g:wiki_root = '~/Documents/Wiki'
+let g:wiki_filetypes = ['md']
 let g:wiki_link_target_type = 'md'
-autocmd BufNewFile,BufRead *.wiki :set filetype=markdown
-inoremap <C-\> [](<C-r>=printf("0x%08x", str2nr(strftime('%s')))<cr>)<esc>%hi
-vnoremap <C-\> <esc>`<i[<esc>`>la](<C-r>=printf("0x%08x", str2nr(strftime('%s')))<cr>)
+let g:wiki_tags_format_pattern = '\v%(^|\s)#\zs[^# ]+'
+
+let g:wiki_map_link_create = 'ZettelLink'
+function ZettelLink(text) abort
+  return printf("0x%08x", str2nr(strftime('%s')))
+endfunction
