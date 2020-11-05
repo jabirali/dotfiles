@@ -53,7 +53,6 @@ let g:tex_flavor = 'latex'
 let g:wiki_root = '~/Documents/Wiki'
 let g:wiki_filetypes = ['md']
 let g:wiki_link_target_type = 'md'
-let g:wiki_tags_format_pattern = '\v%(^|\s)#\zs[^# ]+'
 
 let g:wiki_map_link_create = 'ZettelLink'
 function ZettelLink(text) abort
