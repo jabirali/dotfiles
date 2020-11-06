@@ -35,8 +35,6 @@ set softtabstop=4
 set tabstop=4
 
 " Miscellaneous.
-set hidden
-set modifiable
 set relativenumber
 set scrolloff=999
 set signcolumn=yes
@@ -56,5 +54,8 @@ let g:wiki_link_target_type = 'md'
 
 let g:wiki_map_link_create = 'ZettelLink'
 function ZettelLink(text) abort
-  return printf("0x%08x", str2nr(strftime('%s')))
+  return printf("0x%08x.md", str2nr(strftime('%s')))
 endfunction
+
+" Custom keybindings
+nnoremap Q mqgqip`q
