@@ -73,3 +73,9 @@
 [submodule "nvim/pack/python/start/SimpylFold"]
 	path = nvim/pack/python/start/SimpylFold
 	url = https://github.com/tmhedberg/SimpylFold
+[submodule "nvim/pack/documents/start/tabular"]
+	path = nvim/pack/documents/start/tabular
+	url = https://github.com/godlygeek/tabular.git
+[submodule "nvim/pack/documents/start/vim-markdown"]
+	path = nvim/pack/documents/start/vim-markdown
+	url = https://github.com/plasticboy/vim-markdown.git

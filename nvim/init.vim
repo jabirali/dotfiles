@@ -48,6 +48,7 @@ let g:SimpylFold_fold_import = 0
 let g:tex_flavor = 'latex'
 
 " Zettelkasten setup.
+let g:vim_markdown_folding_disabled = 1
 let g:wiki_root = '~/Documents/Wiki'
 let g:wiki_filetypes = ['md']
 let g:wiki_link_target_type = 'md'
@@ -59,3 +60,4 @@ endfunction
 
 " Custom keybindings
 nnoremap Q mqgqip`q
+nnoremap <silent> y. :let @" = expand("%")<cr>
