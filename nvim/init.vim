@@ -60,18 +60,4 @@ endfunction
 
 " Custom keybindings
 nnoremap Q mqgqip`q
-nnoremap <silent> <c-y> ?^[^1-9]<cr>:nohlsearch<cr>$hvT/y:q<cr>a[]()<esc>Pl%hi
-nnoremap <silent> y. :let @" = expand("%")<cr>
-
-" function! ZettelCopy(lines)
-"   let l:fname = split(a:lines, ':')[0]
-"   let @" = '[](' . fname . ')'
-" endfunction
-" 
-" command! -bang -nargs=* ZettelSearch
-"   \ call fzf#run({
-"   \   'source': 'rg --no-heading --color=always --smart-case '.shellescape(<q-args>),
-"   \   'sink': funcref('ZettelCopy'),
-"   \   'options': '--ansi',
-"   \   })
-" nnoremap <leader>/ :ZettelSearch<cr>
+nnoremap <silent> <leader>wi <c-w>p:let @" = expand("%")<cr><c-w>pi[]()<esc>Pl%hi
