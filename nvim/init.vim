@@ -61,3 +61,15 @@ endfunction
 " Custom keybindings
 nnoremap Q mqgqip`q
 nnoremap <silent> <leader>wi <c-w>p:let @" = expand("%")<cr><c-w>pi[]()<esc>Pl%hi
+
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = "echo %s | tr -s ' ' '\n' | rg --color=always --count --files-with-matches --smart-case -f -" 
+  "| sed 's/\(.*\):\([0-9]*\)/\2:\1/' | sort -gr | sed 's/[0-9]*:\(.*\)/\1/'"
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  " call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
