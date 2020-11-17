@@ -60,17 +60,9 @@ cask "qlstephen"
 mas "magnet", id: 441258766
 mas "vimari", id: 1480933944
 
-# Communication.
-cask "discord"
-cask "signal"
-cask "zoomus"
-mas "im+", id: 1137958278
-
 # Entertainment.
-cask "airflow"
 cask "iina"
 cask "spotify"
-cask "steam"
 cask "transmission"
 mas "news-explorer", id: 1032670789
 
@@ -78,30 +70,23 @@ mas "news-explorer", id: 1032670789
 cask "dash"
 cask "iterm2"
 cask "macvim"
-cask "vscodium"
 cask "zotero"
 mas "noteplan", id: 1137020764
-mas "be-focused", id: 961632517
 
 # Privacy.
-cask "expressvpn"
 cask "little-snitch"
 cask "micro-snitch"
 mas "1password", id: 1333542190
 mas "wipr", id: 1320666476
 
-# Apple.
-mas "imovie", id: 408981434
-mas "keynote", id: 409183694
-# mas "numbers", id: 409203825
-# mas "pages", id: 409201541
-
 # Microsoft.
-# cask "microsoft-teams"
+cask "microsoft-teams"
 mas "excel", id: 462058435
 mas "word", id: 462054704
 mas "powerpoint", id: 462062816
-# mas "outlook", id: 985367838
+mas "onenote", id: 784801555
+mas "onedrive", id: 823766827
+mas "outlook", id: 985367838
 
 # Backup.
 cask "arq"

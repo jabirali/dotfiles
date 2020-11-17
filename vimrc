@@ -38,3 +38,6 @@ set wildmenu
 
 " Neovim config.
 source ~/.config/nvim/init.vim
+
+" Transparent background.
+hi Normal ctermbg=NONE

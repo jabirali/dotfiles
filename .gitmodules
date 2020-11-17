@@ -79,3 +79,6 @@
 [submodule "nvim/pack/documents/start/vim-markdown"]
 	path = nvim/pack/documents/start/vim-markdown
 	url = https://github.com/plasticboy/vim-markdown.git
+[submodule "nvim/pack/style/start/dracula"]
+	path = nvim/pack/style/start/dracula
+	url = https://github.com/dracula/vim

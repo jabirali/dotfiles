@@ -4,8 +4,8 @@
 set guifont=Monaco:h12
 set guioptions=egm
 set termguicolors
-let ayucolors="mirage"
-colorscheme ayu
+"let ayucolors="mirage"
+"colorscheme ayu
 
 " MacOS standard bindings.
 nnoremap <space>   <C-d>
