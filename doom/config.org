@@ -7,6 +7,17 @@ that it takes the form of an Org-mode document with inline code blocks, which
 is *tangled* to an Emacs Lisp file =config.el= when I run =M-x doom/reload=.
 The resulting code file represents my Doom Emacs configuration file.
 
+* Table of contents :TOC:
+- [[#metadata][Metadata]]
+  - [[#target-platform][Target platform]]
+  - [[#header-line][Header line]]
+- [[#accounts-and-locations][Accounts and locations]]
+  - [[#user-identity][User identity]]
+  - [[#document-folders][Document folders]]
+- [[#user-interface][User interface]]
+- [[#keybindings][Keybindings]]
+  - [[#better-macos-defaults][Better macOS defaults]]
+
 * Metadata
 ** Target platform
 The target platform is the [[https://bitbucket.org/mituharu/emacs-mac/src/master/]["Emacs Mac Port" by Mitsuharu Yamamoto]] running
