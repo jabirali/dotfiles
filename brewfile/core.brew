@@ -1,0 +1,77 @@
+# Core packages for use with HomeBrew and LinuxBrew.
+
+# Homebrew essentials.
+tap "homebrew/bundle"
+tap "homebrew/core"
+tap "homebrew/cask"
+brew "mas"
+
+# Doom Emacs as my main editor.
+tap "d12frosted/emacs-plus"
+brew "emacs-plus"
+
+# Neovim as my fallback editor.
+brew "neovim"
+brew "tmux"
+brew "fzf"
+
+# GNU/Linux goodies for MacOS.
+brew "coreutils"
+brew "moreutils"
+brew "make"
+brew "wget"
+brew "gcc"
+brew "git"
+
+# Terminal for the 21st century.
+cask "iterm2"
+brew "fish"
+brew "bat"
+brew "exa"
+brew "fd"
+brew "ripgrep"
+brew "htop"
+
+# Usable interface on MacOS.
+cask "alfred"
+cask "amethyst"
+cask "bartender"
+
+# Pleasant web browsing.
+mas "1password", id: 1333542190
+mas "minimal-consent", id: 1514164630
+mas "vimari", id: 1480933944
+mas "wipr", id: 1320666476
+
+# Dealing with academic papers.
+cask "skim"
+cask "zotero"
+cask "mactex-no-gui"
+brew "latexdiff"
+brew "graphviz"
+
+# Document conversion tools.
+brew "pandoc"
+brew "pandoc-citeproc"
+brew "pandoc-crossref"
+brew "csvkit"
+brew "dos2unix"
+brew "unix2dos"
+
+# Programming and development.
+cask "dash"
+brew "black"
+brew "cloc"
+brew "direnv"
+brew "entr"
+brew "gh"
+brew "poetry"
+brew "python"
+brew "tcl-tk"
+
+# File archival and transfer.
+brew "atool"
+brew "lzip"
+cask "arq"
+cask "resilio-sync"
+cask "transmission"

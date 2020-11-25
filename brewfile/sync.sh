@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# To use this script, simply create a symlink from `work.brew` or `home.brew`
+# (or any other package profile) to the name `this.brew`, and run this script.
+# Homebrew will then uninstall unwanted packages and install missing packages.
+
+# Move to the directory containing the brewfiles.
+cd "$(dirname "$0")"
+
+# Check if the `this` pointer is correctly set. This
+# is a symlink `this.brew` that should point to the
+# desired profile, e.g. `work.brew` or `home.brew`.
+if [[ -f "this.brew" ]]; then
+    # Install any packages listed in this file.
+    cat "core.brew" "this.brew" | brew bundle cleanup --force --file=-
+    cat "core.brew" "this.brew" | brew bundle --file=-
+else
+    echo "Symlink `this.brew` not set."
+    exit 1
+fi
+#echo $PWD
