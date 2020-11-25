@@ -22,7 +22,8 @@ restart your shell, and run `brew sync` to update your system from this.
 A suitable version of Emacs should be installed by Homebrew above,
 and Doom Emacs is bundled with this repository as a Git submodule.
 Moreover, `~/.config/emacs/bin` should already be added to `$PATH`.
-This, after (re)starting `fish`, we just need to sync Doom Emacs:
+Thus, after performing a recursive clone of this repository and
+(re)starting the `fish` shell, we just need to sync Doom Emacs:
 
     doom install
 
