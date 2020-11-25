@@ -19,14 +19,23 @@ To install all packages needed, make sure `~/.config/bin` is in `$PATH`,
 restart your shell, and run `brew sync` to update your system from this.
 
 ## Doom Emacs
+A suitable version of Emacs should be installed by Homebrew above.
+After this, proceed to install Doom Emacs via the following commands:
 
-Then run `~/.config/bin/setup-macos` or `~/.config/bin/setup-linux`
-followed by `brew bundle install --global`. Since I have replaced
-package managers like `vim-plug` and `tpm` with Git submodules,
-updating plugins is done via `git pull --recurse-submodules`.
-
-    git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
+    git clone https://github.com/hlissner/doom-emacs ~/.emacs.d
+    ln -sf ~/.config/doom.d ~/.doom.d
     ~/.emacs.d/bin/doom install
+
+This should install and setup Doom with the bundled configuration.
+See the literate configuration in [doom.d](./doom.d/config.org) for
+details; this file is automatically tangled to `config.el` by Doom.
+
+## Miscellaneous
+Run `~/.config/bin/setup-macos` or `~/.config/bin/setup-linux`
+to setup the respective platforms. Note that you might also
+need to run `git pull --recurse-submodules` to update the
+repo, as `tmux` and `nvim` plugins are handled via Git
+submodules instead of using a dedicated package manager.
 
 [1]: https://github.com/jabirali?tab=repositories&type=source
 [2]: https://brew.sh/

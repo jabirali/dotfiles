@@ -12,7 +12,6 @@ cd ~/.config/brewfile/ || exit 1
 # desired profile, e.g. `work.brew` or `home.brew`.
 if [[ -f "this.brew" ]]; then
     # Install any packages listed in this file.
-    cat "core.brew" "this.brew" | brew bundle cleanup --force --file=-
     cat "core.brew" "this.brew" | brew bundle --file=-
 else
     echo "Symlink `this.brew` not set."
