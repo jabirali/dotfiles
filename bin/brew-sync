@@ -5,7 +5,7 @@
 # Homebrew will then uninstall unwanted packages and install missing packages.
 
 # Move to the directory containing the brewfiles.
-cd "$(dirname "$0")"
+cd ~/.config/brewfile/ || exit 1
 
 # Check if the `this` pointer is correctly set. This
 # is a symlink `this.brew` that should point to the

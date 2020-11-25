@@ -37,7 +37,7 @@ set projector_cmd edit +GFiles
 set zotfile_root ~/snap/zotero-snap
 
 # Common path options.
-set -gx PATH ~/.local/bin ~/.emacs.d/bin $PATH
+set -gx PATH ~/.config/bin ~/.local/bin ~/.emacs.d/bin $PATH
 
 # Aliases for common actions.
 alias exa    'exa --group-directories-first --time-style=long-iso'
