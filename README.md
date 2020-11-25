@@ -2,7 +2,7 @@
 This repo contains my config files for Linux and Mac. Most apps I
 use support the XDG specification, so e.g. `stow` is overkill for
 me. Instead, I just clone this repo to `~/.config`, and have install
-scripts in `bin` that link the remaining few files to the right place.
+scripts in `bin` that link the remaining few files in place.
 
 ## Homebrew
 After cloning to `~/.config`, install [Homebrew][2] for Linux or macOS:
@@ -19,16 +19,12 @@ To install all packages needed, make sure `~/.config/bin` is in `$PATH`,
 restart your shell, and run `brew sync` to update your system from this.
 
 ## Doom Emacs
-A suitable version of Emacs should be installed by Homebrew above.
-After this, proceed to install Doom Emacs via the following commands:
+A suitable version of Emacs should be installed by Homebrew above,
+and Doom Emacs is bundled with this repository as a Git submodule.
+Moreover, `~/.config/emacs/bin` should already be added to `$PATH`.
+This, after (re)starting `fish`, we just need to sync Doom Emacs:
 
-    git clone https://github.com/hlissner/doom-emacs ~/.emacs.d
-    ln -sf ~/.config/doom.d ~/.doom.d
-    ~/.emacs.d/bin/doom install
-
-This should install and setup Doom with the bundled configuration.
-See the literate configuration in [doom.d](./doom.d/config.org) for
-details; this file is automatically tangled to `config.el` by Doom.
+    doom install
 
 ## Miscellaneous
 Run `~/.config/bin/setup-macos` or `~/.config/bin/setup-linux`

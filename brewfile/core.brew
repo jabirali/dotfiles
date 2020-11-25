@@ -7,8 +7,8 @@ tap "homebrew/cask"
 brew "mas"
 
 # Doom Emacs as my main editor.
-tap "d12frosted/emacs-plus"
-brew "emacs-plus"
+tap "railwaycat/emacsmacport"
+brew "emacs-mac", args: ["with-modules"]
 
 # Neovim as my fallback editor.
 brew "neovim"
