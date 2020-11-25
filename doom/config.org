@@ -1,0 +1,76 @@
+#+TITLE: Configuration for Doom Emacs
+#+AUTHOR: Jabir Ali Ouassou
+#+PROPERTY: header-args :tangle yes :cache yes :results silent
+
+This is a *literate configuration file* for my [[https://github.com/hlissner/doom-emacs][Doom Emacs]] setup. This means
+that it takes the form of an Org-mode document with inline code blocks, which
+is *tangled* to an Emacs Lisp file =config.el= when I run =M-x doom/reload=.
+The resulting code file represents my Doom Emacs configuration file.
+
+* Metadata
+** Target platform
+The target platform is the [[https://bitbucket.org/mituharu/emacs-mac/src/master/]["Emacs Mac Port" by Mitsuharu Yamamoto]] running
+on MacOS 11, which is available via [[https://github.com/railwaycat/homebrew-emacsmacport][Railwaycat's Homebrew repository]]. In
+my experience, this provides the best Emacs experience on MacOS, e.g.
+avoiding flickering/stuttering problems found in some other versions,
+and supporting more of the expected MacOS default desktop behaviours.
+Most of this config is however equally usable on Linux (which I used
+when I first adopted Doom Emacs), and some may also work on Windows.
+
+** Header line
+This enables *lexical binding*, which is generally considered a good idea:
+#+begin_src emacs-lisp
+;;; -*- lexical-binding: t; -*-
+#+end_src
+
+To illustrate what this means, consider the following example from [[https://www.emacswiki.org/emacs/DynamicBindingVsLexicalBinding][EmacsWiki]]:
+#+begin_src emacs-lisp :tangle no
+    (let ((a 1))
+      (let ((f (lambda () (print a))))
+        (let ((a 2))
+          (funcall f))))
+#+end_src
+Using *lexical binding* (enabled above), the code prints =1= since that is
+what the variable =a= was at the time =f= was defined. Using *dynamic binding*
+(the default), the above prints =2= since that is the most recent value of =a=.
+Using lexical binding makes the code easier to debug and easier to optimize.
+
+* Accounts and locations
+This section defines the user accounts and system folders relevant for Emacs.
+This includes mail accounts, mail folders, notes folders, and bibliographies.
+
+** User identity
+This is used by a lot in Emacs: mail, encryption, templates, snippets, etc.
+#+begin_src emacs-lisp
+(setq user-full-name "Jabir Ali Ouassou"
+      user-mail-address "jabirali@switzerlandmail.ch")
+#+end_src
+
+** Document folders
+These locations are especially used by Org-mode, for files and references.
+#+begin_src emacs-lisp
+(setq org-directory "~/iCloud/Org/"
+      org-agenda-files '("~/iCloud/Org/")
+      +org-capture-todo-file "~/iCloud/Org/Inbox.org")
+
+(setq reftex-default-bibliography "~/Library/Zotero/Library.bib"
+      bibtex-completion-bibliography '("~/Library/Zotero/Library.bib")
+      org-ref-default-bibliography '("~/Library/Zotero/Library.bib"))
+#+end_src
+
+* User interface
+Select the theme and fonts:
+#+begin_src emacs-lisp
+(setq doom-theme 'doom-one
+      doom-font "Monaco-14"
+      doom-variable-pitch-font "Monaco-14")
+#+end_src
+
+Select the line number settings. (This can be =nil=, =t=, or ='relative=.)
+#+begin_src emacs-lisp
+(setq display-line-numbers-type t)
+#+end_src
+
+* Keybindings
+** Better macOS defaults
+TODO: Add bindings for =S-[]=, =S-{}=, =S-w=, =S-d=, and =S-D= like in iTerm2.
