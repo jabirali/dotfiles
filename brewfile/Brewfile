@@ -58,7 +58,7 @@ brew "wget"
 cask "alfred"
 cask "bartender"
 cask "command-tab-plus"
-cask "qlstephen"
+cask "amethyst"
 mas "magnet", id: 441258766
 mas "vimari", id: 1480933944
 

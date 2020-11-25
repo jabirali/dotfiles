@@ -22,7 +22,7 @@ b   brew
 be  mvim ~/.config/brewfile/Brewfile
 bi  brew install
 br  brew remove
-bu  brew bundle install --global
+bu  brew bundle install --global; brew upgrade
 bs  brew search
 
 c   cd ~/.config
