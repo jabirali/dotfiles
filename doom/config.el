@@ -1,4 +1,5 @@
 ;;; -*- lexical-binding: t; -*-
+;;; config.el -- custom configuration for doom emacs
 
 (setq user-full-name "Jabir Ali Ouassou"
       user-mail-address "jabirali@switzerlandmail.ch")
