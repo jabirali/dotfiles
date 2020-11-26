@@ -5,71 +5,75 @@
 
 :os (:if IS-MAC macos)
 
-       :completion
-       (company)
-       (ivy +icons)
+:config
+(literate)
 
-       :ui
-       (doom)
-       (doom-dashboard)
-       (doom-quit)
-       (hl-todo)
-       (indent-guides)
-       (modeline)
-       (ophints)
-       (popup +all +defaults)
-       (vc-gutter)
-       (vi-tilde-fringe)
-       (workspaces)
+:lang
+(org)
+(markdown)
+(latex +latexmk)
 
-       :editor
-       (evil +everywhere)
-       (file-templates)
-       (fold)
-       (format +onsave)
-       (snippets)
+:lang
+(emacs-lisp)
+(sh +fish)
 
-       :emacs
-       (dired +ranger +icons)
-       (electric)
-       (undo)
-       (vc)
+:lang
+(python +lsp +pyright)
 
-       :term
-       (eshell)
-       (vterm)
+:lang
+(data)
 
-       :checkers
-       (syntax)
-       (spell +everywhere)
+:completion
+(company)
+(ivy +icons)
 
-       :tools
-       (direnv)
-       (editorconfig)
-       (eval +overlay)
-       (lookup +docsets)
-       (lsp +eglot)
-       (magit)
-       (pdf)
+:ui
+(doom)
+(doom-dashboard)
+(doom-quit)
+(hl-todo)
+(indent-guides)
+(modeline)
+(ophints)
+(popup +all +defaults)
+(vc-gutter)
+(vi-tilde-fringe)
+(workspaces)
 
-       :lang
-       ;;
-       (markdown)
-       (org)
-       (latex +lsp +latexmk)
+:editor
+(evil +everywhere)
+(file-templates)
+(fold)
+(format +onsave)
+(snippets)
 
-       (emacs-lisp)
-       (python +lsp +pyright)
-       (sh +lsp +fish)
+:emacs
+(dired +ranger +icons)
+(electric)
+(undo)
+(vc)
 
-       ;; CSV
-       (data)
+:term
+(eshell)
+(vterm)
 
-       :email
-       (mu4e)
+:checkers
+(syntax)
+(spell +everywhere)
 
-       :config
-       (literate)
-       (default +bindings +smartparens)
+:tools
+(direnv)
+(editorconfig)
+(eval +overlay)
+(lookup +docsets)
+(lsp +eglot)
+(magit)
+(pdf)
+
+:email
+(mu4e)
+
+:config
+(default +bindings +smartparens)
 
 )

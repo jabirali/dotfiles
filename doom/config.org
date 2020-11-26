@@ -20,13 +20,16 @@ is however equally usable on Linux (which I was using when I adopted Doom).
 
 * Table of contents :TOC:
 - [[#configuration][Configuration]]
-  - [[#metadata][Metadata]]
+  - [[#header-line][Header line]]
   - [[#accounts-and-locations][Accounts and locations]]
   - [[#user-interface][User interface]]
   - [[#keybindings][Keybindings]]
 - [[#doom-modules][Doom modules]]
+  - [[#header-line-1][Header line]]
+  - [[#package-list][Package list]]
+  - [[#footer][Footer]]
 - [[#emacs-packages][Emacs packages]]
-  - [[#header-line][Header line]]
+  - [[#header-line-2][Header line]]
   - [[#better-defaults][Better defaults]]
 
 * Configuration
@@ -36,13 +39,13 @@ is however equally usable on Linux (which I was using when I adopted Doom).
 
 ** Header line
 This enables *lexical binding*, which is generally considered a good idea:
-#+begin_src elisp
+#+begin_src emacs-lisp
 ;;; -*- lexical-binding: t; -*-
 ;;; config.el -- custom configuration for doom emacs
 #+end_src
 
 To illustrate what this means, consider the following example from [[https://www.emacswiki.org/emacs/DynamicBindingVsLexicalBinding][EmacsWiki]]:
-#+begin_src elisp :tangle no
+#+begin_src emacs-lisp :tangle no
     (let ((a 1))
       (let ((f (lambda () (print a))))
         (let ((a 2))
@@ -59,14 +62,14 @@ This includes mail accounts, mail folders, notes folders, and bibliographies.
 
 *** User identity
 This is used by a lot in Emacs: mail, encryption, templates, snippets, etc.
-#+begin_src elisp
+#+begin_src emacs-lisp
 (setq user-full-name "Jabir Ali Ouassou"
       user-mail-address "jabirali@switzerlandmail.ch")
 #+end_src
 
 *** Document folders
 These locations are especially used by Org-mode, for files and references.
-#+begin_src elisp
+#+begin_src emacs-lisp
 (setq org-directory "~/iCloud/Org/"
       org-agenda-files '("~/iCloud/Org/")
       +org-capture-todo-file "~/iCloud/Org/Inbox.org")
@@ -81,7 +84,7 @@ Select the colortheme theme and fonts. For now, I'm using Doom One with default
 MacOS fonts, but Gruvbox and Moonlight are also nice, and for programming the
 Input and Iosevka fonts are cool. Note the difference between =doom-font= and
 =doom-variable-pitch-font=: the former is monospace, the latter is "normal".
-#+begin_src elisp
+#+begin_src emacs-lisp
 (setq doom-theme 'doom-one
       doom-font "Monaco-13"
       doom-variable-pitch-font "Monaco-13")
@@ -90,7 +93,7 @@ Input and Iosevka fonts are cool. Note the difference between =doom-font= and
 By default, I want an undecorated maximized frame for Emacs. This lets me use
 Emacs on its own desktop (which I jump to via the keybinding =C-1= on MacOS),
 and gives me enough space on a MacBook Air to have two 80-column files open.
-#+begin_src elisp
+#+begin_src emacs-lisp
 (add-to-list 'default-frame-alist '(fullscreen  . maximized))
 (add-to-list 'default-frame-alist '(undecorated . t))
 #+end_src
@@ -100,7 +103,7 @@ on absolute line numbers, or ='relative= to turn on relative line numbers. While
 I like the idea of relative numbers for easier Vim motion (jumps like e.g. =13k=),
 these are not that useful when using folding in Doom Emacs; the numbers show
 absolute line number differences while =#j= and =#k= use visual differences.
-#+begin_src elisp
+#+begin_src emacs-lisp
 (setq display-line-numbers-type t)
 #+end_src
 Note that line numbers in general can cause issues with smooth scrolling, and
@@ -111,7 +114,7 @@ look strange in buffers with wrapped lines, so disable in case of these issues.
 These keybindings mirror what are used in other MacOS apps, e.g. iTerm2.
 Here, the modifier =s= refers to the command key (⌘). Note that some
 relevant keybindings, like ⌘s, ⌘t, ⌘w, and ⌘1-⌘9, are already defined.
-#+begin_src elisp
+#+begin_src emacs-lisp
 (map!
  "s-[" 'evil-window-prev
  "s-]" 'evil-window-next
@@ -130,7 +133,7 @@ after modifying this file to ensure that Doom Emacs is up to date.
 
 ** Header line
 Enable lexical binding, and then start the =doom!= module block.
-#+begin_src elisp
+#+begin_src emacs-lisp
 ;;; -*- lexical-binding: t; -*-
 ;;; init.el -- high-level package management for doom emacs
 
@@ -141,84 +144,123 @@ Enable lexical binding, and then start the =doom!= module block.
 *** System integration
 This enables tighter integration with the rest of the MacOS operating system, 
 including relevant "open with" menu items and a KeyChain auth source.
-#+begin_src elisp
+#+begin_src emacs-lisp
 :os (:if IS-MAC macos)
 #+end_src
 
+This line makes it easier to use a literate configuration file like this;
+in particular, Doom Emacs will automatically tangle this Org file to Emacs-Lisp.
+#+begin_src emacs-lisp
+:config
+(literate)
+#+end_src
+
+*** Doom core
+TODO
+
+*** Language support
+**** Papers and notes
+As an Emacs user, Org-mode is my bread and butter. That's what I use for
+getting things done️, roam'ing around my wiki, and note-taking in general.
+One day, I want to be one of the cool kids using it for everything else too.
+
+However, as a theoretical phycisist and typography snob, writing papers in
+LaTeX is a no-brainer. And as a programmer, MarkDown is the lingua franca.
+#+begin_src emacs-lisp
+:lang
+(org)
+(markdown)
+(latex +latexmk)
+#+end_src
+
+**** Hacking and scripting
+I wouldn't be much of an Emacs user without hacking on Emacs Lisp,
+and I wouldn't be much of a Unix user without any Shell scripting.
+#+begin_src emacs-lisp
+:lang
+(emacs-lisp)
+(sh +fish)
+#+end_src
+
+**** Software development
+Most of my work these days is in Python. However, I want to learn Julia,
+and it's not unlikely I'll revisit C/C++ and Fortran 2008+ in the future,
+so I'll probably want to add decent setups for these as well at some point.
+#+begin_src emacs-lisp
+:lang
+(python +lsp +pyright)
+#+end_src
+Some day, maybe I'll also finish [[http://learnyouahaskell.com/chapters][Learn you a Haskell]], in which case I should
+throw Haskell in too. But for now, having Emacs Lisp as a hobby is enough.
+
+**** Data analysis
+The =data= module is useful for improving the CSV support in Emacs. This
+is perhaps especially useful in combination with [[https://csvkit.readthedocs.io/en/latest/][csvkit]], since its =in2csv=
+command can convert any Microsoft Excel (=xls/xlsx=) file to CSV.
+#+begin_src emacs-lisp
+:lang
+(data)
+#+end_src
 
 *** Miscellaneous
-#+begin_src elisp
-       :completion
-       (company)
-       (ivy +icons)
+#+begin_src emacs-lisp
+:completion
+(company)
+(ivy +icons)
 
-       :ui
-       (doom)
-       (doom-dashboard)
-       (doom-quit)
-       (hl-todo)
-       (indent-guides)
-       (modeline)
-       (ophints)
-       (popup +all +defaults)
-       (vc-gutter)
-       (vi-tilde-fringe)
-       (workspaces)
+:ui
+(doom)
+(doom-dashboard)
+(doom-quit)
+(hl-todo)
+(indent-guides)
+(modeline)
+(ophints)
+(popup +all +defaults)
+(vc-gutter)
+(vi-tilde-fringe)
+(workspaces)
 
-       :editor
-       (evil +everywhere)
-       (file-templates)
-       (fold)
-       (format +onsave)
-       (snippets)
+:editor
+(evil +everywhere)
+(file-templates)
+(fold)
+(format +onsave)
+(snippets)
 
-       :emacs
-       (dired +ranger +icons)
-       (electric)
-       (undo)
-       (vc)
+:emacs
+(dired +ranger +icons)
+(electric)
+(undo)
+(vc)
 
-       :term
-       (eshell)
-       (vterm)
+:term
+(eshell)
+(vterm)
 
-       :checkers
-       (syntax)
-       (spell +everywhere)
+:checkers
+(syntax)
+(spell +everywhere)
 
-       :tools
-       (direnv)
-       (editorconfig)
-       (eval +overlay)
-       (lookup +docsets)
-       (lsp +eglot)
-       (magit)
-       (pdf)
+:tools
+(direnv)
+(editorconfig)
+(eval +overlay)
+(lookup +docsets)
+(lsp +eglot)
+(magit)
+(pdf)
 
-       :lang
-       ;;
-       (markdown)
-       (org)
-       (latex +lsp +latexmk)
+:email
+(mu4e)
 
-       (emacs-lisp)
-       (python +lsp +pyright)
-       (sh +lsp +fish)
-
-       ;; CSV
-       (data)
-
-       :email
-       (mu4e)
-
-       :config
-       (literate)
-       (default +bindings +smartparens)
+:config
+(default +bindings +smartparens)
 #+end_src
 
 ** Footer
 This important single paren closes the =doom!= block.
-#+begin_src elisp
+#+begin_src emacs-lisp
 )
 #+end_src
 
@@ -236,7 +278,7 @@ Remember to run =doom sync= after updating this section!
 
 ** Header line
 Disable byte-compilation of the package file.
-#+begin_src elisp
+#+begin_src emacs-lisp
 ;;; -*- no-byte-compile: t; -*-
 ;;; packages.el -- low-level package management for doom emacs
 #+end_src
@@ -245,6 +287,6 @@ Disable byte-compilation of the package file.
 Disable the =hl-line= package. While it can look nice, it turns out simply being
 distracting in modes like e.g. Org-mode, since (1) indentation is not highlighted
 and (2) line-wrapping makes the size of the highlights inconsistent as you scroll.
-#+begin_src elisp
+#+begin_src emacs-lisp
 (package! hl-line :disable t)
 #+end_src
