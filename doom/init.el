@@ -8,8 +8,8 @@
        (:if IS-MAC macos)
 
        :completion
-       (company)
-       (ivy)
+       (company +tng)
+       (ivy +icons)
 
        :ui
        (doom)
@@ -21,7 +21,6 @@
        (nav-flash)
        (ophints)
        (popup +all +defaults)
-       (tabs)
        (vc-gutter)
        (vi-tilde-fringe)
        (workspaces)
