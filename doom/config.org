@@ -17,6 +17,8 @@ The resulting code file represents my Doom Emacs configuration file.
 - [[#user-interface][User interface]]
 - [[#keybindings][Keybindings]]
   - [[#macos-defaults][MacOS defaults]]
+- [[#packages][Packages]]
+  - [[#header-line-1][Header line]]
 
 * Metadata
 ** Target platform
@@ -110,4 +112,27 @@ relevant keybindings, like ⌘s, ⌘t, ⌘w, and ⌘1-⌘9, are already defined.
  "s-]" 'evil-window-next
  "s-d" 'evil-window-vsplit
  "s-D" 'evil-window-split)
+#+end_src
+
+* Packages
+This is a separate list of packages to enable or disable, which is tangled to a
+separate Doom configuration file =packages.el=. See the =package!= macro for
+more information about how to enable things, with the keywords =:recipe= for
+stuff like GitHub packages and =:disable= to turn off built-in packages.
+
+** Header line
+Disable byte-compilation of the package file.
+#+begin_src elisp :tangle packages.el
+
+#+begin_src elisp :tangle packages.el
+;;; -*- no-byte-compile: t; -*-
+
+
+;; This file defines what additional packages to install. Declare them with the
+;; `package!' macro, then run 'doom refresh' on the command line afterwards. To
+;; fetch packages from standard MELPA/ELPA repos, just use `package!' directly;
+;; to install directly from another repo, add the straight.el `:recipe' keyword.
+;; It's also possible to use `:disable' keyword to disable built-in packages.
+(package! hl-line :disable t)
+
 #+end_src

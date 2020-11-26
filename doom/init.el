@@ -18,7 +18,6 @@
        (hl-todo)
        (indent-guides)
        (modeline)
-       (nav-flash)
        (ophints)
        (popup +all +defaults)
        (vc-gutter)
@@ -44,7 +43,7 @@
 
        :checkers
        (syntax)
-       (spell)
+       (spell +everywhere)
 
        :tools
        (direnv)
@@ -56,14 +55,16 @@
        (pdf)
 
        :lang
-       (org)
+       ;;
        (markdown)
-       (emacs-lisp)
-       (cc +lsp)
-       (julia +lsp)
-       (python +lsp)
+       (org +roam)
        (latex +lsp +latexmk)
+
+       (emacs-lisp)
+       (python +lsp +pyright)
        (sh +lsp +fish)
+
+       ;; CSV
        (data)
 
        :email
