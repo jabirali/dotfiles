@@ -4,6 +4,10 @@ use support the XDG specification, so e.g. `stow` is overkill for
 me. Instead, I just clone this repo to `~/.config`, and have install
 scripts in `bin` that link the remaining few files in place.
 
+Note that many dependencies and plugins (`emacs`, `tmux`, `nvim`, etc.)
+are handled via Git submodules. This means that after cloning this repo,
+you should run `git submodule init` to fetch the dependencies.
+
 ## Homebrew
 After cloning to `~/.config`, install [Homebrew][2] for Linux or macOS:
 
