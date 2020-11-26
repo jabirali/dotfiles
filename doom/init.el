@@ -8,7 +8,7 @@
        (:if IS-MAC macos)
 
        :completion
-       (company +tng)
+       (company)
        (ivy +icons)
 
        :ui

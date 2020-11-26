@@ -16,7 +16,7 @@ The resulting code file represents my Doom Emacs configuration file.
   - [[#document-folders][Document folders]]
 - [[#user-interface][User interface]]
 - [[#keybindings][Keybindings]]
-  - [[#better-macos-defaults][Better macOS defaults]]
+  - [[#macos-defaults][MacOS defaults]]
 
 * Metadata
 ** Target platform
@@ -70,18 +70,44 @@ These locations are especially used by Org-mode, for files and references.
 #+end_src
 
 * User interface
-Select the theme and fonts:
+Select the colortheme theme and fonts. For now, I'm using Doom One with default
+MacOS fonts, but Gruvbox and Moonlight are also nice, and for programming the
+Input and Iosevka fonts are cool. Note the difference between =doom-font= and
+=doom-variable-pitch-font=: the former is monospace, the latter is "normal".
 #+begin_src emacs-lisp
 (setq doom-theme 'doom-one
-      doom-font "Monaco-14"
-      doom-variable-pitch-font "Monaco-14")
+      doom-font "Monaco-13"
+      doom-variable-pitch-font "Monaco-13")
 #+end_src
 
-Select the line number settings. (This can be =nil=, =t=, or ='relative=.)
+By default, I want an undecorated maximized frame for Emacs. This lets me use
+Emacs on its own desktop (which I jump to via the keybinding =C-1= on MacOS),
+and gives me enough space on a MacBook Air to have two 80-column files open.
+#+begin_src emacs-lisp
+(add-to-list 'default-frame-alist '(fullscreen  . maximized))
+(add-to-list 'default-frame-alist '(undecorated . t))
+#+end_src
+
+Select the line number settings. This can be =nil= to turn them off, =t= to turn
+on absolute line numbers, or ='relative= to turn on relative line numbers. While
+I like the idea of relative numbers for easier Vim motion (jumps like e.g. =13k=),
+these are not that useful when using folding in Doom Emacs; the numbers show
+absolute line number differences while =#j= and =#k= use visual differences.
 #+begin_src emacs-lisp
 (setq display-line-numbers-type t)
 #+end_src
+Note that line numbers in general can cause issues with smooth scrolling, and
+look strange in buffers with wrapped lines, so disable in case of these issues.
 
 * Keybindings
-** Better macOS defaults
-TODO: Add bindings for =S-[]=, =S-{}=, =S-w=, =S-d=, and =S-D= like in iTerm2.
+** MacOS defaults
+These keybindings mirror what are used in other MacOS apps, e.g. iTerm2.
+Here, the modifier =s= refers to the command key (⌘). Note that some
+relevant keybindings, like ⌘s, ⌘t, ⌘w, and ⌘1-⌘9, are already defined.
+#+begin_src emacs-lisp
+(map!
+ "s-[" 'evil-window-prev
+ "s-]" 'evil-window-next
+ "s-d" 'evil-window-vsplit
+ "s-D" 'evil-window-split)
+#+end_src
