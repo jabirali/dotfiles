@@ -1,3 +1,10 @@
 # Work packages for use with HomeBrew and LinuxBrew.
 
-# TODO
+# Microsoft Office.
+cask "microsoft-teams"
+mas "excel", id: 462058435
+mas "word", id: 462054704
+mas "powerpoint", id: 462062816
+mas "onenote", id: 784801555
+mas "onedrive", id: 823766827
+mas "outlook", id: 985367838
