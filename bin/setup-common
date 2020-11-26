@@ -8,10 +8,6 @@ mkdir -p ~/.ssh
 ln -sf ~/.config/ssh/config ~/.ssh/config
 chmod  600 ~/.ssh/config
 
-# `homebrew-file` reads ~/.config/brewfile/Brewfile,
-# while the bundled `brew bundle` reads ~/.Brewfile.
-ln -sf ~/.config/brewfile/Brewfile ~/.Brewfile
-
 # Share Git ignore patterns with `fd`, `rg`, and `exa`.
 # The last of these does not support ~/.config/ignore.
 ln -sf ~/.config/git/ignore ~/.gitignore

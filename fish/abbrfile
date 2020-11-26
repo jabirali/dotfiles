@@ -19,10 +19,11 @@ au  sudo apt update && sudo apt upgrade
 as  apt search
 
 b   brew
+bb  brew sync
 be  mvim ~/.config/brewfile/Brewfile
 bi  brew install
 br  brew remove
-bu  brew bundle install --global
+bu  brew upgrade
 bs  brew search
 
 c   cd ~/.config

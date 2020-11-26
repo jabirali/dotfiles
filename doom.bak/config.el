@@ -120,23 +120,9 @@
 ;; This section contains the settings for the graphical user interface.
 ;; This includes all aesthetic settings controlling colors, fonts, etc.
 
-;; Select what fonts to use for the gui.
-(setq doom-font (font-spec :family "Iosevka SS09" :size 19)
-      doom-variable-pitch-font (font-spec :family "Libertinus Sans" :size 19)
-      +zen-mixed-pitch-modes nil
-      +zen-text-scale 1)
-
 ;; Window splitting settings.
 (setq split-width-threshold 120
       split-height-threshold nil)
-
-;; Select what colors to use for the gui.
-(setq doom-theme 'doom-gruvbox)
-
-;; Disable line numbers. They look nice in regular buffers, but they look bad in
-;; terminals, look strange in buffers with variable line height, and cause issues
-;; with smooth scrolling in Emacs (much more responsive without them present).
-(setq display-line-numbers-type nil)
 
 ;; Come to the dark side; i.e. invert the colors used to read pdf documents.
 (add-hook! 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)
@@ -150,11 +136,6 @@
   (setq TeX-insert-braces nil
         TeX-electric-sub-and-superscript nil
         font-latex-fontify-script nil))
-
-;; Default to an undecorated maximized frame. (I mean, if you basically live
-;; in Emacs, why wouldn't you want it to get your entire screen immediately?)
-(add-to-list 'default-frame-alist '(fullscreen  . maximized))
-(add-to-list 'default-frame-alist '(undecorated . t))
 
 ;; Minimalist modeline.
 (after! doom-modeline

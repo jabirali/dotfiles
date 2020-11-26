@@ -1,0 +1,32 @@
+# Home packages for use with HomeBrew and LinuxBrew.
+
+# Keepin' in touch with people.
+cask "discord"
+cask "signal"
+cask "zoomus"
+
+# Reading and writing and stuff.
+mas "news-explorer", id: 1032670789
+mas "imovie", id: 408981434
+mas "keynote", id: 409183694
+mas "numbers", id: 409203825
+mas "pages", id: 409201541
+
+# Entertainment systems.
+cask "airflow"
+cask "iina"
+cask "spotify"
+cask "steam"
+
+# Privacy tools.
+cask "expressvpn"
+cask "little-snitch"
+cask "micro-snitch"
+mas "discovery", id: 1381004916
+
+# Apps for my SO.
+cask "google-chrome"
+mas "befocused", id: 961632517
+mas "magnet", id: 441258766
+mas "noteplan", id: 1137020764
+mas "notability", id: 736189492
