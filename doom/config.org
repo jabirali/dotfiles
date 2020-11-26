@@ -19,6 +19,7 @@ The resulting code file represents my Doom Emacs configuration file.
   - [[#macos-defaults][MacOS defaults]]
 - [[#packages][Packages]]
   - [[#header-line-1][Header line]]
+  - [[#better-defaults][Better defaults]]
 
 * Metadata
 ** Target platform
@@ -120,19 +121,18 @@ separate Doom configuration file =packages.el=. See the =package!= macro for
 more information about how to enable things, with the keywords =:recipe= for
 stuff like GitHub packages and =:disable= to turn off built-in packages.
 
+Remember to run =doom refresh= after updating this section!
+
 ** Header line
 Disable byte-compilation of the package file.
 #+begin_src elisp :tangle packages.el
-
-#+begin_src elisp :tangle packages.el
 ;;; -*- no-byte-compile: t; -*-
+#+end_src
 
-
-;; This file defines what additional packages to install. Declare them with the
-;; `package!' macro, then run 'doom refresh' on the command line afterwards. To
-;; fetch packages from standard MELPA/ELPA repos, just use `package!' directly;
-;; to install directly from another repo, add the straight.el `:recipe' keyword.
-;; It's also possible to use `:disable' keyword to disable built-in packages.
+** Better defaults
+Disable the =hl-line= package. While it can look nice, it turns out simply being
+distracting in modes like e.g. Org-mode, since (1) indentation is not highlighted
+and (2) line-wrapping makes the size of the highlights inconsistent as you scroll.
+#+begin_src elisp :tangle packages.el
 (package! hl-line :disable t)
-
 #+end_src
