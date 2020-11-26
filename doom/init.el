@@ -1,8 +1,9 @@
 ;;; -*- lexical-binding: t; -*-
 ;;; init.el -- high-level package management for doom emacs
 
-(doom! :os
-       (:if IS-MAC macos)
+(doom!
+
+:os (:if IS-MAC macos)
 
        :completion
        (company)
@@ -69,4 +70,6 @@
 
        :config
        (literate)
-       (default +bindings +smartparens))
+       (default +bindings +smartparens)
+
+)

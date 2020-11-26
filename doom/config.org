@@ -129,16 +129,25 @@ You can use =K= and =gd= to inspect a module or flag, and run =doom sync=
 after modifying this file to ensure that Doom Emacs is up to date.
 
 ** Header line
+Enable lexical binding, and then start the =doom!= module block.
 #+begin_src elisp
 ;;; -*- lexical-binding: t; -*-
 ;;; init.el -- high-level package management for doom emacs
+
+(doom!
 #+end_src
 
 ** Package list
+*** System integration
+This enables tighter integration with the rest of the MacOS operating system, 
+including relevant "open with" menu items and a KeyChain auth source.
 #+begin_src elisp
-(doom! :os
-       (:if IS-MAC macos)
+:os (:if IS-MAC macos)
+#+end_src
 
+
+*** Miscellaneous
+#+begin_src elisp
        :completion
        (company)
        (ivy +icons)
@@ -204,7 +213,13 @@ after modifying this file to ensure that Doom Emacs is up to date.
 
        :config
        (literate)
-       (default +bindings +smartparens))
+       (default +bindings +smartparens)
+#+end_src
+
+** Footer
+This important single paren closes the =doom!= block.
+#+begin_src elisp
+)
 #+end_src
 
 * Emacs packages
