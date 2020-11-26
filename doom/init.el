@@ -1,10 +1,6 @@
 ;;; -*- lexical-binding: t; -*-
 ;;; init.el -- high-level package management for doom emacs
 
-;; This file controls what Doom modules are enabled and what order they load.
-;; You can use 'K' and 'gd' to inspect a module or flag, and should run 'doom
-;; sync' after modifying this file to ensure that Doom Emacs is up to date.
-
 (doom! :os
        (:if IS-MAC macos)
 

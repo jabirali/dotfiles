@@ -2,16 +2,21 @@
 #+AUTHOR: Jabir Ali Ouassou
 #+PROPERTY: header-args :tangle yes :cache yes :results silent
 
-This is a *literate configuration file* for my [[https://github.com/hlissner/doom-emacs][Doom Emacs]] setup. This means
-that it takes the form of an Org-mode document with inline code blocks, which
-is *tangled* to Emacs Lisp files when I run =M-x doom/reload=. The resulting
-code files represent my full Doom Emacs configuration.
-
-If the =*.el= files are somehow damaged, they can be regenerated outside Emacs
-using the =org-tangle= utility that is bundled with the Doom Emacs project:
+This is a *literate configuration file* for [[https://github.com/hlissner/doom-emacs][Doom Emacs]]. This means it takes
+the form of an Org document with inline code blocks, which is *tangled* to 3
+Emacs Lisp files when I run =doom/reload=. The resulting code files represent
+my full Doom Emacs configuration. If the =*.el= files are damaged, they can be
+regenerated outside Emacs using the =org-tangle= utility bundled with Doom:
 #+begin_src bash
 org-tangle ~/.config/doom/config.org
 #+end_src
+
+The target platform is the [[https://bitbucket.org/mituharu/emacs-mac/src/master/]["Emacs Mac Port" by Mitsuharu Yamamoto]] running
+on MacOS 11, which is available via [[https://github.com/railwaycat/homebrew-emacsmacport][Railwaycat's Homebrew repository]]. In
+my experience, this provides the best Emacs experience on MacOS, avoiding
+flickering/stuttering problems found in some other versions, and supporting
+more of the expected MacOS default desktop behaviours. Most of this config
+is however equally usable on Linux (which I was using when I adopted Doom).
 
 * Table of contents :TOC:
 - [[#configuration][Configuration]]
@@ -28,17 +33,8 @@ org-tangle ~/.config/doom/config.org
 :PROPERTIES:
 :header-args: :tangle config.el
 :END:
-** Metadata
-*** Target platform
-The target platform is the [[https://bitbucket.org/mituharu/emacs-mac/src/master/]["Emacs Mac Port" by Mitsuharu Yamamoto]] running
-on MacOS 11, which is available via [[https://github.com/railwaycat/homebrew-emacsmacport][Railwaycat's Homebrew repository]]. In
-my experience, this provides the best Emacs experience on MacOS, e.g.
-avoiding flickering/stuttering problems found in some other versions,
-and supporting more of the expected MacOS default desktop behaviours.
-Most of this config is however equally usable on Linux (which I used
-when I first adopted Doom Emacs), and some may also work on Windows.
 
-*** Header line
+** Header line
 This enables *lexical binding*, which is generally considered a good idea:
 #+begin_src elisp
 ;;; -*- lexical-binding: t; -*-
@@ -128,14 +124,18 @@ relevant keybindings, like ⌘s, ⌘t, ⌘w, and ⌘1-⌘9, are already defined.
 :header-args: :tangle init.el
 :END:
 
+This file controls what Doom modules are enabled and what order they load.
+You can use =K= and =gd= to inspect a module or flag, and run =doom sync=
+after modifying this file to ensure that Doom Emacs is up to date.
+
+** Header line
 #+begin_src elisp
 ;;; -*- lexical-binding: t; -*-
 ;;; init.el -- high-level package management for doom emacs
+#+end_src
 
-;; This file controls what Doom modules are enabled and what order they load.
-;; You can use 'K' and 'gd' to inspect a module or flag, and should run 'doom
-;; sync' after modifying this file to ensure that Doom Emacs is up to date.
-
+** Package list
+#+begin_src elisp
 (doom! :os
        (:if IS-MAC macos)
 
@@ -211,6 +211,7 @@ relevant keybindings, like ⌘s, ⌘t, ⌘w, and ⌘1-⌘9, are already defined.
 :PROPERTIES:
 :header-args: :tangle packages.el
 :END:
+
 This is a separate list of packages to enable or disable, which is tangled to a
 separate Doom configuration file =packages.el=. See the =package!= macro for
 more information about how to enable things, with the keywords =:recipe= for
