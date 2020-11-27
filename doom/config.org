@@ -235,6 +235,8 @@ relevant keybindings, like ⌘s, ⌘t, ⌘w, and ⌘1-⌘9, are already defined.
 (map!
  "s-[" 'evil-window-prev
  "s-]" 'evil-window-next
+ "s-{" '+workspace/switch-left
+ "s-}" '+workspace/switch-right
  "s-d" 'evil-window-vsplit
  "s-D" 'evil-window-split)
 #+end_src

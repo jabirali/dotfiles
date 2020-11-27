@@ -24,5 +24,7 @@
 (map!
  "s-[" 'evil-window-prev
  "s-]" 'evil-window-next
+ "s-{" '+workspace/switch-left
+ "s-}" '+workspace/switch-right
  "s-d" 'evil-window-vsplit
  "s-D" 'evil-window-split)
