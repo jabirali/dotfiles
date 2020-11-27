@@ -5,35 +5,30 @@
 This is a [[https://leanpub.com/lit-config/read][Literate Configuration]] for [[https://github.com/hlissner/doom-emacs][Doom Emacs]] running on the [[https://bitbucket.org/mituharu/emacs-mac/src/master/][Emacs Mac Port]].
 This means it takes the form of an Org-mode notebook with inline code blocks,
 which is automatically /tangled/ to Emacs Lisp files when I run =doom/reload=.
-The resulting code is my Emacs configuration. If the =*.el= files are damaged,
-they can be regenerated outside Emacs using the =org-tangle= utility from Doom:
+The main part of the configuration file is tangled to [[config.el]]. Parts of it are
+also tangled to [[init.el]] and [[packages.el]]; these are clearly marked with =:noweb-ref=
+labels in the code blocks, and their precise usage can be found in the appendix.
+They can also be tangled outside Emacs using the =org-tangle= utility from Doom:
 #+begin_src bash :tangle no
 org-tangle config.org
 #+end_src
-
+ 
 Special thanks goes to Henrik Lissner for Doom Emacs, Mitsuharu Yamamoto for
 the Emacs Mac Port, Diego Zamboni for his book on Literate Configuration,
 and everyone on Reddit =r/emacs= for helping me learn Emacs as a newbie.
 
 * Table of contents :TOC:
-- [[#configuration][Configuration]]
-  - [[#lexical-binding][Lexical binding]]
-  - [[#accounts-and-locations][Accounts and locations]]
-  - [[#user-interface][User interface]]
-  - [[#unix-integration][Unix integration]]
-  - [[#macos-integration][MacOS integration]]
-  - [[#ide-features][IDE features]]
-  - [[#software-development][Software development]]
-  - [[#academic-writing][Academic writing]]
-- [[#doom-modules][Doom modules]]
-- [[#emacs-packages][Emacs packages]]
+- [[#lexical-binding][Lexical binding]]
+- [[#accounts-and-locations][Accounts and locations]]
+- [[#user-interface][User interface]]
+- [[#unix-integration][Unix integration]]
+- [[#macos-integration][MacOS integration]]
+- [[#ide-features][IDE features]]
+- [[#software-development][Software development]]
+- [[#academic-writing][Academic writing]]
+- [[#appendix][Appendix]]
 
-* Configuration
-This is the main part of the literate configuration file. It is mainly tangled
-to [[~/.config/doom/config.el]]; but parts of it, marked with =:noweb-ref= labels,
-are instead merged into [[init.el]] and [[packages.el]] as shown in other sections.
-
-** Lexical binding
+* Lexical binding
 This enables *lexical binding*, which is generally considered a good idea:
 #+begin_src emacs-lisp :tangle yes
 ;;; -*- lexical-binding: t; -*-
@@ -52,7 +47,7 @@ what the variable =a= was at the time =f= was defined. Using *dynamic binding*
 (the default), the above prints =2= since that is the most recent value of =a=.
 Using lexical binding makes the code easier to debug and easier to optimize.
 
-** Accounts and locations
+* Accounts and locations
 This is used by a lot in Emacs: mail, encryption, templates, snippets, etc.
 #+begin_src emacs-lisp
 (setq user-full-name "Jabir Ali Ouassou"
@@ -70,7 +65,7 @@ These locations are especially used by Org-mode, for files and references.
       org-ref-default-bibliography '("~/Library/Zotero/Library.bib"))
 #+end_src
 
-** User interface
+* User interface
 First, enable the core Doom Emacs experience. This includes a nice dashboard
 when you first open up Doom, a nice modeline below each window, visual cues
 when you do range-spanning operations like yanking, better handling of Emacs
@@ -139,7 +134,7 @@ absolute line number differences while =#j= and =#k= use visual differences.
 Note that line numbers in general can cause issues with smooth scrolling, and
 look strange in buffers with wrapped lines, so disable in case of these issues.
 
-** Unix integration
+* Unix integration
 Emacs wouldn't integrate very well with the rest of my operating system
 without a POSIX-like terminal available. I choose two options here: Eshell
 integrates best with Emacs, but Vterm is better for Curses apps and similar.
@@ -172,7 +167,7 @@ minor margin hints to the full control of the amazing Magit interface.
 (magit)
 #+end_src
 
-** MacOS integration
+* MacOS integration
 First, enable some sensible MacOS defaults, including integration with
 native applications like Finder and iTerm2, and a Keychain auth source.
 #+begin_src emacs-lisp :tangle no :noweb-ref mod:system
@@ -212,7 +207,7 @@ and generally don't interfere with OS shortcuts such as "hide window".
  "s-<right>" 'evil-window-right)
 #+end_src
 
-** IDE features
+* IDE features
 For me, what makes Emacs appealing for programming are its non-intrusive IDE features.
 The following sets up interaction with documentation, interpreters, linters, formatters,
 templates, snippets – the most common IDE features, in other words. Electric indentation
@@ -245,7 +240,7 @@ the new developments in IDEs like VSCode that come out of large corporations.
 #+end_src
 Note that LSP also requires passing a =+lsp= flag to the relevant =:lang= modules.
 
-** Software development
+* Software development
 I wouldn't be much of an Emacs user without some Lisp programming, and wouldn't
 be much of a Unix power user without some Shell scripting. These are essentials.
 #+begin_src emacs-lisp :tangle no :noweb-ref mod:programming
@@ -260,7 +255,7 @@ support for compiled languages like C/C++ and Fortran 2008+, and possibly Haskel
 (python)
 #+end_src
 
-** Academic writing
+* Academic writing
 For digital note taking in Emacs, Org and MarkDown are both nearly mandatory. The
 former lies at the core of my note-taking: it can be used for Getting Things Done,
 Roam Research, Literate Programming, and drafting documents and presentations. The
@@ -284,11 +279,11 @@ buffers, with proper SyncTeX support, and not least with Vim-like keybindings.
 (pdf)
 #+end_src
 
-* Doom modules
-This section is tangled to [[~/.config/doom/init.el]], which controls which
-Doom modules to enable in Emacs and in what order they load. Remember to
-run =doom sync= after modifying this file ensure everything is consistent.
+* Appendix
+Remember to run =doom sync= after modifying these to ensure consistency.
 
+This code is tangled to [[~/.config/doom/init.el]], which controls which
+Doom modules to enable in Emacs and in what order they load.
 #+begin_src emacs-lisp :tangle init.el :noweb tangle
 ;;; -*- lexical-binding: t; -*-
 ;;; init.el -- high-level package management for doom emacs
@@ -320,11 +315,8 @@ run =doom sync= after modifying this file ensure everything is consistent.
  <<mod:config>>)
 #+end_src
 
-* Emacs packages
-This section is tangled to [[~/.config/doom/packages.el]], which controls which
-Emacs packages to enable/disable outside of the plug-and-play Doom modules.
-Remember to run =doom sync= after modifying this to ensure consistency.
-
+This code is tangled to [[packages.el]], which controls which Emacs packages
+to enable/disable outside of the plug-and-play Doom modules.
 #+begin_src emacs-lisp :tangle packages.el :noweb tangle
 ;;; -*- no-byte-compile: t; -*-
 ;;; packages.el -- low-level package management for doom emacs
