@@ -2,78 +2,72 @@
 ;;; init.el -- high-level package management for doom emacs
 
 (doom!
+ :input
 
-:os (:if IS-MAC macos)
+ :completion
+ (company)
+ (ivy +icons)
 
-:config
-(literate)
+ :ui
+ (doom)
+ (doom-dashboard)
+ (doom-quit)
+ (hl-todo)
+ (indent-guides)
+ (modeline)
+ (ophints)
+ (popup +all +defaults)
+ (vc-gutter)
+ (vi-tilde-fringe)
+ (workspaces)
 
-:lang
-(org)
-(markdown)
-(latex +latexmk)
+ :editor
+ (evil +everywhere)
+ (file-templates)
+ (fold)
+ (format +onsave)
+ (snippets)
 
-:lang
-(emacs-lisp)
-(sh +fish)
+ :emacs
+ (dired +ranger +icons)
+ (electric)
+ (undo)
+ (vc)
 
-:lang
-(python +lsp +pyright)
+ :checkers
+ (syntax)
+ (spell +everywhere)
 
-:lang
-(data)
+ :term
+ (eshell)
+ (vterm)
 
-:completion
-(company)
-(ivy +icons)
+ :tools
+ (direnv)
+ (editorconfig)
+ (eval +overlay)
+ (lookup +docsets)
+ (lsp +eglot)
+ (magit)
+ (pdf)
 
-:ui
-(doom)
-(doom-dashboard)
-(doom-quit)
-(hl-todo)
-(indent-guides)
-(modeline)
-(ophints)
-(popup +all +defaults)
-(vc-gutter)
-(vi-tilde-fringe)
-(workspaces)
+ :os
+ (:if IS-MAC macos)
 
-:editor
-(evil +everywhere)
-(file-templates)
-(fold)
-(format +onsave)
-(snippets)
+ :lang
+ (org)
+ (markdown)
+ (latex +latexmk)
+ (python +lsp +pyright)
+ (emacs-lisp)
+ (sh +fish)
+ (data)
 
-:emacs
-(dired +ranger +icons)
-(electric)
-(undo)
-(vc)
+ :email
+ (mu4e)
 
-:term
-(eshell)
-(vterm)
+ :app
 
-:checkers
-(syntax)
-(spell +everywhere)
-
-:tools
-(direnv)
-(editorconfig)
-(eval +overlay)
-(lookup +docsets)
-(lsp +eglot)
-(magit)
-(pdf)
-
-:email
-(mu4e)
-
-:config
-(default +bindings +smartparens)
-
-)
+ :config
+ (literate)
+ (default +bindings +smartparens))

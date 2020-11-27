@@ -19,159 +19,107 @@ more of the expected MacOS default desktop behaviours. Most of this config
 is however equally usable on Linux (which I was using when I adopted Doom).
 
 * Table of contents :TOC:
-- [[#configuration][Configuration]]
+- [[#doom-modules][Doom modules]]
+  - [[#skeleton-structure][Skeleton structure]]
+- [[#emacs-packages][Emacs packages]]
   - [[#header-line][Header line]]
+  - [[#better-defaults][Better defaults]]
+- [[#configuration][Configuration]]
+  - [[#header-line-1][Header line]]
   - [[#accounts-and-locations][Accounts and locations]]
   - [[#user-interface][User interface]]
   - [[#keybindings][Keybindings]]
-- [[#doom-modules][Doom modules]]
-  - [[#header-line-1][Header line]]
-  - [[#package-list][Package list]]
-  - [[#footer][Footer]]
-- [[#emacs-packages][Emacs packages]]
-  - [[#header-line-2][Header line]]
-  - [[#better-defaults][Better defaults]]
 
 * Doom modules
 :PROPERTIES:
 :header-args: :tangle init.el
 :END:
 
-This file controls what Doom modules are enabled and what order they load.
-You can use =K= and =gd= to inspect a module or flag, and run =doom sync=
-after modifying this file to ensure that Doom Emacs is up to date.
+This section is tangled to [[~/.config/doom/init.el]], which controls which
+Doom modules to enable in Emacs and in what order they load. Remember to
+run =doom sync= after modifying the file to ensure everything is consistent.
 
-** Header line
-Enable lexical binding, and then start the =doom!= module block.
-#+begin_src emacs-lisp
+TODO: Note that order matters, so fix that. Use =noweb= markers to add
+placeholder references in the skeleton (note that multiple blocks with
+the same reference are appended to the same section), and then move the
+module lines to the same part of the config as the associated configuration.
+(For instance, bundling Python configuration with Python modules make sense.)
+
+** Skeleton structure
+#+begin_src emacs-lisp :noweb tangle
 ;;; -*- lexical-binding: t; -*-
 ;;; init.el -- high-level package management for doom emacs
 
 (doom!
-#+end_src
+ :input
 
-** Package list
-*** System integration
-This enables tighter integration with the rest of the MacOS operating system, 
-including relevant "open with" menu items and a KeyChain auth source.
-#+begin_src emacs-lisp
-:os (:if IS-MAC macos)
-#+end_src
+ :completion
+ (company)
+ (ivy +icons)
 
-This line makes it easier to use a literate configuration file like this;
-in particular, Doom Emacs will automatically tangle this Org file to Emacs-Lisp.
-#+begin_src emacs-lisp
-:config
-(literate)
-#+end_src
+ :ui
+ (doom)
+ (doom-dashboard)
+ (doom-quit)
+ (hl-todo)
+ (indent-guides)
+ (modeline)
+ (ophints)
+ (popup +all +defaults)
+ (vc-gutter)
+ (vi-tilde-fringe)
+ (workspaces)
 
-*** Doom core
-TODO
+ :editor
+ (evil +everywhere)
+ (file-templates)
+ (fold)
+ (format +onsave)
+ (snippets)
 
-*** Language support
-**** Papers and notes
-As an Emacs user, Org-mode is my bread and butter. That's what I use for
-getting things done️, roam'ing around my wiki, and note-taking in general.
-One day, I want to be one of the cool kids using it for everything else too.
+ :emacs
+ (dired +ranger +icons)
+ (electric)
+ (undo)
+ (vc)
 
-However, as a theoretical phycisist and typography snob, writing papers in
-LaTeX is a no-brainer. And as a programmer, MarkDown is the lingua franca.
-#+begin_src emacs-lisp
-:lang
-(org)
-(markdown)
-(latex +latexmk)
-#+end_src
+ :checkers
+ (syntax)
+ (spell +everywhere)
 
-**** Hacking and scripting
-I wouldn't be much of an Emacs user without hacking on Emacs Lisp,
-and I wouldn't be much of a Unix user without any Shell scripting.
-#+begin_src emacs-lisp
-:lang
-(emacs-lisp)
-(sh +fish)
-#+end_src
+ :term
+ (eshell)
+ (vterm)
 
-**** Software development
-Most of my work these days is in Python. However, I want to learn Julia,
-and it's not unlikely I'll revisit C/C++ and Fortran 2008+ in the future,
-so I'll probably want to add decent setups for these as well at some point.
-#+begin_src emacs-lisp
-:lang
-(python +lsp +pyright)
-#+end_src
-Some day, maybe I'll also finish [[http://learnyouahaskell.com/chapters][Learn you a Haskell]], in which case I should
-throw Haskell in too. But for now, having Emacs Lisp as a hobby is enough.
+ :tools
+ (direnv)
+ (editorconfig)
+ (eval +overlay)
+ (lookup +docsets)
+ (lsp +eglot)
+ (magit)
+ (pdf)
 
-**** Data analysis
-The =data= module is useful for improving the CSV support in Emacs. This
-is perhaps especially useful in combination with [[https://csvkit.readthedocs.io/en/latest/][csvkit]], since its =in2csv=
-command can convert any Microsoft Excel (=xls/xlsx=) file to CSV.
-#+begin_src emacs-lisp
-:lang
-(data)
-#+end_src
+ :os
+ (:if IS-MAC macos)
 
-*** Miscellaneous
-#+begin_src emacs-lisp
-:completion
-(company)
-(ivy +icons)
+ :lang
+ (org)
+ (markdown)
+ (latex +latexmk)
+ (python +lsp +pyright)
+ (emacs-lisp)
+ (sh +fish)
+ (data)
 
-:ui
-(doom)
-(doom-dashboard)
-(doom-quit)
-(hl-todo)
-(indent-guides)
-(modeline)
-(ophints)
-(popup +all +defaults)
-(vc-gutter)
-(vi-tilde-fringe)
-(workspaces)
+ :email
+ (mu4e)
 
-:editor
-(evil +everywhere)
-(file-templates)
-(fold)
-(format +onsave)
-(snippets)
+ :app
 
-:emacs
-(dired +ranger +icons)
-(electric)
-(undo)
-(vc)
-
-:term
-(eshell)
-(vterm)
-
-:checkers
-(syntax)
-(spell +everywhere)
-
-:tools
-(direnv)
-(editorconfig)
-(eval +overlay)
-(lookup +docsets)
-(lsp +eglot)
-(magit)
-(pdf)
-
-:email
-(mu4e)
-
-:config
-(default +bindings +smartparens)
-#+end_src
-
-** Footer
-This important single paren closes the =doom!= block.
-#+begin_src emacs-lisp
-)
+ :config
+ (literate)
+ (default +bindings +smartparens))
 #+end_src
 
 * Emacs packages
