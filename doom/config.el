@@ -28,3 +28,9 @@
  "s-}" '+workspace/switch-right
  "s-d" 'evil-window-vsplit
  "s-D" 'evil-window-split)
+
+(map!
+ "s-<up>"    'evil-window-up
+ "s-<down>"  'evil-window-down
+ "s-<left>"  'evil-window-left
+ "s-<right>" 'evil-window-right)
