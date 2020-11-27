@@ -20,7 +20,6 @@ is however equally usable on Linux (which I was using when I adopted Doom).
 
 * Table of contents :TOC:
 - [[#doom-modules][Doom modules]]
-  - [[#skeleton-structure][Skeleton structure]]
 - [[#emacs-packages][Emacs packages]]
   - [[#header-line][Header line]]
   - [[#better-defaults][Better defaults]]
@@ -28,7 +27,7 @@ is however equally usable on Linux (which I was using when I adopted Doom).
   - [[#header-line-1][Header line]]
   - [[#accounts-and-locations][Accounts and locations]]
   - [[#user-interface][User interface]]
-  - [[#macos-system-integration][MacOS system integration]]
+  - [[#system-integration][System integration]]
 
 * Doom modules
 :PROPERTIES:
@@ -45,7 +44,6 @@ the same reference are appended to the same section), and then move the
 module lines to the same part of the config as the associated configuration.
 (For instance, bundling Python configuration with Python modules make sense.)
 
-** Skeleton structure
 #+begin_src emacs-lisp :noweb tangle
 ;;; -*- lexical-binding: t; -*-
 ;;; init.el -- high-level package management for doom emacs
@@ -79,12 +77,10 @@ module lines to the same part of the config as the associated configuration.
  (spell +everywhere)
 
  :term
- (eshell)
- (vterm)
+ <<mod:terminal>>
 
  :tools
- (direnv)
- (editorconfig)
+ <<mod:tools>>
  (eval +overlay)
  (lookup +docsets)
  (lsp +eglot)
@@ -220,14 +216,6 @@ Input and Iosevka fonts are cool. Note the difference between =doom-font= and
       doom-variable-pitch-font "Monaco-12")
 #+end_src
 
-By default, I want an undecorated maximized frame for Emacs. This lets me use
-Emacs on its own desktop (which I jump to via the keybinding =C-1= on MacOS),
-and gives me enough space on a MacBook Air to have two 80-column files open.
-#+begin_src emacs-lisp
-(add-to-list 'default-frame-alist '(fullscreen  . maximized))
-(add-to-list 'default-frame-alist '(undecorated . t))
-#+end_src
-
 Select the line number settings. This can be =nil= to turn them off, =t= to turn
 on absolute line numbers, or ='relative= to turn on relative line numbers. While
 I like the idea of relative numbers for easier Vim motion (jumps like e.g. =13k=),
@@ -239,11 +227,38 @@ absolute line number differences while =#j= and =#k= use visual differences.
 Note that line numbers in general can cause issues with smooth scrolling, and
 look strange in buffers with wrapped lines, so disable in case of these issues.
 
-** MacOS system integration
+** System integration
 First, enable some sensible MacOS defaults, including integration with
 native applications like Finder and iTerm2, and a Keychain auth source.
 #+begin_src emacs-lisp :tangle no :noweb-ref mod:system
 (:if IS-MAC macos)
+#+end_src
+
+Emacs wouldn't integrate very well with the rest of my operating system
+without a POSIX-like terminal available. I choose two options here: Eshell
+integrates best with Emacs, but Vterm is better for Curses apps and similar.
+I usually prefer the former, but it's nice to have a fallback option too.
+#+begin_src emacs-lisp :tangle no :noweb-ref mod:terminal
+(eshell)
+(vterm)
+#+end_src
+
+These also increase system integration in an editor-agnostic way. Direnv
+allows me to specify e.g. Python virtual environments in a way that works
+across shells and editors, and the Doom module integrates this in Emacs.
+Editorconfig lets me respect other developers settings for tabs, spaces,
+etc., regardless of what editor they are using to collaborate on code.
+#+begin_src emacs-lisp :tangle no :noweb-ref mod:tools
+(direnv)
+(editorconfig)
+#+end_src
+
+By default, I want an undecorated maximized frame for Emacs. This lets me use
+Emacs on its own desktop (which I jump to via the keybinding =C-1= on MacOS),
+and gives me enough space on a MacBook Air to have two 80-column splits open.
+#+begin_src emacs-lisp
+(add-to-list 'default-frame-alist '(fullscreen  . maximized))
+(add-to-list 'default-frame-alist '(undecorated . t))
 #+end_src
 
 These keybindings mirror what are used in other MacOS apps, e.g. iTerm2.

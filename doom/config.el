@@ -16,10 +16,10 @@
       doom-font "Monaco-12"
       doom-variable-pitch-font "Monaco-12")
 
+(setq display-line-numbers-type t)
+
 (add-to-list 'default-frame-alist '(fullscreen  . maximized))
 (add-to-list 'default-frame-alist '(undecorated . t))
-
-(setq display-line-numbers-type t)
 
 (map!
  "s-[" 'evil-window-prev
