@@ -28,7 +28,7 @@ is however equally usable on Linux (which I was using when I adopted Doom).
   - [[#header-line-1][Header line]]
   - [[#accounts-and-locations][Accounts and locations]]
   - [[#user-interface][User interface]]
-  - [[#keybindings][Keybindings]]
+  - [[#macos-system-integration][MacOS system integration]]
 
 * Doom modules
 :PROPERTIES:
@@ -37,7 +37,7 @@ is however equally usable on Linux (which I was using when I adopted Doom).
 
 This section is tangled to [[~/.config/doom/init.el]], which controls which
 Doom modules to enable in Emacs and in what order they load. Remember to
-run =doom sync= after modifying the file to ensure everything is consistent.
+run =doom sync= after modifying the this ensure everything is consistent.
 
 TODO: Note that order matters, so fix that. Use =noweb= markers to add
 placeholder references in the skeleton (note that multiple blocks with
@@ -54,21 +54,12 @@ module lines to the same part of the config as the associated configuration.
  :input
 
  :completion
- (company)
- (ivy +icons)
+ <<mod:completion>>
 
  :ui
- (doom)
- (doom-dashboard)
- (doom-quit)
+ <<mod:interface>>
  (hl-todo)
- (indent-guides)
- (modeline)
- (ophints)
- (popup +all +defaults)
  (vc-gutter)
- (vi-tilde-fringe)
- (workspaces)
 
  :editor
  (evil +everywhere)
@@ -101,7 +92,7 @@ module lines to the same part of the config as the associated configuration.
  (pdf)
 
  :os
- (:if IS-MAC macos)
+ <<mod:system>>
 
  :lang
  (org)
@@ -197,14 +188,36 @@ These locations are especially used by Org-mode, for files and references.
 #+end_src
 
 ** User interface
+First, enable the core Doom Emacs experience. This includes a nice dashboard
+when you first open up Doom, a nice modeline below each window, visual cues
+when you do range-spanning operations like yanking, better handling of Emacs
+pop-up buffers, and sensible management of Emacs workspaces (perspectives).
+#+begin_src emacs-lisp :tangle no :noweb-ref mod:interface
+(doom)
+(doom-dashboard)
+(doom-quit)
+(modeline)
+(ophints)
+(popup +all +defaults)
+(workspaces)
+#+end_src
+
+Part of what makes modern Emacs a nice work environment is that everything can
+be autocompleted and searched. Company provides as-you-type autosuggestions,
+while Ivy provides a search interface to everything else (similar to FZF).
+#+begin_src emacs-lisp :tangle no :noweb-ref mod:completion
+(company)
+(ivy +icons)
+#+end_src
+
 Select the colortheme theme and fonts. For now, I'm using Doom One with default
 MacOS fonts, but Gruvbox and Moonlight are also nice, and for programming the
 Input and Iosevka fonts are cool. Note the difference between =doom-font= and
 =doom-variable-pitch-font=: the former is monospace, the latter is "normal".
 #+begin_src emacs-lisp
 (setq doom-theme 'doom-one
-      doom-font "Monaco-13"
-      doom-variable-pitch-font "Monaco-13")
+      doom-font "Monaco-12"
+      doom-variable-pitch-font "Monaco-12")
 #+end_src
 
 By default, I want an undecorated maximized frame for Emacs. This lets me use
@@ -226,11 +239,16 @@ absolute line number differences while =#j= and =#k= use visual differences.
 Note that line numbers in general can cause issues with smooth scrolling, and
 look strange in buffers with wrapped lines, so disable in case of these issues.
 
-** Keybindings
-*** MacOS defaults
+** MacOS system integration
+First, enable some sensible MacOS defaults, including integration with
+native applications like Finder and iTerm2, and a Keychain auth source.
+#+begin_src emacs-lisp :tangle no :noweb-ref mod:system
+(:if IS-MAC macos)
+#+end_src
+
 These keybindings mirror what are used in other MacOS apps, e.g. iTerm2.
 Here, the modifier =s= refers to the command key (⌘). Note that some
-relevant keybindings, like ⌘s, ⌘t, ⌘w, and ⌘1-⌘9, are already defined.
+relevant keybindings, like ⌘s, ⌘t, ⌘w, and ⌘1-⌘9, are defined above.
 #+begin_src emacs-lisp
 (map!
  "s-[" 'evil-window-prev

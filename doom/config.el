@@ -13,8 +13,8 @@
       org-ref-default-bibliography '("~/Library/Zotero/Library.bib"))
 
 (setq doom-theme 'doom-one
-      doom-font "Monaco-13"
-      doom-variable-pitch-font "Monaco-13")
+      doom-font "Monaco-12"
+      doom-variable-pitch-font "Monaco-12")
 
 (add-to-list 'default-frame-alist '(fullscreen  . maximized))
 (add-to-list 'default-frame-alist '(undecorated . t))

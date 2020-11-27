@@ -12,14 +12,12 @@
  (doom)
  (doom-dashboard)
  (doom-quit)
- (hl-todo)
- (indent-guides)
  (modeline)
  (ophints)
  (popup +all +defaults)
- (vc-gutter)
- (vi-tilde-fringe)
  (workspaces)
+ (hl-todo)
+ (vc-gutter)
 
  :editor
  (evil +everywhere)
