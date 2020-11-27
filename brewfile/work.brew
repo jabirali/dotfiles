@@ -1,5 +1,8 @@
 # Work packages for use with HomeBrew and LinuxBrew.
 
+# VPN service.
+cask "openconnect-gui"
+
 # Microsoft Office.
 cask "microsoft-teams"
 mas "excel", id: 462058435
