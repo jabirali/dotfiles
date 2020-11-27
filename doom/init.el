@@ -50,7 +50,7 @@
  (emacs-lisp)
  (sh +fish)
  (python +lsp +pyright)
- (julia +lsp)
+ (julia)
  :email
  :app
  :config
