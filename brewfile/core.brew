@@ -62,6 +62,7 @@ brew "unix2dos"
 
 # Programming and development.
 cask "dash"
+cask "julia"
 brew "black"
 brew "cloc"
 brew "direnv"

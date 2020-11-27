@@ -236,7 +236,7 @@ as the official motivation states. I also believe that LSP is an important way t
 keep the language support in small editors like Emacs and Vim competitive with
 the new developments in IDEs like VSCode that come out of large corporations.
 #+begin_src emacs-lisp :tangle no :noweb-ref mod:tools
-(lsp +eglot)
+(lsp)
 #+end_src
 Note that LSP also requires passing a =+lsp= flag to the relevant =:lang= modules.
 
@@ -252,7 +252,11 @@ Most of my other programming work these days is in Python, and am hoping to adap
 Julia for my future numerical programming needs. Later, I may want to re-add some
 support for compiled languages like C/C++ and Fortran 2008+, and possibly Haskell.
 #+begin_src emacs-lisp :tangle no :noweb-ref mod:programming
-(python)
+(python +lsp +pyright)
+(julia +lsp)
+#+end_src
+#+begin_src emacs-lisp :tangle no :noweb-ref pkg:programming
+(package! lsp-julia :recipe (:host github :repo "non-jedi/lsp-julia"))
 #+end_src
 
 * Academic writing
@@ -322,4 +326,5 @@ to enable/disable outside of the plug-and-play Doom modules.
 ;;; packages.el -- low-level package management for doom emacs
 
 <<pkg:defaults>>
+<<pkg:programming>>
 #+end_src

@@ -39,7 +39,7 @@
  (magit)
  (lookup +docsets)
  (eval +overlay)
- (lsp +eglot)
+ (lsp)
  (pdf)
  :os
  (:if IS-MAC macos)
@@ -49,7 +49,8 @@
  (latex +latexmk)
  (emacs-lisp)
  (sh +fish)
- (python)
+ (python +lsp +pyright)
+ (julia +lsp)
  :email
  :app
  :config
