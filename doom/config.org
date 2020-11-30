@@ -56,9 +56,10 @@ This is used by a lot in Emacs: mail, encryption, templates, snippets, etc.
 
 These locations are especially used by Org-mode, for files and references.
 #+begin_src emacs-lisp
-(setq org-directory "~/iCloud/Org/"
-      org-agenda-files '("~/iCloud/Org/")
-      +org-capture-todo-file "~/iCloud/Org/Inbox.org")
+(setq org-directory "~/iCloud/Brain/"
+      org-agenda-files '("~/iCloud/Brain/")
+      org-roam-directory "~/iCloud/Brain/"
+      org-roam-index-file "index.org")
 
 (setq reftex-default-bibliography "~/Library/Zotero/Library.bib"
       bibtex-completion-bibliography '("~/Library/Zotero/Library.bib")
@@ -263,7 +264,7 @@ Roam Research, Literate Programming, and drafting documents and presentations. T
 latter is the lingua franca of plaintext formats, so I need it for say README files.
 Finally, I wouldn't be much of a phycisist without keeping LaTeX in my toolkit.
 #+begin_src emacs-lisp :tangle no :noweb-ref mod:writing
-(org)
+(org +roam)
 (markdown)
 (latex +latexmk)
 #+end_src

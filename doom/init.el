@@ -44,7 +44,7 @@
  :os
  (:if IS-MAC macos)
  :lang
- (org)
+ (org +roam)
  (markdown)
  (latex +latexmk)
  (emacs-lisp)
