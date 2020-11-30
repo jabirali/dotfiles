@@ -4,9 +4,10 @@
 (setq user-full-name "Jabir Ali Ouassou"
       user-mail-address "jabirali@switzerlandmail.ch")
 
-(setq org-directory "~/iCloud/Brain/"
-      org-agenda-files '("~/iCloud/Brain/")
-      org-roam-directory "~/iCloud/Brain/"
+(setq org-directory "~/iCloud/Org/"
+      org-agenda-files '("~/iCloud/Org/journal/")
+      org-roam-dailies-directory "~/iCloud/Org/journal/"
+      org-roam-directory "~/iCloud/Org/brain/"
       org-roam-index-file "index.org")
 
 (setq reftex-default-bibliography "~/Library/Zotero/Library.bib"
