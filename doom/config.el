@@ -4,11 +4,11 @@
 (setq user-full-name "Jabir Ali Ouassou"
       user-mail-address "jabirali@switzerlandmail.ch")
 
-(setq org-directory "~/iCloud/Org/"
-      org-agenda-files '("~/iCloud/Org/journal/")
-      org-roam-dailies-directory "~/iCloud/Org/journal/"
-      org-roam-directory "~/iCloud/Org/brain/"
-      org-roam-index-file "index.org")
+(setq org-directory "~/iCloud/Notes/"
+      org-roam-directory "~/iCloud/Notes/"
+      org-agenda-files '("~/iCloud/Notes/Journal/" "~/iCloud/Notes/Projects/")
+      org-roam-dailies-directory "~/iCloud/Notes/Journal/"
+      org-roam-index-file "~/iCloud/Notes/index.org")
 
 (setq reftex-default-bibliography "~/Library/Zotero/Library.bib"
       bibtex-completion-bibliography '("~/Library/Zotero/Library.bib")
@@ -36,3 +36,23 @@
  "s-<down>"  'evil-window-down
  "s-<left>"  'evil-window-left
  "s-<right>" 'evil-window-right)
+
+(setq org-roam-capture-templates
+      '(("c" "Concept note" plain
+         (function org-roam-capture--get-point)
+         "%?"
+         :file-name "Brain/%<%Y%m%d%H%M%S>"
+         :head "#+title: ${title}\n\n"
+         :unnarrowed t)
+        ("l" "Literature note" plain
+         (function org-roam-capture--get-point)
+         "%?"
+         :file-name "Brain/%<%Y%m%d%H%M%S>"
+         :head "#+title: ${title}\n\n* Reference\n* Summary\n* Details\n"
+         :unnarrowed t)
+        ("p" "Project note" plain
+         (function org-roam-capture--get-point)
+         "%?"
+         :file-name "Projects/%<%Y%m%d%H%M%S>"
+         :head "#+title: ${title}\n\n* Motivation\n* Objective\n* Tasks\n* Resources\n"
+         :unnarrowed t)))

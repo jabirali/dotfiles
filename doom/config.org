@@ -56,11 +56,11 @@ This is used by a lot in Emacs: mail, encryption, templates, snippets, etc.
 
 These locations are especially used by Org-mode, for files and references.
 #+begin_src emacs-lisp
-(setq org-directory "~/iCloud/Org/"
-      org-agenda-files '("~/iCloud/Org/journal/")
-      org-roam-dailies-directory "~/iCloud/Org/journal/"
-      org-roam-directory "~/iCloud/Org/brain/"
-      org-roam-index-file "index.org")
+(setq org-directory "~/iCloud/Notes/"
+      org-roam-directory "~/iCloud/Notes/"
+      org-agenda-files '("~/iCloud/Notes/Journal/" "~/iCloud/Notes/Projects/")
+      org-roam-dailies-directory "~/iCloud/Notes/Journal/"
+      org-roam-index-file "~/iCloud/Notes/index.org")
 
 (setq reftex-default-bibliography "~/Library/Zotero/Library.bib"
       bibtex-completion-bibliography '("~/Library/Zotero/Library.bib")
@@ -281,6 +281,42 @@ buffers, with proper SyncTeX support, and not least with Vim-like keybindings.
 #+begin_src emacs-lisp :tangle no :noweb-ref mod:tools
 (pdf)
 #+end_src
+
+For taking notes, having good Org templates is quite useful. Here for Roam:
+#+begin_src elisp
+(setq org-roam-capture-templates
+      '(("c" "Concept note" plain
+         (function org-roam-capture--get-point)
+         "%?"
+         :file-name "Brain/%<%Y%m%d%H%M%S>"
+         :head "#+title: ${title}\n\n"
+         :unnarrowed t)
+        ("l" "Literature note" plain
+         (function org-roam-capture--get-point)
+         "%?"
+         :file-name "Brain/%<%Y%m%d%H%M%S>"
+         :head "#+title: ${title}\n\n* Reference\n* Summary\n* Details\n"
+         :unnarrowed t)
+        ("p" "Project note" plain
+         (function org-roam-capture--get-point)
+         "%?"
+         :file-name "Projects/%<%Y%m%d%H%M%S>"
+         :head "#+title: ${title}\n\n* Motivation\n* Objective\n* Tasks\n* Resources\n"
+         :unnarrowed t)))
+#+end_src
+Some points worth noting, are that "concept notes" (my thoughts about a subject)
+and "literature notes" (my thoughts while reading a paper or book) both go into
+my digital brain, since as flat structure as possible seems beneficial. However,
+project notes – which group relevant tasks, literature, and concepts – these go
+into their own directory to avoid overwheliming Org Agenda with my digital brain.
+In all cases, I use the "random filename" strategy that has become somewhat
+common among Zettelkasten tools. This lets me use the filename as a permanent
+and static identifier for each digital object (with a similar use as a UUID),
+while the title of each note (and its aliases) can change dynamically over time.
+My daily journal entries also go into its own directory, and is mainly used as
+a staging area for my more permanent notes: I can have it as a scratchpad to
+dump free tasks, ideas, and links, and if it's relevant I can then refine
+these inputs into the project notes or brain notes as they mature.
 
 * Appendix
 Remember to run =doom sync= after modifying these to ensure consistency.
