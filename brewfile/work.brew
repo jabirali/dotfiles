@@ -2,6 +2,7 @@
 
 # VPN service.
 cask "openconnect-gui"
+cask "royal-tsx"
 
 # Microsoft Office.
 cask "microsoft-teams"

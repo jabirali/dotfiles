@@ -38,23 +38,23 @@
  "s-<right>" 'evil-window-right)
 
 (setq org-roam-capture-templates
-      '(("c" "Concept note" plain
+      '(("1" "Concept note" plain
          #'org-roam-capture--get-point
          "%?"
          :file-name "Brain/%<%Y%m%d%H%M%S>"
-         :head "#+author: J.A. Ouassou\n#+title: %^{Title|${title}}\n#+roam_alias: %^{Alias}\n\n"
+         :head "#+title: %^{Title}\n#+roam_alias: \"${title}\"\n\n"
          :unnarrowed t)
-        ("l" "Literature note" plain
+        ("2" "Literature note" plain
          #'org-roam-capture--get-point
          "%?"
          :file-name "Brain/%<%Y%m%d%H%M%S>"
-         :head "#+author: %^{Author|Unknown|J.A. Ouassou}\n#+date: %^{Date|%<%Y-%m>}\n#+title: %^{Title|${title}}\n#+roam_alias: %^{Alias}\n#+roam_key: %^{Link}\n\n* Summary\n* Details\n"
+         :head "#+title: ${title}\n#+roam_key: %^{Link}\n\n"
          :unnarrowed t)
-        ("p" "Project note" plain
+        ("3" "Project note" plain
          #'org-roam-capture--get-point
          "%?"
          :file-name "Projects/%<%Y%m%d%H%M%S>"
-         :head "#+title: %^{Title|${title}}\n#+roam_alias: %^{Alias}\n\n* Motivation\n* Objective\n* Tasks\n* Resources\n"
+         :head "#+title: ${title}\n\n"
          :unnarrowed t)))
 
 (setq org-roam-dailies-capture-templates
@@ -62,4 +62,4 @@
          #'org-roam-capture--get-point
          "* %?"
          :file-name "Journal/%<%Y%m%d>"
-         :head "#+title: %<%Y-W%U %A>\n\n")))
+         :head "#+title: %<%Y-W%U-%u %A>\n\n")))
