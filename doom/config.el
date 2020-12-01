@@ -42,19 +42,19 @@
          #'org-roam-capture--get-point
          "%?"
          :file-name "Brain/%<%Y%m%d%H%M%S>"
-         :head "#+title: ${title}\n\n"
+         :head "#+author: J.A. Ouassou\n#+title: %^{Title|${title}}\n#+roam_alias: %^{Alias}\n\n"
          :unnarrowed t)
         ("l" "Literature note" plain
          #'org-roam-capture--get-point
          "%?"
          :file-name "Brain/%<%Y%m%d%H%M%S>"
-         :head "#+title: ${title}\n\n* Reference\n* Summary\n* Details\n"
+         :head "#+author: %^{Author|Unknown|J.A. Ouassou}\n#+date: %^{Date|%<%Y-%m>}\n#+title: %^{Title|${title}}\n#+roam_alias: %^{Alias}\n#+roam_key: %^{Link}\n\n* Summary\n* Details\n"
          :unnarrowed t)
         ("p" "Project note" plain
          #'org-roam-capture--get-point
          "%?"
          :file-name "Projects/%<%Y%m%d%H%M%S>"
-         :head "#+title: ${title}\n\n* Motivation\n* Objective\n* Tasks\n* Resources\n"
+         :head "#+title: %^{Title|${title}}\n#+roam_alias: %^{Alias}\n\n* Motivation\n* Objective\n* Tasks\n* Resources\n"
          :unnarrowed t)))
 
 (setq org-roam-dailies-capture-templates
