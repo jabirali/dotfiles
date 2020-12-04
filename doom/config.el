@@ -61,5 +61,5 @@
       '(("d" "default" entry
          #'org-roam-capture--get-point
          "* %?"
-         :file-name "Journal/%<%Y%m%d>"
+         :file-name "Journal/%<%Y-%m-%d>"
          :head "#+title: %<%Y-W%U-%u %A>\n\n")))

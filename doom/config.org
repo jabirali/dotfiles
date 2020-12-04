@@ -308,7 +308,7 @@ For taking notes, having good Org templates is quite useful. Here for Roam:
       '(("d" "default" entry
          #'org-roam-capture--get-point
          "* %?"
-         :file-name "Journal/%<%Y%m%d>"
+         :file-name "Journal/%<%Y-%m-%d>"
          :head "#+title: %<%Y-W%U-%u %A>\n\n")))
 #+end_src
 Some points worth noting, are that "concept notes" (my thoughts about a subject)
@@ -323,7 +323,8 @@ while the title of each note (and its aliases) can change dynamically over time.
 My daily journal entries also go into its own directory, and is mainly used as
 a staging area for my more permanent notes: I can have it as a scratchpad to
 dump free tasks, ideas, and links, and if it's relevant I can then refine
-these inputs into the project notes or brain notes as they mature.
+these inputs into the project notes or brain notes as they mature. Note
+that the dailies capture template has to follow Org timestamp format.
 
 * Appendix
 Remember to run =doom sync= after modifying these to ensure consistency.
