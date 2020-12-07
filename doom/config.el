@@ -54,7 +54,7 @@
          #'org-roam-capture--get-point
          "%?"
          :file-name "Projects/%<%Y%m%d%H%M%S>"
-         :head "#+title: %^{Title|${title}}\n#+roam_alias: %^{Alias}\n\n* Motivation\n* Objective\n* Tasks\n* Resources\n"
+         :head "#+title: Project: %^{Title|${title}}\n#+roam_alias: %^{Alias}\n\n* Motivation\n* Objective\n* Tasks\n* Resources\n"
          :unnarrowed t)))
 
 (setq org-roam-dailies-capture-templates
@@ -62,4 +62,4 @@
          #'org-roam-capture--get-point
          "* %?"
          :file-name "Journal/%<%Y%m%d>"
-         :head "#+title: %<%Y-W%U %A>\n\n")))
+         :head "#+title: Journal: %<%Y-W%U %A>\n\n")))
