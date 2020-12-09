@@ -37,6 +37,16 @@
  "s-<left>"  'evil-window-left
  "s-<right>" 'evil-window-right)
 
+ (setq org-todo-keywords
+       '((sequence
+          "TODO"
+          "WORK"
+          "WAIT"
+          "|"
+          "DONE"
+          "NOPE"
+          "NOTE")))
+
 (setq org-roam-capture-templates
       '(("1" "Concept note" plain
          #'org-roam-capture--get-point

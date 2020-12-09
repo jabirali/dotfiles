@@ -326,6 +326,25 @@ dump free tasks, ideas, and links, and if it's relevant I can then refine
 these inputs into the project notes or brain notes as they mature. Note
 that the dailies capture template has to follow Org timestamp format.
 
+I also use some custom but simple keywords for my task planning. As standard,
+TODO means I have to do it, DONE means I have done it. But there's also added
+WORK for things I've started working on, WAIT for something that cannot be
+done right now (e.g. because I'm waiting for someone else to give me input),
+and NOPE is for cancelled tasks that I do not intend to do anymore. NOTE is
+the odd-one out; it's for stuff that are not really tasks at this time, but
+they kind of belong together with the task list, and deserve some marker.
+#+begin_src emacs-lisp :tangle yes
+ (setq org-todo-keywords
+       '((sequence
+          "TODO"
+          "WORK"
+          "WAIT"
+          "|"
+          "DONE"
+          "NOPE"
+          "NOTE")))
+#+end_src
+
 * Appendix
 Remember to run =doom sync= after modifying these to ensure consistency.
 
