@@ -10,9 +10,6 @@
 [submodule "nvim/pack/project/start/fzf.vim"]
 	path = nvim/pack/project/start/fzf.vim
 	url = https://github.com/junegunn/fzf.vim
-[submodule "nvim/pack/style/start/vim-minimono"]
-	path = nvim/pack/style/start/vim-minimono
-	url = git@github.com:jabirali/vim-minimono.git
 [submodule "nvim/pack/editor/start/vim-surround"]
 	path = nvim/pack/editor/start/vim-surround
 	url = https://github.com/tpope/vim-surround.git
@@ -49,9 +46,6 @@
 [submodule "tmux/plugins/tmux-tilish"]
 	path = tmux/plugins/tmux-tilish
 	url = git@github.com:jabirali/tmux-tilish.git
-[submodule "nvim/pack/style/start/ayu-vim"]
-	path = nvim/pack/style/start/ayu-vim
-	url = https://github.com/ayu-theme/ayu-vim.git
 [submodule "nvim/pack/editor/start/vim-slash"]
 	path = nvim/pack/editor/start/vim-slash
 	url = https://github.com/junegunn/vim-slash
@@ -88,3 +82,6 @@
 [submodule "nvim/pack/project/start/vim-fugitive"]
 	path = nvim/pack/project/start/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
+[submodule "nvim/pack/style/start/onedark.vim"]
+	path = nvim/pack/style/opt/onedark.vim
+	url = https://github.com/joshdick/onedark.vim.git
