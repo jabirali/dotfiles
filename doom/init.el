@@ -44,7 +44,7 @@
  :os
  (:if IS-MAC macos)
  :lang
- (org +roam)
+ (org)
  (markdown)
  (latex +latexmk)
  (emacs-lisp)
@@ -54,5 +54,4 @@
  :email
  :app
  :config
- (literate)
  (default +bindings +smartparens))

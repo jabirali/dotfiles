@@ -46,3 +46,6 @@ alias pytest 'fd \'.py$\' | entr pytest'
 alias wget   'wget -e robots=off'
 alias boox   'bluetooth-sendto --device=22:22:3B:D5:62:2C'
 set -g fish_user_paths "/usr/local/opt/binutils/bin" $fish_user_paths
+
+# opam configuration
+source /Users/Jabiro/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
