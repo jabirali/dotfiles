@@ -35,11 +35,11 @@ brew "ripgrep"
 brew "htop"
 
 # Usable interface on MacOS.
+mas "magnet", id: 441258766
 cask "alfred"
-cask "amethyst"
+# cask "amethyst"
 # cask "bartender"
 # cask "command-tab-plus"
-mas "magnet", id: 441258766
 
 # Pleasant web browsing.
 mas "1password", id: 1333542190

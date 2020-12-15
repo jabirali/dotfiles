@@ -30,6 +30,7 @@ cask "virtualbox-extension-pack"
 
 # Apps for my SO.
 cask "google-chrome"
+mas "agenda", id: 1287445660
 mas "befocused", id: 961632517
 mas "noteplan", id: 1137020764
 mas "notability", id: 736189492
