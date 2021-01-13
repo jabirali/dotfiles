@@ -1,0 +1,14 @@
+{
+	"anaconda_linting": false,
+	"color_scheme": "Packages/GitHub Theme/schemes/GitHub Dark.sublime-color-scheme",
+	"highlight_line": true,
+	"ignored_packages":
+	[
+		"Six",
+		"Vintage",
+		"Vintageous"
+	],
+	"neovintageous_build_version": 11100,
+	"theme": "GitHub-Theme.sublime-theme",
+	"vintage_start_in_command_mode": true
+}
