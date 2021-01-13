@@ -6,10 +6,8 @@ tap "homebrew/core"
 tap "homebrew/cask"
 brew "mas"
 
-# Doom Emacs as my main editor.
-tap "railwaycat/emacsmacport"
-brew "emacs-mac", args: ["with-modules"]
-brew "poppler"
+# Sublime as my main editor.
+cask "sublime-text"
 
 # Neovim as my fallback editor.
 brew "neovim"
@@ -35,17 +33,12 @@ brew "ripgrep"
 brew "htop"
 
 # Usable interface on MacOS.
+mas "1password", id: 1333542190
 mas "magnet", id: 441258766
 cask "alfred"
 # cask "amethyst"
 # cask "bartender"
 # cask "command-tab-plus"
-
-# Pleasant web browsing.
-mas "1password", id: 1333542190
-mas "minimal-consent", id: 1514164630
-mas "vimari", id: 1480933944
-mas "wipr", id: 1320666476
 
 # Dealing with academic papers.
 cask "skim"
