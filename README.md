@@ -4,9 +4,8 @@ use support the XDG specification, so e.g. `stow` is overkill for
 me. Instead, I just clone this repo to `~/.config`, and have install
 scripts in `bin` that link the remaining few files in place.
 
-Note that many dependencies and plugins (`emacs`, `tmux`, `nvim`, etc.)
-are handled via Git submodules. This means that after cloning this repo,
-you should run `git submodule init` to fetch the dependencies.
+Note that many dependencies and plugins are handled via Git submodules.
+This means that you should run `git submodule init` to fetch dependencies.
 
 ## Homebrew
 After cloning to `~/.config`, install [Homebrew][2] for Linux or macOS:
@@ -21,15 +20,6 @@ in `~/.config/brewfile/` and link it to `~/.config/brewfile/this.brew`:
 
 To install all packages needed, make sure `~/.config/bin` is in `$PATH`,
 restart your shell, and run `brew sync` to update your system from this.
-
-## Doom Emacs
-A suitable version of Emacs should be installed by Homebrew above,
-and Doom Emacs is bundled with this repository as a Git submodule.
-Moreover, `~/.config/emacs/bin` should already be added to `$PATH`.
-Thus, after performing a recursive clone of this repository and
-(re)starting the `fish` shell, we just need to sync Doom Emacs:
-
-    doom install
 
 ## Miscellaneous
 Run `~/.config/bin/setup-macos` or `~/.config/bin/setup-linux`
