@@ -49,3 +49,10 @@ set -g fish_user_paths "/usr/local/opt/binutils/bin" $fish_user_paths
 
 # opam configuration
 source /Users/Jabiro/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
+set -g fish_user_paths "/usr/local/opt/llvm/bin" $fish_user_paths
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+eval /usr/local/Caskroom/miniconda/base/bin/conda "shell.fish" "hook" $argv | source
+# <<< conda initialize <<<
+
