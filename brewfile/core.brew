@@ -4,9 +4,11 @@
 tap "homebrew/bundle"
 tap "homebrew/core"
 tap "homebrew/cask"
+tap "homebrew/cask-fonts"
 brew "mas"
 
 # Sublime as my main editor.
+cask "font-juliamono"
 cask "sublime-text"
 
 # Neovim as my fallback editor.
