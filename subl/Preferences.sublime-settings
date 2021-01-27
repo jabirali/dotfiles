@@ -1,18 +1,18 @@
 {
-	"added_words":
-	[
-		"ferroelectrics",
-		"memristors",
-		"pyroelectricity",
-		"ferromagnets",
-		"supercurrents",
-		"diamagnetism",
-		"Meissner"
-	],
 	"anaconda_linting": false,
 	"color_scheme": "Packages/GitHub Theme/schemes/GitHub Dark.sublime-color-scheme",
 	"dictionary": "Packages/Language - English/en_GB.dic",
-	"font_size": 16,
+	"adaptive_dividers": false,
+	"anaconda_linting": false,
+	"color_scheme": "Packages/GitHub Theme/schemes/GitHub Dark.sublime-color-scheme",
+	"enable_tab_scrolling": false,
+	"fold_buttons": false,
+	"font_face": "JuliaMono",
+	"font_options":
+	[
+		"gray_antialias"
+	],
+	"font_size": 14,
 	"highlight_line": true,
 	"ignored_packages":
 	[
@@ -20,6 +20,10 @@
 		"Vintage",
 		"Vintageous"
 	],
+	"line_numbers": false,
+	"line_padding_bottom": 1,
+	"line_padding_top": 1,
+	"margin": 0,
 	"neovintageous_build_version": 11100,
 	"theme": "GitHub-Theme.sublime-theme",
 	"vintage_start_in_command_mode": true

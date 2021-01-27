@@ -16,7 +16,6 @@ defaults write -g NSUserKeyEquivalents -dict-add 'Toggle Full Screen' '@^f'
 defaults write -g NSUserKeyEquivalents -dict-add 'Enter Full Screen' '@^f'
 defaults write -g NSUserKeyEquivalents -dict-add 'Exit Full Screen' '@^f'
 
-# Dock: Hide it, requiring Launchpad (F4) or an hour of hovering to open.
-defaults write com.apple.dock autohide -bool true && killall Dock
-defaults write com.apple.dock autohide-delay -float 3600 && killall Dock
-defaults write com.apple.dock no-bouncing -bool TRUE && killall Dock
+# Dock: Single-app mode with fixed icon size.
+defaults write com.apple.dock single-app -bool true; killall Dock
+defaults write com.apple.dock tilesize -integer 40; killall Dock

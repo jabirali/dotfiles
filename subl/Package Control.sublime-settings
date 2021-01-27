@@ -6,12 +6,14 @@
 	"installed_packages":
 	[
 		"Anaconda",
+		"FoldFunctions",
 		"GitGutter",
 		"GitHub Theme",
 		"LaTeXTools",
 		"NeoVintageous",
 		"Origami",
 		"Package Control",
-		"sublack"
+		"sublack",
+		"Terminal"
 	]
 }

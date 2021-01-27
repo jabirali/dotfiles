@@ -1,0 +1,16 @@
+[
+	{
+    "keys": ["alt+up"],
+    "command": "fold_python_functions",
+    "context": [
+        {"key": "selector", "operand": "source.python"}
+    ]
+	},
+	{
+    "keys": ["alt+down"],
+    "command": "unfold_all",
+    "context": [
+        {"key": "selector", "operand": "source.python"}
+    ]
+	},
+]
