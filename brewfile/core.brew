@@ -41,6 +41,7 @@ cask "alfred"
 # cask "command-tab-plus"
 
 # Dealing with academic papers.
+cask "bookends"
 cask "skim"
 cask "zotero"
 cask "mactex-no-gui"
@@ -58,15 +59,13 @@ brew "unix2dos"
 # Programming and development.
 cask "dash"
 cask "julia"
+cask "miniconda"
 brew "black"
 brew "cloc"
 brew "direnv"
 brew "editorconfig"
 brew "entr"
 brew "gh"
-brew "poetry"
-brew "python"
-brew "tcl-tk"
 
 # File archival and transfer.
 brew "atool"

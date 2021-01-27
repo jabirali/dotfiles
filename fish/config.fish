@@ -28,8 +28,8 @@ set fish_color_redirection green
 # fzf_key_bindings
 
 # Integrate with `direnv`.
-eval (direnv hook fish)
-__direnv_export_eval
+#eval (direnv hook fish)
+#__direnv_export_eval
 
 # Plugin settings.
 set projector_dir ~/Code

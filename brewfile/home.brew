@@ -24,9 +24,11 @@ cask "little-snitch"
 cask "micro-snitch"
 mas "discovery", id: 1381004916
 
-# Virtual machines.
+# Compatiblity with other OS.
 cask "virtualbox"
 cask "virtualbox-extension-pack"
+cask "osxfuse"
+brew "ext4fuse"
 
 # Apps for my SO.
 cask "google-chrome"
