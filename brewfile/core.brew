@@ -35,12 +35,8 @@ brew "ripgrep"
 brew "htop"
 
 # Usable interface on MacOS.
-mas "1password", id: 1333542190
 mas "magnet", id: 441258766
-cask "alfred"
-# cask "amethyst"
-# cask "bartender"
-# cask "command-tab-plus"
+cask "bartender"
 
 # Dealing with academic papers.
 cask "bookends"
@@ -75,3 +71,10 @@ brew "lzip"
 cask "arq"
 cask "resilio-sync"
 cask "transmission"
+
+# Safari extensions.
+mas "1blocker", id: 1107421413 
+mas "1password", id: 1333542190
+mas "remap", id: 1436676210
+mas "rss-button", id: 1437501942 
+mas "vimari", id: 1480933944 
