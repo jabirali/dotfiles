@@ -37,11 +37,11 @@ brew "htop"
 # Usable interface on MacOS.
 mas "magnet", id: 441258766
 cask "bartender"
+cask "keyboard-maestro"
 
 # Dealing with academic papers.
 cask "bookends"
 cask "skim"
-cask "zotero"
 cask "mactex-no-gui"
 brew "latexdiff"
 brew "graphviz"

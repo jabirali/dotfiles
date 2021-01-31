@@ -1,10 +1,8 @@
 {
-	"anaconda_linting": false,
-	"color_scheme": "Packages/GitHub Theme/schemes/GitHub Dark.sublime-color-scheme",
-	"dictionary": "Packages/Language - English/en_GB.dic",
 	"adaptive_dividers": false,
 	"anaconda_linting": false,
 	"color_scheme": "Packages/GitHub Theme/schemes/GitHub Dark.sublime-color-scheme",
+	"dictionary": "Packages/Language - English/en_GB.dic",
 	"enable_tab_scrolling": false,
 	"fold_buttons": false,
 	"font_face": "JuliaMono",

@@ -22,15 +22,12 @@ cask "steam"
 cask "expressvpn"
 cask "little-snitch"
 cask "micro-snitch"
-mas "discovery", id: 1381004916
 
 # Compatiblity with other OS.
-cask "virtualbox"
-cask "virtualbox-extension-pack"
 cask "osxfuse"
 brew "ext4fuse"
 
-# Apps for my SO.
+# Apps for my boo.
 cask "google-chrome"
 mas "agenda", id: 1287445660
 mas "befocused", id: 961632517
