@@ -1,10 +1,10 @@
 # Work packages for use with HomeBrew and LinuxBrew.
 
-# VPN service.
+# Remote desktop.
 cask "openconnect-gui"
 cask "royal-tsx"
 
-# Microsoft Office.
+# Microsoft office.
 cask "microsoft-teams"
 mas "excel", id: 462058435
 mas "word", id: 462054704
