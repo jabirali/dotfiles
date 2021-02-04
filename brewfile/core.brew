@@ -28,6 +28,7 @@ brew "git"
 # Terminal for the 21st century.
 cask "iterm2"
 brew "fish"
+brew "starship"
 brew "bat"
 brew "exa"
 brew "fd"

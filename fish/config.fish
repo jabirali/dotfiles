@@ -49,3 +49,6 @@ set -g fish_user_paths "/usr/local/opt/binutils/bin" $fish_user_paths
 
 # Activate miniconda.
 eval /usr/local/Caskroom/miniconda/base/bin/conda "shell.fish" "hook" $argv | source
+
+# Activate starship.
+starship init fish | source
