@@ -16,11 +16,8 @@ defaults write -g NSUserKeyEquivalents -dict-add 'Toggle Full Screen' '@^f'
 defaults write -g NSUserKeyEquivalents -dict-add 'Enter Full Screen' '@^f'
 defaults write -g NSUserKeyEquivalents -dict-add 'Exit Full Screen' '@^f'
 
-# Dock: Single-app mode with fixed icon size.
-defaults write com.apple.dock single-app -bool true
+# Dock and Launchpad: Fixed icon size and grid.
 defaults write com.apple.dock tilesize -integer 40
-
-# Launchpad: Icon grid more similar to iPhone/iPad.
 defaults write com.apple.dock springboard-rows -int 3                                                                                                                                              (base)
 defaults write com.apple.dock springboard-columns -int 6
 
