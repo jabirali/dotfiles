@@ -11,10 +11,10 @@ Host *
   ControlPath ~/.ssh/mux_%h_%p_%r
   ControlPersist 5m
 
-Host stuing
-  Hostname 10.0.0.100
+Host babapi
+  Hostname babapi.local
   IdentityFile ~/.ssh/id_ed25519
-  User jabirali
+  User ubuntu
 
 Host ntnu
   Hostname login.stud.ntnu.no
