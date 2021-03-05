@@ -14,15 +14,17 @@
 	"highlight_line": true,
 	"ignored_packages":
 	[
+		"Markdown",
 		"Six",
 		"Vintage",
-		"Vintageous"
+		"Vintageous",
 	],
 	"line_numbers": false,
 	"line_padding_bottom": 1,
 	"line_padding_top": 1,
 	"margin": 0,
 	"neovintageous_build_version": 11100,
-	"theme": "GitHub-Theme.sublime-theme",
-	"vintage_start_in_command_mode": true
+	"theme": "Adaptive.sublime-theme",
+	"vintage_start_in_command_mode": true,
+	"native_tabs": "preferred",
 }

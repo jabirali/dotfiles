@@ -9,11 +9,13 @@
 		"FoldFunctions",
 		"GitGutter",
 		"GitHub Theme",
+		"Julia",
 		"LaTeXTools",
+		"MarkdownEditing",
 		"NeoVintageous",
 		"Origami",
 		"Package Control",
 		"sublack",
-		"Terminal"
-	]
+		"Terminal",
+	],
 }
