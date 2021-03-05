@@ -1,81 +1,78 @@
-# Core packages for use with HomeBrew and LinuxBrew.
+# Core packages for use with HomeBrew. These are installed on all machines.
 
-# Homebrew essentials.
 tap "homebrew/bundle"
-tap "homebrew/core"
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
-brew "mas"
+tap "homebrew/core"
 
-# Sublime as my main editor.
-cask "font-juliamono"
-cask "sublime-text"
-
-# Neovim as my fallback editor.
-brew "neovim"
-brew "tmux"
-brew "fzf"
-
-# Make my dev env like GNU/Linux.
-brew "coreutils"
-brew "moreutils"
+brew "atool"
+brew "bat"
+brew "black"
+brew "cloc"
 brew "cmake"
-brew "make"
-brew "wget"
+brew "coreutils"
+brew "csvkit"
+brew "direnv"
+brew "dos2unix"
+brew "editorconfig"
+brew "entr"
+brew "exa"
+brew "ext4fuse"
+brew "fd"
+brew "fish"
+brew "fzf"
 brew "gcc"
 brew "git"
-
-# Terminal for the 21st century.
-cask "iterm2"
-brew "fish"
-brew "starship"
-brew "bat"
-brew "exa"
-brew "fd"
-brew "ripgrep"
-brew "htop"
-
-# Usable interface on MacOS.
-mas "magnet", id: 441258766
-cask "bartender"
-cask "keyboard-maestro"
-
-# Dealing with academic papers.
-cask "bookends"
-cask "skim"
-cask "mactex-no-gui"
-brew "latexdiff"
 brew "graphviz"
-
-# Document conversion tools.
+brew "htop"
+brew "latexdiff"
+brew "lzip"
+brew "make"
+brew "mas"
+brew "moreutils"
+brew "neovim"
 brew "pandoc"
 brew "pandoc-citeproc"
 brew "pandoc-crossref"
-brew "csvkit"
-brew "dos2unix"
+brew "ripgrep"
+brew "starship"
+brew "tcl-tk"
+brew "tmux"
 brew "unix2dos"
+brew "wget"
 
-# Programming and development.
-cask "dash"
-cask "julia"
-cask "miniconda"
-brew "black"
-brew "cloc"
-brew "direnv"
-brew "editorconfig"
-brew "entr"
-brew "gh"
-
-# File archival and transfer.
-brew "atool"
-brew "lzip"
+cask "airflow"
+cask "alfred"
 cask "arq"
+cask "bartender"
+cask "bookends"
+cask "contexts"
+cask "dropbox"
+cask "expressvpn"
+cask "font-juliamono"
+cask "iina"
+cask "iterm2"
+cask "julia"
+cask "little-snitch"
+cask "mactex-no-gui"
+cask "miniconda"
+cask "osxfuse"
+cask "rectangle"
 cask "resilio-sync"
+cask "skim"
+cask "spotify"
+# cask "sublime-text"
 cask "transmission"
 
-# Safari extensions.
 mas "1blocker", id: 1107421413 
 mas "1password", id: 1333542190
+mas "imovie", id: 408981434
+mas "keynote", id: 409183694
+mas "news-explorer", id: 1032670789
+mas "notability", id: 736189492
+mas "notebooks", id: 1449826029
+mas "numbers", id: 409203825
+mas "pages", id: 409201541
 mas "remap", id: 1436676210
 mas "rss-button", id: 1437501942 
 mas "vimari", id: 1480933944 
