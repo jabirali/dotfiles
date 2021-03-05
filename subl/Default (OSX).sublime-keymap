@@ -13,4 +13,14 @@
         {"key": "selector", "operand": "source.python"}
     ]
 	},
+    {
+        "keys": ["command+["],
+        "command": "focus_group",
+        "args": { "group": 0 }
+    },
+    {
+        "keys": ["command+]"],
+        "command": "focus_group",
+        "args": { "group": 1 }
+    }
 ]
