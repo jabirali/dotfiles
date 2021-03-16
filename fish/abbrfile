@@ -20,7 +20,7 @@ as  apt search
 
 b   brew
 bb  brew sync
-be  mvim ~/.config/brewfile/Brewfile
+be  open -t ~/.config/brewfile/Brewfile
 bi  brew install
 br  brew remove
 bu  brew upgrade
@@ -48,6 +48,8 @@ o   open
 o   xdg-open
 
 O   qlmanage -p
+
+subl  open -a "Sublime Text 4"
 
 v   vi
 v   vim

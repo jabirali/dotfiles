@@ -4,6 +4,9 @@
 # (or any other package profile) to the name `this.brew`, and run this script.
 # Homebrew will then uninstall unwanted packages and install missing packages.
 
+# Ensure that XCode compilers are installed.
+xcode-select --install
+
 # Move to the directory containing the brewfiles.
 cd ~/.config/brewfile/ || exit 1
 
