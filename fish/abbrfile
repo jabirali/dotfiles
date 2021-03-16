@@ -41,6 +41,8 @@ gr  git reset
 
 p   projector
 
+resilio  open https://localhost:8888; ssh babapi -L 8888:babapi.local:8888 -N
+
 l   ls
 l   exa
 
