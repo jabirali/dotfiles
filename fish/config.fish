@@ -12,7 +12,7 @@ if not functions -q fisher
 end
 
 # Fish syntax highlighting
-theme_gruvbox dark medium
+#theme_gruvbox dark medium
 
 # set -g fish_color_autosuggestion '555'  'brblack'
 # set -g fish_color_cancel -r
