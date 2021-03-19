@@ -64,3 +64,23 @@ eval /usr/local/Caskroom/miniconda/base/bin/conda "shell.fish" "hook" $argv | so
 
 # Activate starship.
 starship init fish | source
+
+# Monokai colors.
+set fish_color_normal normal
+set fish_color_command yellow --bold
+set fish_color_quote gray
+set fish_color_redirection red
+set fish_color_end cyan
+set fish_color_error red
+set fish_color_param normal
+set fish_color_comment gray
+set fish_color_match F8F8F2
+set fish_color_search_match --background=49483E
+set fish_color_operator red
+set fish_color_escape 66D9EF
+set fish_color_cwd 66D9EF
+set fish_pager_color_prefix F8F8F2
+set fish_pager_color_completion 75715E
+set fish_pager_color_description 49483E
+set fish_pager_color_progress F8F8F2
+set fish_pager_color_secondary F8F8F2
