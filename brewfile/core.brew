@@ -49,7 +49,6 @@ cask "bartender"
 cask "bookends"
 cask "contexts"
 cask "dropbox"
-cask "expressvpn"
 cask "font-jetbrains-mono-nerd-font"
 cask "iina"
 cask "iterm2"
@@ -67,6 +66,9 @@ cask "transmission"
 
 mas "1blocker", id: 1107421413 
 mas "1password", id: 1333542190
+mas "designer", id: 824171161
+mas "displaperture", id: 1543920362
+mas "ia-writer", id: 775737590
 mas "imovie", id: 408981434
 mas "keynote", id: 409183694
 mas "news-explorer", id: 1032670789
@@ -76,4 +78,5 @@ mas "numbers", id: 409203825
 mas "pages", id: 409201541
 mas "remap", id: 1436676210
 mas "rss-button", id: 1437501942 
+mas "ruler", id: 1022517627
 mas "vimari", id: 1480933944 
