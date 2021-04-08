@@ -14,6 +14,8 @@
 	<integer>1</integer>
 	<key>AppleWindowTabbingMode</key>
 	<string>manual</string>
+	<key>CGFontRenderingFontSmoothingDisabled</key>
+	<false/>
 	<key>Command</key>
 	<string></string>
 	<key>Custom Color Presets</key>
@@ -533,6 +535,16 @@ M-CR</string>
 	<string>556 510 328 195 0 0 1440 875 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
 	<string>0 0 1440 875 0 0 1440 875 </string>
+	<key>NSWindow Frame iTerm Window 1</key>
+	<string>0 0 1440 875 0 0 1440 900 </string>
+	<key>NSWindow Frame iTerm Window 2</key>
+	<string>3 432 650 433 0 0 1440 875 </string>
+	<key>NSWindow Frame iTerm Window 3</key>
+	<string>6 0 1434 865 0 0 1440 875 </string>
+	<key>NSWindow Frame iTerm Window 4</key>
+	<string>6 0 1434 865 0 0 1440 875 </string>
+	<key>NSWindow Frame iTerm Window 5</key>
+	<string>6 0 1434 865 0 0 1440 875 </string>
 	<key>NeverWarnAboutShortLivedSessions_C9F346D5-4DF7-4347-ABF6-FAE3EC8E115D</key>
 	<true/>
 	<key>NeverWarnAboutShortLivedSessions_C9F346D5-4DF7-4347-ABF6-FAE3EC8E115D_selection</key>
@@ -549,13 +561,13 @@ M-CR</string>
 				<key>Alpha Component</key>
 				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.22745098173618317</real>
+				<real>0.17254901960784313</real>
 				<key>Color Space</key>
 				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.16470588743686676</real>
+				<real>0.12156862745098039</real>
 				<key>Red Component</key>
-				<real>0.15686275064945221</real>
+				<real>0.11764705882352941</real>
 			</dict>
 			<key>Ansi 1 Color</key>
 			<dict>
@@ -731,13 +743,13 @@ M-CR</string>
 				<key>Alpha Component</key>
 				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.34509803921568627</real>
+				<real>0.22745098039215686</real>
 				<key>Color Space</key>
 				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.24989858012170385</real>
+				<real>0.16470588235294117</real>
 				<key>Red Component</key>
-				<real>0.23799864773495608</real>
+				<real>0.15686274509803921</real>
 			</dict>
 			<key>Ansi 9 Color</key>
 			<dict>
@@ -1275,15 +1287,19 @@ M-CR</string>
 		<key>screenFrame</key>
 		<string>{{0, 0}, {1440, 900}}</string>
 		<key>topLeft</key>
-		<string>{398, 710}</string>
+		<string>{345, 837}</string>
 	</dict>
 	<key>NoSyncInstallationId</key>
 	<string>2DAB568C-D3E8-43CE-8801-092A3024F3E7</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>3</integer>
+	<integer>21</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
+	<integer>0</integer>
+	<key>NoSyncNewTabFromTmuxOpensTmux</key>
+	<true/>
+	<key>NoSyncNewTabFromTmuxOpensTmux_selection</key>
 	<integer>0</integer>
 	<key>NoSyncNextAnnoyanceTime</key>
 	<real>638012071.43432701</real>
@@ -1639,6 +1655,30 @@ M-CR</string>
 				<key>isTerminal</key>
 				<true/>
 				<key>name</key>
+				<string>currentTab.currentSession.tmuxClientName</string>
+				<key>nonterminalContext</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
+				<true/>
+				<key>name</key>
+				<string>currentTab.currentSession.tmuxRole</string>
+				<key>nonterminalContext</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
+				<true/>
+				<key>name</key>
+				<string>currentTab.tmuxWindowName</string>
+				<key>nonterminalContext</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
+				<true/>
+				<key>name</key>
 				<string>currentTab.currentSession.terminalWindowName</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
@@ -1648,6 +1688,14 @@ M-CR</string>
 				<true/>
 				<key>name</key>
 				<string>currentTab.currentSession.terminalIconName</string>
+				<key>nonterminalContext</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
+				<true/>
+				<key>name</key>
+				<string>currentTab.currentSession.tmuxPaneTitle</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
 			</dict>

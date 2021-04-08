@@ -21,5 +21,18 @@ defaults write com.apple.dock tilesize -integer 40
 defaults write com.apple.dock springboard-rows -int 3                                                                                                                                              (base)
 defaults write com.apple.dock springboard-columns -int 6
 
+# TextEdit: Use plain text as the default format.
+defaults write com.apple.TextEdit RichText -int 0
+
+# Safari: Enable developer mode.
+defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
+defaults write -g WebKitDeveloperExtras -bool true
+
+# Skim: Automatically reload.
+defaults write -app Skim SKAutoReloadFileUpdate -boolean true
+
 # Restart services affected by the above settings.
 killall Dock
