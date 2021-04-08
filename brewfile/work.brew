@@ -3,9 +3,9 @@
 cask "microsoft-teams"
 cask "royal-tsx"
 
-mas "excel", id: 462058435
-mas "onedrive", id: 823766827
-mas "onenote", id: 784801555
-mas "outlook", id: 985367838
-mas "powerpoint", id: 462062816
-mas "word", id: 462054704
+mas "office-excel", id: 462058435
+mas "office-onedrive", id: 823766827
+mas "office-onenote", id: 784801555
+mas "office-outlook", id: 985367838
+mas "office-powerpoint", id: 462062816
+mas "office-word", id: 462054704
