@@ -1,6 +1,3 @@
 # Home packages for use with HomeBrew. These are not installed at work.
 
-cask "discord"
-cask "signal"
 cask "steam"
-cask "zoom"
