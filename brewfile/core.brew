@@ -42,39 +42,14 @@ brew "tmux"
 brew "unix2dos"
 brew "wget"
 
-cask "airflow"
 cask "alfred"
-cask "arq"
 cask "bartender"
-cask "bookends"
 cask "contexts"
 cask "font-jetbrains-mono-nerd-font"
-cask "iina"
 cask "iterm2"
-cask "julia"
-cask "little-snitch"
 cask "mactex-no-gui"
 cask "miniconda"
-cask "osxfuse"
 cask "rectangle"
-cask "resilio-sync"
-cask "skim"
-cask "spotify"
-# cask "sublime-text"
-cask "transmission"
 
-mas "1blocker", id: 1107421413 
-mas "1password", id: 1333542190
-mas "designer", id: 824171161
-mas "displaperture", id: 1543920362
-mas "iwork-imovie", id: 408981434
-mas "iwork-keynote", id: 409183694
-mas "iwork-numbers", id: 409203825
-mas "iwork-pages", id: 409201541
-mas "news-explorer", id: 1032670789
-mas "notability", id: 736189492
-mas "ruler", id: 1022517627
-mas "safari-readcube", id: 1543891759
-mas "safari-remap", id: 1436676210
-mas "safari-rss", id: 1437501942 
-mas "safari-vimari", id: 1480933944 
+# cask "arq"
+# cask "sublime-text"
