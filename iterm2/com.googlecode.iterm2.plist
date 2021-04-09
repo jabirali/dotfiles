@@ -17,7 +17,7 @@
 	<key>CGFontRenderingFontSmoothingDisabled</key>
 	<false/>
 	<key>Command</key>
-	<string></string>
+	<string>/usr/local/bin/fish</string>
 	<key>Custom Color Presets</key>
 	<dict>
 		<key>monokai-pro</key>
@@ -469,6 +469,8 @@
 	</dict>
 	<key>HapticFeedbackForEsc</key>
 	<false/>
+	<key>HideMenuBarInFullscreen</key>
+	<false/>
 	<key>HotkeyMigratedFromSingleToMulti</key>
 	<true/>
 	<key>IRMemory</key>
@@ -527,7 +529,7 @@
 	<key>NSWindow Frame NSNavPanelAutosaveName</key>
 	<string>556 510 328 195 0 0 1440 875 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 0 1440 875 0 0 1440 875 </string>
+	<string>0 0 1440 876 0 0 1440 875 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>0 0 1440 875 0 0 1440 875 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -1288,7 +1290,7 @@
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
-			<integer>15</integer>
+			<integer>1</integer>
 			<key>Working Directory</key>
 			<string>/Users/Jabiro</string>
 		</dict>
@@ -1315,7 +1317,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>2DAB568C-D3E8-43CE-8801-092A3024F3E7</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>61</integer>
+	<integer>64</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
