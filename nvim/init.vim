@@ -25,8 +25,8 @@ set updatetime=100
 set virtualedit=block
 set winaltkeys=no
 
-" Aesthetics
-let g:nord_bold = 1
+" Nice aesthetics.
+let g:nordbold = 1
 let g:nord_italic = 1
 let g:nord_uniform_diff_background = 1
 colorscheme nord
@@ -36,5 +36,9 @@ let g:lightline.colorscheme = 'nord'
 let g:lightline.separator = { 'left': "\ue0b0", 'right': "\ue0b2" }
 let g:lightline.subseparator = { 'left': "\ue0b1", 'right': "\ue0b3" }
 
-" Miscellaneous
+augroup Highlights
+  autocmd ColorScheme * hi Folded ctermbg=none guibg=none 
+augroup END
+
+" Miscellaneous.
 helptags ALL

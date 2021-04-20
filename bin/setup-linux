@@ -1,8 +1,0 @@
-#!/bin/sh
-
-# Common settings on Linux and macOS.
-source setup-common
-
-# These config files are only used on Linux.
-ln -sf ~/.config/XCompose ~/.XCompose
-ln -sf ~/.config/pam_environment ~/.pam_environment

@@ -16,10 +16,6 @@ ln -sf ~/.config/git/ignore ~/.gitignore
 # https://github.com/tmux/tmux/commit/15d7e564ddab575dd3ac803989cc99ac13b57198
 ln -sf ~/.config/tmux/tmux.conf ~/.tmux.conf
 
-# Config file for MacVim and GVim.
-ln -sf ~/.config/vimrc ~/.vimrc
-ln -sf ~/.config/gvimrc ~/.gvimrc
-
 # Initialize plugin submodules.
 git submodule init
 git submodule update

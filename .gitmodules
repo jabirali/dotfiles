@@ -1,111 +1,39 @@
-[submodule "nvim/pack/project/start/vim-gitgutter"]
-	path = nvim/pack/project/start/vim-gitgutter
-	url = https://github.com/airblade/vim-gitgutter
-[submodule "nvim/pack/project/start/fzf"]
-	path = nvim/pack/project/start/fzf
-	url = https://github.com/junegunn/fzf
-[submodule "nvim/pack/project/start/fzf.vim"]
-	path = nvim/pack/project/start/fzf.vim
-	url = https://github.com/junegunn/fzf.vim
-[submodule "nvim/pack/editor/start/vim-surround"]
-	path = nvim/pack/editor/start/vim-surround
-	url = https://github.com/tpope/vim-surround.git
 [submodule "nvim/pack/editor/start/vim-commentary"]
 	path = nvim/pack/editor/start/vim-commentary
 	url = https://github.com/tpope/vim-commentary.git
 [submodule "nvim/pack/editor/start/vim-repeat"]
 	path = nvim/pack/editor/start/vim-repeat
 	url = https://github.com/tpope/vim-repeat.git
+[submodule "nvim/pack/sensible/start/vim-rsi"]
+	path = nvim/pack/sensible/start/vim-rsi
+	url = git://github.com/tpope/vim-rsi.git
+[submodule "nvim/pack/editor/start/vim-slash"]
+	path = nvim/pack/editor/start/vim-slash
+	url = https://github.com/junegunn/vim-slash
+[submodule "nvim/pack/editor/start/vim-surround"]
+	path = nvim/pack/editor/start/vim-surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule "nvim/pack/sensible/start/vim-tmux-navigator"]
+	path = nvim/pack/sensible/start/vim-tmux-navigator
+	url = git@github.com:christoomey/vim-tmux-navigator.git
+[submodule "nvim/pack/style/start/lightline.vim"]
+	path = nvim/pack/style/start/lightline.vim
+	url = https://github.com/itchyny/lightline.vim.git
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
+[submodule "tmux/plugins/vim-tmux-navigator"]
+	path = tmux/plugins/vim-tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator.git
 [submodule "tmux/plugins/tmux-sensible"]
 	path = tmux/plugins/tmux-sensible
 	url = git@github.com:tmux-plugins/tmux-sensible.git
 [submodule "tmux/plugins/tmux-normalmode"]
 	path = tmux/plugins/tmux-normalmode
 	url = git@github.com:jabirali/tmux-normalmode.git
-[submodule "kak/plugins/plug.kak"]
-	path = kak/plugins/plug.kak
-	url = https://github.com/andreyorst/plug.kak.git
-[submodule "kak/plugins/fzf.kak"]
-	path = kak/plugins/fzf.kak
-	url = https://github.com/andreyorst/fzf.kak.git
-[submodule "kak/plugins/kak-lsp"]
-	path = kak/plugins/kak-lsp
-	url = https://github.com/ul/kak-lsp.git
 [submodule "tmux/plugins/tmux-tilish"]
 	path = tmux/plugins/tmux-tilish
 	url = git@github.com:jabirali/tmux-tilish.git
-[submodule "nvim/pack/editor/start/vim-slash"]
-	path = nvim/pack/editor/start/vim-slash
-	url = https://github.com/junegunn/vim-slash
-[submodule "nvim/pack/project/start/ctrlsf.vim"]
-	path = nvim/pack/project/start/ctrlsf.vim
-	url = https://github.com/dyng/ctrlsf.vim
-[submodule "nvim/pack/python/start/python-syntax"]
-	path = nvim/pack/python/start/python-syntax
-	url = https://github.com/vim-python/python-syntax
-[submodule "nvim/pack/python/start/jedi-vim"]
-	path = nvim/pack/python/start/jedi-vim
-	url = https://github.com/davidhalter/jedi-vim.git
-[submodule "nvim/pack/project/start/dash.vim"]
-	path = nvim/pack/project/start/dash.vim
-	url = https://github.com/rizzatti/dash.vim.git
-[submodule "nvim/pack/documents/start/wiki.vim"]
-	path = nvim/pack/documents/start/wiki.vim
-	url = https://github.com/lervag/wiki.vim.git
-[submodule "nvim/pack/documents/start/vimtex"]
-	path = nvim/pack/documents/start/vimtex
-	url = https://github.com/lervag/vimtex.git
-[submodule "nvim/pack/python/start/SimpylFold"]
-	path = nvim/pack/python/start/SimpylFold
-	url = https://github.com/tmhedberg/SimpylFold
-[submodule "nvim/pack/documents/start/tabular"]
-	path = nvim/pack/documents/start/tabular
-	url = https://github.com/godlygeek/tabular.git
-[submodule "nvim/pack/documents/start/vim-markdown"]
-	path = nvim/pack/documents/start/vim-markdown
-	url = https://github.com/plasticboy/vim-markdown.git
-[submodule "nvim/pack/style/start/dracula"]
-	path = nvim/pack/style/start/dracula
-	url = https://github.com/dracula/vim
-[submodule "nvim/pack/project/start/vim-fugitive"]
-	path = nvim/pack/project/start/vim-fugitive
-	url = https://github.com/tpope/vim-fugitive.git
-[submodule "nvim/pack/style/start/onedark.vim"]
-	path = nvim/pack/style/opt/onedark.vim
-	url = https://github.com/joshdick/onedark.vim.git
 [submodule "tmux/plugins/nord-tmux"]
 	path = tmux/plugins/nord-tmux
 	url = https://github.com/arcticicestudio/nord-tmux.git
-[submodule "nvim/pack/style/start/vim-gruvbox8"]
-	path = nvim/pack/style/start/vim-gruvbox8
-	url = git@github.com:lifepillar/vim-gruvbox8
-[submodule "nvim/pack/style/start/lightline.vim"]
-	path = nvim/pack/style/start/lightline.vim
-	url = https://github.com/itchyny/lightline.vim.git
-[submodule "nvim/pack/style/start/lightline-gruvbox.vim"]
-	path = nvim/pack/style/start/lightline-gruvbox.vim
-	url = https://github.com/shinchu/lightline-gruvbox.vim.git
-[submodule "nvim/pack/style/start/tender.vim"]
-	path = nvim/pack/style/start/tender.vim
-	url = https://github.com/jacoborus/tender.vim
-[submodule "nvim/pack/neovintageous/vim-commentary"]
-	path = nvim/pack/neovintageous/start/vim-commentary
-	url = https://github.com/tpope/vim-commentary
-[submodule "nvim/pack/neovintageous/vim-highlightedyank"]
-	path = nvim/pack/neovintageous/start/vim-highlightedyank
-	url = https://github.com/machakann/vim-highlightedyank
-[submodule "nvim/pack/neovintageous/vim-indent-object"]
-	path = nvim/pack/neovintageous/start/vim-indent-object
-	url = https://github.com/michaeljsmith/vim-indent-object.git
-[submodule "nvim/pack/neovintageous/vim-surround"]
-	path = nvim/pack/neovintageous/start/vim-surround
-	url = https://github.com/tpope/vim-surround.git
-[submodule "tmux/plugins/vim-tmux-navigator"]
-	path = tmux/plugins/vim-tmux-navigator
-	url = https://github.com/christoomey/vim-tmux-navigator.git
-[submodule "nvim/pack/sensible/start/vim-tmux-navigator"]
-	path = nvim/pack/sensible/start/vim-tmux-navigator
-	url = git@github.com:christoomey/vim-tmux-navigator.git
