@@ -40,5 +40,11 @@ augroup Highlights
   autocmd ColorScheme * hi Folded ctermbg=none guibg=none 
 augroup END
 
+" Tilish integration.
+noremap <silent> <m-h> :TmuxNavigateLeft<cr>
+noremap <silent> <m-j> :TmuxNavigateDown<cr>
+noremap <silent> <m-k> :TmuxNavigateUp<cr>
+noremap <silent> <m-l> :TmuxNavigateRight<cr>
+
 " Miscellaneous.
 helptags ALL
