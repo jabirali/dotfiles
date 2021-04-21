@@ -5,14 +5,10 @@
 	],
 	"installed_packages":
 	[
-		"FoldFunctions",
-		"gruvbox",
 		"Julia",
 		"LaTeXTools",
 		"NeoVintageous",
-		"Origami",
 		"Package Control",
-		"sublack",
 		"Terminal",
 		"Theme - Monokai Pro",
 	],

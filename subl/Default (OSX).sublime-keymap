@@ -1,26 +1,21 @@
 [
-	{
-    "keys": ["alt+up"],
-    "command": "fold_python_functions",
-    "context": [
-        {"key": "selector", "operand": "source.python"}
-    ]
-	},
-	{
-    "keys": ["alt+down"],
-    "command": "unfold_all",
-    "context": [
-        {"key": "selector", "operand": "source.python"}
-    ]
-	},
-    {
-        "keys": ["command+["],
-        "command": "focus_group",
-        "args": { "group": 0 }
-    },
-    {
-        "keys": ["command+]"],
-        "command": "focus_group",
-        "args": { "group": 1 }
-    }
+    // Consistent keybindings:
+    // By default, ⌘N/⇧⌘N creates a file or project, ⌘W/⇧⌘W closes a file
+    // or project, ⌘R/⇧⌘R searches for a symbol in a file or project, and
+    // ⌘F/⇧⌘F searches for anything in a file or project. Quite consistent.
+    // These bindings extend that consistency to opening existing targets,
+    // opening terminal tabs, and opening a command palette or console.
+    // Note that the ⌘P and ⇧⌘O bindings are consistent with the default
+    // keybindings in Sublime Merge, which differ from Sublime Text.
+    { "keys": ["primary+o"], "command": "show_overlay", "args": { "overlay": "goto", "show_files": true } },
+    { "keys": ["shift+primary+o"], "command": "prompt_select_workspace" },
+    { "keys": ["primary+t"], "command": "open_terminal"},
+    { "keys": ["shift+primary+t"], "command": "open_terminal_project_folder"},
+    { "keys": ["primary+p"], "command": "show_overlay", "args": { "overlay": "command_palette" } },
+    { "keys": ["shift+primary+p"], "command": "show_panel", "args": { "panel": "console", "toggle": true } },
+
+    // Miscellaneous.
+    { "keys": ["primary+0"], "command": "toggle_side_bar" },
+    { "keys": ["primary+["], "command": "focus_group", "args": { "group": 0 } },
+    { "keys": ["primary+]"], "command": "focus_group", "args": { "group": 1 } },
 ]
