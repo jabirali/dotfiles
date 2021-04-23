@@ -4,10 +4,10 @@
 cd `dirname "$0"`
 source setup-common
 
-# Ensure that the Sublime Text 3 config is synced on macOS.
+# Ensure that the Sublime Text config is synced on macOS.
 ln -sf ~/.config/subl ~/Library/ApplicationSupport/Sublime\ Text\ 3/Packages/User
 
-# This must be disabled for apps using Vim keybindings to work.
+# This must be disabled for some apps using Vim keybindings to work.
 defaults write -g ApplePressAndHoldEnabled -bool false
 
 # Global: Custom keybinding for entering full screen. Not all apps have this...

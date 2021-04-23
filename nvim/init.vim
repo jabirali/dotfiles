@@ -4,6 +4,7 @@
 set autochdir
 set clipboard=unnamed
 set fillchars=fold:\ ,
+set foldminlines=0
 set foldmethod=indent
 set ignorecase
 set inccommand=nosplit
@@ -37,6 +38,7 @@ let g:lightline.separator = { 'left': "\ue0b0", 'right': "\ue0b2" }
 let g:lightline.subseparator = { 'left': "\ue0b1", 'right': "\ue0b3" }
 
 augroup Highlights
+  autocmd!
   autocmd ColorScheme * hi Folded ctermbg=none guibg=none 
 augroup END
 

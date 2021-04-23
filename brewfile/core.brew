@@ -43,7 +43,6 @@ brew "unix2dos"
 brew "wget"
 
 cask "alfred"
-cask "bartender"
 cask "contexts"
 cask "font-jetbrains-mono-nerd-font"
 cask "iterm2"

@@ -1,5 +1,6 @@
 # Work packages for use with HomeBrew. These are not installed at home.
 
+brew "tcl-tk"
 cask "microsoft-teams"
 mas "office-excel", id: 462058435
 mas "office-onedrive", id: 823766827

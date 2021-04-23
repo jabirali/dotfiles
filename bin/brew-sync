@@ -1,24 +1,31 @@
 #!/bin/sh
 
-# To use this script, simply create a symlink from `work.brew` or `home.brew`
-# (or any other package profile) to the name `this.brew`, and run this script.
-# Homebrew will then uninstall unwanted packages and install missing packages.
+# This script is run as `brew sync` from the command line, and ensures that
+# all packages in `~/.config/brewfile/{core,this}.brew` are installed. The
+# file `this.brew` should be a symlink to a machine-dependent package list.
 
 # Ensure that XCode compilers are installed. If not, don't bother continuing.
-xcode-select --install && exit 1
-
-# Move to the directory containing the brewfiles.
-cd ~/.config/brewfile/ || exit 1
+if [[ "$(uname)" == "Darwin" ]]; then
+    echo ":: Checking for XCode compilers..."
+    xcode-select --install &>/dev/null && exit 1
+fi
 
 # Check if the `this` pointer is correctly set. This is a symlink `this.brew`
 # that should point to the desired profile, e.g. `work.brew` or `home.brew`.
+echo ":: Checking for package profiles..."
+cd ~/.config/brewfile/ || exit 1
 if [[ -f "this.brew" ]]; then
     # Install any packages listed in this file.
+    echo ":: Checking for missing packages..."
+    echo
     cat "core.brew" "this.brew" | brew bundle --file=-
+    echo
 else
-    echo "Symlink `this.brew` not set."
+    echo ":: Package profile `~/.config/brewfile/this.brew` is missing!"
     exit 1
 fi
 
-# Update any outdated packages in the last part of the sync process.
+# Finally, update any outdated packages.
+echo ":: Checking for updates..."
+echo
 brew upgrade
