@@ -52,8 +52,6 @@ o   xdg-open
 
 O   qlmanage -p
 
-subl  open -a "Sublime Text"
-
 v   vi
 v   vim
 v   nvim

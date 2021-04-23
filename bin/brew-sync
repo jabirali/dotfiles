@@ -10,6 +10,12 @@ if [[ "$(uname)" == "Darwin" ]]; then
     xcode-select --install &>/dev/null && exit 1
 fi
 
+# Ensure that the package database is up to date.
+echo ":: Checking for database updates..."
+echo
+brew update
+echo
+
 # Check if the `this` pointer is correctly set. This is a symlink `this.brew`
 # that should point to the desired profile, e.g. `work.brew` or `home.brew`.
 echo ":: Checking for package profiles..."
@@ -26,6 +32,6 @@ else
 fi
 
 # Finally, update any outdated packages.
-echo ":: Checking for updates..."
+echo ":: Checking for package updates..."
 echo
 brew upgrade
