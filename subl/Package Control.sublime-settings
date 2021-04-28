@@ -5,8 +5,10 @@
 	],
 	"installed_packages":
 	[
+		"DashDoc",
 		"Julia",
 		"LaTeXTools",
+		"ModernFortran",
 		"NeoVintageous",
 		"Package Control",
 		"rainbow_csv",

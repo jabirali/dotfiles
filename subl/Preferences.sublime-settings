@@ -7,6 +7,7 @@
 	"draw_indent_guides": false,
 	"ensure_newline_at_eof_on_save": true,
 	"file_tab_style": "square",
+	"font_options": ["no_italic", "no_calt"],
 	"open_files_in_new_window": false,
 	"color_scheme": "Monokai Pro (Filter Octagon).sublime-color-scheme",
 	"dictionary": "Packages/Language - English/en_US.dic",
