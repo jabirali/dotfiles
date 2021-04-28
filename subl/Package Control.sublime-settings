@@ -5,12 +5,14 @@
 	],
 	"installed_packages":
 	[
+		"AMPL language",
 		"DashDoc",
 		"Julia",
 		"LaTeXTools",
 		"ModernFortran",
 		"NeoVintageous",
 		"Package Control",
+		"PowerShell",
 		"rainbow_csv",
 		"Terminal",
 		"Theme - Monokai Pro",
