@@ -1,0 +1,2 @@
+" Dash for quick documentation lookup.
+nnoremap K :DashDoc<cr>
