@@ -1,21 +1,18 @@
 #!/bin/sh
 
-# This script is run as `brew sync` from the command line, and simply
-# ensures that all packages in `~/.config/Brewfile` are installed. 
+# This script is run as `brew sync` from the command line, and ensures
+# that packages in `~/.config/Brewfile` are installed and up to date.
 
 if [[ "$(uname)" == "Darwin" ]]; then
-	echo ":: Updating XCode..."
+	echo ":: Updating XCode tools..."
 	xcode-select --install &>/dev/null && exit 1
 fi
 
-echo ":: Updating index..."
-brew update
+echo ":: Updating HomeBrew index..."
+brew update || exit 1
 
-# Check if the `this` pointer is correctly set. This is a symlink `this.brew`
-# that should point to the desired profile, e.g. `work.brew` or `home.brew`.
-echo ":: Syncing apps..."
-brew bundle --file=~/.config/Brewfile
+echo ":: Updating HomeBrew apps..."
+brew upgrade || exit 1
 
-# Finally, update any outdated packages.
-echo ":: Updating apps..."
-brew upgrade
+echo ":: Syncing HomeBrew apps..."
+brew bundle --file=~/.config/Brewfile || exit 1
