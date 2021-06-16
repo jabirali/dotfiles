@@ -2,10 +2,10 @@
 # machines, so I only list the packages that I *really* need everywhere.
 # Packages I only need on some computers are instead installed manually.
 #
-# Examples: the macOS base system `python` and `git` are sufficient for casual
-# home use, so I don't list these. But I struggle to use a computer without
-# Alfred and iTerm2, my workflow depends heavily on `fish` and `nvim`,
-# and my backup system really requires Arq and `lzip` to function.
+# Examples: the macOS base system `python` and `git` are sufficient for
+# casual home use, so these are not here. However, I struggle to use macs
+# without Alfred and iTerm2, my workflow across platforms depends on `fish`
+# and `nvim`, and my backup system does require Arq and `lzip` everywhere.
 
 tap "homebrew/core"
 tap "homebrew/cask"
@@ -22,7 +22,7 @@ brew "fish"
 brew "fzf"
 brew "htop"
 brew "lzip"
-brew "neovim"
+brew "nvim"
 brew "pandoc"
 brew "tmux"
 brew "rg"
