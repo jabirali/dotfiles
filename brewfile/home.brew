@@ -1,3 +1,0 @@
-# Home packages for use with HomeBrew. These are not installed at work.
-
-cask "steam"

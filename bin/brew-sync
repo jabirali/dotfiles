@@ -1,37 +1,21 @@
 #!/bin/sh
 
-# This script is run as `brew sync` from the command line, and ensures that
-# all packages in `~/.config/brewfile/{core,this}.brew` are installed. The
-# file `this.brew` should be a symlink to a machine-dependent package list.
+# This script is run as `brew sync` from the command line, and simply
+# ensures that all packages in `~/.config/Brewfile` are installed. 
 
-# Ensure that XCode compilers are installed. If not, don't bother continuing.
 if [[ "$(uname)" == "Darwin" ]]; then
-    echo ":: Checking for XCode compilers..."
-    xcode-select --install &>/dev/null && exit 1
+	echo ":: Checking for XCode..."
+	xcode-select --install &>/dev/null && exit 1
 fi
 
-# Ensure that the package database is up to date.
-echo ":: Checking for database updates..."
-echo
+echo ":: Updating index..."
 brew update
-echo
 
 # Check if the `this` pointer is correctly set. This is a symlink `this.brew`
 # that should point to the desired profile, e.g. `work.brew` or `home.brew`.
-echo ":: Checking for package profiles..."
-cd ~/.config/brewfile/ || exit 1
-if [[ -f "this.brew" ]]; then
-    # Install any packages listed in this file.
-    echo ":: Checking for missing packages..."
-    echo
-    cat "core.brew" "this.brew" | brew bundle --file=-
-    echo
-else
-    echo ":: Package profile `~/.config/brewfile/this.brew` is missing!"
-    exit 1
-fi
+echo ":: Syncing apps..."
+brew bundle --file=~/.config/Brewfile
 
 # Finally, update any outdated packages.
-echo ":: Checking for package updates..."
-echo
+echo ":: Updating apps..."
 brew upgrade
