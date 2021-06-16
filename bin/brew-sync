@@ -4,7 +4,7 @@
 # ensures that all packages in `~/.config/Brewfile` are installed. 
 
 if [[ "$(uname)" == "Darwin" ]]; then
-	echo ":: Checking for XCode..."
+	echo ":: Updating XCode..."
 	xcode-select --install &>/dev/null && exit 1
 fi
 
