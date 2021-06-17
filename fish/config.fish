@@ -60,10 +60,10 @@ alias boox   'bluetooth-sendto --device=22:22:3B:D5:62:2C'
 set -g fish_user_paths "/usr/local/opt/binutils/bin" $fish_user_paths
 
 # Activate miniconda.
-eval /usr/local/Caskroom/miniconda/base/bin/conda "shell.fish" "hook" $argv | source
+# eval /usr/local/Caskroom/miniconda/base/bin/conda "shell.fish" "hook" $argv | source
 
 # Activate starship.
-starship init fish | source
+# starship init fish | source
 
 # Monokai colors.
 set fish_color_normal normal
