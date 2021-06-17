@@ -26,24 +26,19 @@ local use = require('packer').use
 require('packer').startup(function()
     use 'wbthomason/packer.nvim'       -- Package manager
     use 'tpope/vim-fugitive'           -- Git commands in nvim
-    use 'tpope/vim-rhubarb'            -- Fugitive-companion to interact with github
     use 'tpope/vim-commentary'         -- "gc" to comment visual regions/lines
     use 'ludovicchabant/vim-gutentags' -- Automatic tags management
     -- UI to select things (files, grep results, open buffers...)
     use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
     use 'arcticicestudio/nord-vim'     -- Nord theme
     use 'itchyny/lightline.vim'        -- Fancier statusline
-    -- Add indentation guides even on blank lines
-    -- use { 'lukas-reineke/indent-blankline.nvim', branch="lua" }
-    -- Add git related info in the signs columns and popups
-    -- use {'lewis6991/gitsigns.nvim',
-	--     requires = {'nvim-lua/plenary.nvim'},
-    --     config = function()
-	--         require('gitsigns').setup()
-    --     end
-    -- }
     use 'neovim/nvim-lspconfig'        -- Collection of configurations for built-in LSP client
     use 'hrsh7th/nvim-compe'           -- Autocompletion plugin
+    use {'folke/which-key.nvim',
+	config = function()
+	    require("which-key").setup()
+    	end
+    }
 end)
 
 --Incremental live completion
@@ -103,21 +98,6 @@ vim.g.maplocalleader = " "
 --Remap for dealing with word wrap
 vim.api.nvim_set_keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { noremap=true, expr = true, silent = true})
 vim.api.nvim_set_keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", {noremap= true, expr = true, silent = true})
-
---Remap escape to leave terminal mode
-vim.api.nvim_exec([[
-  augroup Terminal
-    autocmd!
-    au TermOpen * tnoremap <buffer> <Esc> <c-\><c-n>
-    au TermOpen * set nonu
-  augroup end
-]], false)
-
---Map blankline
--- vim.g.indent_blankline_char = "┊"
--- vim.g.indent_blankline_filetype_exclude = { 'help', 'packer' }
--- vim.g.indent_blankline_buftype_exclude = { 'terminal', 'nofile'}
--- vim.g.indent_blankline_char_highlight = 'LineNr'
 
 -- Telescope
 require('telescope').setup {
