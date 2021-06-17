@@ -81,7 +81,7 @@ vim.o.showmode = false
 vim.g.lightline = { colorscheme = 'nord';
 	active = {
 		left  = { {'filename'} },
-		right = { {'modified', 'gitbranch' } },
+		right = { {'lineinfo'} },
 	};
 	inactive = {
 		left  = { {'filename'} },
