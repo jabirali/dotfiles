@@ -24,21 +24,26 @@ vim.api.nvim_exec([[
 
 local use = require('packer').use
 require('packer').startup(function()
-  use 'wbthomason/packer.nvim'       -- Package manager
-  use 'tpope/vim-fugitive'           -- Git commands in nvim
-  use 'tpope/vim-rhubarb'            -- Fugitive-companion to interact with github
-  use 'tpope/vim-commentary'         -- "gc" to comment visual regions/lines
-  use 'ludovicchabant/vim-gutentags' -- Automatic tags management
-  -- UI to select things (files, grep results, open buffers...)
-  use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
-  use 'arcticicestudio/nord-vim'     -- Nord theme
-  use 'itchyny/lightline.vim'        -- Fancier statusline
-  -- Add indentation guides even on blank lines
-  use { 'lukas-reineke/indent-blankline.nvim', branch="lua" }
-  -- Add git related info in the signs columns and popups
-  use {'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'} }
-  use 'neovim/nvim-lspconfig'        -- Collection of configurations for built-in LSP client
-  use 'hrsh7th/nvim-compe'           -- Autocompletion plugin
+    use 'wbthomason/packer.nvim'       -- Package manager
+    use 'tpope/vim-fugitive'           -- Git commands in nvim
+    use 'tpope/vim-rhubarb'            -- Fugitive-companion to interact with github
+    use 'tpope/vim-commentary'         -- "gc" to comment visual regions/lines
+    use 'ludovicchabant/vim-gutentags' -- Automatic tags management
+    -- UI to select things (files, grep results, open buffers...)
+    use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
+    use 'arcticicestudio/nord-vim'     -- Nord theme
+    use 'itchyny/lightline.vim'        -- Fancier statusline
+    -- Add indentation guides even on blank lines
+    -- use { 'lukas-reineke/indent-blankline.nvim', branch="lua" }
+    -- Add git related info in the signs columns and popups
+    -- use {'lewis6991/gitsigns.nvim',
+	--     requires = {'nvim-lua/plenary.nvim'},
+    --     config = function()
+	--         require('gitsigns').setup()
+    --     end
+    -- }
+    use 'neovim/nvim-lspconfig'        -- Collection of configurations for built-in LSP client
+    use 'hrsh7th/nvim-compe'           -- Autocompletion plugin
 end)
 
 --Incremental live completion
@@ -55,6 +60,7 @@ vim.o.hidden = true
 vim.o.mouse = "a"
 
 --Enable break indent
+vim.o.linebreak = true
 vim.o.breakindent = true
 
 --Save undo history
@@ -74,8 +80,16 @@ vim.g.nord_uniform_diff_background = true
 vim.cmd[[colorscheme nord]]
 
 --Set statusbar
+vim.o.showmode = false
 vim.g.lightline = { colorscheme = 'nord';
-      active = { left = { { 'mode', 'paste' }, { 'gitbranch', 'readonly', 'filename', 'modified' } } };
+	active = {
+		left  = { {'filename'} },
+		right = { {'modified', 'gitbranch' } },
+	};
+	inactive = {
+		left  = { {'filename'} },
+		right = { },
+	};
       component_function = { gitbranch = 'fugitive#head', };
       separator = { left = "", right = "" };
       subseparator = { left = "", right = "" };
@@ -100,10 +114,10 @@ vim.api.nvim_exec([[
 ]], false)
 
 --Map blankline
-vim.g.indent_blankline_char = "┊"
-vim.g.indent_blankline_filetype_exclude = { 'help', 'packer' }
-vim.g.indent_blankline_buftype_exclude = { 'terminal', 'nofile'}
-vim.g.indent_blankline_char_highlight = 'LineNr'
+-- vim.g.indent_blankline_char = "┊"
+-- vim.g.indent_blankline_filetype_exclude = { 'help', 'packer' }
+-- vim.g.indent_blankline_buftype_exclude = { 'terminal', 'nofile'}
+-- vim.g.indent_blankline_char_highlight = 'LineNr'
 
 -- Telescope
 require('telescope').setup {
