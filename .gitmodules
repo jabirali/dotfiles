@@ -1,24 +1,3 @@
-[submodule "nvim/pack/editor/start/vim-commentary"]
-	path = nvim/pack/editor/start/vim-commentary
-	url = https://github.com/tpope/vim-commentary.git
-[submodule "nvim/pack/editor/start/vim-repeat"]
-	path = nvim/pack/editor/start/vim-repeat
-	url = https://github.com/tpope/vim-repeat.git
-[submodule "nvim/pack/sensible/start/vim-rsi"]
-	path = nvim/pack/sensible/start/vim-rsi
-	url = git://github.com/tpope/vim-rsi.git
-[submodule "nvim/pack/editor/start/vim-slash"]
-	path = nvim/pack/editor/start/vim-slash
-	url = https://github.com/junegunn/vim-slash
-[submodule "nvim/pack/editor/start/vim-surround"]
-	path = nvim/pack/editor/start/vim-surround
-	url = https://github.com/tpope/vim-surround.git
-[submodule "nvim/pack/sensible/start/vim-tmux-navigator"]
-	path = nvim/pack/sensible/start/vim-tmux-navigator
-	url = git@github.com:christoomey/vim-tmux-navigator.git
-[submodule "nvim/pack/style/start/lightline.vim"]
-	path = nvim/pack/style/start/lightline.vim
-	url = https://github.com/itchyny/lightline.vim.git
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
