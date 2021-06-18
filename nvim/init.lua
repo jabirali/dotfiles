@@ -72,7 +72,6 @@ vim.o.updatetime = 250
 vim.wo.signcolumn="yes"
 
 --Set colorscheme (order is important here)
-vim.o.termguicolors = true
 vim.g.nord_uniform_diff_background = true
 vim.cmd[[colorscheme nord]]
 
