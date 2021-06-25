@@ -57,6 +57,7 @@ alias mkvenv 'echo layout_python >> .envrc; direnv allow'
 alias pytest 'fd \'.py$\' | entr pytest'
 alias wget   'wget -e robots=off'
 alias boox   'bluetooth-sendto --device=22:22:3B:D5:62:2C'
+alias bat    'bat -p --theme Nord'
 set -g fish_user_paths "/usr/local/opt/binutils/bin" $fish_user_paths
 
 # Activate miniconda.

@@ -24,7 +24,9 @@ require('packer').startup(function()
 	-- User experience enhancements.
 	use {'tpope/vim-rsi'}
 	use {'junegunn/vim-slash'}
-	use {'ludovicchabant/vim-gutentags'}
+	use {'ludovicchabant/vim-gutentags', config=function()
+		vim.g.gutentags_cache_dir = vim.fn.stdpath('cache') .. '/ctags/'
+	end}
 	use {'nvim-telescope/telescope.nvim', requires={{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}}
 
 	-- User interface theming.
