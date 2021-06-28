@@ -4,17 +4,18 @@
 
 -- Install and configure packages.
 require('packer').startup(function()
-	-- Fast and native package manager.
+	-- Package management.
 	use {'wbthomason/packer.nvim'}
 
-	-- Extensions to the Vim editing language.
-	use {'inkarkat/vim-visualrepeat'}
-	use {'machakann/vim-sandwich'}
+	-- Sensible defaults.
+	use {'tpope/vim-rsi'}
+	use {'wellle/targets.vim'}
 	use {'tpope/vim-commentary'}
+	use {'machakann/vim-sandwich'}
+	use {'junegunn/vim-slash'}
+	use {'bronson/vim-visual-star-search'}
 	
 	-- User experience enhancements.
-	use {'tpope/vim-rsi'}
-	use {'junegunn/vim-slash'}
 	use {'ludovicchabant/vim-gutentags', config=function()
 		vim.g.gutentags_cache_dir = vim.fn.stdpath('cache') .. '/ctags/'
 	end}
