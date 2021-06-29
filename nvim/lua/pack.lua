@@ -11,6 +11,7 @@ require('packer').startup(function()
 	use {'tpope/vim-rsi'}
 	use {'wellle/targets.vim'}
 	use {'tpope/vim-commentary'}
+	use {'tpope/vim-unimpaired'}
 	use {'machakann/vim-sandwich'}
 	use {'junegunn/vim-slash'}
 	use {'bronson/vim-visual-star-search'}

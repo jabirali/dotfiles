@@ -18,7 +18,7 @@ map('', '<space>', '<nop>')
 
 -- Sensible defaults.
 map('n', 'Y', 'y$')
-map('n', 'k', "v:count == 0 ? 'gk' : 'k'", {expr=true})
+map['n', 'k', "v:count == 0 ? 'gk' : 'k'", {expr=true}]
 map('n', 'j', "v:count == 0 ? 'gj' : 'j'", {expr=true})
 
 -- Leader keybindings.
