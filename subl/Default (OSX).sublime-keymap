@@ -1,21 +1,27 @@
 [
-    // Consistent keybindings:
-    // By default, the keybindings ⌘N/⌘F/⌘R/⌘W and ⇧⌘N/⇧⌘F/⇧⌘R/⇧⌘W are quite
-    // consistent, the difference being whether they operate on a local (file)
-    // or global (project) level. These bindings extend that consistency to
-    // more common actions, and are consistent with Sublime Merge defaults.
-    { "keys": ["primary+o"], "command": "show_overlay", "args": { "overlay": "goto", "show_files": true } },
-    { "keys": ["shift+primary+o"], "command": "prompt_select_workspace" },
-    { "keys": ["primary+t"], "command": "open_terminal"},
-    { "keys": ["shift+primary+t"], "command": "open_terminal_project_folder"},
-    { "keys": ["primary+p"], "command": "show_overlay", "args": { "overlay": "command_palette" } },
-    { "keys": ["shift+primary+p"], "command": "show_panel", "args": { "panel": "console", "toggle": true } },
+    // Readline keybindings. Sublime already supports these to some extent,
+    // but these definitions improves and expands the default definitions.
+    { "keys": ["ctrl+a"], "command": "move_to", "args": {"to": "bol"}},
+    { "keys": ["ctrl+e"], "command": "move_to", "args": {"to": "eol"}},
+    { "keys": ["ctrl+w"], "command": "delete_word", "args": {"forward": false}},
+    { "keys": ["ctrl+u"], "command": "run_macro_file", "args": {"file": "res://Packages/Default/Delete to Hard BOL.sublime-macro"}},
+
+    // Swap ⌘A and ⇧⌘A, as I need Expand Selection way more then Select All.
+    { "keys": ["super+a"], "command": "expand_selection", "args": {"to": "smart"} },
+    { "keys": ["shift+super+a"], "command": "select_all" },
+
+    // If ⌘D selects next, ⇧⌘D is more natural than ⌃⌘G to select all.
+    { "keys": ["shift+primary+d"], "command": "find_all_under" },
+
+    // ⌘T is redundant (⌘P), and on macOS Sublime workspace open in new tabs.
+    // It feels natural as ⌘W closes the new tab if there's only one buffer.
+    { "keys": ["primary+t"], "command": "new_window" },
 
     // Interface navigation:
     // The ⌘0 fits with tab navigation, while ⌘[] matches iTerm2 defaults.
-    { "keys": ["primary+0"], "command": "focus_side_bar" },
-    { "keys": ["primary+["], "command": "focus_neighboring_group", "args": { "forward": false } },
-    { "keys": ["primary+]"], "command": "focus_neighboring_group", "args": { "forward": true } },
+    // { "keys": ["primary+0"], "command": "focus_side_bar" },
+    // { "keys": ["primary+["], "command": "focus_neighboring_group", "args": { "forward": false } },
+    // { "keys": ["primary+]"], "command": "focus_neighboring_group", "args": { "forward": true } },
 
     // Layout organization:
     // I dislike the default behaviour of ⌘⌥3 and ⌘⌥4, which on a typical
