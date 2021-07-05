@@ -11,6 +11,11 @@ local function map(mode, keys, maps, opts)
 	vim.api.nvim_set_keymap(mode, keys, maps, options)
 end
 
+-- Use ⌃C to exit insert mode. This keybinding is backwards compatible with
+-- most terminals and Vim emulations, but this overriding removes the minor
+-- syntactic differences documented in `:he i_CTRL-c`.
+map('i', '<C-c>', '<esc>')
+
 -- Use space as the leader key.
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '

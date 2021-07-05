@@ -8,7 +8,7 @@ require('packer').startup(function()
 	use {'wbthomason/packer.nvim'}
 
 	-- Sensible defaults.
-	use {'tpope/vim-rsi'}
+	use {'vim-utils/vim-husk'}
 	use {'wellle/targets.vim'}
 	use {'tpope/vim-commentary'}
 	use {'tpope/vim-unimpaired'}
@@ -21,12 +21,6 @@ require('packer').startup(function()
 		config=function()
 			vim.g.gutentags_cache_dir = vim.fn.stdpath('cache') .. '/ctags/'
 		end
-	}
-	use {'nvim-telescope/telescope.nvim',
-		requires={
-			{'nvim-lua/popup.nvim'},
-			{'nvim-lua/plenary.nvim'},
-		}
 	}
 
 	-- User interface.
