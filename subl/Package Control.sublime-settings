@@ -6,6 +6,7 @@
 	"installed_packages":
 	[
 		"AMPL language",
+		"Conda",
 		"iA Writer",
 		"Julia",
 		"LaTeXTools",
