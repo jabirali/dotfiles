@@ -48,4 +48,97 @@
             "cells": [ [0, 0, 1, 3], [1, 0, 2, 1], [1, 1, 2, 2], [1, 2, 2, 3] ]
         }
     },
+
+    // BracketHighlighter keybindings.
+    {
+        "keys": ["ctrl+["],
+        "command": "bh_key",
+        "args":
+        {
+            "no_outside_adj": null,
+            "no_block_mode": null,
+            "lines" : true,
+            "plugin":
+            {
+                "type": ["__all__"],
+                "command": "bh_modules.bracketselect",
+                "args": {"select": "left"}
+            }
+        }
+    },
+    {
+        "keys": ["ctrl+]"],
+        "command": "bh_key",
+        "args":
+        {
+            "no_outside_adj": null,
+            "no_block_mode": null,
+            "lines" : true,
+            "plugin":
+            {
+                "type": ["__all__"],
+                "command": "bh_modules.bracketselect",
+                "args": {"select": "right"}
+            }
+        }
+    },
+    {
+        "keys": ["ctrl+shift+["],
+        "command": "bh_key",
+        "args":
+        {
+            "no_outside_adj": null,
+            "no_block_mode": null,
+            "lines" : true,
+            "plugin":
+            {
+                "type": ["__all__"],
+                "command": "bh_modules.bracketselect",
+                "args": {"select": "left", "extend": true}
+            }
+        }
+    },
+    {
+        "keys": ["ctrl+shift+]"],
+        "command": "bh_key",
+        "args":
+        {
+            "no_outside_adj": null,
+            "no_block_mode": null,
+            "lines" : true,
+            "plugin":
+            {
+                "type": ["__all__"],
+                "command": "bh_modules.bracketselect",
+                "args": {"select": "right", "extend": true}
+            }
+        }
+    },
+    {
+        "keys": ["ctrl+m"],
+        "command": "bh_key",
+        "args": {
+            "plugin": {
+                "args": {"select": "right", "alternate": true},
+                "command": "bh_modules.bracketselect",
+                "type": ["__all__"]
+            },
+            "lines": true,
+            "no_outside_adj": null
+        }
+    },
+    {
+        "no_outside_adj": null,
+        "keys": ["ctrl+shift+m"],
+        "command": "bh_key",
+        "args":
+        {
+            "lines" : true,
+            "plugin":
+            {
+                "type": ["__all__"],
+                "command": "bh_modules.bracketselect"
+            }
+        }
+    },
 ]
