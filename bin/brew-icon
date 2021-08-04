@@ -1,0 +1,5 @@
+#!/bin/sh
+
+sudo iconsur set /Applications/Firefox.app
+sudo iconsur set /Applications/Papers.app -k Readcube
+sudo iconsur set /Applications/Spotify.app
