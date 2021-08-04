@@ -1,4 +1,5 @@
 {
+	// BracketHighlighter settings.
 	"gutter_icons": false,
 	"show_offscreen_bracket_popup": false,
 	"bracket_styles": {

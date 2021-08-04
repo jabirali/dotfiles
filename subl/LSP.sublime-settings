@@ -1,0 +1,39 @@
+// Settings in here override those in "LSP/LSP.sublime-settings"
+{
+    "document_highlight_style": "",
+    "clients": {
+        "julials": {
+            "enabled": true,
+            "command": ["bash", "~/.julia/packages/LanguageServer/jiDTR/contrib/languageserver.sh"],
+            "selector": "source.julia",
+            "settings": {
+                // Default values from VS Code:
+                "julia.format.calls": true,      // Format function calls
+                "julia.format.comments": true,   // Format comments
+                "julia.format.curly": true,      // Format braces
+                "julia.format.docs": true,       // Format inline documentation
+                "julia.format.indent": 4,        // Indent size for formatting
+                "julia.format.indents": true,    // Format file indents
+                "julia.format.iterOps": true,    // Format loop iterators
+                "julia.format.kw": true,         // Remove spaces around = in function keywords
+                "julia.format.lineends": false,  // [undocumented]
+                "julia.format.ops": true,        // Format whitespace around operators
+                "julia.format.tuples": true,     // Format tuples
+                "julia.lint.call": false,        // Check calls against existing methods (experimental)
+                "julia.lint.constif": true,      // Check for constant conditionals of if statements
+                "julia.lint.datadecl": false,    // [undocumented]
+                "julia.lint.iter": true,         // Check iterator syntax of loops
+                "julia.lint.lazy": true,         // Check for deterministic lazy boolean operators
+                "julia.lint.modname": true,      // Check for invalid submodule names
+                "julia.lint.nothingcomp": false, // [undocumented]
+                "julia.lint.pirates": true,      // Check for type piracy
+                "julia.lint.run": true,          // run the linter on active files
+                "julia.lint.typeparam": true,     // Check for unused DataType parameters
+            },
+        },
+        "LSP-pyright": {
+			"enabled": false,
+		},
+    },
+    "show_diagnostics_panel_on_save": 0,
+}
