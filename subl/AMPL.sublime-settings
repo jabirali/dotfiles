@@ -1,4 +1,5 @@
 {
+	// Needed for eTransport.
 	"extensions":
 	[
 		"mod"

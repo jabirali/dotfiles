@@ -1,6 +1,0 @@
-// Settings in here override those in "LSP-pyright/LSP-pyright.sublime-settings"
-
-{
-	"python.pythonPath": "/usr/local/Caskroom/miniconda/base/bin/python",
-	"python.venvPath": "/usr/local/Caskroom/miniconda/base/envs",
-}

@@ -41,10 +41,6 @@
 	"vintage_start_in_command_mode": true,
 	"ignored_packages":
 	[
-		"LSP",
-		"LSP-TexLab",
-		"NeoVintageous",
-		"python-black",
 		"Six",
 		"Vintage",
 		"Vintageous",
