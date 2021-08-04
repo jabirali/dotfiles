@@ -1,27 +1,113 @@
 [
-    // Readline keybindings. Sublime already supports these to some extent,
-    // but these definitions improves and expands the default definitions.
+    // Window management
+    { "keys": ["super+]"], "command": "next_view", },
+    { "keys": ["super+["], "command": "prev_view", },
+    { "keys": ["super+t"], "command": "new_os_tab", },
+    { "keys": ["shift+super+]"], "command": "next_os_tab", },
+    { "keys": ["shift+super+["], "command": "prev_os_tab", },
+
+    { "keys": ["super+1"], "command": "focus_group", "args": { "group": 0 } },
+    { "keys": ["super+2"], "command": "focus_group", "args": { "group": 1 } },
+    { "keys": ["super+3"], "command": "focus_group", "args": { "group": 2 } },
+    { "keys": ["super+4"], "command": "focus_group", "args": { "group": 3 } },
+    { "keys": ["super+5"], "command": "focus_group", "args": { "group": 4 } },
+    { "keys": ["super+6"], "command": "focus_group", "args": { "group": 5 } },
+    { "keys": ["super+7"], "command": "focus_group", "args": { "group": 6 } },
+    { "keys": ["super+8"], "command": "focus_group", "args": { "group": 7 } },
+    { "keys": ["super+9"], "command": "focus_group", "args": { "group": 8 } },
+
+    { "keys": ["super+shift+1"], "command": "move_to_group", "args": { "group": 0 } },
+    { "keys": ["super+shift+2"], "command": "move_to_group", "args": { "group": 1 } },
+    { "keys": ["super+shift+3"], "command": "move_to_group", "args": { "group": 2 } },
+    { "keys": ["super+shift+4"], "command": "move_to_group", "args": { "group": 3 } },
+    { "keys": ["super+shift+5"], "command": "move_to_group", "args": { "group": 4 } },
+    { "keys": ["super+shift+6"], "command": "move_to_group", "args": { "group": 5 } },
+    { "keys": ["super+shift+7"], "command": "move_to_group", "args": { "group": 6 } },
+    { "keys": ["super+shift+8"], "command": "move_to_group", "args": { "group": 7 } },
+    { "keys": ["super+shift+9"], "command": "move_to_group", "args": { "group": 8 } },
+
+    // Readline keybindings
     { "keys": ["ctrl+a"], "command": "move_to", "args": {"to": "bol"}},
     { "keys": ["ctrl+e"], "command": "move_to", "args": {"to": "eol"}},
     { "keys": ["ctrl+w"], "command": "delete_word", "args": {"forward": false}},
     { "keys": ["ctrl+u"], "command": "run_macro_file", "args": {"file": "res://Packages/Default/Delete to Hard BOL.sublime-macro"}},
+    { "keys": ["ctrl+t"], "command": "transpose" },
+
+    // Note: This would shadow useful bookmark and mark functions.
+    // Moreover, the default keybindings ⌘I/⇧⌘I are decent here.
+    // { "keys": ["ctrl+s"], "command": "show_panel", "args": {"panel": "incremental_find", "reverse": false}},
+    // { "keys": ["ctrl+r"], "command": "show_panel", "args": {"panel": "incremental_find", "reverse": true}},
+
+    // Replace Fn keybindings
+    { "keys": ["shift+backspace"], "command": "right_delete" },
+    { "keys": ["shift+alt+backspace"], "command": "delete_word", "args": {"forward": true}},
+    { "keys": ["shift+super+backspace"], "command": "run_macro_file", "args": {"file": "res://Packages/Default/Delete to Hard EOL.sublime-macro"}},
+
+    // If ⌘D quick-selects next, ⇧⌘D is more natural than ⌃⌘G to quick-select all.
+    { "keys": ["shift+super+d"], "command": "find_all_under" },
+
+    // Sublime has inaccessible default bindings for "marks" on macOS. However,
+    // they remain the best way to do complex text selection, e.g. via ⌘R or ⌘I.
+    // This introduces keybindings that are consistent with the default ⌃M/⇧⌃M.
+    // { "keys": ["ctrl+s"], "command": "set_mark" },
+    // { "keys": ["shift+ctrl+s"], "command": "select_to_mark" },
+    { "keys": ["super+k", "ctrl+s"], "command": "clear_bookmarks", "args": {"name": "mark"} },
+    { "keys": ["super+k", "ctrl+r"], "command": "clear_bookmarks" },
+
+    // Copy-as-HTML is quite useful when e.g. drafting emails in Sublime.
+    { "keys": ["shift+super+c"], "command": "copy_as_html", "args": {"enclosing_tags": true, "font_size": false} },
+
+    // Buffer switching like in Vim+FZF or Doom Emacs.
+    // { "keys": ["super+shift+["], "command": "foo_bar", },
+    { "keys": ["super+`"], "command": "switch_tabs", },
 
     // Swap ⌘A and ⇧⌘A, as I need Expand Selection way more then Select All.
-    { "keys": ["super+a"], "command": "expand_selection", "args": {"to": "smart"} },
-    { "keys": ["shift+super+a"], "command": "select_all" },
-
-    // If ⌘D selects next, ⇧⌘D is more natural than ⌃⌘G to select all.
-    { "keys": ["shift+primary+d"], "command": "find_all_under" },
+    // { "keys": ["super+a"], "command": "select_all" },
+    { "keys": ["shift+super+a"], "command": "expand_region", },
+    // { "keys": ["super+l"], "command": "split_selection_into_lines" },
 
     // ⌘T is redundant (⌘P), and on macOS Sublime workspace open in new tabs.
     // It feels natural as ⌘W closes the new tab if there's only one buffer.
-    { "keys": ["primary+t"], "command": "new_window" },
+    // { "keys": ["super+t"], "command": "new_window" },
+
+    // Terminal integration.
+    // { "keys": ["super+."], "command": "open_terminal" },
+
+    // Project navigation.
+    { "keys": ["alt+super+down"], "command": "goto_definition" },
+    { "keys": ["alt+super+up"],   "command": "goto_reference" },
+    { "keys": ["alt+super+left"], "command": "jump_back" },
+    { "keys": ["alt+super+right"],   "command": "jump_forward" },
+
+    { "keys": ["alt+super+down"], "command": "open_page", "context":
+        [
+            {
+                "key": "selector",
+                "operator": "equal",
+                "operand": "text.html.markdown"
+            }
+        ]
+    },
+
+    { "keys": ["alt+super+up"], "command": "list_back_links", "context":
+        [
+            {
+                "key": "selector",
+                "operator": "equal",
+                "operand": "text.html.markdown"
+            }
+        ]
+    },
+
+    // Multiple cursors.
+    // { "keys": ["super+t"], "command": "power_cursor_add" },
+    // { "keys": ["shift+super+t"], "command": "power_cursor_add" },
 
     // Interface navigation:
     // The ⌘0 fits with tab navigation, while ⌘[] matches iTerm2 defaults.
-    // { "keys": ["primary+0"], "command": "focus_side_bar" },
-    // { "keys": ["primary+["], "command": "focus_neighboring_group", "args": { "forward": false } },
-    // { "keys": ["primary+]"], "command": "focus_neighboring_group", "args": { "forward": true } },
+    // { "keys": ["super+0"], "command": "focus_side_bar" },
+    // { "keys": ["super+["], "command": "focus_neighboring_group", "args": { "forward": false } },
+    // { "keys": ["super+]"], "command": "focus_neighboring_group", "args": { "forward": true } },
 
     // Layout organization:
     // I dislike the default behaviour of ⌘⌥3 and ⌘⌥4, which on a typical
@@ -29,7 +115,7 @@
     // Selecting "Max Columns: 2" in the user interface fixes it, but
     // apparently only temporarily. This changes the default behavior.
     {
-        "keys": ["primary+alt+3"],
+        "keys": ["super+alt+3"],
         "caption": "main left",
         "command": "set_layout",
         "args": {
@@ -39,7 +125,7 @@
         }
     },
     {
-        "keys": ["primary+alt+4"],
+        "keys": ["super+alt+4"],
         "caption": "main left",
         "command": "set_layout",
         "args": {
@@ -49,71 +135,7 @@
         }
     },
 
-    // BracketHighlighter keybindings.
-    {
-        "keys": ["ctrl+["],
-        "command": "bh_key",
-        "args":
-        {
-            "no_outside_adj": null,
-            "no_block_mode": null,
-            "lines" : true,
-            "plugin":
-            {
-                "type": ["__all__"],
-                "command": "bh_modules.bracketselect",
-                "args": {"select": "left"}
-            }
-        }
-    },
-    {
-        "keys": ["ctrl+]"],
-        "command": "bh_key",
-        "args":
-        {
-            "no_outside_adj": null,
-            "no_block_mode": null,
-            "lines" : true,
-            "plugin":
-            {
-                "type": ["__all__"],
-                "command": "bh_modules.bracketselect",
-                "args": {"select": "right"}
-            }
-        }
-    },
-    {
-        "keys": ["ctrl+shift+["],
-        "command": "bh_key",
-        "args":
-        {
-            "no_outside_adj": null,
-            "no_block_mode": null,
-            "lines" : true,
-            "plugin":
-            {
-                "type": ["__all__"],
-                "command": "bh_modules.bracketselect",
-                "args": {"select": "left", "extend": true}
-            }
-        }
-    },
-    {
-        "keys": ["ctrl+shift+]"],
-        "command": "bh_key",
-        "args":
-        {
-            "no_outside_adj": null,
-            "no_block_mode": null,
-            "lines" : true,
-            "plugin":
-            {
-                "type": ["__all__"],
-                "command": "bh_modules.bracketselect",
-                "args": {"select": "right", "extend": true}
-            }
-        }
-    },
+    // BracketHighlighter keybindings. These extend the built-in ⌃M/⇧⌃M.
     {
         "keys": ["ctrl+m"],
         "command": "bh_key",
@@ -123,22 +145,163 @@
                 "command": "bh_modules.bracketselect",
                 "type": ["__all__"]
             },
+            "no_outside_adj": null,
             "lines": true,
-            "no_outside_adj": null
         }
     },
     {
-        "no_outside_adj": null,
         "keys": ["ctrl+shift+m"],
         "command": "bh_key",
         "args":
         {
-            "lines" : true,
             "plugin":
             {
                 "type": ["__all__"],
                 "command": "bh_modules.bracketselect"
-            }
+            },
+            "no_outside_adj": null,
+            "lines" : true,
         }
     },
+
+    // Symbol Hover
+    // {
+    //     "command": "lsp_hover",
+    //     "keys": [
+    //         "super+k",
+    //         "super+k"
+    //     ],
+    //     "context": [
+    //         {
+    //             "key": "lsp.session_with_capability",
+    //             "operator": "equal",
+    //             "operand": "hoverProvider"
+    //         }
+    //     ]
+    // },
+    {
+        "command": "lsp_document_symbols",
+        "keys": [
+            "primary+k",
+            "primary+r"
+        ],
+        "context": [
+            {
+                "key": "lsp.session_with_capability",
+                "operator": "equal",
+                "operand": "documentSymbolProvider"
+            }
+        ]
+    },
+    {
+        "command": "lsp_workspace_symbols",
+        "keys": [
+            "primary+k",
+            "primary+shift+r"
+        ],
+        "context": [
+            {
+                "key": "lsp.session_with_capability",
+                "operator": "equal",
+                "operand": "workspaceSymbolProvider"
+            }
+        ]
+    },
+    {
+        "command": "lsp_symbol_rename",
+        "keys": [
+            "primary+k",
+            "shift+primary+d"
+        ],
+        "context": [
+            {
+                "key": "lsp.session_with_capability",
+                "operator": "equal",
+                "operand": "renameProvider"
+            }
+        ]
+    },
+    {
+        "command": "lsp_symbol_definition",
+        "args": {
+            "side_by_side": false
+        },
+        "keys": [
+            "primary+k",
+            "primary+."
+        ],
+        "context": [
+            {
+                "key": "lsp.session_with_capability",
+                "operator": "equal",
+                "operand": "definitionProvider"
+            },
+            {
+                "key": "auto_complete_visible",
+                "operator": "equal",
+                "operand": false
+            }
+        ]
+    },
+
+    {
+        "command": "lsp_symbol_references",
+        "keys": [
+            "primary+k",
+            "shift+primary+."
+        ],
+        "context": [
+            {
+                "key": "lsp.session_with_capability",
+                "operator": "equal",
+                "operand": "referencesProvider"
+            },
+        ]
+    },
+
+    // Preview commands.
+    {
+      "keys": ["shift+super+\\"],
+      "command": "iawriter",
+      "context": [
+        {
+            "key": "selector",
+            "operator": "equal",
+            "operand": "text.html.markdown"
+        }
+        ]
+    },
+    {
+        "keys": ["shift+super+\\"],
+        "command": "view_pdf",
+        "context": [
+        {
+            "key": "selector",
+            "operator": "equal",
+            "operand": "text.tex.latex"
+        }
+        ]
+    },
+
+    // MarkDown keybindings.
+    {
+      "keys": ["ctrl+6"],
+      "command": "magic_footnotes",
+      "context": [
+        {
+            "key": "selector",
+            "operator": "equal",
+            "operand": "text.html.markdown"
+        }
+        ]
+    },
+
+
+
+    // Convert LaTeX to Unicode using an appropriate backslash.
+    { "keys": ["super+\\"], "command": "toggle_unicode_completion", },
+
+    // MarkDown editing.
+    { "keys": ["super+k", "shift+tab"], "command": "fold_all_sections", },
+
 ]
