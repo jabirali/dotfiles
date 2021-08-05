@@ -3,6 +3,9 @@
 	"draw_indent_guides": false,
 	"font_options": [],
 
+	// UC: Enable UTF8 input.
+	"unicode_completion": true,
+
 	// MDE: Disable colorscheme override.
 	"color_scheme": "auto",
 

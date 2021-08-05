@@ -57,6 +57,4 @@ v   vim
 v   nvim
 v   mvim
 
-z   zotfile
-
 home  ssh 'jabirali/home@lon1.tmate.io'

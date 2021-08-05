@@ -57,7 +57,7 @@ alias mkvenv 'echo layout_python >> .envrc; direnv allow'
 alias pytest 'fd \'.py$\' | entr pytest'
 alias wget   'wget -e robots=off'
 alias boox   'bluetooth-sendto --device=22:22:3B:D5:62:2C'
-alias bat    'bat -p --theme Nord'
+alias bat    'bat -p --theme ansi'
 set -g fish_user_paths "/usr/local/opt/binutils/bin" $fish_user_paths
 
 # Activate miniconda.
@@ -85,3 +85,6 @@ set fish_pager_color_completion 75715E
 set fish_pager_color_description 49483E
 set fish_pager_color_progress F8F8F2
 set fish_pager_color_secondary F8F8F2
+
+
+zoxide init fish --cmd cd | source

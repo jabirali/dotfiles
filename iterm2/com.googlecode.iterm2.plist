@@ -13,7 +13,7 @@
 	<key>AppleWindowTabbingMode</key>
 	<string>manual</string>
 	<key>Command</key>
-	<string></string>
+	<string>/usr/local/bin/fish</string>
 	<key>Custom Color Presets</key>
 	<dict>
 		<key>Apex</key>
