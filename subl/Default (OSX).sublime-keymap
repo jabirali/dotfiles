@@ -3,7 +3,6 @@
     { "keys": ["super+t"],  "command": "show_overlay", "args": {"overlay": "goto", "show_files": true}, },
     { "keys": ["super+]"],  "command": "next_view", },
     { "keys": ["super+["],  "command": "prev_view", },
-    { "keys": ["super+\\"], "command": "switch_tabs", },
 
     { "keys": ["shift+super+t"], "command": "project_manager",  "args": {"action": "new"}, },
     { "keys": ["shift+super+]"], "command": "next_os_tab", },
@@ -29,107 +28,14 @@
     { "keys": ["super+shift+8"], "command": "move_to_group", "args": { "group": 7 } },
     { "keys": ["super+shift+9"], "command": "move_to_group", "args": { "group": 8 } },
 
-    // Readline keybindings.
-    { "keys": ["ctrl+a"], "command": "move_to", "args": {"to": "bol"}},
-    { "keys": ["ctrl+e"], "command": "move_to", "args": {"to": "eol"}},
-    { "keys": ["ctrl+w"], "command": "delete_word", "args": {"forward": false}},
-    { "keys": ["ctrl+u"], "command": "run_macro_file", "args": {"file": "res://Packages/Default/Delete to Hard BOL.sublime-macro"}},
-    { "keys": ["ctrl+t"], "command": "transpose" },
-    // { "keys": ["ctrl+s"], "command": "show_panel", "args": {"panel": "incremental_find", "reverse": false}},
-    // { "keys": ["ctrl+r"], "command": "show_panel", "args": {"panel": "incremental_find", "reverse": true}},
-    // { "keys": ["ctrl+space"], "command": "set_mark" },
-    // { "keys": ["shift+ctrl+space"], "command": "chain", "args": {"commands": ["select_to_mark", ["clear_bookmarks", {"name": "mark"}] },
-
-    // Selections via marks.
-    { "keys": ["ctrl+s"], "command": "set_mark" },
-    { "keys": ["shift+ctrl+s"], "command": "chain",
-        "args": {
-            "commands": [
-                ["select_to_mark"],
-                ["clear_bookmarks", {"name": "mark"}],
-            ],
-        },
-    },
-
-
-    // Better defaults
-    // If ⌘D quick-selects next, ⇧⌘D is more natural than ⌃⌘G to quick-select all.
+    // Better default keybindings.
+    { "keys": ["shift+super+a"], "command": "expand_region", },
+    { "keys": ["shift+super+c"], "command": "copy_as_html", "args": {"enclosing_tags": true, "font_size": false} },
     { "keys": ["shift+super+d"], "command": "find_all_under", },
-    // { "keys": ["ctrl+space"], "command": "set_mark", },
-    // { "keys": ["super+i"], "command": "auto_complete", },
-    // { "keys": ["super+i"], "command": "indent" },
-    // { "keys": ["shift+super+i"], "command": "unindent" },
+
     { "keys": ["ctrl+["], "command": "jump_back" },
     { "keys": ["ctrl+]"], "command": "jump_forward" },
 
-
-    // Sublime has inaccessible default bindings for "marks" on macOS. However,
-    // they remain the best way to do complex text selection, e.g. via ⌘R or ⌘I.
-    // This introduces keybindings that are consistent with the default ⌃M/⇧⌃M.
-    // { "keys": ["ctrl+s"], "command": "set_mark" },
-    // { "keys": ["shift+ctrl+s"], "command": "select_to_mark" },
-    // { "keys": ["super+k", "ctrl+s"], "command": "clear_bookmarks", "args": {"name": "mark"} },
-    // { "keys": ["super+k", "ctrl+r"], "command": "clear_bookmarks" },
-
-    // Copy-as-HTML is quite useful when e.g. drafting emails in Sublime.
-    { "keys": ["shift+super+c"], "command": "copy_as_html", "args": {"enclosing_tags": true, "font_size": false} },
-
-    // Buffer switching like in Vim+FZF or Doom Emacs.
-    // { "keys": ["super+shift+["], "command": "foo_bar", },
-
-    // Project navigation.
-    { "keys": ["alt+super+down"], "command": "goto_definition" },
-    { "keys": ["alt+super+up"],   "command": "goto_reference" },
-    { "keys": ["alt+super+left"], "command": "jump_back" },
-    { "keys": ["alt+super+right"],   "command": "jump_forward" },
-
-    { "keys": ["alt+super+down"], "command": "open_page", "context":
-        [
-            {
-                "key": "selector",
-                "operator": "equal",
-                "operand": "text.html.markdown"
-            }
-        ]
-    },
-    { "keys": ["alt+super+up"], "command": "list_back_links", "context":
-        [
-            {
-                "key": "selector",
-                "operator": "equal",
-                "operand": "text.html.markdown"
-            }
-        ]
-    },
-
-    // Layout organization:
-    // I dislike the default behaviour of ⌘⌥3 and ⌘⌥4, which on a typical
-    // monitor result in views with a width of less than 80 characters.
-    // Selecting "Max Columns: 2" in the user interface fixes it, but
-    // apparently only temporarily. This changes the default behavior.
-    {
-        "keys": ["super+alt+3"],
-        "caption": "main left",
-        "command": "set_layout",
-        "args": {
-            "cols": [0.000, 0.500, 1.000],
-            "rows": [0.000, 0.500, 1.000],
-            "cells": [ [0, 0, 1, 2], [1, 0, 2, 1], [1, 1, 2, 2] ]
-        }
-    },
-    {
-        "keys": ["super+alt+4"],
-        "caption": "main left",
-        "command": "set_layout",
-        "args": {
-            "cols": [0.000, 0.500, 1.000],
-            "rows": [0.000, 0.333, 0.667, 1.000],
-            "cells": [ [0, 0, 1, 3], [1, 0, 2, 1], [1, 1, 2, 2], [1, 2, 2, 3] ]
-        }
-    },
-
-    // Supercharge default keybindings via plugins.
-    { "keys": ["shift+super+a"], "command": "expand_region", },
     { "keys": ["ctrl+m"], "command": "bh_key", "args":
         {
             "plugin":
@@ -154,6 +60,42 @@
         }
     },
 
+    // Better selections via marks.
+    { "keys": ["ctrl+s"], "command": "set_mark" },
+    { "keys": ["shift+ctrl+s"], "command": "chain",
+        "args": {
+            "commands": [
+                ["select_to_mark"],
+                ["clear_bookmarks", {"name": "mark"}],
+            ],
+        },
+    },
+
+    // Project navigation keybindings.
+    { "keys": ["alt+super+down"], "command": "goto_definition" },
+    { "keys": ["alt+super+up"],   "command": "goto_reference" },
+    { "keys": ["alt+super+left"], "command": "jump_back" },
+    { "keys": ["alt+super+right"],   "command": "jump_forward" },
+
+    { "keys": ["alt+super+down"], "command": "open_page", "context":
+        [
+            {
+                "key": "selector",
+                "operator": "equal",
+                "operand": "text.html.markdown"
+            }
+        ]
+    },
+    { "keys": ["alt+super+up"], "command": "list_back_links", "context":
+        [
+            {
+                "key": "selector",
+                "operator": "equal",
+                "operand": "text.html.markdown"
+            }
+        ]
+    },
+
     // Preview in external apps.
     { "keys": ["super+p"], "command": "html_print" },
     { "keys": ["super+p"], "command": "iawriter", "context":
@@ -173,5 +115,27 @@
                 "operand": "text.tex.latex"
             }
         ]
+    },
+
+    // Two-column layouts.
+    {
+        "keys": ["super+alt+3"],
+        "caption": "main left",
+        "command": "set_layout",
+        "args": {
+            "cols": [0.000, 0.500, 1.000],
+            "rows": [0.000, 0.500, 1.000],
+            "cells": [ [0, 0, 1, 2], [1, 0, 2, 1], [1, 1, 2, 2] ]
+        }
+    },
+    {
+        "keys": ["super+alt+4"],
+        "caption": "main left",
+        "command": "set_layout",
+        "args": {
+            "cols": [0.000, 0.500, 1.000],
+            "rows": [0.000, 0.333, 0.667, 1.000],
+            "cells": [ [0, 0, 1, 3], [1, 0, 2, 1], [1, 1, 2, 2], [1, 2, 2, 3] ]
+        }
     },
 ]
