@@ -32,8 +32,11 @@ require('packer').startup(function()
 	}
 	
 	-- Language support.
-	use {'vim-pandoc/vim-pandoc'}
-	use {'vim-pandoc/vim-pandoc-syntax'}
+	use {'plasticboy/vim-markdown',
+		config=function()
+			vim.g.vim_markdown_math = 1
+		end
+	}
 	use {'lervag/wiki.vim',
 		config=function()
 			vim.g.wiki_root = '~/Notes/Wiki'

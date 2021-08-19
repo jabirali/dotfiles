@@ -5,6 +5,7 @@
 vim.o.mouse = "a"
 vim.o.clipboard = "unnamed"
 vim.o.termguicolors = true
+vim.o.autochdir = true
 vim.o.undofile = true
 
 -- Buffers and splits.
@@ -29,6 +30,7 @@ vim.o.linebreak = true
 vim.o.breakindent = true
 
 -- Code folding.
+vim.o.conceallevel = 2
 vim.o.foldminlines = 0
 vim.o.foldmethod = "syntax"
 vim.o.fillchars = "fold: "
