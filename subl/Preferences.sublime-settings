@@ -1,33 +1,34 @@
 {
 	// Aesthetics
 	"theme": "auto",
-	"dark_theme": "Gravity.sublime-theme",
-	"light_theme": "Reverse Gravity.sublime-theme",
+	// "dark_theme": "Gravity.sublime-theme",
+	// "light_theme": "Reverse Gravity.sublime-theme",
 
 	"color_scheme": "auto",
 	"light_color_scheme": "Packages/Brackets Color Scheme/Brackets Light.sublime-color-scheme",
-	"dark_color_scheme": "Packages/Brackets Color Scheme/Brackets Dark.sublime-color-scheme",
+	"dark_color_scheme": "Packages/Theme - Monokai Pro/Monokai Pro (Filter Octagon).sublime-color-scheme",
 
-	"font_face": "JetBrainsMono Nerd Font",
+	"font_face": "JuliaMono",
 	"font_options": ["no_italic"],
 	"font_size": 14,
 
 	// User interface
-	"draw_centered": true,
+	// "draw_centered": true,
 	"enable_tab_scrolling": false,
 	"fold_buttons": false,
+	"hide_new_tab_button": true,
 	"highlight_gutter": false,
 	"highlight_line": false,
 	"highlight_line_number": false,
-	"line_numbers": false,
-	"native_tabs": "preferred",
+	"line_numbers": true,
+	// "native_tabs": "preferred",
 	"overlay_scroll_bars": "enabled",
 	"show_sidebar_button": false,
+	// "show_tab_close_buttons": false,
 
 	// User experience
-	"auto_complete_delay": 1000,
 	"auto_complete_trailing_symbols": true,
-	"auto_complete_use_history": true,
+	// "auto_complete_use_history": true,
 	"close_windows_when_empty": true,
 	"match_brackets": false,
 	"show_definitions": true,
@@ -39,10 +40,15 @@
 
 	// Packages
 	"vintage_start_in_command_mode": true,
+	"vintage_ctrl_keys": true,
 	"ignored_packages":
 	[
-		"Six",
+		"Markdown",
 		"Vintage",
-		"Vintageous",
 	],
+	"auto_complete_delay": 1024,
+	"auto_complete": false,
+	"dark_theme": "Monokai Pro (Filter Octagon).sublime-theme",
+	"light_theme": "Adaptive.sublime-theme",
+	"auto_complete_commit_on_tab": true,
 }
