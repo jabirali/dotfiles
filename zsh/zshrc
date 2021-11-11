@@ -1,0 +1,55 @@
+# ~/.zshrc
+#
+# This is my personal Zsh config file, which uses the `zsh4humans` system
+# to get (i) Fish-like sensible defaults and (ii) an ssh-portable config.
+
+# Prepare framework.
+zstyle ':z4h:' auto-update 'yes'
+zstyle ':z4h:' auto-update-days '28'
+zstyle ':z4h:' prompt-at-bottom 'yes'
+zstyle ':z4h:bindkey' keyboard 'mac'
+zstyle ':z4h:autosuggestions' forward-char 'accept'
+zstyle ':z4h:fzf-complete' recurse-dirs 'yes'
+zstyle ':z4h:direnv' enable 'yes'
+zstyle ':z4h:direnv:success' notify 'no'
+zstyle ':z4h:ssh:*.tmate.io' enable 'no'
+zstyle ':z4h:ssh:*' enable 'yes'
+zstyle ':z4h:ssh:*' send-extra-files '~/.vimrc'
+
+# Prepare plugins.
+# z4h install author/repo || return
+
+# Initialize framework.
+z4h init || return
+
+# Define environment.
+path=(~/.local/bin $path)
+
+export EDITOR=vim
+export GPG_TTY=$TTY
+
+# Initialize plugins.
+# z4h source author/repo/plugin.zsh
+
+# Define keybindings.
+z4h bindkey z4h-cd-back    Shift+Left
+z4h bindkey z4h-cd-forward Shift+Right
+z4h bindkey z4h-cd-up      Shift+Up
+z4h bindkey z4h-cd-down    Shift+Down
+
+# Define abbreviations.
+alias bb="brew sync"
+alias bs="brew search"
+alias bi="brew install"
+
+alias gg="git status"
+alias gc="git commit"
+alias gp="git pull"
+alias gl="git log"
+
+alias ll="ls -l"
+
+# Set shell options.
+setopt glob_dots
+setopt no_auto_menu
+
