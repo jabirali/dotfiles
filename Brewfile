@@ -29,6 +29,7 @@ brew "tmux"
 brew "rg"
 brew "wget"
 brew "zoxide"
+brew "zsh-vi-mode"
 
 cask "arq"
 cask "alfred"

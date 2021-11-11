@@ -9,7 +9,7 @@
 	"dark_color_scheme": "Packages/Theme - Monokai Pro/Monokai Pro (Filter Octagon).sublime-color-scheme",
 
 	"font_face": "JuliaMono",
-	"font_options": ["no_italic"],
+	"font_options": ["no_liga"],
 	"font_size": 14,
 
 	// User interface
@@ -20,7 +20,7 @@
 	"highlight_gutter": false,
 	"highlight_line": false,
 	"highlight_line_number": false,
-	"line_numbers": true,
+	"line_numbers": false,
 	// "native_tabs": "preferred",
 	"overlay_scroll_bars": "enabled",
 	"show_sidebar_button": false,
@@ -43,11 +43,15 @@
 	"vintage_ctrl_keys": true,
 	"ignored_packages":
 	[
+		"LaTeX-cwl",
 		"Markdown",
+		"NeoVintageous",
+		"Six",
 		"Vintage",
+		"Vintageous",
 	],
 	"auto_complete_delay": 1024,
-	"auto_complete": false,
+	// "auto_complete": false,
 	"dark_theme": "Monokai Pro (Filter Octagon).sublime-theme",
 	"light_theme": "Adaptive.sublime-theme",
 	"auto_complete_commit_on_tab": true,
@@ -55,4 +59,24 @@
 	// MarkDown settings.
 	"mde.wikilinks.homepage": "Index",
 	"mde.journal.dateformat": "%Y-W%W",
+	"mde.bold_marker_asterisk": false,
+	"mde.keep_centered": true,
+	// "wrap_width": 80,
+	"open_files_in_new_window": "always",
+	"neovintageous_build_version": 11100,
+	"auto_complete_triggers":
+	[
+		{
+			"characters": "<",
+			"selector": "text.html, text.xml",
+		},
+		{
+			"rhs_empty": true,
+			"selector": "punctuation.accessor",
+		},
+		{
+			"characters": "\\",
+			"selector": "text.tex.latex",
+		}
+	],
 }

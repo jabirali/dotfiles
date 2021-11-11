@@ -1,11 +1,11 @@
 # ~/.gitconfig
 
 [user]
-	email = jabirali@switzerlandmail.ch
+	email = jabir.ouassou@sintef.no
 	name = Jabir Ali Ouassou
 [core]
 	excludesfile = /home/jabirali/.ignore
-	editor = nvim
+	editor = vim
 [log]
 	date = relative
 [alias]
@@ -13,3 +13,5 @@
 	change = remote set-url origin
 [pull]
 	rebase = false
+[init]
+	defaultBranch = main

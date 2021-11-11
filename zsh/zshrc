@@ -38,16 +38,34 @@ z4h bindkey z4h-cd-up      Shift+Up
 z4h bindkey z4h-cd-down    Shift+Down
 
 # Define abbreviations.
+alias b="brew"
 alias bb="brew sync"
 alias bs="brew search"
 alias bi="brew install"
+alias be="e ~/.config/Brewfile"
 
-alias gg="git status"
+alias e="subl -n"
+alias ee="e ~/.subl"
+
+alias g="git"
+alias ga="git add"
 alias gc="git commit"
-alias gp="git pull"
+# function gc { [[ -z "$@" ]] && git commit || git commit -m }
+alias gd="git diff"
 alias gl="git log"
+alias gp="git pull"
+alias gs="git status"
 
+alias o="open"
+alias or="open -R"
+
+alias zz="exec zsh"
+alias zu="z4h update"
+alias ze="subl -nw ~/.zshrc && exec zsh"
+
+alias l="ls -l"
 alias ll="ls -l"
+alias la="ls -la"
 
 # Set shell options.
 setopt glob_dots

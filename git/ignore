@@ -5,6 +5,9 @@ snap
 .git
 .venv
 
+# Vim
+tags
+
 # Emacs
 *.elc
 

@@ -13,48 +13,46 @@ tree  exa -T
 ls    exa
 
 # Shorter commands.
-a   sudo apt
-ai  sudo apt install
-ar  sudo apt autoremove --purge
-au  sudo apt update && sudo apt upgrade
-as  apt search
+a    sudo apt
+ai   sudo apt install
+ar   sudo apt autoremove --purge
+au   sudo apt update && sudo apt upgrade
+as   apt search
 
-b   brew
-bb  brew sync
-be  open -t ~/.config/brewfile/Brewfile
-bi  brew install
-br  brew remove
-bu  brew upgrade
-bs  brew search
+b    brew
+bb   brew sync
+be   open -t ~/.config/brewfile/Brewfile
+bi   brew install
+br   brew remove
+bu   brew upgrade
+bs   brew search
 
-c   cd ~/.config
+c    cd ~/.config
 
-g   git
-ga  git add
-gb  git branch
-gc  git commit
-gd  git diff
-gf  git fetch
-gm  git merge
-gp  git push
-gs  git status
-gr  git reset
+e    vi
+e    vim
+e    nvim
+e    subl
 
-p   projector
+g    git
+ga   git add
+gb   git branch
+gc   git commit
+gd   git diff
+gdc  git diff --cached
+gf   git fetch
+gm   git merge
+gp   git push
+gs   git status
+gr   git reset
 
-resilio  open https://localhost:8888; ssh babapi -L 8888:babapi.local:8888 -N
+p    projector
 
-l   ls
-l   exa
+l    ls
+l    exa
 
-o   open
-o   xdg-open
+o    open
+o    xdg-open
+o    explorer.exe
 
-O   qlmanage -p
-
-v   vi
-v   vim
-v   nvim
-v   mvim
-
-home  ssh 'jabirali/home@lon1.tmate.io'
+O    qlmanage -p

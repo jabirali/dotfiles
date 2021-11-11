@@ -87,4 +87,13 @@ set fish_pager_color_progress F8F8F2
 set fish_pager_color_secondary F8F8F2
 
 
+fish_add_path /usr/local/bin
+fish_add_path /Library/TeX/texbin
+
 zoxide init fish --cmd cd | source
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+eval /usr/local/Caskroom/miniconda/base/bin/conda "shell.fish" "hook" $argv | source
+# <<< conda initialize <<<
+
