@@ -25,8 +25,12 @@ z4h init || return
 # Define environment.
 path=(~/.local/bin $path)
 
-export EDITOR=vim
+export CDPATH="~/Code:~/.config"
+export EDITOR="subl -nw"
 export GPG_TTY=$TTY
+
+export ZSH_HIGHLIGHT_STYLES[path]=none
+export ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 
 # Initialize plugins.
 # z4h source author/repo/plugin.zsh
@@ -37,7 +41,17 @@ z4h bindkey z4h-cd-forward Shift+Right
 z4h bindkey z4h-cd-up      Shift+Up
 z4h bindkey z4h-cd-down    Shift+Down
 
-# Define abbreviations.
+# Directory aliases.
+hash -d a=~/Archive
+hash -d b=~/Boo
+hash -d c=~/Code
+hash -d d=~/Downloads
+hash -d i=~/iCloud
+hash -d n=~/Notes
+hash -d z=~/.config
+
+
+# Command aliases.
 alias b="brew"
 alias bb="brew sync"
 alias bs="brew search"
@@ -61,9 +75,10 @@ alias or="open -R"
 
 alias zz="exec zsh"
 alias zu="z4h update"
-alias ze="subl -nw ~/.zshrc && exec zsh"
+alias ze="subl -nw ~/.p10k.zsh ~/.zshrc && exec zsh"
+alias zp="p10k configure"
 
-alias l="ls -l"
+alias l="ls"
 alias ll="ls -l"
 alias la="ls -la"
 
@@ -71,3 +86,15 @@ alias la="ls -la"
 setopt glob_dots
 setopt no_auto_menu
 
+# Source externals.
+if [ "$(command -v zoxide)" ]; then
+	eval "$(zoxide init --cmd cd zsh)"
+fi
+
+# Hook: automatic ls.
+_ls_on_cwd_change() {
+  command ls;
+}
+add-zsh-hook chpwd _ls_on_cwd_change
+
+export TERM=xterm-kitty
