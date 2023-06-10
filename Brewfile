@@ -32,6 +32,6 @@ brew "zoxide"
 brew "zsh-vi-mode"
 
 cask "arq"
-cask "alfred"
+cask "raycast"
 cask "iterm2"
 cask "rectangle"
