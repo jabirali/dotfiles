@@ -1,8 +1,8 @@
 # Dotfiles
 This repo contains my config files for Mac and Linux. Most apps support
 the XDG specification, so systems like GNU Stow is overkill for my needs.
-Instead, I just clone this repo to `~/.config`, and have install scripts
-in `~/.config/bin/` that link the remaining few files in place.
+Instead, I just clone this repo to `~/.config`, and have an installation
+script in `~/.config/bin/` that link the remaining few files in place.
 
 ## Homebrew
 After cloning to `~/.config`, install [Homebrew][1] for macOS or Linux:
