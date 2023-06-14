@@ -1,0 +1,21 @@
+{
+	"theme": "adaptive",
+	"default_config": {
+		"osx": "fish",
+	},
+	"shell_configs": [
+		{
+			"name": "fish",
+			"cmd": [
+				"fish",
+				"-i",
+				"-l"
+			],
+			"enable": true,
+			"platforms": [
+				"linux",
+				"osx"
+			],
+		},
+	],
+}

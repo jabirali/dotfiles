@@ -1,0 +1,18 @@
+{
+	"diagnostics_gutter_marker": "dot",
+	"diagnostics_highlight_style": {
+		"error": "squiggly",
+		"warning": "squiggly",
+		"info": "squiggly",
+		"hint": "squiggly"
+	},
+	"document_highlight_style": "",
+	"diagnostics_panel_include_severity_level": 1,
+	"lsp_format_on_save": true,
+	"popup_max_characters_height": 20,
+	"popup_max_characters_width": 60,
+	"show_code_actions": "bulb",
+	"show_diagnostics_panel_on_save": 0,
+	"show_diagnostics_severity_level": 4,
+	"show_references_in_quick_panel": true,
+}

@@ -1,0 +1,22 @@
+{
+	"settings": {
+		"command": [
+			"/opt/homebrew/bin/texlab"
+		],
+		"texlab.build.onSave": true,
+		"texlab.build.args": [
+			"-lualatex",
+			"-interaction=nonstopmode",
+			"-synctex=1",
+			"%f",
+		],
+		"texlab.forwardSearch.executable": "/Applications/Skim.app/Contents/SharedSupport/displayline",
+		"texlab.forwardSearch.args": [
+			"%l",
+			"%p",
+			"%f"
+		],
+		// "texlab.build.forwardSearchAfter": true,
+	},
+	"enabled": true,
+}

@@ -1,82 +1,50 @@
 {
-	// Aesthetics
-	"theme": "auto",
-	// "dark_theme": "Gravity.sublime-theme",
-	// "light_theme": "Reverse Gravity.sublime-theme",
-
+	// User interface.
+	"theme": "DAneo Minimal.sublime-theme",
+	"dark_theme": "ayu-mirage.sublime-theme",
+	"light_theme": "ayu-light.sublime-theme",
 	"color_scheme": "auto",
-	"light_color_scheme": "Packages/Brackets Color Scheme/Brackets Light.sublime-color-scheme",
-	"dark_color_scheme": "Packages/Theme - Monokai Pro/Monokai Pro (Filter Octagon).sublime-color-scheme",
-
-	"font_face": "JuliaMono",
-	"font_options": ["no_liga"],
+	"dark_color_scheme": "ayu-mirage.sublime-color-scheme",
+	"light_color_scheme": "Packages/Colorsublime - Themes/cache/Colorsublime-Themes-master/themes/Solarized-light.tmTheme",
+	"font_face": "JetBrains Mono NL",
 	"font_size": 14,
-
-	// User interface
-	// "draw_centered": true,
-	"enable_tab_scrolling": false,
-	"fold_buttons": false,
+	"font_options": [
+		"ss01",
+		"ss03",
+		"ss04",
+		"ss06",
+		"ss09",
+		"ss10",
+		"no_round"
+	],
 	"hide_new_tab_button": true,
+	"hide_tab_scrolling_buttons": true,
+	"show_scroll_tabs_buttons": false,
+	"show_new_tab_button": false,
+	"show_tabs_dropdown_button": false,
+	// "show_disclosure_buttons": false,
+	"show_sidebar_icons": false,
 	"highlight_gutter": false,
-	"highlight_line": false,
 	"highlight_line_number": false,
-	"line_numbers": false,
-	// "native_tabs": "preferred",
-	"overlay_scroll_bars": "enabled",
-	"show_sidebar_button": false,
-	// "show_tab_close_buttons": false,
-
-	// User experience
-	"auto_complete_trailing_symbols": true,
-	// "auto_complete_use_history": true,
+	"inactive_sheet_dimming": false,
+	"wrap_width": 80,
+	// User experience.
+	// "auto_complete_commit_on_tab": true,
+	"auto_complete_delay": 1000,
 	"close_windows_when_empty": true,
-	"match_brackets": false,
-	"show_definitions": true,
-
-	// File formatting
-	"dictionary": "Packages/Language - English/en_US.dic",
 	"ensure_newline_at_eof_on_save": true,
+	"goto_anything_exclude_gitignore": true,
 	"trim_trailing_white_space_on_save": "not_on_caret",
-
-	// Packages
-	"vintage_start_in_command_mode": true,
-	"vintage_ctrl_keys": true,
-	"ignored_packages":
-	[
-		"LaTeX-cwl",
-		"Markdown",
-		"NeoVintageous",
+	// Miscellaneous.
+	"ignored_packages": [
+		"LaTeXYZ",
 		"Six",
+		"Terminus",
 		"Vintage",
 		"Vintageous",
 	],
-	"auto_complete_delay": 1024,
-	// "auto_complete": false,
-	"dark_theme": "Monokai Pro (Filter Octagon).sublime-theme",
-	"light_theme": "Adaptive.sublime-theme",
-	"auto_complete_commit_on_tab": true,
-
-	// MarkDown settings.
-	"mde.wikilinks.homepage": "Index",
-	"mde.journal.dateformat": "%Y-W%W",
-	"mde.bold_marker_asterisk": false,
-	"mde.keep_centered": true,
-	// "wrap_width": 80,
-	"open_files_in_new_window": "always",
-	"neovintageous_build_version": 11100,
-	"auto_complete_triggers":
-	[
-		{
-			"characters": "<",
-			"selector": "text.html, text.xml",
-		},
-		{
-			"rhs_empty": true,
-			"selector": "punctuation.accessor",
-		},
-		{
-			"characters": "\\",
-			"selector": "text.tex.latex",
-		}
-	],
+	"file_tab_style": "angled",
+	"scroll_past_end": true,
+	"neovintageous_build_version": 12700,
+	"shell_environment": "/opt/homebrew/bin/fish",
 }

@@ -1,0 +1,9 @@
+<snippet>
+<content><![CDATA[
+parser.add_argument("-$1", "--$2", type=int)
+$0
+]]></content>
+<tabTrigger>argint</tabTrigger>
+<description>argparse int</description>
+<scope>source.python</scope>
+</snippet>

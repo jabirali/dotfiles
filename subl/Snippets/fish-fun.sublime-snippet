@@ -1,0 +1,10 @@
+<snippet>
+<content><![CDATA[
+function $1
+	$0
+end
+]]></content>
+<tabTrigger>fun</tabTrigger>
+<description>Function</description>
+<scope>source.shell.fish</scope>
+</snippet>
