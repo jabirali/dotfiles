@@ -1,0 +1,62 @@
+" Common configuration file for Neovim and Vim 8+. It configures built-in
+" settings without external plugins, making it portable between machines.
+" On my own machines, it is sourced by a more extensive init.lua file.
+
+if !has('nvim') && v:version >= 800
+	unlet! skip_defaults_vim
+	source $VIMRUNTIME/defaults.vim
+	runtime macros/matchit.vim
+endif
+
+set autochdir
+set formatprg=fmt
+set updatetime=1000
+
+set signcolumn=no
+set noruler
+set noshowmode
+set scrolloff=0
+set hidden
+
+set splitbelow
+set splitright
+set statusline=\ %<%f%=%P\ 
+set laststatus=1
+set fillchars=fold:\ ,
+set path+=**
+
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+
+set nowrap
+set linebreak
+set breakindent
+set breakindentopt=list:-1
+
+set smartcase
+set ignorecase
+set incsearch
+
+set autoread
+set clipboard=unnamed
+set virtualedit=block
+set wildoptions=pum
+set mouse=a
+
+set termguicolors
+set guioptions=gme
+set guicursor+=a:blinkon0
+set guifont=JetBrains\ Mono:h13
+
+let mapleader='<space>'
+let maplocalleader=','
+
+set foldtext=FoldText()
+function FoldText()
+  return getline(v:foldstart)[0:76] .. '...'
+endfunction
+
+if has('nvim')
+	set laststatus=3
+endif
