@@ -1,0 +1,11 @@
+theme = "catppuccin_macchiato"
+
+[editor]
+scrolloff = 0
+true-color = true
+gutters = ["diff", "line-numbers", "spacer"]
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "block"
