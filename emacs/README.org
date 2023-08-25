@@ -1,18 +1,25 @@
 #+title: Emacs configuration
 #+author: Jabir Ali Ouassou
-#+property: header-args :tangle ~/.config/emacs/init.el
+#+property: header-args :tangle init.el
 
 * Introduction
 This is my personal configuration file for GNU Emacs, which is currently used first and foremost on macOS.  When the file is edited from within Emacs, the =emacs-lisp= code blocks are exported to an =init.el= code file on save.  This config file is then loaded by Emacs on startup.
 
 * Bootstrap
-** System dependencies
+** Installation
 To install an appropriate Emacs version on macOS via Homebrew, run the following commands:
 #+begin_src bash :tangle no
   brew tap d12frosted/emacs-plus
   brew install emacs-plus@29 --with-native-comp --with-nobu417-big-sur-icon
 #+end_src
 
+** Early init
+#+begin_src emacs-lisp :tangle early-init.el
+  (add-to-list 'default-frame-alist '(undecorated-round . t))
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+#+end_src
+
+* Core configuration
 ** Package repositories
 Many useful packages are not available via the default ELPA repos, so add the third-party MELPA repository to the mix.
 #+begin_src emacs-lisp
@@ -76,7 +83,7 @@ Next, let's remap unergonomic default keys like =C-x o= to more sensible binding
   (global-set-key (kbd "M-o") 'other-window)
 #+end_src
 
-* Enhancements
+* Extra enhancements
 ** Fuzzy finder
 I'm currently using Ivy as my fuzzy searcher.  It provides a nicer interface to e.g. managing files and buffers than the built-in modes in Emacs (e.g. Ido-mode and its descendants), feels more ergonomic and less bloated than Helm, and is easier to setup than Vertico and all its relatives.
 #+begin_src emacs-lisp
@@ -139,8 +146,7 @@ Doom Emacs has produced a very nice collection of themes, as well as a modeline 
   (use-package doom-themes
     :ensure t
     :config
-    (setq doom-catppuccin-dark-variant "macchiato")
-    (load-theme 'doom-laserwave))
+    (load-theme 'doom-moonlight))
 
   (use-package doom-modeline
     :ensure t
@@ -171,6 +177,7 @@ Doom Emacs has produced a very nice collection of themes, as well as a modeline 
     (setq org-confirm-babel-evaluate nil)
     (setq org-babel-results-keyword "results"))
 #+end_src
+
 ** Python
 ** LaTeX
 #+begin_src emacs-lisp
