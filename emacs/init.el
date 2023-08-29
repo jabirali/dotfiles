@@ -63,6 +63,11 @@
   :bind
   (("C-s" . 'swiper)))
 
+(use-package ace-window
+  :ensure t
+  :bind
+  (("M-o" . ace-window)))
+
 (use-package eglot
   :ensure t
   :config
@@ -79,8 +84,7 @@
 (use-package doom-themes
   :ensure t
   :config
-  (setq doom-catppuccin-dark-variant "macchiato")
-  (load-theme 'doom-laserwave))
+  (load-theme 'doom-gruvbox-light))
 
 (use-package doom-modeline
   :ensure t

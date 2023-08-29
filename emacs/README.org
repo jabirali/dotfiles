@@ -3,25 +3,18 @@
 #+property: header-args :tangle init.el
 
 * Introduction
-This is my personal configuration file for GNU Emacs, which is currently used first and foremost on macOS.  When the file is edited from within Emacs, the =emacs-lisp= code blocks are exported to an =init.el= code file on save.  This config file is then loaded by Emacs on startup.
+This is my configuration file for GNU Emacs.  It is written as a "notebook" (literate configuration): The text below serves mainly as documentation, while the embedded Emacs Lisp code blocks are automatically exported to the config file =init.el= on save.  (This automagic only work if you edit the file within Emacs.)
 
 * Bootstrap
 ** Installation
-To install an appropriate Emacs version on macOS via Homebrew, run the following commands:
+I primarily use this configuration on macOS.  To install an appropriate Emacs version via Homebrew, run the following commands:
 #+begin_src bash :tangle no
   brew tap d12frosted/emacs-plus
   brew install emacs-plus@29 --with-native-comp --with-nobu417-big-sur-icon
 #+end_src
 
-** Early init
-#+begin_src emacs-lisp :tangle early-init.el
-  (add-to-list 'default-frame-alist '(undecorated-round . t))
-  (add-to-list 'default-frame-alist '(fullscreen . maximized))
-#+end_src
-
-* Core configuration
-** Package repositories
-Many useful packages are not available via the default ELPA repos, so add the third-party MELPA repository to the mix.
+** Package repos
+Many useful packages are not available in the default repositories used by the Emacs package manager. Let's throw third-party repos in there.
 #+begin_src emacs-lisp
   (setq package-archives 
 	'(("gnu" . "https://elpa.gnu.org/packages/")
@@ -30,6 +23,16 @@ Many useful packages are not available via the default ELPA repos, so add the th
   (package-initialize)
 #+end_src
 
+** Early init
+Emacs has a separate configuration file =early-init.el= for settings that should be set before the GUI is initialized.  In my case, I want to add some horizontal margins between the fringe indicators and code.
+#+begin_src emacs-lisp :tangle early-init.el
+  (setq-default
+   left-margin-width 1
+   right-margin-width 1
+   fringes-outside-margins t)
+#+end_src
+
+* Core configuration
 ** Better defaults
 Emacs tends to be a bit too verbose by default...  Let's fix that.
 #+begin_src emacs-lisp
@@ -116,6 +119,11 @@ I'm currently using Ivy as my fuzzy searcher.  It provides a nicer interface to 
     (setq swiper-action-recenter t)
     :bind
     (("C-s" . 'swiper)))
+
+  (use-package ace-window
+    :ensure t
+    :bind
+    (("M-o" . ace-window)))
 #+end_src
 
 ** Language servers
@@ -146,7 +154,7 @@ Doom Emacs has produced a very nice collection of themes, as well as a modeline 
   (use-package doom-themes
     :ensure t
     :config
-    (load-theme 'doom-moonlight))
+    (load-theme 'doom-gruvbox-light))
 
   (use-package doom-modeline
     :ensure t
