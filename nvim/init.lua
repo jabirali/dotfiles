@@ -1,11 +1,28 @@
--- Core settings.
+-- ~/.config/nvim/init.lua
+-- vim: foldmethod=marker
+
+-- Core settings {{{
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.o.autoread = true
+vim.o.breakindent = true
+vim.o.clipboard = 'unnamedplus'
+vim.o.laststatus = 3
+vim.o.linebreak = true
 vim.o.shiftwidth = 4
+vim.o.showcmd = false
+vim.o.showmode = false
+vim.o.signcolumn = false
+vim.o.softtabstop = -1
+vim.o.splitbelow = true
+vim.o.splitright = true
 vim.o.tabstop = 4
+vim.o.tildeop = true
+vim.o.virtualedit = 'block'
 vim.o.wrap = false
+-- }}}
 
--- Bootstrap
+-- Bootstrap package manager {{{
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system {
@@ -18,8 +35,9 @@ if not vim.loop.fs_stat(lazypath) then
 	}
 end
 vim.opt.rtp:prepend(lazypath)
+-- }}}
 
--- Package management.
+-- Handle package management {{{
 require('lazy').setup({
 	-- Language servers.
 	{
@@ -51,8 +69,8 @@ require('lazy').setup({
 			options = {
 				icons_enabled = false,
 				theme = 'tokyonight',
-				component_separators = '|',
-				section_separators = '',
+				component_separators = { left = '', right = ''},
+				section_separators = { left = '', right = ''},
 			},
 		},
 	},
@@ -62,13 +80,14 @@ require('lazy').setup({
 	{ 'folke/neodev.nvim',     opts = {} },
 	{ 'numToStr/Comment.nvim', opts = {} },
 })
+-- }}}
 
--- LSP autoconfiguration.
+-- LSP autoconfiguration {{{
 local lsp = require('lsp-zero').preset({})
 lsp.on_attach(
-	function(_, bufnr)
-		lsp.default_keymaps({ buffer = bufnr })
-	end
+function(_, bufnr)
+	lsp.default_keymaps({ buffer = bufnr })
+end
 )
 lsp.setup()
-
+-- }}}
