@@ -1,5 +1,0 @@
-{
-	// Miniconda on macOS.
-	"executable": "/usr/local/Caskroom/miniconda/base/bin/python3",
-	"environment_directory": "/usr/local/Caskroom/miniconda/base/envs/"
-}

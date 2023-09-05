@@ -1,7 +1,0 @@
-{
-	// All Fortran is modern Fortran.
-	"extensions":
-	[
-		"f",
-	],
-}

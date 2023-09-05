@@ -3,18 +3,20 @@
 #+property: header-args :tangle init.el
 
 * Introduction
-This is my configuration file for GNU Emacs.  It is written as a "notebook" (literate configuration): The text below serves mainly as documentation, while the embedded Emacs Lisp code blocks are automatically exported to the config file =init.el= on save.  (This automagic only work if you edit the file within Emacs.)
+This is my GNU Emacs configuration.  It is written as an Org notebook: The text below is documentation with embedded Emacs Lisp code blocks.  These code blocks are then autoexported to "real" config files when the notebook is edited and saved from within Emacs. I use Evil-mode, btw.
 
 * Bootstrap
 ** Installation
 I primarily use this configuration on macOS.  To install an appropriate Emacs version via Homebrew, run the following commands:
+
 #+begin_src bash :tangle no
   brew tap d12frosted/emacs-plus
   brew install emacs-plus@29 --with-native-comp --with-nobu417-big-sur-icon
 #+end_src
 
 ** Package repos
-Many useful packages are not available in the default repositories used by the Emacs package manager. Let's throw third-party repos in there.
+Many useful packages are not available in the default repositories used by the Emacs package manager.  Let's throw third-party repos in there.
+
 #+begin_src emacs-lisp
   (setq package-archives 
 	'(("gnu" . "https://elpa.gnu.org/packages/")
@@ -25,6 +27,7 @@ Many useful packages are not available in the default repositories used by the E
 
 ** Early init
 Emacs has a separate configuration file =early-init.el= for settings that should be set before the GUI is initialized.  In my case, I want to add some horizontal margins between the fringe indicators and code.
+
 #+begin_src emacs-lisp :tangle early-init.el
   (setq-default
    left-margin-width 1
@@ -35,6 +38,7 @@ Emacs has a separate configuration file =early-init.el= for settings that should
 * Core configuration
 ** Better defaults
 Emacs tends to be a bit too verbose by default...  Let's fix that.
+
 #+begin_src emacs-lisp
   (setq inhibit-startup-message t)
   (setq initial-scratch-message nil)
@@ -42,6 +46,7 @@ Emacs tends to be a bit too verbose by default...  Let's fix that.
 #+end_src
 
 I also don't like how it litters my file system with autosave and backup files (i.e. =#file#= and =file~=).  Let's clean it up a bit.
+
 #+begin_src emacs-lisp
   (setq auto-save-default nil)
   (setq backup-directory-alist `(("." . "~/.cache/emacs/backup/")))
@@ -69,26 +74,40 @@ The default aesthetics is very outdated.  Let's give it a more minimalist look, 
   (setq-default cursor-type 'bar)
 #+end_src
 
-Let's also improve the default frame parameters, e.g. choosing a nicer font.
+Let's improve the default frame parameters, e.g. choosing a nicer font.
 #+begin_src emacs-lisp
 (set-frame-font "JetBrains Mono NL-13" nil t)
 #+end_src
 
 ** Keybindings
 Here, we only include keybindings which don't "belong" to any particular package.  Package-specific keybindings are handled in the pertinent =use-package= blocks throughout the rest of the config file.  Before configuring the keybindings, let's setup the modifier keys themselves:
+
 #+begin_src emacs-lisp
   (setq mac-option-modifier 'super
 	mac-command-modifier 'meta)
 #+end_src
 
-Next, let's remap unergonomic default keys like =C-x o= to more sensible bindings.  Note that some of these keybindings might be overridden by =use-package= statements below, if I enable packages that provide the same functionality in a better way than the default bindings.
+Next, remap unergonomic default keys like =C-x o= to more sensible bindings.  Note that some of these keybindings might be overridden by =use-package= statements below, if I enable packages that provide the same functionality in a better way than the default bindings.
+
 #+begin_src emacs-lisp
   (global-set-key (kbd "M-o") 'other-window)
+  (global-set-key (kbd "C-.") 'repeat)
 #+end_src
 
 * Extra enhancements
+** Evil mode
+I kinda like the built-in Emacs keybindings, but the Vim keybindings just feel more ergonomic and more efficient to me (partly due to using Vim for over a decade before giving Emacs a serious try).
+
+#+begin_src emacs-lisp
+  (use-package evil
+    :ensure t
+    :init
+    (evil-mode 1))
+#+end_src
+
 ** Fuzzy finder
 I'm currently using Ivy as my fuzzy searcher.  It provides a nicer interface to e.g. managing files and buffers than the built-in modes in Emacs (e.g. Ido-mode and its descendants), feels more ergonomic and less bloated than Helm, and is easier to setup than Vertico and all its relatives.
+
 #+begin_src emacs-lisp
   (use-package ivy
     :ensure t
@@ -128,6 +147,7 @@ I'm currently using Ivy as my fuzzy searcher.  It provides a nicer interface to 
 
 ** Language servers
 LSP was a good idea, and an LSP client is now bundled with Emacs itself.  Let's use it.
+
 #+begin_src emacs-lisp
   (use-package eglot
     :ensure t
@@ -140,6 +160,7 @@ LSP was a good idea, and an LSP client is now bundled with Emacs itself.  Let's 
 
 ** Discoverability
 Give some interactive help when I don't remember the exact keybinding for something.
+
 #+begin_src emacs-lisp
   (use-package which-key
     :ensure t
@@ -151,15 +172,16 @@ Give some interactive help when I don't remember the exact keybinding for someth
 Doom Emacs has produced a very nice collection of themes, as well as a modeline configuration that is nicer than the Emacs default.
 
 #+begin_src emacs-lisp
-  (use-package doom-themes
-    :ensure t
-    :config
-    (load-theme 'doom-gruvbox-light))
+    (use-package doom-themes
+      :ensure t
+      :config
+      (load-theme 'doom-gruvbox-light)
+      (set-cursor-color "#000000"))
 
-  (use-package doom-modeline
-    :ensure t
-    :config
-    (doom-modeline-mode))
+    (use-package doom-modeline
+      :ensure t
+      :config
+      (doom-modeline-mode))
 #+end_src
 
 * Language support
@@ -314,6 +336,7 @@ This is a mixture of stuff that was directly imported from my previous non-liter
 ** Wishlist
 This is a list of things that I want to implement in my config at some point, when I get time and energy for it.
 
+- Introduce either =temp.el= or =yasnippet=. I need snippets.
 - Make =C-a= and =C-e= jump to the beginning of the actual line (not the visual line) if it is already at the beginning of the visual line.  This would mimick the behavior of Sublime Text when pressing =Cmd-Left= and =Cmd-Right= repeatedly, and makes it much easier to work with files with line wrapping.
 
 

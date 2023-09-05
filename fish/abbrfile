@@ -3,8 +3,7 @@
 
 # Better UNIX IDE.
 vi    vim
-vi    nvim
-vim   nvim
+vi    subl
 cat   bat -p
 less  bat -p
 find  fd

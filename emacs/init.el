@@ -32,6 +32,12 @@
       mac-command-modifier 'meta)
 
 (global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "C-.") 'repeat)
+
+(use-package evil
+  :ensure t
+  :init
+  (evil-mode 1))
 
 (use-package ivy
   :ensure t
@@ -84,7 +90,8 @@
 (use-package doom-themes
   :ensure t
   :config
-  (load-theme 'doom-gruvbox-light))
+  (load-theme 'doom-gruvbox-light)
+  (set-cursor-color "#000000"))
 
 (use-package doom-modeline
   :ensure t

@@ -1,5 +1,10 @@
 # vim: foldmethod=marker
 
+fish_add_path /usr/local/bin
+fish_add_path /Library/TeX/texbin
+fish_add_path /opt/homebrew/bin
+fish_add_path /opt/homebrew/Caskroom/mambaforge/base/bin/conda
+
 # Fish configuration file. Note that much of my interesting modifications have
 # been exported to separate plugins, which are now hosted on github.com/jabirali.
 # Abbreviations are stored in `abbrfile` (handled by my plugin `fish-abbrfile`),
@@ -40,8 +45,8 @@ end
 # fzf_key_bindings
 
 # Integrate with `direnv`.
-#eval (direnv hook fish)
-#__direnv_export_eval
+eval (direnv hook fish)
+__direnv_export_eval
 
 # Plugin settings.
 set projector_dir ~/Code
@@ -66,34 +71,13 @@ set -g fish_user_paths "/usr/local/opt/binutils/bin" $fish_user_paths
 # Activate starship.
 # starship init fish | source
 
-# Monokai colors.
-set fish_color_normal normal
-set fish_color_command yellow --bold
-set fish_color_quote gray
-set fish_color_redirection red
-set fish_color_end cyan
-set fish_color_error red
-set fish_color_param normal
-set fish_color_comment gray
-set fish_color_match F8F8F2
-set fish_color_search_match --background=49483E
-set fish_color_operator red
-set fish_color_escape 66D9EF
-set fish_color_cwd 66D9EF
-set fish_pager_color_prefix F8F8F2
-set fish_pager_color_completion 75715E
-set fish_pager_color_description 49483E
-set fish_pager_color_progress F8F8F2
-set fish_pager_color_secondary F8F8F2
+#zoxide init fish --cmd cd | source
 
-
-fish_add_path /usr/local/bin
-fish_add_path /Library/TeX/texbin
-
-zoxide init fish --cmd cd | source
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-eval /usr/local/Caskroom/miniconda/base/bin/conda "shell.fish" "hook" $argv | source
-# <<< conda initialize <<<
-
+## >>> conda initialize >>>
+## !! Contents within this block are managed by 'conda init' !!
+#eval /usr/local/Caskroom/miniconda/base/bin/conda "shell.fish" "hook" $argv | source
+## <<< conda initialize <<<
+#
+#if test -f 
+#    eval /opt/homebrew/Caskroom/mambaforge/base/bin/conda "shell.fish" "hook" $argv | source
+#end
