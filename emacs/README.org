@@ -184,6 +184,16 @@ Doom Emacs has produced a very nice collection of themes, as well as a modeline 
       (doom-modeline-mode))
 #+end_src
 
+** Workspaces
+#+begin_src emacs-lisp
+  (use-package perspective
+    :ensure t
+    :bind
+    (("C-x k" . persp-kill-buffer*))
+    :init
+    (persp-mode))
+#+end_src
+
 * Language support
 ** Org-mode
 #+begin_src emacs-lisp

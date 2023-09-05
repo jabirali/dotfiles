@@ -98,6 +98,13 @@
   :config
   (doom-modeline-mode))
 
+(use-package perspective
+  :ensure t
+  :bind
+  (("C-x k" . persp-kill-buffer*))
+  :init
+  (persp-mode))
+
 (use-package org
   :ensure t
   :config
