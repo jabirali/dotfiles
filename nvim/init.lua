@@ -1,28 +1,36 @@
 -- ~/.config/nvim/init.lua
--- vim: foldmethod=marker
+-- vim: foldmethod=marker foldmarker=▼,▲
 
--- Core settings {{{
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
-vim.o.autoread = true
-vim.o.breakindent = true
-vim.o.clipboard = 'unnamedplus'
-vim.o.laststatus = 3
-vim.o.linebreak = true
-vim.o.shiftwidth = 4
-vim.o.showcmd = false
-vim.o.showmode = false
-vim.o.signcolumn = false
-vim.o.softtabstop = -1
-vim.o.splitbelow = true
-vim.o.splitright = true
-vim.o.tabstop = 4
-vim.o.tildeop = true
-vim.o.virtualedit = 'block'
-vim.o.wrap = false
--- }}}
+--▼ Short-hand notation
+local g = vim.g
+local o = vim.o
+local map = vim.keymap.set
+--▲
 
--- Bootstrap package manager {{{
+--▼ Core settings
+g.mapleader = ' '
+g.maplocalleader = ','
+g.netrw_banner = false
+
+o.autoread = true
+o.breakindent = true
+o.clipboard = 'unnamedplus'
+o.laststatus = 3
+o.linebreak = true
+o.shiftwidth = 4
+o.showcmd = false
+o.showmode = false
+o.softtabstop = -1
+o.splitbelow = true
+o.splitright = true
+o.tabstop = 4
+o.tildeop = true
+o.virtualedit = 'block'
+o.wrap = false
+o.signcolumn = 'no'
+--▲
+
+--▼ Package manager
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system {
@@ -35,9 +43,9 @@ if not vim.loop.fs_stat(lazypath) then
 	}
 end
 vim.opt.rtp:prepend(lazypath)
--- }}}
+--▲
 
--- Handle package management {{{
+--▼ Package management
 require('lazy').setup({
 	-- Language servers.
 	{
@@ -50,7 +58,30 @@ require('lazy').setup({
 			{ 'hrsh7th/nvim-cmp' },
 			{ 'hrsh7th/cmp-nvim-lsp' },
 			{ 'L3MON4D3/LuaSnip' },
-		}
+		},
+		config = function()
+			-- Enable keybindings in LSP-supported buffers.
+			local lsp = require('lsp-zero').preset('recommended')
+			lsp.on_attach(function(_, bufnr)
+				lsp.default_keymaps({ buffer = bufnr })
+			end)
+
+			-- Custom configuration of specific LSP servers.
+			local conf = require('lspconfig')
+			conf.lua_ls.setup(lsp.nvim_lua_ls())
+
+			-- Execute the LSP autoconfiguration.
+			lsp.setup()
+		end
+	},
+
+	-- Interface.
+	{
+		'nvim-telescope/telescope.nvim',
+		branch = '0.1.x',
+		dependencies = {
+			'nvim-lua/plenary.nvim'
+		},
 	},
 
 	-- Aesthetics.
@@ -69,25 +100,47 @@ require('lazy').setup({
 			options = {
 				icons_enabled = false,
 				theme = 'tokyonight',
-				component_separators = { left = '', right = ''},
-				section_separators = { left = '', right = ''},
+				component_separators = { left = '', right = '' },
+				section_separators = { left = '', right = '' },
 			},
 		},
 	},
 
+	-- Language support.
+	{
+		"lervag/vimtex",
+		lazy = false,
+		init = function()
+			vim.g.vimtex_mappings_prefix = '<localleader>'
+			vim.g.vimtex_quickfix_open_on_warning = 'false'
+			vim.g.vimtex_view_method = 'skim'
+		end,
+	},
+
 	-- Miscellaneous.
 	{ 'folke/which-key.nvim',  opts = {} },
-	{ 'folke/neodev.nvim',     opts = {} },
 	{ 'numToStr/Comment.nvim', opts = {} },
 })
--- }}}
+--▲
 
--- LSP autoconfiguration {{{
-local lsp = require('lsp-zero').preset({})
-lsp.on_attach(
-function(_, bufnr)
-	lsp.default_keymaps({ buffer = bufnr })
-end
-)
-lsp.setup()
--- }}}
+--▼ Keybindings
+map('', ';', ':')
+map('n', '<tab>', 'za')
+map('n', '<S-tab>', 'zM')
+map('v', '<tab>', '>gv')
+map('v', '<S-tab>', '<gv')
+
+map('n', '<leader><cr>', '<cmd>split | term<cr>')
+--▲
+
+--▼ GUI configuration
+o.guifont = 'JetBrains Mono:h14'
+
+map('', '<D-s>', '<cmd>write<cr>')
+map('', '<D-w>', '<cmd>close<cr>')
+map('', '<D-q>', '<cmd>quit<cr>')
+map('', '<D-d>', '<cmd>split<cr>')
+map('', '<D-t>', '<cmd>tabnew<cr>')
+map('', '<D-]>', '<cmd>tabnext<cr>')
+map('', '<D-[>', '<cmd>tabprev<cr>')
+--▲

@@ -3,7 +3,7 @@
 #+property: header-args :tangle init.el
 
 * Introduction
-This is my GNU Emacs configuration.  It is written as an Org notebook: The text below is documentation with embedded Emacs Lisp code blocks.  These code blocks are then autoexported to "real" config files when the notebook is edited and saved from within Emacs. I use Evil-mode, btw.
+This is my GNU Emacs configuration.  It is written as an Org notebook: The text below is documentation with embedded Emacs Lisp code blocks.  These code blocks are then autoexported to "real" config files when the notebook is edited and saved from within Emacs.
 
 * Bootstrap
 ** Installation
@@ -43,6 +43,7 @@ Emacs tends to be a bit too verbose by default...  Let's fix that.
   (setq inhibit-startup-message t)
   (setq initial-scratch-message nil)
   (setq native-comp-async-report-warnings-errors nil)
+  (setq ring-bell-function 'ignore)
 #+end_src
 
 I also don't like how it litters my file system with autosave and backup files (i.e. =#file#= and =file~=).  Let's clean it up a bit.
@@ -90,7 +91,9 @@ Here, we only include keybindings which don't "belong" to any particular package
 Next, remap unergonomic default keys like =C-x o= to more sensible bindings.  Note that some of these keybindings might be overridden by =use-package= statements below, if I enable packages that provide the same functionality in a better way than the default bindings.
 
 #+begin_src emacs-lisp
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
   (global-set-key (kbd "M-o") 'other-window)
+  (global-set-key (kbd "M-`") 'switch-to-buffer)
   (global-set-key (kbd "C-.") 'repeat)
 #+end_src
 
@@ -98,12 +101,38 @@ Next, remap unergonomic default keys like =C-x o= to more sensible bindings.  No
 ** Evil mode
 I kinda like the built-in Emacs keybindings, but the Vim keybindings just feel more ergonomic and more efficient to me (partly due to using Vim for over a decade before giving Emacs a serious try).
 
+# #+begin_src emacs-lisp
+#   (use-package evil
+#     :ensure t
+#     :defer .1
+#     :init
+#     (setq evil-want-keybinding nil)
+#     (setq evil-vsplit-window-right t)
+#     (setq evil-split-window-below t)
+#     (setq evil-want-C-u-scroll t)
+#     :config
+#     (evil-mode))
+
+#   (use-package evil-collection
+#     :after evil
+#     :ensure t
+#     :config
+#     (evil-collection-init))
+
+#   (use-package evil-goggles
+#     :ensure t
+#     :config
+#     (evil-goggles-mode))
+# #+end_src
+
+** Multiple cursors
+This is the simplest possible version of multiple cursors for Emacs, but it is very easy to use: Just press =C-;= to start refactoring. To limit the edits to a region, highlight an area and press =C-;= again.
+
 #+begin_src emacs-lisp
-  (use-package evil
-    :ensure t
-    :init
-    (evil-mode 1))
+  (use-package iedit
+    :ensure t)
 #+end_src
+
 
 ** Fuzzy finder
 I'm currently using Ivy as my fuzzy searcher.  It provides a nicer interface to e.g. managing files and buffers than the built-in modes in Emacs (e.g. Ido-mode and its descendants), feels more ergonomic and less bloated than Helm, and is easier to setup than Vertico and all its relatives.
@@ -116,13 +145,13 @@ I'm currently using Ivy as my fuzzy searcher.  It provides a nicer interface to 
     (setq enable-recursive-minibuffers t)
     (ivy-mode)
     :bind
-    (("C-r" . ivy-resume)))
+    (("C-x C-r" . ivy-resume)))
 
   (use-package counsel
     :ensure t
     :bind
     (("M-x" . counsel-M-x)
-     ("C-x C-b" . counsel-buffer-or-recentf)
+     ("C-x C-b" . counsel-switch-buffer)
      ("C-x C-f" . counsel-find-file)
      ("C-x C-g" . counsel-git)
      ("C-S-s"   . counsel-git-grep)
@@ -132,17 +161,26 @@ I'm currently using Ivy as my fuzzy searcher.  It provides a nicer interface to 
      :map minibuffer-local-map
      ("C-r" . counsel-minibuffer-history)))
 
-  (use-package swiper
-    :ensure t
-    :config
-    (setq swiper-action-recenter t)
-    :bind
-    (("C-s" . 'swiper)))
+  ;; (use-package swiper
+  ;;   :ensure t
+  ;;   :config
+  ;;   (setq swiper-action-recenter t)
+  ;;   :bind
+  ;;   (("C-s" . 'swiper)))
 
   (use-package ace-window
     :ensure t
     :bind
     (("M-o" . ace-window)))
+#+end_src
+
+** Snippets
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :ensure t
+    :init
+    (setq yas-snippet-dir "~/.config/emacs/snippets")
+    (yas-global-mode 1))
 #+end_src
 
 ** Language servers
@@ -153,9 +191,9 @@ LSP was a good idea, and an LSP client is now bundled with Emacs itself.  Let's 
     :ensure t
     :config
     (setq eldoc-echo-area-use-multiline-p nil)
-    (setq eldoc-echo-area-prefer-doc-buffer t)
-    :hook
-    ((python-ts-mode . eglot-ensure)))
+    (setq eldoc-echo-area-prefer-doc-buffer t))
+    ;:hook
+    ;((python-ts-mode . eglot-ensure)))
 #+end_src
 
 ** Discoverability
@@ -172,26 +210,15 @@ Give some interactive help when I don't remember the exact keybinding for someth
 Doom Emacs has produced a very nice collection of themes, as well as a modeline configuration that is nicer than the Emacs default.
 
 #+begin_src emacs-lisp
-    (use-package doom-themes
-      :ensure t
-      :config
-      (load-theme 'doom-gruvbox-light)
-      (set-cursor-color "#000000"))
-
-    (use-package doom-modeline
-      :ensure t
-      :config
-      (doom-modeline-mode))
-#+end_src
-
-** Workspaces
-#+begin_src emacs-lisp
-  (use-package perspective
+  (use-package doom-themes
     :ensure t
-    :bind
-    (("C-x k" . persp-kill-buffer*))
-    :init
-    (persp-mode))
+    :config
+    (load-theme 'doom-moonlight))
+
+  (use-package doom-modeline
+    :ensure t
+    :config
+    (doom-modeline-mode))
 #+end_src
 
 * Language support
@@ -306,6 +333,15 @@ It's not uncommon that I'm working on a LaTeX manuscript or Python script, and n
   (global-set-key (kbd "C-w") 'my/C-w-dwim)
 #+end_src
 
+** Scratch note
+#+begin_src emacs-lisp
+  (defun my/scratch ()
+    (interactive)
+    (find-file (concat "~/Notes/Scratch/" (format-time-string "%Y%m%d%H%M%S.org"))))
+
+  (global-set-key (kbd "C-c c") 'my/scratch)
+#+end_src
+
 * Future work
 ** Inbox
 This is a mixture of stuff that was directly imported from my previous non-literate configuration file, and stuff that has been added later as "experimental" configuration.  Over time, I intend to gradually move stuff from here to other sections -- or remove them if no longer needed.
@@ -346,9 +382,7 @@ This is a mixture of stuff that was directly imported from my previous non-liter
 ** Wishlist
 This is a list of things that I want to implement in my config at some point, when I get time and energy for it.
 
-- Introduce either =temp.el= or =yasnippet=. I need snippets.
 - Make =C-a= and =C-e= jump to the beginning of the actual line (not the visual line) if it is already at the beginning of the visual line.  This would mimick the behavior of Sublime Text when pressing =Cmd-Left= and =Cmd-Right= repeatedly, and makes it much easier to work with files with line wrapping.
-
 
 # Local Variables: 
 # eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle) (load-file user-init-file)) nil t)

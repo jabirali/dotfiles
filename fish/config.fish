@@ -81,3 +81,6 @@ set -g fish_user_paths "/usr/local/opt/binutils/bin" $fish_user_paths
 #if test -f 
 #    eval /opt/homebrew/Caskroom/mambaforge/base/bin/conda "shell.fish" "hook" $argv | source
 #end
+
+# Miniconda
+conda shell.fish hook | source
