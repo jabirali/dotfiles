@@ -69,7 +69,7 @@ The default aesthetics is very outdated.  Let's give it a more minimalist look, 
   (scroll-bar-mode -1)
 
   (xterm-mouse-mode 1)
-  (pixel-scroll-precision-mode 1)
+  ; (pixel-scroll-precision-mode 1)
 
   (blink-cursor-mode -1)
   (setq-default cursor-type 'bar)
@@ -77,16 +77,18 @@ The default aesthetics is very outdated.  Let's give it a more minimalist look, 
 
 Let's improve the default frame parameters, e.g. choosing a nicer font.
 #+begin_src emacs-lisp
-(set-frame-font "JetBrains Mono NL-13" nil t)
+  (set-frame-font "JetBrains Mono NL-13" nil t)
+  (use-package nerd-icons :ensure t)
 #+end_src
 
 ** Keybindings
 Here, we only include keybindings which don't "belong" to any particular package.  Package-specific keybindings are handled in the pertinent =use-package= blocks throughout the rest of the config file.  Before configuring the keybindings, let's setup the modifier keys themselves:
 
-#+begin_src emacs-lisp
-  (setq mac-option-modifier 'super
-	mac-command-modifier 'meta)
-#+end_src
+#,+begin_src emacs-lisp
+  (setq
+   mac-command-modifier 'meta
+   mac-option-modifier 'hyper)
+#,+end_src
 
 Next, remap unergonomic default keys like =C-x o= to more sensible bindings.  Note that some of these keybindings might be overridden by =use-package= statements below, if I enable packages that provide the same functionality in a better way than the default bindings.
 
@@ -99,31 +101,31 @@ Next, remap unergonomic default keys like =C-x o= to more sensible bindings.  No
 
 * Extra enhancements
 ** Evil mode
-I kinda like the built-in Emacs keybindings, but the Vim keybindings just feel more ergonomic and more efficient to me (partly due to using Vim for over a decade before giving Emacs a serious try).
+Don't turn this off. Every time I do, after some weeks to months, I start to experience pains in my lower left forearm due to overly heavy use of modifier keys (despite mapping Caps Lock to Control and Command to Meta, which is as ergonomic as it gets on a laptop keyboard).
 
-# #+begin_src emacs-lisp
-#   (use-package evil
-#     :ensure t
-#     :defer .1
-#     :init
-#     (setq evil-want-keybinding nil)
-#     (setq evil-vsplit-window-right t)
-#     (setq evil-split-window-below t)
-#     (setq evil-want-C-u-scroll t)
-#     :config
-#     (evil-mode))
+#+begin_src emacs-lisp
+  (use-package evil
+    :ensure t
+    :defer .1
+    :init
+    (setq evil-want-keybinding nil)
+    (setq evil-vsplit-window-right t)
+    (setq evil-split-window-below t)
+    (setq evil-want-C-u-scroll t)
+    :config
+    (evil-mode))
 
-#   (use-package evil-collection
-#     :after evil
-#     :ensure t
-#     :config
-#     (evil-collection-init))
+  (use-package evil-collection
+    :after evil
+    :ensure t
+    :config
+    (evil-collection-init))
 
-#   (use-package evil-goggles
-#     :ensure t
-#     :config
-#     (evil-goggles-mode))
-# #+end_src
+  (use-package evil-goggles
+    :ensure t
+    :config
+    (evil-goggles-mode))
+#+end_src
 
 ** Multiple cursors
 This is the simplest possible version of multiple cursors for Emacs, but it is very easy to use: Just press =C-;= to start refactoring. To limit the edits to a region, highlight an area and press =C-;= again.
@@ -213,7 +215,7 @@ Doom Emacs has produced a very nice collection of themes, as well as a modeline 
   (use-package doom-themes
     :ensure t
     :config
-    (load-theme 'doom-moonlight))
+    (load-theme 'doom-gruvbox-light))
 
   (use-package doom-modeline
     :ensure t
@@ -228,7 +230,7 @@ Doom Emacs has produced a very nice collection of themes, as well as a modeline 
     :ensure t
     :config
     (setq org-pretty-entities t)
-    (setq org-pretty-entities-include-sub-superscripts nil)
+    ;(setq org-pretty-entities-include-sub-superscripts nil)
     :hook
     ((org-mode . org-cdlatex-mode)
      (org-mode . visual-line-mode)))
@@ -242,7 +244,8 @@ Doom Emacs has produced a very nice collection of themes, as well as a modeline 
        (python . t)))
     (setq org-babel-default-header-args:python '((:python . "python3") (:results . "output")))
     (setq org-confirm-babel-evaluate nil)
-    (setq org-babel-results-keyword "results"))
+    (setq org-babel-results-keyword "results")
+    (add-to-list 'org-latex-packages-alist '("" "eulervm" t)))
 #+end_src
 
 ** Python
@@ -255,6 +258,16 @@ Doom Emacs has produced a very nice collection of themes, as well as a modeline 
     :hook
     ((LaTeX-mode . cdlatex-mode)
      (LaTeX-mode . prettify-symbols-mode)))
+
+  (use-package xenops
+    :ensure xenops
+    :config
+    (setq xenops-math-image-scale-factor 1.4)
+    (setq xenops-reveal-on-entry t)
+    :hook
+    ((org-mode . xenops-mode)
+     (latex-mode . xenops-mode)
+     (LaTeX-mode . xenops-mode)))
 #+end_src
 
 ** Markdown
@@ -347,36 +360,51 @@ It's not uncommon that I'm working on a LaTeX manuscript or Python script, and n
 This is a mixture of stuff that was directly imported from my previous non-literate configuration file, and stuff that has been added later as "experimental" configuration.  Over time, I intend to gradually move stuff from here to other sections -- or remove them if no longer needed.
 
 #+begin_src emacs-lisp
-  (use-package adaptive-wrap
-    :ensure t
-    :hook
-    ((visual-line-mode . adaptive-wrap-prefix-mode)))
+    (use-package adaptive-wrap
+      :ensure t
+      :hook
+      ((visual-line-mode . adaptive-wrap-prefix-mode)))
 
-  ;; Useful for customization/scripting.
-  (use-package f
-    :ensure t)
+    ;; Useful for customization/scripting.
+    (use-package f
+      :ensure t)
 
-  ;; Automatically install and use tree-sitter.
-  (use-package treesit-auto
-    :config
-    (setq treesit-auto-install 'prompt)
-    (global-treesit-auto-mode))
+    ;; Automatically install and use tree-sitter.
+    ;; (use-package treesit-auto
+    ;;   :config
+    ;;   (setq treesit-auto-install 'prompt)
+    ;;   (global-treesit-auto-mode))
 
-  (use-package pdf-tools
-    :ensure t)
+    (use-package pdf-tools
+      :ensure t)
 
-  (use-package windmove
-    :ensure nil
-    :config
-    (windmove-mode 1))
+    (use-package windmove
+      :ensure nil
+      :config
+      (windmove-mode 1))
 
-  (use-package outline
-    :hook
-    ((python-ts-mode . outline-minor-mode)
-     (LaTeX-mode . outline-minor-mode)))
+    (use-package outline
+      :hook
+      ((python-ts-mode . outline-minor-mode)
+       (LaTeX-mode . outline-minor-mode)))
 
-  (use-package multi-vterm
-    :ensure t)
+    (use-package multi-vterm
+      :ensure t)
+
+  (define-prefix-command 'my-leader-map)
+  (global-set-key (kbd "C-SPC") 'my-leader-map)
+  (keymap-set evil-motion-state-map "SPC" 'my-leader-map)
+  (keymap-set evil-normal-state-map "SPC" 'my-leader-map)
+
+  (evil-define-key nil my-leader-map
+      ;; add your bindings here:
+      "SPC" 'switch-to-buffer
+      "B"  'project-switch-to-buffer
+      "pf" 'project-find-file
+      "ps" 'project-shell-command
+      "s"  'save-buffer
+      ;; etc.
+      )
 #+end_src
 
 ** Wishlist

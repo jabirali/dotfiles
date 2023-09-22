@@ -18,3 +18,7 @@ ln -sf ~/.config/tmux/tmux.conf ~/.tmux.conf
 
 # Handle the dotvim folder.
 ln -sf ~/.config/vim ~/.vim
+
+# Handle VSCode on macOS.
+mkdir -p ~/Library/Application\ Support/Code/
+ln -sf ~/.config/vscode ~/Library/Application\ Support/Code/User

@@ -22,20 +22,40 @@
 (scroll-bar-mode -1)
 
 (xterm-mouse-mode 1)
-(pixel-scroll-precision-mode 1)
+; (pixel-scroll-precision-mode 1)
 
 (blink-cursor-mode -1)
 (setq-default cursor-type 'bar)
 
 (set-frame-font "JetBrains Mono NL-13" nil t)
-
-(setq mac-option-modifier 'super
-      mac-command-modifier 'meta)
+(use-package nerd-icons :ensure t)
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-`") 'switch-to-buffer)
 (global-set-key (kbd "C-.") 'repeat)
+
+(use-package evil
+  :ensure t
+  :defer .1
+  :init
+  (setq evil-want-keybinding nil)
+  (setq evil-vsplit-window-right t)
+  (setq evil-split-window-below t)
+  (setq evil-want-C-u-scroll t)
+  :config
+  (evil-mode))
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
+
+(use-package evil-goggles
+  :ensure t
+  :config
+  (evil-goggles-mode))
 
 (use-package iedit
   :ensure t)
@@ -97,7 +117,7 @@
 (use-package doom-themes
   :ensure t
   :config
-  (load-theme 'doom-moonlight))
+  (load-theme 'doom-gruvbox-light))
 
 (use-package doom-modeline
   :ensure t
@@ -108,7 +128,7 @@
   :ensure t
   :config
   (setq org-pretty-entities t)
-  (setq org-pretty-entities-include-sub-superscripts nil)
+  ;(setq org-pretty-entities-include-sub-superscripts nil)
   :hook
   ((org-mode . org-cdlatex-mode)
    (org-mode . visual-line-mode)))
@@ -122,7 +142,8 @@
      (python . t)))
   (setq org-babel-default-header-args:python '((:python . "python3") (:results . "output")))
   (setq org-confirm-babel-evaluate nil)
-  (setq org-babel-results-keyword "results"))
+  (setq org-babel-results-keyword "results")
+  (add-to-list 'org-latex-packages-alist '("" "eulervm" t)))
 
 (use-package tex
   :ensure auctex
@@ -131,6 +152,16 @@
   :hook
   ((LaTeX-mode . cdlatex-mode)
    (LaTeX-mode . prettify-symbols-mode)))
+
+(use-package xenops
+  :ensure xenops
+  :config
+  (setq xenops-math-image-scale-factor 1.4)
+  (setq xenops-reveal-on-entry t)
+  :hook
+  ((org-mode . xenops-mode)
+   (latex-mode . xenops-mode)
+   (LaTeX-mode . xenops-mode)))
 
 (use-package markdown-mode
   :ensure t)
@@ -194,32 +225,47 @@
 (global-set-key (kbd "C-c c") 'my/scratch)
 
 (use-package adaptive-wrap
-  :ensure t
-  :hook
-  ((visual-line-mode . adaptive-wrap-prefix-mode)))
+    :ensure t
+    :hook
+    ((visual-line-mode . adaptive-wrap-prefix-mode)))
 
-;; Useful for customization/scripting.
-(use-package f
-  :ensure t)
+  ;; Useful for customization/scripting.
+  (use-package f
+    :ensure t)
 
-;; Automatically install and use tree-sitter.
-(use-package treesit-auto
-  :config
-  (setq treesit-auto-install 'prompt)
-  (global-treesit-auto-mode))
+  ;; Automatically install and use tree-sitter.
+  ;; (use-package treesit-auto
+  ;;   :config
+  ;;   (setq treesit-auto-install 'prompt)
+  ;;   (global-treesit-auto-mode))
 
-(use-package pdf-tools
-  :ensure t)
+  (use-package pdf-tools
+    :ensure t)
 
-(use-package windmove
-  :ensure nil
-  :config
-  (windmove-mode 1))
+  (use-package windmove
+    :ensure nil
+    :config
+    (windmove-mode 1))
 
-(use-package outline
-  :hook
-  ((python-ts-mode . outline-minor-mode)
-   (LaTeX-mode . outline-minor-mode)))
+  (use-package outline
+    :hook
+    ((python-ts-mode . outline-minor-mode)
+     (LaTeX-mode . outline-minor-mode)))
 
-(use-package multi-vterm
-  :ensure t)
+  (use-package multi-vterm
+    :ensure t)
+
+(define-prefix-command 'my-leader-map)
+(global-set-key (kbd "C-SPC") 'my-leader-map)
+(keymap-set evil-motion-state-map "SPC" 'my-leader-map)
+(keymap-set evil-normal-state-map "SPC" 'my-leader-map)
+
+(evil-define-key nil my-leader-map
+    ;; add your bindings here:
+    "SPC" 'switch-to-buffer
+    "B"  'project-switch-to-buffer
+    "pf" 'project-find-file
+    "ps" 'project-shell-command
+    "s"  'save-buffer
+    ;; etc.
+    )
