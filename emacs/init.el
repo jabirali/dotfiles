@@ -21,11 +21,16 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 
+(delete-selection-mode 1)
+(context-menu-mode 1)
 (xterm-mouse-mode 1)
 ; (pixel-scroll-precision-mode 1)
 
 (blink-cursor-mode -1)
 (setq-default cursor-type 'bar)
+
+(setq frame-inhibit-implied-resize t)
+(setq frame-resize-pixelwise t)
 
 (set-frame-font "JetBrains Mono NL-13" nil t)
 (use-package nerd-icons :ensure t)
@@ -43,6 +48,8 @@
   (setq evil-vsplit-window-right t)
   (setq evil-split-window-below t)
   (setq evil-want-C-u-scroll t)
+  :custom
+  evil-disable-insert-state-bindings t
   :config
   (evil-mode))
 
@@ -128,10 +135,12 @@
   :ensure t
   :config
   (setq org-pretty-entities t)
+  (setq org-startup-indented t))
+
   ;(setq org-pretty-entities-include-sub-superscripts nil)
-  :hook
-  ((org-mode . org-cdlatex-mode)
-   (org-mode . visual-line-mode)))
+  ;; :hook
+  ;; ((org-mode . org-cdlatex-mode)
+  ;;  (org-mode . visual-line-mode)))
 
 (use-package org-babel
   :no-require
@@ -140,6 +149,7 @@
    'org-babel-load-languages
    '((emacs-lisp . t)
      (python . t)))
+  (add-to-list 'org-babel-default-header-args '(:wrap . "results"))
   (setq org-babel-default-header-args:python '((:python . "python3") (:results . "output")))
   (setq org-confirm-babel-evaluate nil)
   (setq org-babel-results-keyword "results")
@@ -157,7 +167,7 @@
   :ensure xenops
   :config
   (setq xenops-math-image-scale-factor 1.4)
-  (setq xenops-reveal-on-entry t)
+  ; (setq xenops-reveal-on-entry t)
   :hook
   ((org-mode . xenops-mode)
    (latex-mode . xenops-mode)

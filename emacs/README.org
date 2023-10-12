@@ -14,6 +14,9 @@ I primarily use this configuration on macOS.  To install an appropriate Emacs ve
   brew install emacs-plus@29 --with-native-comp --with-nobu417-big-sur-icon
 #+end_src
 
+** Modifier keys
+What is not visible in this README.org itself, is that I use Karabiner Elements to remap the modifier keys on the operating system level.  Within Emacs, I then use Command as Meta, Option as Ctrl, and Caps Lock as Option.
+
 ** Package repos
 Many useful packages are not available in the default repositories used by the Emacs package manager.  Let's throw third-party repos in there.
 
@@ -68,11 +71,16 @@ The default aesthetics is very outdated.  Let's give it a more minimalist look, 
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
 
+  (delete-selection-mode 1)
+  (context-menu-mode 1)
   (xterm-mouse-mode 1)
   ; (pixel-scroll-precision-mode 1)
 
   (blink-cursor-mode -1)
   (setq-default cursor-type 'bar)
+
+  (setq frame-inhibit-implied-resize t)
+  (setq frame-resize-pixelwise t)
 #+end_src
 
 Let's improve the default frame parameters, e.g. choosing a nicer font.
@@ -82,13 +90,7 @@ Let's improve the default frame parameters, e.g. choosing a nicer font.
 #+end_src
 
 ** Keybindings
-Here, we only include keybindings which don't "belong" to any particular package.  Package-specific keybindings are handled in the pertinent =use-package= blocks throughout the rest of the config file.  Before configuring the keybindings, let's setup the modifier keys themselves:
-
-#,+begin_src emacs-lisp
-  (setq
-   mac-command-modifier 'meta
-   mac-option-modifier 'hyper)
-#,+end_src
+Here, we only include keybindings which don't "belong" to any particular package.  Package-specific keybindings are handled in the pertinent =use-package= blocks throughout the rest of the config file.
 
 Next, remap unergonomic default keys like =C-x o= to more sensible bindings.  Note that some of these keybindings might be overridden by =use-package= statements below, if I enable packages that provide the same functionality in a better way than the default bindings.
 
@@ -101,7 +103,7 @@ Next, remap unergonomic default keys like =C-x o= to more sensible bindings.  No
 
 * Extra enhancements
 ** Evil mode
-Don't turn this off. Every time I do, after some weeks to months, I start to experience pains in my lower left forearm due to overly heavy use of modifier keys (despite mapping Caps Lock to Control and Command to Meta, which is as ergonomic as it gets on a laptop keyboard).
+Don't turn this off. Every time I do, after some weeks to months, I start to experience pains in my lower left forearm due to overly heavy use of modifier keys (despite remapping the modifiers).
 
 #+begin_src emacs-lisp
   (use-package evil
@@ -112,6 +114,8 @@ Don't turn this off. Every time I do, after some weeks to months, I start to exp
     (setq evil-vsplit-window-right t)
     (setq evil-split-window-below t)
     (setq evil-want-C-u-scroll t)
+    :custom
+    evil-disable-insert-state-bindings t
     :config
     (evil-mode))
 
@@ -224,16 +228,18 @@ Doom Emacs has produced a very nice collection of themes, as well as a modeline 
 #+end_src
 
 * Language support
-** Org-mode
+*** Org-mode
 #+begin_src emacs-lisp
   (use-package org
     :ensure t
     :config
     (setq org-pretty-entities t)
+    (setq org-startup-indented t))
+
     ;(setq org-pretty-entities-include-sub-superscripts nil)
-    :hook
-    ((org-mode . org-cdlatex-mode)
-     (org-mode . visual-line-mode)))
+    ;; :hook
+    ;; ((org-mode . org-cdlatex-mode)
+    ;;  (org-mode . visual-line-mode)))
 
   (use-package org-babel
     :no-require
@@ -242,6 +248,7 @@ Doom Emacs has produced a very nice collection of themes, as well as a modeline 
      'org-babel-load-languages
      '((emacs-lisp . t)
        (python . t)))
+    (add-to-list 'org-babel-default-header-args '(:wrap . "results"))
     (setq org-babel-default-header-args:python '((:python . "python3") (:results . "output")))
     (setq org-confirm-babel-evaluate nil)
     (setq org-babel-results-keyword "results")
@@ -263,7 +270,7 @@ Doom Emacs has produced a very nice collection of themes, as well as a modeline 
     :ensure xenops
     :config
     (setq xenops-math-image-scale-factor 1.4)
-    (setq xenops-reveal-on-entry t)
+    ; (setq xenops-reveal-on-entry t)
     :hook
     ((org-mode . xenops-mode)
      (latex-mode . xenops-mode)
