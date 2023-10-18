@@ -1,3 +1,4 @@
+
 #+title: Emacs configuration
 #+author: Jabir Ali Ouassou
 #+property: header-args :tangle init.el
@@ -68,7 +69,6 @@ I also don't like that it defaults to writing =M-x customize= variables into the
 The default aesthetics is very outdated.  Let's give it a more minimalist look, enable better mouse support, and enable a modern-looking cursor.  (The default cursor has its charm, but doesn't fit well in e.g. LaTeX modes due to e.g. subscript characters having very different sizes.)  I do this before any =use-package= invocations, so that these defaults work even if my Emacs is (temporarily) struggling to install the desired packages.
 #+begin_src emacs-lisp
   (tool-bar-mode -1)
-  (menu-bar-mode -1)
   (scroll-bar-mode -1)
 
   (delete-selection-mode 1)
@@ -83,10 +83,16 @@ The default aesthetics is very outdated.  Let's give it a more minimalist look, 
   (setq frame-resize-pixelwise t)
 #+end_src
 
+#+begin_src emacs-lisp
+  (setq
+   mac-command-modifier 'meta
+   mac-option-modifier nil)
+#+end_src
+
 Let's improve the default frame parameters, e.g. choosing a nicer font.
 #+begin_src emacs-lisp
-  (set-frame-font "JetBrains Mono NL-13" nil t)
-  (use-package nerd-icons :ensure t)
+    (set-frame-font "JetBrains Mono NL-14" nil t)
+    (use-package nerd-icons :ensure t)
 #+end_src
 
 ** Keybindings
@@ -216,15 +222,20 @@ Give some interactive help when I don't remember the exact keybinding for someth
 Doom Emacs has produced a very nice collection of themes, as well as a modeline configuration that is nicer than the Emacs default.
 
 #+begin_src emacs-lisp
-  (use-package doom-themes
-    :ensure t
+  (use-package modus-themes
     :config
-    (load-theme 'doom-gruvbox-light))
+    (load-theme 'modus-vivendi))
 
-  (use-package doom-modeline
-    :ensure t
-    :config
-    (doom-modeline-mode))
+  
+  ;; (use-package doom-themes
+  ;;   :ensure t
+  ;;   :config
+  ;;   (load-theme 'doom-gruvbox-light))
+
+  ;; (use-package doom-modeline
+  ;;   :ensure t
+  ;;   :config
+  ;;   (doom-modeline-mode))
 #+end_src
 
 * Language support
@@ -256,7 +267,7 @@ Doom Emacs has produced a very nice collection of themes, as well as a modeline 
 #+end_src
 
 ** Python
-** LaTeX
+*** LaTeX
 #+begin_src emacs-lisp
   (use-package tex
     :ensure auctex
@@ -266,15 +277,23 @@ Doom Emacs has produced a very nice collection of themes, as well as a modeline 
     ((LaTeX-mode . cdlatex-mode)
      (LaTeX-mode . prettify-symbols-mode)))
 
-  (use-package xenops
-    :ensure xenops
-    :config
-    (setq xenops-math-image-scale-factor 1.4)
-    ; (setq xenops-reveal-on-entry t)
-    :hook
-    ((org-mode . xenops-mode)
-     (latex-mode . xenops-mode)
-     (LaTeX-mode . xenops-mode)))
+  ;; (use-package tex
+  ;;   :ensure auctex
+  ;;   :config
+  ;;   (setq TeX-auto-save t)
+  ;;   :hook
+  ;;   ((LaTeX-mode . cdlatex-mode)
+  ;;    (LaTeX-mode . prettify-symbols-mode)))
+
+  ;; (use-package xenops
+  ;;   :ensure xenops
+  ;;   :config
+  ;;   (setq xenops-math-image-scale-factor 1.4)
+  ;;   ; (setq xenops-reveal-on-entry t)
+  ;;   :hook
+  ;;   ((org-mode . xenops-mode)
+  ;;    (latex-mode . xenops-mode)
+  ;;    (LaTeX-mode . xenops-mode)))
 #+end_src
 
 ** Markdown
@@ -369,6 +388,8 @@ This is a mixture of stuff that was directly imported from my previous non-liter
 #+begin_src emacs-lisp
     (use-package adaptive-wrap
       :ensure t
+      :init
+      (setq adaptive-wrap-extra-indent 2)
       :hook
       ((visual-line-mode . adaptive-wrap-prefix-mode)))
 

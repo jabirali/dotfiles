@@ -18,7 +18,6 @@
   (load custom-file))
 
 (tool-bar-mode -1)
-(menu-bar-mode -1)
 (scroll-bar-mode -1)
 
 (delete-selection-mode 1)
@@ -32,7 +31,11 @@
 (setq frame-inhibit-implied-resize t)
 (setq frame-resize-pixelwise t)
 
-(set-frame-font "JetBrains Mono NL-13" nil t)
+(setq
+ mac-command-modifier 'meta
+ mac-option-modifier nil)
+
+(set-frame-font "JetBrains Mono NL-14" nil t)
 (use-package nerd-icons :ensure t)
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -121,15 +124,20 @@
   :config
   (which-key-mode 1))
 
-(use-package doom-themes
-  :ensure t
+(use-package modus-themes
   :config
-  (load-theme 'doom-gruvbox-light))
+  (load-theme 'modus-vivendi))
 
-(use-package doom-modeline
-  :ensure t
-  :config
-  (doom-modeline-mode))
+
+;; (use-package doom-themes
+;;   :ensure t
+;;   :config
+;;   (load-theme 'doom-gruvbox-light))
+
+;; (use-package doom-modeline
+;;   :ensure t
+;;   :config
+;;   (doom-modeline-mode))
 
 (use-package org
   :ensure t
@@ -163,15 +171,23 @@
   ((LaTeX-mode . cdlatex-mode)
    (LaTeX-mode . prettify-symbols-mode)))
 
-(use-package xenops
-  :ensure xenops
-  :config
-  (setq xenops-math-image-scale-factor 1.4)
-  ; (setq xenops-reveal-on-entry t)
-  :hook
-  ((org-mode . xenops-mode)
-   (latex-mode . xenops-mode)
-   (LaTeX-mode . xenops-mode)))
+;; (use-package tex
+;;   :ensure auctex
+;;   :config
+;;   (setq TeX-auto-save t)
+;;   :hook
+;;   ((LaTeX-mode . cdlatex-mode)
+;;    (LaTeX-mode . prettify-symbols-mode)))
+
+;; (use-package xenops
+;;   :ensure xenops
+;;   :config
+;;   (setq xenops-math-image-scale-factor 1.4)
+;;   ; (setq xenops-reveal-on-entry t)
+;;   :hook
+;;   ((org-mode . xenops-mode)
+;;    (latex-mode . xenops-mode)
+;;    (LaTeX-mode . xenops-mode)))
 
 (use-package markdown-mode
   :ensure t)
@@ -236,6 +252,8 @@
 
 (use-package adaptive-wrap
     :ensure t
+    :init
+    (setq adaptive-wrap-extra-indent 2)
     :hook
     ((visual-line-mode . adaptive-wrap-prefix-mode)))
 
