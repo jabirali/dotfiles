@@ -1,0 +1,25 @@
+// Enhanced version of the Dracula colorscheme.
+{
+	"variables": {},
+	"globals": {},
+	"rules": [
+		{
+			"scope": "meta.path",
+			"font_style": "",
+			"foreground": "#FFFFFF"
+		},
+		{
+			"scope": "entity.name.class",
+			"font_style": "bold",
+		},
+		{
+			"scope": "meta.annotation",
+			"font_style": "",
+			"foreground": "#FF6EC9",
+		},
+		{
+			"scope": "markup.raw.block.markdown",
+			"foreground": "#00FE69"
+		}
+	]
+}

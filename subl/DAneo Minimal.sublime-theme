@@ -1,0 +1,26 @@
+{
+	// http://www.sublimetext.com/docs/3/themes.html
+	"variables": {
+		// "font_face": "system",
+	},
+	"rules": [
+		{
+			"class": "sidebar_container",
+			"content_margin": [
+				0,
+				-14,
+				0,
+				0
+			], // <= -10 is the top margin
+		},
+		{
+			"class": "sidebar_heading",
+			"color": [
+				0,
+				0,
+				0,
+				0
+			], // <= the last 0 is the transparency
+		},
+	],
+}
