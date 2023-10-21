@@ -1,86 +1,36 @@
-# vim: foldmethod=marker
+# ~/.config/fish/config.fish: Config for the "Friendly Interactive Shell".
+#
+# See also:
+# 	abbrfile        List of aliases that `fish-abbrfile` defines.
+#	fish_plugins	List of packages to automatically install.
 
-fish_add_path /usr/local/bin
-fish_add_path /Library/TeX/texbin
-fish_add_path /opt/homebrew/bin
-fish_add_path /opt/homebrew/Caskroom/mambaforge/base/bin/conda
-
-# Fish configuration file. Note that much of my interesting modifications have
-# been exported to separate plugins, which are now hosted on github.com/jabirali.
-# Abbreviations are stored in `abbrfile` (handled by my plugin `fish-abbrfile`),
-# and plugins are located in `fishfile` (handled by a package manager `fisher`).
-
-# Fish package manager.
+# Bootstrap the package manager.
 if not functions -q fisher
 	curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
-	fish -c fisher
+	source ~/.config/fish/functions/fisher.fish
+	fisher update
+	clear
 end
 
-# Fish syntax highlighting
-#theme_gruvbox dark medium
+# Extra places to look for binaries.
+fish_add_path /usr/local/bin
+fish_add_path /opt/homebrew/bin
+fish_add_path /opt/homebrew/Caskroom/miniconda/base/bin/conda
+fish_add_path /Library/TeX/texbin
+fish_add_path /Applications/Matlab.app/bin
+fish_add_path ~/.config/bin
 
-# set -g fish_color_autosuggestion '555'  'brblack'
-# set -g fish_color_cancel -r
-# set -g fish_color_command --bold
-# set -g fish_color_comment red
-# set -g fish_color_cwd green
-# set -g fish_color_cwd_root red
-# set -g fish_color_end brmagenta
-# set -g fish_color_error brred
-# set -g fish_color_escape 'bryellow'  '--bold'
-# set -g fish_color_history_current --bold
-# set -g fish_color_host normal
-# set -g fish_color_match --background=brblue
-# set -g fish_color_normal normal
-# set -g fish_color_operator bryellow
-# set -g fish_color_param cyan
-# set -g fish_color_quote yellow
-# set -g fish_color_redirection brblue
-# set -g fish_color_search_match 'bryellow'  '--background=brblack'
-# set -g fish_color_selection 'white'  '--bold'  '--background=brblack'
-# set -g fish_color_user brgreen
-# set -g fish_color_valid_path --underline
-
-# Integrate with `fzf`.
-# fzf_key_bindings
-
-# Integrate with `direnv`.
+# Direnv integration.
 eval (direnv hook fish)
 __direnv_export_eval
 
-# Plugin settings.
-set projector_dir ~/Code
-set projector_cmd edit +GFiles
-set zotfile_root ~/snap/zotero-snap
-
-# Common path options.
-set -gx PATH ~/.config/bin ~/.config/emacs/bin ~/.local/bin $PATH
+# Conda integration.
+conda shell.fish hook | source
 
 # Aliases for common actions.
-alias exa    'exa --group-directories-first --time-style=long-iso'
-alias mkvenv 'echo layout_python >> .envrc; direnv allow'
-alias pytest 'fd \'.py$\' | entr pytest'
-alias wget   'wget -e robots=off'
-alias boox   'bluetooth-sendto --device=22:22:3B:D5:62:2C'
 alias bat    'bat -p --theme ansi'
-set -g fish_user_paths "/usr/local/opt/binutils/bin" $fish_user_paths
-
-# Activate miniconda.
-# eval /usr/local/Caskroom/miniconda/base/bin/conda "shell.fish" "hook" $argv | source
-
-# Activate starship.
-# starship init fish | source
-
-#zoxide init fish --cmd cd | source
-
-## >>> conda initialize >>>
-## !! Contents within this block are managed by 'conda init' !!
-#eval /usr/local/Caskroom/miniconda/base/bin/conda "shell.fish" "hook" $argv | source
-## <<< conda initialize <<<
-#
-#if test -f 
-#    eval /opt/homebrew/Caskroom/mambaforge/base/bin/conda "shell.fish" "hook" $argv | source
-#end
-
-# Miniconda
-conda shell.fish hook | source
+alias exa    'exa --group-directories-first --time-style=long-iso'
+alias matlab 'matlab -nosplash -nodesktop'
+alias mkvenv 'echo layout_python >> .envrc; direnv allow'
+alias entest 'fd \'.py$\' | entr pytest'
+alias wget   'wget -e robots=off'
