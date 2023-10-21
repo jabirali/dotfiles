@@ -1,35 +1,39 @@
-# ~/.ssh/config
-
 Host *
-  Protocol 2
-  ForwardX11 no
-  CheckHostIP no
-  Compression no
-  UseKeychain yes
-  AddKeysToAgent yes
+	# More efficient.
+	CheckHostIP no
+	Compression yes
+	ControlMaster auto
+	ControlPath ~/.ssh/sockets/%r@%h-%p
+	ForwardX11 no
 
-Host home
-  Hostname babapi.local
-  IdentityFile ~/.ssh/id_ed25519
-  User ubuntu
+	# Integrate `1Password` (to protect my SSH keys).
+	IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+	# Integrate `rmate` (for remote `subl` editing).
+	RemoteForward 52698 localhost:52698
+
+# Personal.
+Host babacalc
+	HostName babacalc.ddns.net
+	User jo
+
+# HPC clusters.
+Host saga
+	HostName login-3.saga.sigma2.no
+	User jabirali
+
+Host ex3
+	HostName dnat.simula.no
+	User jabirali
+	Port 60441
+
+# Shell accounts.
+Host pvv
+	HostName login.pvv.org
+	User jabirali
 
 Host ntnu
-  Hostname login.stud.ntnu.no
-  IdentityFile ~/.ssh/id_ed25519
-  User jabirali
+	HostName login.stud.ntnu.no
+	User jabirali
 
-Host pvv
-  Hostname monty.pvv.org
-  IdentityFile ~/.ssh/id_ed25519
-  User jabirali
-
-Host sintef
-  Hostname vsl142.energy.sintef.no
-  ProxyJump stepstone
-  IdentityFile ~/.ssh/id_rsa
-  User jabiro
-
-Host stepstone
-  Hostname stepstone.sintef.no
-  IdentityFile ~/.ssh/id_rsa
-  User jabiro
+Host *

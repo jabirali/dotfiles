@@ -1,17 +1,28 @@
-# ~/.gitconfig
+# ~/.config/git/config: Git configuration
 
+# Identity settings.
 [user]
-	email = jabir.ouassou@sintef.no
+	email = jabir.ali.ouassou@hvl.no
 	name = Jabir Ali Ouassou
-[core]
-	excludesfile = /home/jabirali/.ignore
-	editor = vim
-[log]
-	date = relative
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBX5BMEWHoj1JpL2XK0oeoiQYrjnxTSF2kj/whMywQwb
+
+# Define my own commands.
 [alias]
 	graph = log --branches --remotes --tags --graph --oneline --decorate
 	change = remote set-url origin
-[pull]
-	rebase = false
+
+# Sign commits using my SSH key via 1Password.
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+
+# Miscellaneous settings.
 [init]
 	defaultBranch = main
+[log]
+	date = relative
+[pull]
+	rebase = false
