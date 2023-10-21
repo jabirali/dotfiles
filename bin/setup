@@ -1,24 +1,24 @@
 #!/bin/sh
 
-# Dotfiles should be placed here.
+# Dotfiles must be placed here.
 cd ~/.config || exit 1
 
-# SSH requires this location and user-only access.
-mkdir -p ~/.ssh
+# SSH.
+mkdir -p ~/.ssh/sockets
 ln -sf ~/.config/ssh/config ~/.ssh/config
 chmod  600 ~/.ssh/config
 
-# Share Git ignore patterns with `fd`, `rg`, and `exa`.
-# The last of these does not support ~/.config/ignore.
-ln -sf ~/.config/git/ignore ~/.gitignore
-
-# Link not required after v3.1a:
-# https://github.com/tmux/tmux/commit/15d7e564ddab575dd3ac803989cc99ac13b57198
-ln -sf ~/.config/tmux/tmux.conf ~/.tmux.conf
-
-# Handle the dotvim folder.
+# Vim.
 ln -sf ~/.config/vim ~/.vim
 
-# Handle VSCode on macOS.
+# Sublime.
+mkdir -p ~/Library/Application\ Support/Sublime\ Text
+ln -sf ~/.config/subl ~/Library/Application\ Support/Sublime\ Text/Packages/User
+
+# VSCode.
 mkdir -p ~/Library/Application\ Support/Code/
 ln -sf ~/.config/vscode ~/Library/Application\ Support/Code/User
+
+# VSCodium.
+mkdir -p ~/Library/Application\ Support/VSCodium/
+ln -sf ~/.config/vscode ~/Library/Application\ Support/VSCodium/User

@@ -1,6 +1,9 @@
 vim9script
 plug#begin('~/.cache/vim/plug.vim')
 
+Plug 'adigitoleo/vim-mellow', { 'tag': '*' }
+
+Plug 'skywind3000/vim-quickui'
 Plug 'tpope/vim-rsi'
 #Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-commentary'
@@ -18,9 +21,11 @@ Plug 'tpope/vim-fugitive'
 
 Plug 'lervag/vimtex'
 Plug 'lervag/wiki.vim'
+#Plug 'vimwiki/vimwiki'
 Plug 'kalekundert/vim-coiled-snake'
 Plug 'preservim/vim-markdown'
 Plug 'nickeb96/fish.vim'
+Plug 'JuliaEditorSupport/julia-vim'
 
 #Plug 'vim/colorschemes'
 #Plug 'sainnhe/sonokai'
@@ -58,3 +63,6 @@ g:UltiSnipsExpandTrigger = "<tab>"
 g:UltiSnipsJumpForwardTrigger = "<tab>"
 g:UltiSnipsJumpBackwardTrigger = "<S-tab>"
 
+
+nnoremap # gcc
+vnoremap # gc

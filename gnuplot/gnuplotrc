@@ -1,5 +1,5 @@
 # Terminal
-set terminal qt enhanced font 'Libertinus Serif,24' size 800,600
+set terminal qt enhanced font 'Libertinus Serif,24' size 640,480
 set size ratio 0.75
 set encoding utf8
 set minus
@@ -51,24 +51,24 @@ sum(y) = ($0 == 0) ? (r = 0, 0) : (r = y+r, r)
 
 # Set1 curve colors (taken from ColorBrewer2)
 set style data lines
-set style line  1 lc rgb '#00000000' pt 7 ps 1 lw 3 # black
-set style line  2 lc rgb '#00bf1617' pt 7 ps 1 lw 3 # red
-set style line  3 lc rgb '#001673bf' pt 7 ps 1 lw 3 # blue
-set style line  4 lc rgb '#004DAF4A' pt 7 ps 1 lw 3 # green
-set style line  5 lc rgb '#00984EA3' pt 7 ps 1 lw 3 # purple
-set style line  6 lc rgb '#00FF7F00' pt 7 ps 1 lw 3 # orange
-set style line  7 lc rgb '#00FFFF33' pt 7 ps 1 lw 3 # yellow
-set style line  8 lc rgb '#00A65628' pt 7 ps 1 lw 3 # brown
-set style line  9 lc rgb '#00F781BF' pt 7 ps 1 lw 3 # pink
-set style line 11 lc rgb '#99000000' pt 7 ps 1 lw 3 # black
-set style line 12 lc rgb '#99bf1617' pt 7 ps 1 lw 3 # red
-set style line 13 lc rgb '#991673bf' pt 7 ps 1 lw 3 # blue
-set style line 14 lc rgb '#994DAF4A' pt 7 ps 1 lw 3 # green
-set style line 15 lc rgb '#99984EA3' pt 7 ps 1 lw 3 # purple
-set style line 16 lc rgb '#99FF7F00' pt 7 ps 1 lw 3 # orange
-set style line 17 lc rgb '#99FFFF33' pt 7 ps 1 lw 3 # yellow
-set style line 18 lc rgb '#99A65628' pt 7 ps 1 lw 3 # brown
-set style line 19 lc rgb '#99F781BF' pt 7 ps 1 lw 3 # pink
+set style line  1 lc rgb '#00000000' pt 7 ps 1 lw 2.5 # black
+set style line  2 lc rgb '#00bf1617' pt 7 ps 1 lw 2.5 # red
+set style line  3 lc rgb '#001673bf' pt 7 ps 1 lw 2.5 # blue
+set style line  4 lc rgb '#004DAF4A' pt 7 ps 1 lw 2.5 # green
+set style line  5 lc rgb '#00984EA3' pt 7 ps 1 lw 2.5 # purple
+set style line  6 lc rgb '#00FF7F00' pt 7 ps 1 lw 2.5 # orange
+set style line  7 lc rgb '#00FFFF33' pt 7 ps 1 lw 2.5 # yellow
+set style line  8 lc rgb '#00A65628' pt 7 ps 1 lw 2.5 # brown
+set style line  9 lc rgb '#00F781BF' pt 7 ps 1 lw 2.5 # pink
+set style line 11 lc rgb '#99000000' pt 7 ps 1 lw 2.5 # black
+set style line 12 lc rgb '#99bf1617' pt 7 ps 1 lw 2.5 # red
+set style line 13 lc rgb '#991673bf' pt 7 ps 1 lw 2.5 # blue
+set style line 14 lc rgb '#994DAF4A' pt 7 ps 1 lw 2.5 # green
+set style line 15 lc rgb '#99984EA3' pt 7 ps 1 lw 2.5 # purple
+set style line 16 lc rgb '#99FF7F00' pt 7 ps 1 lw 2.5 # orange
+set style line 17 lc rgb '#99FFFF33' pt 7 ps 1 lw 2.5 # yellow
+set style line 18 lc rgb '#99A65628' pt 7 ps 1 lw 2.5 # brown
+set style line 19 lc rgb '#99F781BF' pt 7 ps 1 lw 2.5 # pink
 
 # Modify colors to use for contours [Viridis]
 set palette defined (\

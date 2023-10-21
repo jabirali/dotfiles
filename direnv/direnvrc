@@ -11,7 +11,7 @@ layout_python() {
 	source "$venv/bin/activate"
 }
 
-layout_anaconda() {
+layout_conda() {
     # Miniconda installation should be in PATH.
     local ANACONDA_HOME="/usr/local/Caskroom/miniconda/base/"
     PATH_add "$ANACONDA_HOME"/bin

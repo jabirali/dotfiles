@@ -2,11 +2,11 @@
 # machines, so I only list the packages that I *really* need everywhere.
 # Packages I only need on some computers are instead installed manually.
 
-tap "homebrew/core"
-tap "homebrew/cask"
-tap "homebrew/cask-fonts"
 tap "homebrew/bundle"
+tap "homebrew/services"
+tap "homebrew/cask-fonts"
 
+# Shell
 brew "atool"
 brew "bat"
 brew "cloc"
@@ -36,17 +36,20 @@ brew "zsh"
 cask "alfred"
 cask "arq"
 cask "firefox"
+cask "karabiner-elements"
 cask "iterm2"
+cask "logseq"
 cask "macvim"
+cask "neovide"
 cask "miniconda"
 cask "quarto"
-cask "rectangle"
 cask "skim"
 cask "visual-studio-code"
 cask "vlc"
 cask "yt-music"
 cask "zoom"
 cask "zotero"
+cask "swish"
 
 cask "font-fira-code"
 cask "font-fira-mono"
@@ -54,3 +57,9 @@ cask "font-fira-sans"
 cask "font-jetbrains-mono"
 cask "font-juliamono"
 cask "font-libertinus"
+
+# HVL
+# cask "displaylink"
+cask "microsoft-teams"
+cask "microsoft-word"
+cask "microsoft-excel"

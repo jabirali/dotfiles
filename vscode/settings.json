@@ -172,8 +172,7 @@
     "editor.selectionHighlight": false,
     "editor.semanticHighlighting.enabled": false,
     "editor.quickSuggestionsDelay": 300,
-    "window.titleBarStyle": "native",
-    "workbench.colorTheme": "Tokyo Night Storm",
+    "workbench.colorTheme": "Quiet Light",
     "explorer.decorations.colors": false,
     "editor.cursorSmoothCaretAnimation": "on",
     "workbench.iconTheme": null,
@@ -186,4 +185,6 @@
     "julia.symbolCacheDownload": true,
     "julia.enableTelemetry": false,
     "vscode-neovim.useCtrlKeysForInsertMode": false,
+    "window.titleBarStyle": "native",
+    "window.zoomLevel": 1,
 }

@@ -1,4 +1,4 @@
-# ~/.ignore
+# ~/.config/git/ignore: Globally ignored files.
 
 # Dirs
 snap
@@ -6,10 +6,16 @@ snap
 .venv
 
 # Vim
+TAGS
 tags
+*.swp
+*.swo
 
 # Emacs
 *.elc
+\#*
+.\#*
+*~
 
 # Latex
 *.fdb_latexmk

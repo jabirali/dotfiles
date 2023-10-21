@@ -4,5 +4,5 @@ vim9script
 #set shell=fish
 
 # Keybindings to open the terminal.
-nnoremap <C-w><cr> <C-w>:terminal<cr>
-tnoremap <C-w><cr> <C-w>:terminal<cr>
+# nnoremap <C-w><cr> <C-w>:terminal<cr>
+# tnoremap <C-w><cr> <C-w>:terminal<cr>

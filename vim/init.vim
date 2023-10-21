@@ -1,5 +1,5 @@
-set autochdir
-set autoshelldir
+"set autochdir
+"set autoshelldir
 set formatprg=fmt
 set updatetime=300
 set nobackup
@@ -17,7 +17,7 @@ set hidden
 set splitbelow
 set splitright
 set statusline=\ %<%f%=%P\ 
-set fillchars+=fold:\ ,eob:\ ,vert:\ ,
+"set fillchars+=fold:\ ,eob:\ ,vert:\ ,
 set path+=**
 
 set tabstop=4
@@ -45,8 +45,12 @@ set guioptions=gme
 set guicursor+=a:blinkon0
 set guifont=JetBrains\ Mono\ NL:h14
 
-let mapleader='<space>'
+nnoremap <space> <nop>
+let mapleader=' '
 let maplocalleader=','
+
+" set fillchars+=vert:│,
+set fillchars+=vert:\ ,
 
 " CleverF
 map ; :
@@ -54,3 +58,11 @@ map ; :
 " Change cursor between modes.
 let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
+
+
+
+nnoremap \ <cmd>Lexplore<cr>
+let g:netrw_banner=0
+" let g:netrw_keepdir=0
+
+nnoremap <leader>3 <cmd>silent Lexplore scp://ex3/<cr>
