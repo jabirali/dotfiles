@@ -7,10 +7,13 @@ karabiner
 # MacOS
 .DS_Store
 
-# Fish
+# Shells
 fish/conf.d
 fish/functions
 fish/fish_variables
+.zsh_history
+.bash_history
+.history
 
 # Sublime Text
 Package Control.last-run
