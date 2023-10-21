@@ -1,6 +1,0 @@
-{
-	"settings": {
-		"python.analysis.autoImportCompletions": false,
-	},
-	"enabled": true,
-}

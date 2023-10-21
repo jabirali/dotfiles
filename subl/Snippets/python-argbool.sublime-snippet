@@ -1,9 +1,0 @@
-<snippet>
-<content><![CDATA[
-parser.add_argument("-$1", "--$2", default=False, action="store_true")
-$0
-]]></content>
-<tabTrigger>argbool</tabTrigger>
-<description>argparse bool</description>
-<scope>source.python</scope>
-</snippet>
