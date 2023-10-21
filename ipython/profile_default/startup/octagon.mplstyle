@@ -1,0 +1,30 @@
+# Matplotlib style sheet for use with Jupyter Notebooks in Visual Studio Code.
+# Created by Jabir Ali Ouassou based on the "Monokai Pro Octagon" colorscheme.
+
+# Font consistent with the editor.
+font.family:  Helvetica Neue
+font.size:    12.0
+
+# Colorscheme based on Monokai Pro Octagon.
+axes.edgecolor: 2F3142
+axes.facecolor: 282A3B
+axes.labelcolor: E8F2F1
+axes.labelsize: larger
+figure.facecolor: 282a3b
+grid.color: 2F3142 
+text.color: E8F2F1
+xtick.color: 2F3142
+xtick.labelcolor: 686D78
+ytick.color: 2F3142
+ytick.labelcolor: 686D78
+
+axes.prop_cycle: cycler('color', ['FFD557', 'CB98CC', '8CD3BA', 'FF5677', 'B3D84A', 'FF954F'])
+
+# Miscellaneous style settings.
+axes.grid: True
+axes.linewidth: 1.2
+axes.labelpad: 8.0
+axes.axisbelow: True
+figure.frameon: False
+legend.frameon: False
+savefig.format: svg

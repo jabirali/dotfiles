@@ -15,6 +15,13 @@ fish/fish_variables
 .bash_history
 .history
 
+# Python
+ipython/*/db
+ipython/*/log
+ipython/*/pid
+ipython/*/security
+ipython/*/history.sqlite
+
 # Sublime Text
 Package Control.last-run
 Package Control.ca-list

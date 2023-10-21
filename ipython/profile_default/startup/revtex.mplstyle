@@ -1,0 +1,38 @@
+# Matplotlib style sheet for use when writing papers with `revtex4`.
+# Created by Jabir Ali Ouassou based on the Colorbrewer2 colorschemes.
+
+# Consistency with the journals.
+figure.figsize: 3.375, 3.375
+font.size: 8.0
+text.usetex: True
+text.latex.preamble: \usepackage{newtxtext}\usepackage{newtxmath}
+font.family: serif
+
+
+# Colorscheme based on Monokai Pro Octagon.
+figure.facecolor: FFFFFF
+axes.facecolor: FFFFFF
+
+axes.edgecolor: 777777
+grid.color: 777777
+xtick.color: 777777
+xtick.labelcolor: 777777
+ytick.color: 777777
+ytick.labelcolor: 777777
+
+axes.labelcolor: 000000
+text.color: 000000
+
+axes.prop_cycle: cycler('color', ["E41A1C", "377EB8", "984EA3", "4DAF4A", "FF7F00", "FFFF33", "A65628"])
+
+# Miscellaneous style settings.
+axes.grid: False
+axes.axisbelow: True
+#axes.labelpad: -7.0
+axes.labelsize: medium
+axes.titlesize: medium
+axes.linewidth: 1.0
+figure.frameon: False
+legend.frameon: False
+lines.linewidth: 1.2
+savefig.format: pdf

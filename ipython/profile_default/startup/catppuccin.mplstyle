@@ -1,0 +1,29 @@
+# Matplotlib style sheet for use with Jupyter Notebooks in Visual Studio Code.
+# Created by Jabir Ali Ouassou based on the "Catppuccin" colorschemes.
+
+# Font consistent with the editor.
+font.family:  Helvetica Neue
+font.size:    12.0
+
+# Colorscheme.
+axes.edgecolor: 2D324B
+axes.facecolor: 24283B
+axes.labelcolor: C9D2F5
+axes.labelsize: larger
+figure.facecolor: 24283B
+grid.color: 2D324B
+text.color: C9D2F5
+xtick.color: 2D324B
+xtick.labelcolor: 949AB7
+ytick.color: 2D324B
+ytick.labelcolor: 949AB7
+
+axes.prop_cycle: cycler('color', ['CBA6F7', 'A6E3A1', 'F9E2AF', '89DCEB', 'EBA0AD'])
+
+# Miscellaneous.
+axes.grid: True
+axes.linewidth: 1.2
+axes.labelpad: 8.0
+axes.axisbelow: True
+figure.frameon: False
+legend.frameon: False
