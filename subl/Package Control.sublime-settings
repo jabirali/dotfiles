@@ -5,14 +5,22 @@
 	],
 	"installed_packages":
 	[
+		"ApplySyntax",
 		"Dracula Color Scheme",
+		"fish",
+		"Gnuplot",
+		"INI",
 		"LSP",
 		"LSP-json",
 		"LSP-pyright",
 		"NeoVintageous",
 		"Package Control",
 		"SendCode",
+		"SSH Config",
 		"Terminal",
 		"Theme - DAneo",
+		"Tmux Syntax Highlight",
+		"TOML",
+		"VimL",
 	],
 }
