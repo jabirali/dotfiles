@@ -13,6 +13,14 @@
 			"font_style": "bold",
 		},
 		{
+			"scope": "entity.other.inherited-class",
+			"font_style": "",
+		},
+		{
+			"scope": "entity.name.function",
+			"font_style": "bold",
+		},
+		{
 			"scope": "meta.annotation",
 			"font_style": "",
 			"foreground": "#FF6EC9",
