@@ -1,0 +1,11 @@
+" Undo without Ctrl keys.
+nnoremap U <C-r>
+
+" Movement without Ctrl keys.
+nnoremap H ^
+nnoremap L $
+nnoremap J <C-d>
+nnoremap K <C-u>
+
+nnoremap <C-j> J
+nnoremap <C-k> K
