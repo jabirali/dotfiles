@@ -1,10 +1,9 @@
+// VSCode preferences.
 {
-    // Operating system.
-    "terminal.integrated.shell.osx": "/opt/homebrew/bin/fish",
-
-    // Distraction-free interface.
     "breadcrumbs.enabled": false,
     "editor.cursorBlinking": "solid",
+    "editor.fontFamily": "JetBrains Mono NL, Menlo, Monaco, monospace",
+    "editor.fontSize": 14,
     "editor.lineNumbers": "off",
     "editor.matchBrackets": "near",
     "editor.minimap.enabled": false,
@@ -13,178 +12,25 @@
     "editor.renderLineHighlight": "none",
     "editor.scrollbar.horizontalScrollbarSize": 4,
     "editor.scrollbar.verticalScrollbarSize": 4,
-    "notebook.showFoldingControls": "always",
-    "terminal.integrated.shellIntegration.decorationsEnabled": "never",
-    "workbench.layoutControl.enabled": false,
-
-    // Font settings.
-    "editor.fontFamily": "JetBrains Mono NL, Menlo, Monaco, monospace",
-    "editor.fontSize": 14,
-    "terminal.integrated.fontSize": 14,
-    "workbench.colorCustomizations": {
-        "[Catppuccin Macchiato]": {
-            "tab.activeBorder": "#00000000",
-            "editorGroup.border": "#00000033",
-            "editorOverviewRuler.background": "#00000000",
-        },
-        "[Tokyo Night Storm]": {
-            "tab.activeBorder": "#00000000",
-            "tab.unfocusedActiveBorder": "#00000000",
-            "tab.border": "#00000000",
-            "scrollbarSlider.background": "#00000000",
-            "editorOverviewRuler.infoForeground": "#00000000",
-            "editorOverviewRuler.addedForeground": "#00000000",
-            "editorOverviewRuler.errorForeground": "#00000000",
-            "editorOverviewRuler.commentForeground": "#00000000",
-            "editorOverviewRuler.deletedForeground": "#00000000",
-            "editorOverviewRuler.warningForeground": "#00000000",
-            "editorOverviewRuler.modifiedForeground": "#00000000",
-            "editorOverviewRuler.findMatchForeground": "#00000000",
-            "editorOverviewRuler.bracketMatchForeground": "#00000000",
-            "editorOverviewRuler.commonContentForeground": "#00000000",
-            "editorOverviewRuler.wordHighlightForeground": "#00000000",
-            "editorOverviewRuler.rangeHighlightForeground": "#00000000",
-            "editorOverviewRuler.incomingContentForeground": "#00000000",
-            "editorOverviewRuler.commentUnresolvedForeground": "#00000000",
-            "editorOverviewRuler.wordHighlightTextForeground": "#00000000",
-            "editorOverviewRuler.selectionHighlightForeground": "#00000000",
-            "editorOverviewRuler.wordHighlightStrongForeground": "#00000000",
-            "editorOverviewRuler.currentContentForeground": "#00000000",
-            "notebookEditorOverviewRuler.runningCellForeground": "#00000000",
-            "editorOverviewRuler.background": "#00000000",
-        }
-    },
-
-    // Jupyter notebooks.
     "interactiveWindow.restore": true,
+    "jupyter.askForKernelRestart": false,
+    "jupyter.interactiveWindow.cellMarker.decorateCells": "None",
+    "jupyter.interactiveWindow.codeLens.enable": false,
+    "jupyter.interactiveWindow.codeLens.enableGotoCell": false,
+    "jupyter.interactiveWindow.creationMode": "perFile",
+    "jupyter.interactiveWindow.textEditor.executeSelection": true,
     "jupyter.runStartupCommands": [
-        "%load_ext autoreload", 
+        "%load_ext autoreload",
         "%autoreload 2"
     ],
-    
-    // Performance.
-    "extensions.experimental.affinity": {
-        "asvetliakov.vscode-neovim": 1
-    },
-
-    // Miscellaneous.
-    "editor.unicodeHighlight.ambiguousCharacters": false,
-    "git.autofetch": true,
-    "git.confirmSync": false,
-    "python.defaultInterpreterPath": "/Users/jabirali/Code/bodge/venv",
-    "security.workspace.trust.untrustedFiles": "open",
-    "window.restoreWindows": "none",
-    "workbench.editorAssociations": {
-        "*.pdf": "latex-workshop-pdf-hook"
-    },
-    "latex-workshop.view.pdf.internal.synctex.keybinding": "double-click",
-    "latex-workshop.synctex.afterBuild.enabled": true,
-    "latex-workshop.latex.tools": [
-        {
-            "name": "latexmk",
-            "command": "latexmk",
-            "args": [
-                "-synctex=1",
-                "-interaction=nonstopmode",
-                "-file-line-error",
-                "-pdflatex",
-                "-outdir=%OUTDIR%",
-                "%DOC%"
-            ],
-            "env": {}
-        },
-        {
-            "name": "tectonic",
-            "command": "tectonic",
-            "args": [
-                "--synctex",
-                "--keep-logs",
-                "%DOC%.tex"
-            ],
-            "env": {}
-        }
-    ],
-    "latex-utilities.liveReformat.enabled": true,
-    "workbench.startupEditor": "none",
-    "window.restoreFullscreen": true,
     "notebook.cellToolbarLocation": {
         "default": "hidden"
     },
     "notebook.globalToolbar": false,
     "notebook.insertToolbarLocation": "hidden",
-    "jupyter.askForKernelRestart": false,
-    "jupyter.widgetScriptSources": [
-        "jsdelivr.com",
-        "unpkg.com"
-    ],
-    "notebook.markup.fontSize": 14,
-    "terminal.integrated.tabs.enabled": false,
-    "notebook.showCellStatusBar": "hidden",
-    "vim.foldfix": true,
-    "git.ignoreLegacyWarning": true,
-    "quarto.mathjax.theme": "dark",
-    "editor.showFoldingControls": "never",
-    "scm.diffDecorationsGutterVisibility": "hover",
-    "workbench.statusBar.visible": false,
-    "notebook.output.textLineLimit": 10240,
-    "editor.guides.indentation": false,
-    "editor.wordSeparators": "",
-    "jupyter.interactiveWindow.creationMode": "perFile",
-    "jupyter.interactiveWindow.textEditor.executeSelection": true,
-    "jupyter.interactiveWindow.codeLens.enable": false,
-    "jupyter.interactiveWindow.codeLens.enableGotoCell": false,
-    "[python]": {
-        "editor.formatOnType": true,
-        "editor.defaultFormatter": "ms-python.black-formatter"
-    },
-    "workbench.activityBar.visible": false,
-    "vscode-neovim.highlightGroups.highlights": {
-        "Directory": "vim",
-        "IncSearch": {
-            "backgroundColor": "theme.editor.findMatchBackground",
-            "borderColor": "theme.editor.findMatchBorder"
-        },
-        "Search": {
-            "backgroundColor": "theme.editor.findMatchHighlightBackground",
-            "borderColor": "theme.editor.findMatchHighlightBorder"
-        },
-        "Visual": {
-            "backgroundColor": "theme.editor.selectionBackground"
-        },
-        "Conceal": "vim",
-        "Substitute": "vim"
-    },
-    "settingsSync.ignoredExtensions": [
-        "harryhopkinson.vim-theme"
-    ],
-    "terminal.integrated.defaultLocation": "editor",
-    "catppuccin.italicKeywords": false,
-    "Notes.notesLocation": "/Users/jabirali/Documents/Notes",
-    "python.formatting.provider": "none",
-    "terminal.integrated.inheritEnv": false,
-    "latex-input.triggers": ";",
-    "workbench.editor.decorations.colors": false,
-    "workbench.editor.decorations.badges": false,
-    "remoteTmux.sshHost": "saga",
-    "catppuccin.bracketMode": "monochromatic",
-    "editor.bracketPairColorization.enabled": false,
-    "latex-workshop.view.pdf.viewer": "singleton",
-    "editor.selectionHighlight": false,
-    "editor.semanticHighlighting.enabled": false,
-    "editor.quickSuggestionsDelay": 300,
-    "workbench.colorTheme": "Quiet Light",
-    "explorer.decorations.colors": false,
-    "editor.cursorSmoothCaretAnimation": "on",
-    "workbench.iconTheme": null,
-    "jupyter.interactiveWindow.cellMarker.decorateCells": "None",
-    "workbench.editor.tabCloseButton": "off",
-    "editor.hideCursorInOverviewRuler": true,
-    "terminal.integrated.commandsToSkipShell": [
-        "language-julia.interrupt"
-    ],
-    "julia.symbolCacheDownload": true,
-    "julia.enableTelemetry": false,
-    "vscode-neovim.useCtrlKeysForInsertMode": false,
-    "window.titleBarStyle": "native",
-    "window.zoomLevel": 1,
+    "notebook.showFoldingControls": "always",
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.shell.osx": "/opt/homebrew/bin/fish",
+    "terminal.integrated.shellIntegration.decorationsEnabled": "never",
+    "workbench.layoutControl.enabled": false,
 }
