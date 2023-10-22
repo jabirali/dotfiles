@@ -8,3 +8,10 @@ runtime ftplugin/man.vim
 runtime init.vim
 runtime plugin.vim
 runtime! init/*
+
+set background=dark
+colorscheme sorbet
+
+hi StatusLine gui=NONE
+hi StatusLineNC gui=NONE
+hi EndOfBuffer guibg=NONE

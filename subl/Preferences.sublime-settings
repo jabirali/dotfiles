@@ -22,7 +22,7 @@
 	"trim_trailing_white_space_on_save": "not_on_caret",
 	// Plugin: Neovintageous (Vim).
 	"match_brackets": false,
-	"vintageous_use_ctrl_keys": false,
+	"vintageous_use_ctrl_keys": true,
 	"vintageous_use_super_keys": false,
 	"neovintageous_build_version": 13200,
 	// Plugin: Daneo (adaptive theme).
