@@ -3,16 +3,28 @@
 # This script is run as `brew sync` from the command line, and ensures
 # that packages in `~/.config/Brewfile` are installed and up to date.
 
+# Escape codes for colorization.
+function show() {
+	echo "[1;35m:: $@[0m"
+}
+
+# This is not required on Linux.
 if [[ "$(uname)" == "Darwin" ]]; then
-	echo ":: Updating XCode tools..."
+	show "XCode Command Line Tools"
 	xcode-select --install &>/dev/null && exit 1
 fi
 
-echo ":: Updating HomeBrew index..."
+# Perform regular updates.
+show "HomeBrew index"
 brew update || exit 1
 
-echo ":: Updating HomeBrew apps..."
+show "HomeBrew packages"
 brew upgrade || exit 1
 
-echo ":: Syncing HomeBrew apps..."
+# Declarative package management.
+show "Brewfile declarations"
 brew bundle --file=~/.config/Brewfile || exit 1
+
+# Post-installation cleanup.
+show "Icon overrides"
+brew icons
