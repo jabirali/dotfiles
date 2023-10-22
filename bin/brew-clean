@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# This script is run as `brew clean` from the command line,
+# and simply uninstalls unwanted packages and dependencies.
+
+brew bundle --file=~/.config/Brewfile --cleanup || exit 1

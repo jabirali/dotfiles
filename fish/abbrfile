@@ -15,6 +15,7 @@ ls    exa
 # Shorter commands.
 b    brew
 bb   brew sync
+bc   brew clean
 be   open -t ~/.config/brewfile/Brewfile
 bi   brew install
 br   brew remove

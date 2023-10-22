@@ -14,16 +14,19 @@ if [[ "$(uname)" == "Darwin" ]]; then
 	xcode-select --install &>/dev/null && exit 1
 fi
 
-# Perform regular updates.
-show "HomeBrew index"
+# HomeBrew package magic.
+show "Syncing package repos"
 brew update || exit 1
 
-show "HomeBrew packages"
+show "Installing missing packages"
+brew bundle --file=~/.config/Brewfile || exit 1
+
+show "Updating outdated packages"
 brew upgrade || exit 1
 
-# Declarative package management.
-show "Brewfile declarations"
-brew bundle --file=~/.config/Brewfile || exit 1
+show "Removing any leftover mess"
+brew autoremove || exit 1
+brew cleanup || exit 1
 
 # Post-installation cleanup.
 show "Icon overrides"
