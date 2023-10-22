@@ -13,11 +13,12 @@ fish/fish_variables
 .history
 
 # Python
+ipython/*/startup/README
 ipython/*/db
+ipython/*/history.sqlite
 ipython/*/log
 ipython/*/pid
 ipython/*/security
-ipython/*/history.sqlite
 
 # Sublime Text
 Package Control.last-run
@@ -39,3 +40,24 @@ vscode/globalStorage
 
 # ITerm2
 iterm2/AppSupport
+
+# ApplySyntax
+subl/ApplySyntax.ext-list
+subl/Bash.sublime-settings
+subl/HAML.sublime-settings
+subl/HTML (Rails).sublime-settings
+subl/INI.sublime-settings
+subl/JSON.sublime-settings
+subl/PHP.sublime-settings
+subl/Perl.sublime-settings
+subl/Python.sublime-settings
+subl/Ruby.sublime-settings
+subl/Shell-Unix-Generic.sublime-settings
+subl/Tmux.sublime-settings
+subl/XML.sublime-settings
+subl/YAML.sublime-settings
+subl/gnuplot.sublime-settings
+
+# Miscellaneous
+*.bak
+*.lock.json
