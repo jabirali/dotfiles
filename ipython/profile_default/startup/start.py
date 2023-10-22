@@ -19,11 +19,6 @@ def revtex():
     plt.style.use("~/.config/ipython/profile_default/startup/revtex.mplstyle")
 
 
-# Plots should be vector graphics.
-from IPython.display import set_matplotlib_formats
-
-set_matplotlib_formats("svg")
-
 # Plots should not block ipython.
 plt.ion()
 
