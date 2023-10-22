@@ -2149,7 +2149,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>JuliaMono-Medium 14</string>
+			<string>JetBrainsMonoNL-Medium 14</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Option Key Sends</key>
@@ -2282,7 +2282,7 @@
 	<key>TerminalMargin</key>
 	<integer>14</integer>
 	<key>TerminalVMargin</key>
-	<integer>10</integer>
+	<integer>14</integer>
 	<key>UseBorder</key>
 	<false/>
 	<key>VisualIndicatorForEsc</key>
