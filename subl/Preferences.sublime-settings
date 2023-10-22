@@ -1,7 +1,7 @@
 {
 	// Aesthetics.
 	"theme": "DAneo Minimal.sublime-theme",
-	"color_scheme": "Packages/Dracula Color Scheme/Dracula.tmTheme",
+	"color_scheme": "Dracula Pro.sublime-color-scheme",
 	"font_face": "JetBrains Mono NL",
 	"font_size": 14,
 	"font_options": [

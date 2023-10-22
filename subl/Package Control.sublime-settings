@@ -4,7 +4,6 @@
 	],
 	"installed_packages": [
 		"ApplySyntax",
-		"Dracula Color Scheme",
 		"fish",
 		"Gnuplot",
 		"INI",
@@ -16,10 +15,15 @@
 		"RemoteSubl",
 		"SendCode",
 		"SSH Config",
+		"sublime-dracula-scheme",
 		"Terminal",
 		"Theme - DAneo",
 		"Tmux Syntax Highlight",
 		"TOML",
 		"VimL",
+	],
+	"repositories":
+	[
+		"https://github.com/facelessuser/sublime-dracula-scheme"
 	],
 }

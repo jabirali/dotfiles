@@ -1,0 +1,13 @@
+// Enhanced version of the Dracula colorscheme.
+{
+	"variables": {},
+	"globals": {},
+	"rules": [
+		{
+			// Python decorators.
+			"scope": "variable.annotation",
+			"font_style": "",
+			"foreground": "#FF77C1",
+		},
+	]
+}
