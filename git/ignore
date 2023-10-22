@@ -1,21 +1,10 @@
 # ~/.config/git/ignore: Globally ignored files.
 
-# Dirs
-snap
+# System
+.DS_Store
+.envrc
 .git
-.venv
-
-# Vim
-TAGS
-tags
-*.swp
-*.swo
-
-# Emacs
-*.elc
-\#*
-.\#*
-*~
+snap
 
 # Latex
 *.fdb_latexmk
@@ -28,11 +17,28 @@ tags
 *.log
 
 # Python
+__pycache__
+venv
+.venv
+.coverage*
+.*_cache
 *.pyc
 *.egg-info
 *.egg
 *.whl
 
-# C
+# C/C++
 *.out
 *.o
+
+# Vim
+TAGS
+tags
+*.swp
+*.swo
+
+# Emacs
+*.elc
+\#*
+.\#*
+*~

@@ -4,9 +4,6 @@
 htop
 karabiner
 
-# MacOS
-.DS_Store
-
 # Shells
 fish/conf.d
 fish/functions
@@ -39,10 +36,6 @@ Package Control.user-ca-bundle
 vscode/History
 vscode/workspaceStorage
 vscode/globalStorage
-
-# Emacs
-\#*
-.\#*
 
 # ITerm2
 iterm2/AppSupport
