@@ -1,3 +1,4 @@
+# ~/.config/fish/abbrfile:
 # This file defines aliases for `fish`, via the `fish-abbrfile` syntax.
 # For more information, see: https://github.com/jabirali/fish-abbrfile
 
@@ -12,12 +13,6 @@ tree  exa -T
 ls    exa
 
 # Shorter commands.
-a    sudo apt
-ai   sudo apt install
-ar   sudo apt autoremove --purge
-au   sudo apt update && sudo apt upgrade
-as   apt search
-
 b    brew
 bb   brew sync
 be   open -t ~/.config/brewfile/Brewfile
@@ -26,7 +21,7 @@ br   brew remove
 bu   brew upgrade
 bs   brew search
 
-c    cd ~/.config
+c    subl ~/.config
 
 e    vi
 e    vim
@@ -37,15 +32,16 @@ g    git
 ga   git add
 gb   git branch
 gc   git commit
+gcm  git commit -m
+gca  git commit -am
 gd   git diff
 gdc  git diff --cached
 gf   git fetch
 gm   git merge
-gp   git push
+gp   git pull
+gP   git push
 gs   git status
 gr   git reset
-
-p    projector
 
 l    ls
 l    exa
@@ -54,4 +50,4 @@ o    open
 o    xdg-open
 o    explorer.exe
 
-O    qlmanage -p
+q    qlmanage -p
