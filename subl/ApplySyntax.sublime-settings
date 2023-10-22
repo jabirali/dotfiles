@@ -1,7 +1,4 @@
 {
-    // Enable this to fix sidebar icons... But at the cost of spamming my
-    // Sublime Text config folder with extra *.sublime-settings files.
-    "add_exts_to_lang_settings": false,
     // Syntax detection rules. Mostly to fix highlighting of my dotfiles.
     "syntaxes": [
         {
