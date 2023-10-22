@@ -4,6 +4,9 @@
 # 	abbrfile        List of aliases that `fish-abbrfile` defines.
 #	fish_plugins	List of packages to automatically install.
 
+# Environment variables.
+set -x EDITOR subl
+
 # Bootstrap the package manager.
 if not functions -q fisher
 	curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish

@@ -21,7 +21,7 @@ br   brew remove
 bu   brew upgrade
 bs   brew search
 
-c    subl ~/.config
+d    dotfiles
 
 e    vi
 e    vim
