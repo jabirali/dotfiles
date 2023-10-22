@@ -77,14 +77,15 @@ matches:
 
   # # But matches can also be dynamic:
 
-  # # Print the current date
-  # - trigger: ":date"
-  #   replace: "{{mydate}}"
-  #   vars:
-  #     - name: mydate
-  #       type: date
-  #       params:
-  #         format: "%Y-%m-%d"
+  # Date and time.
+  - trigger: ";T"
+    replace: "{{mydate}}"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%Y-%m-%d %H:%M"
+
 
   # # Print the output of a shell command
   # - trigger: ":shell"
