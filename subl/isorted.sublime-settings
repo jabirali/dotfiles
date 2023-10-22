@@ -1,0 +1,4 @@
+// Autoformatting for Python imports.
+{
+	"isort_on_save": true,
+}
