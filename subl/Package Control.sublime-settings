@@ -1,6 +1,7 @@
 {
 	"bootstrapped": true,
-	"in_process_packages": [],
+	"in_process_packages": [
+	],
 	"installed_packages": [
 		"ApplySyntax",
 		"Dracula Color Scheme",
@@ -12,6 +13,7 @@
 		"LSP-pyright",
 		"NeoVintageous",
 		"Package Control",
+		"RemoteSubl",
 		"SendCode",
 		"SSH Config",
 		"Terminal",
