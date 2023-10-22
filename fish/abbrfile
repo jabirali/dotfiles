@@ -16,7 +16,7 @@ ls    exa
 b    brew
 bb   brew sync
 bc   brew clean
-be   open -t ~/.config/brewfile/Brewfile
+be   subl ~/.config/Brewfile ~/.config
 bi   brew install
 br   brew remove
 bu   brew upgrade
