@@ -12,12 +12,12 @@ endif
 
 # Function for automating mappings.
 def MapSearch(key: string, cmd: string)
-	execute 'nnoremap <C-q>' .. key .. ' <C-w>:' .. cmd .. '<cr>'
-	execute 'tnoremap <C-q>' .. key .. ' <C-w>:' .. cmd .. '<cr>'
+	execute 'nnoremap <C-s>' .. key .. ' <C-w>:' .. cmd .. '<cr>'
+	execute 'tnoremap <C-s>' .. key .. ' <C-w>:' .. cmd .. '<cr>'
 enddef
 
 # Commands for custom FZF calls.
-command Dotfiles call fzf#run(fzf#wrap({'source': 'git -C ~/.dotfiles ls-files | sed s_^_~/.dotfiles/_'}))
+command Dotfiles call fzf#run(fzf#wrap({'source': 'git -C ~/.config ls-files | sed s_^_~/.config/_'}))
 command Projects call fzf#run(fzf#wrap({'source': 'find ~/Code -name .git | sed s/\.git$//', 'sink': 'cd'}))
 command Zotero call fzf#run(fzf#wrap({'source': 'find ~/Zotero -iname "*.pdf"', 'sink': '!open'}))
 

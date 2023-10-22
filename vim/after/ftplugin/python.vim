@@ -1,6 +1,4 @@
-vim9script
-
-b:ale_fixers = ['isort', 'black']
-b:ale_fix_on_save = 1
+let b:ale_fixers = ['isort', 'black']
+let b:ale_fix_on_save = 1
 
 call ALEMap()
