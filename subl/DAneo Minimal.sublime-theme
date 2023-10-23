@@ -1,7 +1,7 @@
 {
 	"variables": {
 		// Nicer fonts.
-		"font_face": "JetBrains Mono",
+		"font_face": "Avenir Next",
 	},
 	"rules": [
 		// Disable sidebar heading.
