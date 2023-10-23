@@ -22,7 +22,7 @@ br   brew remove
 bu   brew upgrade
 bs   brew search
 
-c    subl ~/Code/$(ls ~/Code | fzf)
+c    cd ~/Code/$(ls ~/Code | fzf)
 
 d    dotfiles
 
