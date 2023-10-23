@@ -1,0 +1,14 @@
+<snippet>
+<content><![CDATA[
+\begin{figure}
+	\includegraphics[width=\columnwidth]{$1}
+	\caption{
+		$0
+	}
+	\label{fig:${2:${1/\.\w*$//}}}
+\end{figure}
+]]></content>
+<tabTrigger>fig</tabTrigger>
+<description>figure</description>
+<scope>text.tex.latex</scope>
+</snippet>

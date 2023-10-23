@@ -1,0 +1,10 @@
+<snippet>
+<content><![CDATA[
+```{python}
+$0
+```
+]]></content>
+<tabTrigger>py</tabTrigger>
+<description>python block</description>
+<scope>text.html.markdown.quarto</scope>
+</snippet>
