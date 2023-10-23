@@ -29,7 +29,6 @@
 	// Plugin: Daneo (adaptive theme).
 	"show_sidebar_tracked_label_colors": false,
 	"show_sidebar_icons": false,
-	"show_disclosure_buttons": true,
 	"file_tab_size": "small",
 	// Miscellaneous.
 	"ignored_packages": [

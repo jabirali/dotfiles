@@ -5,7 +5,9 @@
 #	fish_plugins	List of packages to automatically install.
 
 # Environment variables.
-set -x set EDITOR "subl -nw"
+export EDITOR="subl -nw"
+export BAT_THEME="ansi"
+export BAT_STYLE="plain"
 
 # Bootstrap the package manager.
 if not functions -q fisher
@@ -16,12 +18,17 @@ if not functions -q fisher
 end
 
 # Extra places to look for binaries.
+fish_add_path ~/.config/bin
 fish_add_path /usr/local/bin
 fish_add_path /opt/homebrew/bin
-fish_add_path /opt/homebrew/Caskroom/miniconda/base/bin/conda
+fish_add_path /opt/homebrew/Caskroom/miniconda/base/bin/
 fish_add_path /Library/TeX/texbin
 fish_add_path /Applications/Matlab.app/bin
-fish_add_path ~/.config/bin
+
+# Default command-line arguments.
+alias exa    'exa --group-directories-first --time-style=long-iso'
+alias matlab 'matlab -nosplash -nodesktop'
+alias wget   'wget -e robots=off'
 
 # Direnv integration.
 if type -q direnv
@@ -38,12 +45,4 @@ end
 if test -e ~/.iterm2_shell_integration.fish
 	source ~/.iterm2_shell_integration.fish
 end
-
-# Aliases for common actions.
-alias bat    'bat -p --theme ansi'
-alias exa    'exa --group-directories-first --time-style=long-iso'
-alias matlab 'matlab -nosplash -nodesktop'
-alias mkvenv 'echo layout_python >> .envrc; direnv allow'
-alias entest 'fd \'.py$\' | entr pytest'
-alias wget   'wget -e robots=off'
 

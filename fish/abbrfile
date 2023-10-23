@@ -3,14 +3,11 @@
 # For more information, see: https://github.com/jabirali/fish-abbrfile
 
 # Better UNIX IDE.
-vi    vim
-vi    subl
 cat   bat -p
-less  bat -p
 find  fd
 grep  rg
-tree  exa -T
 ls    exa
+tree  exa -T
 
 # Shorter commands.
 b    brew
