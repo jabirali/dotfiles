@@ -24,11 +24,20 @@ fish_add_path /Applications/Matlab.app/bin
 fish_add_path ~/.config/bin
 
 # Direnv integration.
-eval (direnv hook fish)
-__direnv_export_eval
+if type -q direnv
+	eval (direnv hook fish)
+	__direnv_export_eval
+end
 
 # Conda integration.
-conda shell.fish hook | source
+if type -q conda
+	conda shell.fish hook | source
+end
+
+# iTerm2 integration.
+if test -e ~/.iterm2_shell_integration.fish
+	source ~/.iterm2_shell_integration.fish
+end
 
 # Aliases for common actions.
 alias bat    'bat -p --theme ansi'
@@ -37,3 +46,4 @@ alias matlab 'matlab -nosplash -nodesktop'
 alias mkvenv 'echo layout_python >> .envrc; direnv allow'
 alias entest 'fd \'.py$\' | entr pytest'
 alias wget   'wget -e robots=off'
+
