@@ -19,8 +19,15 @@ def revtex():
     plt.style.use("~/.config/ipython/profile_default/startup/revtex.mplstyle")
 
 
+def dracula():
+    plt.style.use("~/.config/ipython/profile_default/startup/dracula.mplstyle")
+
+
 # Plots should not block ipython.
 plt.ion()
 
 # Pick a default colorscheme.
-catppuccin()
+dracula()
+
+# Don't show toolbar.
+mpl.rcParams["toolbar"] = "None"
