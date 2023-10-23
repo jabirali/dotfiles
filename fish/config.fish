@@ -26,9 +26,10 @@ fish_add_path /Library/TeX/texbin
 fish_add_path /Applications/Matlab.app/bin
 
 # Default command-line arguments.
-alias exa    'exa --group-directories-first --time-style=long-iso'
-alias matlab 'matlab -nosplash -nodesktop'
-alias wget   'wget -e robots=off'
+alias exa 'exa --group-directories-first --time-style=long-iso'
+alias ipython 'env TERM=linux ipython'  # ANSI colors
+alias matlab 'matlab -nosplash -nodesktop'  # CLI mode
+alias wget 'wget -e robots=off'  # Web scraping
 
 # Direnv integration.
 if type -q direnv
