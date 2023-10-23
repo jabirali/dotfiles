@@ -5,7 +5,7 @@
 #	fish_plugins	List of packages to automatically install.
 
 # Environment variables.
-set -x EDITOR subl
+set -x set EDITOR "subl -nw"
 
 # Bootstrap the package manager.
 if not functions -q fisher
