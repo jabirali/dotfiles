@@ -1,6 +1,6 @@
-g:ale_virtualtext_cursor = 0
-g:ale_floating_preview = 1
-g:ale_floating_window_border = ['│', '─', '┌', '┐', '┘', '└', '│', '─']
+let g:ale_virtualtext_cursor = 0
+let g:ale_floating_preview = 1
+let g:ale_floating_window_border = ['│', '─', '┌', '┐', '┘', '└', '│', '─']
 
 function g:ALEMap()
 	setlocal omnifunc=ale#completion#OmniFunc
