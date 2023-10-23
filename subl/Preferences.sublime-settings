@@ -16,6 +16,7 @@
 	"show_scroll_tabs_buttons": false,
 	"show_tab_close_buttons": false,
 	// User experience.
+	"auto_complete_delay": 1000,
 	"ensure_newline_at_eof_on_save": true,
 	"goto_anything_exclude_gitignore": true,
 	"scroll_past_end": true,
