@@ -32,6 +32,7 @@ Plug 'JuliaEditorSupport/julia-vim'
 #Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 #Plug 'muellan/am-colors'
 #Plug 'itsjunetime/rose-pine-vim'
+Plug 'dracula/vim'
 Plug 'jrudess/vim-foldtext'
 
 # Inbox {{{
