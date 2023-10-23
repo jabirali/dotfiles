@@ -1,7 +1,7 @@
 {
 	// Aesthetics.
 	"theme": "DAneo Minimal.sublime-theme",
-	"color_scheme": "Dracula Pro.sublime-color-scheme",
+	"color_scheme": "Dracula Pro (Alucard).sublime-color-scheme",
 	"font_face": "JetBrains Mono NL",
 	"font_size": 14,
 	"font_options": [
@@ -11,7 +11,7 @@
 	"hide_new_tab_button": true,
 	"highlight_gutter": false,
 	"highlight_line_number": false,
-	"show_disclosure_buttons": false,
+	"show_disclosure_buttons": true,
 	"show_new_tab_button": false,
 	"show_scroll_tabs_buttons": false,
 	"show_tab_close_buttons": false,
@@ -27,6 +27,8 @@
 	"neovintageous_build_version": 13200,
 	// Plugin: Daneo (adaptive theme).
 	"show_sidebar_tracked_label_colors": false,
+	"show_sidebar_icons": false,
+	"show_disclosure_buttons": true,
 	"file_tab_size": "small",
 	// Miscellaneous.
 	"ignored_packages": [

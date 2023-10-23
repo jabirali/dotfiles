@@ -1,9 +1,10 @@
 {
-	// http://www.sublimetext.com/docs/3/themes.html
 	"variables": {
-		// "font_face": "system",
+		// Nicer fonts.
+		"font_face": "JetBrains Mono",
 	},
 	"rules": [
+		// Disable sidebar heading.
 		{
 			"class": "sidebar_container",
 			"content_margin": [
@@ -11,7 +12,7 @@
 				-14,
 				0,
 				0
-			], // <= -10 is the top margin
+			],
 		},
 		{
 			"class": "sidebar_heading",
@@ -20,7 +21,7 @@
 				0,
 				0,
 				0
-			], // <= the last 0 is the transparency
+			],
 		},
 	],
 }
