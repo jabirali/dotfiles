@@ -1,0 +1,5 @@
+"LSP keybindings"
+noremap K :LspHover<cr>
+noremap gd :LspSymbolDefinition<cr>
+noremap gr :LspSymbolReferences<cr>
+noremap gs :LspDocumentSymbols<cr>
