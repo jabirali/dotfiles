@@ -11,6 +11,7 @@
 	"hide_new_tab_button": true,
 	"highlight_gutter": false,
 	"highlight_line_number": false,
+	"line_numbers": false,
 	"show_disclosure_buttons": true,
 	"show_new_tab_button": false,
 	"show_scroll_tabs_buttons": false,

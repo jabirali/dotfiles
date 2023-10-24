@@ -1,0 +1,143 @@
+// Custom keybindings for Sublime Text.
+[
+	// Jump to symbol definitions and back.
+	// NOTE: Similar bindings as Emacs (XREF).
+	{
+		// History back.
+		"keys": [
+			"super+,"
+		],
+		"command": "jump_back",
+	},
+	{
+		// History forward.
+		"keys": [
+			"super+<"
+		],
+		"command": "jump_forward",
+	},
+	{
+		// Definition (LSP).
+		"keys": [
+			"super+."
+		],
+		"command": "lsp_symbol_definition",
+		"context": [
+			{
+				"key": "lsp.session_with_capability",
+				"operand": "definitionProvider"
+			},
+		]
+	},
+	{
+		// References (LSP).
+		"keys": [
+			"super+>"
+		],
+		"command": "lsp_symbol_references",
+		"context": [
+			{
+				"key": "lsp.session_with_capability",
+				"operand": "referencesProvider"
+			}
+		]
+	},
+	// Jump to a terminal in the project folder.
+	// NOTE: This keybinding is taken from VSCode.
+	// NOTE: Shadows bindings for transient splits.
+	{
+		"keys": [
+			"super+j"
+		],
+		"command": "open_terminal_project_folder"
+	},
+	// Navigate the user interface with Cmd+Numbers.
+	// NOTE: Similar bindings to iTerm2 and VSCode.
+	{
+		"keys": [
+			"super+0"
+		],
+		"command": "toggle_side_bar"
+	},
+	{
+		"keys": [
+			"super+1"
+		],
+		"command": "focus_group",
+		"args": {
+			"group": 0
+		}
+	},
+	{
+		"keys": [
+			"super+2"
+		],
+		"command": "focus_group",
+		"args": {
+			"group": 1
+		}
+	},
+	{
+		"keys": [
+			"super+3"
+		],
+		"command": "focus_group",
+		"args": {
+			"group": 2
+		}
+	},
+	{
+		"keys": [
+			"super+4"
+		],
+		"command": "focus_group",
+		"args": {
+			"group": 3
+		}
+	},
+	{
+		"keys": [
+			"super+5"
+		],
+		"command": "focus_group",
+		"args": {
+			"group": 4
+		}
+	},
+	{
+		"keys": [
+			"super+6"
+		],
+		"command": "focus_group",
+		"args": {
+			"group": 5
+		}
+	},
+	{
+		"keys": [
+			"super+7"
+		],
+		"command": "focus_group",
+		"args": {
+			"group": 6
+		}
+	},
+	{
+		"keys": [
+			"super+8"
+		],
+		"command": "focus_group",
+		"args": {
+			"group": 7
+		}
+	},
+	{
+		"keys": [
+			"super+9"
+		],
+		"command": "focus_group",
+		"args": {
+			"group": 8
+		}
+	},
+]
