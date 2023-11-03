@@ -1,17 +1,55 @@
-vim9script
-g:FoldText_info = v:false
+" vim: fdm=marker
 
-source $VIMRUNTIME/defaults.vim
+" Built-in options {{{
+set signcolumn=no
+" }}}
+
+" Load built-in packages {{{
 runtime macros/matchit.vim
 runtime ftplugin/man.vim
+" }}}
 
-runtime init.vim
-runtime plugin.vim
-runtime! init/*
+" Plugins {{{
+call plug#begin('~/.cache/vim/plug.vim')
+	" Keybindings
+	Plug 'tpope/vim-rsi'
+	Plug 'tpope/vim-commentary'
+	Plug 'machakann/vim-sandwich'
+	Plug 'wellle/targets.vim'
+	Plug 'rhysd/clever-f.vim'
+	Plug 'bronson/vim-visual-star-search'
 
-set background=dark
-colorscheme sorbet
+	" Languages
+	Plug 'dense-analysis/ale'
+	Plug 'jpalardy/vim-slime'
+	Plug 'lervag/vimtex'
+	Plug 'kalekundert/vim-coiled-snake'
 
-hi StatusLine gui=NONE
-hi StatusLineNC gui=NONE
-hi EndOfBuffer guibg=NONE
+	" Aesthetics
+	Plug 'jrudess/vim-foldtext'
+	Plug 'vim/colorschemes'
+	Plug 'dracula/vim'
+
+	" IDE features
+	Plug 'sunaku/tmux-navigate'
+	Plug 'stefandtw/quickfix-reflector.vim'
+	Plug 'SirVer/ultisnips'
+	Plug 'lambdalisue/fern.vim'
+	Plug 'lambdalisue/nerdfont.vim'
+	Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+call plug#end()
+" }}}
+
+" Keybindings {{{
+nnoremap <tab> za
+nnoremap <S-tab> zM
+" }}}
+
+" Aesthetics {{{
+if v:version >= 900
+	colorscheme zaibatsu
+	highlight Folded cterm=NONE gui=NONE
+endif
+" }}}
+
+
