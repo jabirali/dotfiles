@@ -6,8 +6,10 @@
 
 # Environment variables.
 export EDITOR="subl -nw"
-export BAT_THEME="ansi"
+export DIRENV_LOG_FORMAT=
+
 export BAT_STYLE="plain"
+export BAT_THEME="ansi"
 
 # Bootstrap the package manager.
 if not functions -q fisher
@@ -22,6 +24,7 @@ fish_add_path ~/.config/bin
 fish_add_path /usr/local/bin
 fish_add_path /opt/homebrew/bin
 fish_add_path /opt/homebrew/Caskroom/miniconda/base/bin/
+fish_add_path /opt/conda/bin
 fish_add_path /Library/TeX/texbin
 fish_add_path /Applications/Matlab.app/bin
 
@@ -46,4 +49,3 @@ end
 if test -e ~/.iterm2_shell_integration.fish
 	source ~/.iterm2_shell_integration.fish
 end
-

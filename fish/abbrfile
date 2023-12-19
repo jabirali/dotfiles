@@ -13,20 +13,15 @@ tree  exa -T
 b    brew
 bb   brew sync
 bc   brew clean
-be   subl ~/.config/Brewfile ~/.config
+be   vim ~/.config/Brewfile
 bi   brew install
 br   brew remove
 bu   brew upgrade
 bs   brew search
 
-c    cd ~/Code/$(ls ~/Code | fzf)
+c    cd ~/Dropbox/Code/$(ls ~/Dropbox/Code | fzf)
 
 d    dotfiles
-
-e    vi
-e    vim
-e    nvim
-e    subl
 
 g    git
 ga   git add
@@ -50,4 +45,10 @@ o    open
 o    xdg-open
 o    explorer.exe
 
+p    ipython
+
 q    qlmanage -p
+
+v    vi
+v    vim
+
