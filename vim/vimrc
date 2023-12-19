@@ -1,55 +1,89 @@
-" vim: fdm=marker
+" vim: fdm=marker shiftwidth=2
 
-" Built-in options {{{
-set signcolumn=no
+" Built-in: Settings {{{
+  set mouse=a
+
+  set noshowcmd
+  set noshowmode
+  set signcolumn=no
+
+  set shortmess+=I
+  set fillchars+=eob:\ ,
+
+  set nowrap
+  set linebreak
+  set breakindent
+
+  set smarttab
+  set expandtab
+  set shiftwidth=4
+
+  set splitright
+  set splitbelow
 " }}}
 
-" Load built-in packages {{{
-runtime macros/matchit.vim
-runtime ftplugin/man.vim
+" Built-in: Packages {{{
+  runtime macros/matchit.vim
+  runtime ftplugin/man.vim
 " }}}
 
-" Plugins {{{
-call plug#begin('~/.cache/vim/plug.vim')
-	" Keybindings
-	Plug 'tpope/vim-rsi'
-	Plug 'tpope/vim-commentary'
-	Plug 'machakann/vim-sandwich'
-	Plug 'wellle/targets.vim'
-	Plug 'rhysd/clever-f.vim'
-	Plug 'bronson/vim-visual-star-search'
+" Plugin: Installation {{{
+  call plug#begin('~/.cache/vim/plug.vim')
 
-	" Languages
-	Plug 'dense-analysis/ale'
-	Plug 'jpalardy/vim-slime'
-	Plug 'lervag/vimtex'
-	Plug 'kalekundert/vim-coiled-snake'
+  " Keybindings
+  Plug 'tpope/vim-rsi'
+  Plug 'tpope/vim-commentary'
+  Plug 'rhysd/clever-f.vim'
+  " visualstar
 
-	" Aesthetics
-	Plug 'jrudess/vim-foldtext'
-	Plug 'vim/colorschemes'
-	Plug 'dracula/vim'
+  " Text objects
+  Plug 'machakann/vim-sandwich'
+  Plug 'wellle/targets.vim'
+  Plug 'michaeljsmith/vim-indent-object'
+  Plug 'kana/vim-textobj-user'
+  Plug 'kana/vim-textobj-entire'
 
-	" IDE features
-	Plug 'sunaku/tmux-navigate'
-	Plug 'stefandtw/quickfix-reflector.vim'
-	Plug 'SirVer/ultisnips'
-	Plug 'lambdalisue/fern.vim'
-	Plug 'lambdalisue/nerdfont.vim'
-	Plug 'lambdalisue/fern-renderer-nerdfont.vim'
-call plug#end()
+  " IDE features
+  Plug 'dense-analysis/ale'
+  Plug 'junegunn/fzf'
+  Plug 'junegunn/fzf.vim'
+
+  " Language support
+  Plug 'kalekundert/vim-coiled-snake'
+  Plug 'lervag/vimtex'
+
+  " Nice looks
+  Plug 'jeffkreeftmeijer/vim-dim'
+  Plug 'jrudess/vim-foldtext'
+  Plug 'vim/colorschemes'
+  Plug 'dracula/vim'
+
+  " Miscellaneous
+  Plug 'sunaku/tmux-navigate'
+
+  call plug#end()
 " }}}
 
-" Keybindings {{{
-nnoremap <tab> za
-nnoremap <S-tab> zM
+" Plugin: ALE {{{
+  " Show docstrings as pop-ups.
+  let g:ale_floating_preview = 1
+  let g:ale_floating_window_border = ['│', '─', '┌', '┐', '┘', '└', '│', '─']
 " }}}
 
-" Aesthetics {{{
-if v:version >= 900
-	colorscheme zaibatsu
-	highlight Folded cterm=NONE gui=NONE
-endif
+" Config: Keybindings {{{
+  " Ergonomic folding.
+  nnoremap <tab> za
+  nnoremap <S-tab> zM
 " }}}
 
+" Config: Aesthetics {{{
+  " Base colorscheme.
+  set termguicolors
+  colorscheme dracula
 
+  " Avoid excessive highlighting.
+  highlight! link Folded Comment
+
+  " Don't show fold text.
+  let g:FoldText_info=0
+" }}}
