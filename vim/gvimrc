@@ -1,0 +1,6 @@
+" vim: fdm=marker shiftwidth=2
+
+set guioptions=gme
+set guicursor+=a:blinkon0
+set guifont=JetBrains\ Mono:h13
+

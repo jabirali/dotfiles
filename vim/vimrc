@@ -2,13 +2,12 @@
 
 " Built-in settings {{{
   set mouse=a
+  set termguicolors
+  set clipboard=unnamed
 
   set noshowcmd
   set noshowmode
   set signcolumn=no
-
-  set shortmess+=I
-  set fillchars+=eob:\ ,
 
   set nowrap
   set linebreak
@@ -21,10 +20,48 @@
   set splitright
   set splitbelow
 
+  set shortmess+=I
+  set fillchars+=eob:\ ,
+  set virtualedit=block
+  set wildoptions=pum
+  set tildeop
+
   packadd! matchit
 " }}}
 
-" Package installation {{{
+" Package configuration {{{
+  let g:ale_floating_preview = 1
+  let g:ale_floating_window_border = ['│', '─', '┌', '┐', '┘', '└', '│', '─']
+
+  let g:FoldText_info = 0
+
+  let g:netrw_banner = 0
+
+  let g:UltiSnipsExpandTrigger = "<tab>"
+  let g:UltiSnipsJumpForwardTrigger = "<tab>"
+  let g:UltiSnipsJumpBackwardTrigger = "<S-tab>"
+
+  let g:wiki_root = '/Users/jabirali/iCloud/Notes'
+  let g:wiki_zotero_root = '/Users/jabirali/Zotero'
+  let g:wiki_filetypes = ['md']
+  let g:wiki_link_extension = '.md'
+  let g:wiki_mappings_local_journal = 
+  \ {
+  \  '<plug>(wiki-journal-prev)': '[f',
+  \  '<plug>(wiki-journal-next)': ']f',
+  \ }
+  let g:wiki_journal = 
+  \ {
+  \   'name': '',
+  \   'frequency': 'daily',
+  \   'date_format': {
+  \     'daily': '%Y-%m-%d',
+  \     'weekly': '%Y-W%W',
+  \   },
+  \ }
+" }}}
+
+" Package management {{{
   call plug#begin('~/.cache/vim/plug.vim')
 
   " Keybindings
@@ -60,24 +97,17 @@
   Plug 'dracula/vim'
 
   " Miscellaneous
+  Plug 'lervag/wiki.vim'
   Plug 'sunaku/tmux-navigate'
 
   call plug#end()
 " }}}
 
-" Package configuration {{{
-  " Show docstrings as boxed pop-ups.
-  let g:ale_floating_preview = 1
-  let g:ale_floating_window_border = ['│', '─', '┌', '┐', '┘', '└', '│', '─']
-
-  " Minimalist foldtext.
-  let g:FoldText_info=0
-" }}}
-
 " Keybindings {{{
   " Leader key
-  let mapleader=" "
   nnoremap <space> <nop>
+  let mapleader=" "
+  let maplocalleader=","
 
   " Fuzzy finder
   nnoremap <leader>b :Buffers<cr>
@@ -94,13 +124,14 @@
   " Surround
   nmap s ys
   vmap s S
+
+  " Greek and math
+  inoremap ;  <c-k>*
+  inoremap ;; <c-v>;
+  inoremap ;s <c-k>s*
 " }}}
 
 " Colorscheme {{{
-  " Base colorscheme.
-  set termguicolors
   colorscheme dracula
-
-  " Custom highlighting.
   highlight! link Folded Comment
 " }}}

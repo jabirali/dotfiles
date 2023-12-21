@@ -38,6 +38,8 @@ gP   git push
 gs   git status
 gr   git reset
 
+j    vim +WikiJournal
+
 l    ls
 l    exa
 
@@ -52,3 +54,4 @@ q    qlmanage -p
 v    vi
 v    vim
 
+w    vim +WikiIndex
