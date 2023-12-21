@@ -32,16 +32,19 @@
 
   " Keybindings
   Plug 'tpope/vim-rsi'
+  Plug 'tpope/vim-surround'
   Plug 'tpope/vim-commentary'
-  Plug 'rhysd/clever-f.vim'
-  " visualstar
-
-  " Text objects
-  Plug 'machakann/vim-sandwich'
-  Plug 'wellle/targets.vim'
-  Plug 'michaeljsmith/vim-indent-object'
+  Plug 'tpope/vim-unimpaired'
+  Plug 'tpope/vim-speeddating'
+  Plug 'tpope/vim-repeat'
   Plug 'kana/vim-textobj-user'
   Plug 'kana/vim-textobj-entire'
+  Plug 'kana/vim-textobj-line'
+  Plug 'kana/vim-textobj-indent'
+  Plug 'kana/vim-textobj-syntax'
+  Plug 'wellle/targets.vim'
+  Plug 'rhysd/clever-f.vim'
+  Plug 'bronson/vim-visual-star-search'
 
   " IDE features
   Plug 'dense-analysis/ale'
@@ -74,6 +77,10 @@
   " Ergonomic folding.
   nnoremap <tab> za
   nnoremap <S-tab> zM
+
+  " Better surround.
+  nmap s ys
+  vmap s S
 " }}}
 
 " Config: Aesthetics {{{
