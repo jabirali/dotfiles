@@ -5,7 +5,8 @@
 #	fish_plugins	List of packages to automatically install.
 
 # Environment variables.
-export EDITOR="subl -nw"
+export EDITOR="vim"
+export MANPAGER="vim +MANPAGER --not-a-term -"
 export DIRENV_LOG_FORMAT=
 
 export BAT_STYLE="plain"
