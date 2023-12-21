@@ -1,6 +1,6 @@
 " vim: fdm=marker shiftwidth=2
 
-" Built-in: Settings {{{
+" Built-in settings {{{
   set mouse=a
 
   set noshowcmd
@@ -20,14 +20,11 @@
 
   set splitright
   set splitbelow
+
+  packadd! matchit
 " }}}
 
-" Built-in: Packages {{{
-  runtime macros/matchit.vim
-  runtime ftplugin/man.vim
-" }}}
-
-" Plugin: Installation {{{
+" Package installation {{{
   call plug#begin('~/.cache/vim/plug.vim')
 
   " Keybindings
@@ -50,12 +47,13 @@
   Plug 'dense-analysis/ale'
   Plug 'junegunn/fzf'
   Plug 'junegunn/fzf.vim'
+  Plug 'sirver/ultisnips'
 
   " Language support
   Plug 'kalekundert/vim-coiled-snake'
   Plug 'lervag/vimtex'
 
-  " Nice looks
+  " Aesthetics
   Plug 'jeffkreeftmeijer/vim-dim'
   Plug 'jrudess/vim-foldtext'
   Plug 'vim/colorschemes'
@@ -67,30 +65,42 @@
   call plug#end()
 " }}}
 
-" Plugin: ALE {{{
-  " Show docstrings as pop-ups.
+" Package configuration {{{
+  " Show docstrings as boxed pop-ups.
   let g:ale_floating_preview = 1
   let g:ale_floating_window_border = ['│', '─', '┌', '┐', '┘', '└', '│', '─']
+
+  " Minimalist foldtext.
+  let g:FoldText_info=0
 " }}}
 
-" Config: Keybindings {{{
-  " Ergonomic folding.
+" Keybindings {{{
+  " Leader key
+  let mapleader=" "
+  nnoremap <space> <nop>
+
+  " Fuzzy finder
+  nnoremap <leader>b :Buffers<cr>
+  nnoremap <leader>f :Files<cr>
+  nnoremap <leader>s :Snippets<cr>
+  nnoremap <leader>h :Helptags<cr>
+  nnoremap <leader>' :Marks<cr>
+  nnoremap <leader>/ :RG<cr>
+
+  " Folding
   nnoremap <tab> za
   nnoremap <S-tab> zM
 
-  " Better surround.
+  " Surround
   nmap s ys
   vmap s S
 " }}}
 
-" Config: Aesthetics {{{
+" Colorscheme {{{
   " Base colorscheme.
   set termguicolors
   colorscheme dracula
 
-  " Avoid excessive highlighting.
+  " Custom highlighting.
   highlight! link Folded Comment
-
-  " Don't show fold text.
-  let g:FoldText_info=0
 " }}}
