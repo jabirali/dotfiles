@@ -61,9 +61,9 @@ matches:
     replace: "η"
   - trigger: ";z"
     replace: "ζ"
-  - trigger: ";["
+  - trigger: ";<"
     replace: "⟨"
-  - trigger: ";]"
+  - trigger: ";>"
     replace: "⟩"
 
   - trigger: ";I"

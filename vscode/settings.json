@@ -33,4 +33,6 @@
     "terminal.integrated.shell.osx": "/opt/homebrew/bin/fish",
     "terminal.integrated.shellIntegration.decorationsEnabled": "never",
     "workbench.layoutControl.enabled": false,
+    "editor.accessibilitySupport": "off",
+    "workbench.colorTheme": "Solarized Light",
 }

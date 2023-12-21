@@ -1,11 +1,12 @@
 {
 	// Aesthetics.
-	"theme": "DAneo Minimal.sublime-theme",
-	"color_scheme": "Dracula Pro (Alucard).sublime-color-scheme",
+	"theme": "DAneo Origin.sublime-theme",
+	"color_scheme": "ayu-mirage.sublime-color-scheme",
 	"font_face": "JetBrains Mono NL",
 	"font_size": 14,
 	"font_options": [
-		"no_italic"
+		"no_bold",
+		"no_italic",
 	],
 	// User interface.
 	"hide_new_tab_button": true,
@@ -33,8 +34,7 @@
 	"file_tab_size": "small",
 	// Miscellaneous.
 	"ignored_packages": [
-		"Six",
 		"Vintage",
-		"Vintageous",
 	],
+	"index_files": true,
 }

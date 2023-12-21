@@ -1,5 +1,8 @@
 # IPython startup routine.
 
+import os
+import sys
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -24,10 +27,13 @@ def dracula():
 
 
 # Plots should not block ipython.
-plt.ion()
+# plt.ion()
 
 # Pick a default colorscheme.
-dracula()
+# dracula()
 
 # Don't show toolbar.
-mpl.rcParams["toolbar"] = "None"
+# mpl.rcParams["toolbar"] = "None"
+
+# Fresh start.
+# os.system("clear")

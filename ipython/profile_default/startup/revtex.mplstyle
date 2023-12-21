@@ -35,4 +35,5 @@ axes.linewidth: 1.0
 figure.frameon: False
 legend.frameon: False
 lines.linewidth: 1.2
+lines.markersize: 4.2
 savefig.format: pdf

@@ -1,21 +1,17 @@
 // Custom keybindings for Sublime Text.
 [
-	// Jump to symbol definitions and back.
-	// NOTE: Similar bindings as Emacs (XREF).
+	// Open a terminal in the project folder.
+	// NOTE: Shadows a HTML-specific keybdinding.
 	{
-		// History back.
+		"command": "open_terminal_project_folder",
 		"keys": [
-			"super+,"
+			"super+k",
+			"super+t"
 		],
-		"command": "jump_back",
 	},
-	{
-		// History forward.
-		"keys": [
-			"super+<"
-		],
-		"command": "jump_forward",
-	},
+	// Jump to symbol definitions and references.
+	// NOTE: Bindings inspired by Emacs (XREF).
+	// NOTE: Shadows the binding for settings.
 	{
 		// Definition (LSP).
 		"keys": [
@@ -32,7 +28,7 @@
 	{
 		// References (LSP).
 		"keys": [
-			"super+>"
+			"super+,"
 		],
 		"command": "lsp_symbol_references",
 		"context": [
