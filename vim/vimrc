@@ -1,6 +1,6 @@
 " vim: fdm=marker shiftwidth=2
 
-" Built-in settings {{{
+" Settings {{{
   set mouse=a
   set termguicolors
   set clipboard=unnamed
@@ -29,7 +29,7 @@
   packadd! matchit
 " }}}
 
-" Package configuration {{{
+" Package config {{{
   let g:ale_floating_preview = 1
   let g:ale_floating_window_border = ['│', '─', '┌', '┐', '┘', '└', '│', '─']
 
@@ -125,10 +125,34 @@
   nmap s ys
   vmap s S
 
-  " Greek and math
-  inoremap ;  <c-k>*
-  inoremap ;; <c-v>;
-  inoremap ;s <c-k>s*
+  " Digraphs
+  inoremap ;   <c-k>
+  inoremap ;;  <c-k>*
+
+  inoremap ;<space> ;<space>
+  inoremap ;<cr>    ;<cr>
+" }}}
+
+" Digraphs {{{
+  " Norwegian
+  digraphs Ae 198 " Æ
+  digraphs Oo 216 " Ø
+  digraphs Aa 197 " Å
+  digraphs ae 230 " æ
+  digraphs oo 248 " ø
+  digraphs aa 229 " å
+
+  " Math
+  digraphs *A 8704  " ∀
+  digraphs *E 8707  " ∃
+  digraphs *I 8747  " ∫
+  digraphs *S 8721  " ∑
+  digraphs *V 8711  " ∇
+  digraphs *s  963  " σ
+  digraphs *v 8706  " ∂
+  digraphs *.  183  " ·
+  digraphs *= 8801  " ≡ 
+  digraphs *~ 8776  " ≈
 " }}}
 
 " Colorscheme {{{
