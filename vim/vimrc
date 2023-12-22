@@ -52,7 +52,8 @@
   \ }
   let g:wiki_journal = 
   \ {
-  \   'root': g:wiki_root,
+  \   'root': '',
+  \   'name': 'journal',
   \   'frequency': 'daily',
   \   'date_format': {
   \     'daily': '%Y-%m-%d',
@@ -88,6 +89,7 @@
 
   " Language support
   Plug 'kalekundert/vim-coiled-snake'
+  Plug 'vim-pandoc/vim-pandoc'
   Plug 'lervag/vimtex'
 
   " Aesthetics
@@ -117,14 +119,14 @@
   nnoremap <leader>'  :Marks<cr>
   nnoremap <leader>/  :RG<cr>
 
+  " Package management
+  nnoremap <leader>e :edit ~/.vim/<cr>
+  nnoremap <leader>p :PlugInstall<cr>
+
   " Personal wiki (todo/note/journal)
   nnoremap <leader>t :WikiIndex<cr>
   nnoremap <leader>n :WikiPages<cr>
   nnoremap <leader>j :WikiJournal<cr>
-
-  " Folding
-  nnoremap <tab> za
-  nnoremap <S-tab> zM
 
   " Surround
   nmap s ys
