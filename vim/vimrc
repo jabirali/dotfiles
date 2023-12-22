@@ -52,7 +52,7 @@
   \ }
   let g:wiki_journal = 
   \ {
-  \   'name': '',
+  \   'root': g:wiki_root,
   \   'frequency': 'daily',
   \   'date_format': {
   \     'daily': '%Y-%m-%d',
@@ -110,12 +110,17 @@
   let maplocalleader=","
 
   " Fuzzy finder
-  nnoremap <leader>b :Buffers<cr>
-  nnoremap <leader>f :Files<cr>
-  nnoremap <leader>s :Snippets<cr>
-  nnoremap <leader>h :Helptags<cr>
-  nnoremap <leader>' :Marks<cr>
-  nnoremap <leader>/ :RG<cr>
+  nnoremap <leader>b  :Buffers<cr>
+  nnoremap <leader>f  :Files<cr>
+  nnoremap <leader>s  :Snippets<cr>
+  nnoremap <leader>h  :Helptags<cr>
+  nnoremap <leader>'  :Marks<cr>
+  nnoremap <leader>/  :RG<cr>
+
+  " Personal wiki (todo/note/journal)
+  nnoremap <leader>t :WikiIndex<cr>
+  nnoremap <leader>n :WikiPages<cr>
+  nnoremap <leader>j :WikiJournal<cr>
 
   " Folding
   nnoremap <tab> za
