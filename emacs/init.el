@@ -23,6 +23,7 @@
   :init
   (setq evil-want-keybinding nil)
   (setq evil-want-integration t)
+  (setq evil-want-C-u-scroll t)
   :config
   (evil-mode 1))
 
@@ -30,6 +31,18 @@
   :after evil
   :config
   (evil-collection-init))
+
+;; Org mode
+(use-package org)
+
+(use-package org-modern
+  :after org
+  :custom
+  (org-modern-list nil)
+  (org-modern-star nil)
+  :config
+  (global-org-modern-mode))
+
 
 ;; Vertico, Consult, Marginalia, Orderless, and Corfu setup
 (use-package vertico
@@ -59,20 +72,24 @@
   :hook
   (python-mode . eglot-ensure))
 
-;; Kaolin themes configuration
-(use-package kaolin-themes
+;; Theme configuration
+(use-package catppuccin-theme
   :config
-  (load-theme 'kaolin-dark t))
+  (load-theme 'catppuccin t))
+  
+;; (use-package kaolin-themes
+;;   :config
+;;   (load-theme 'kaolin-dark t))
 
-(defun toggle-kaolin-theme ()
-  "Toggle between Kaolin light and dark themes."
-  (interactive)
-  (if (eq (car custom-enabled-themes) 'kaolin-dark)
-      (load-theme 'kaolin-light t)
-    (load-theme 'kaolin-dark t)))
+;; (defun toggle-kaolin-theme ()
+;;   "Toggle between Kaolin light and dark themes."
+;;   (interactive)
+;;   (if (eq (car custom-enabled-themes) 'kaolin-dark)
+;;       (load-theme 'kaolin-light t)
+;;     (load-theme 'kaolin-dark t)))
 
-;; Hotkey to toggle themes
-(global-set-key (kbd "C-c t") 'toggle-kaolin-theme)
+;; ;; Hotkey to toggle themes
+;; (global-set-key (kbd "C-c t") 'toggle-kaolin-theme)
 
 ;;; Spacemacs Lite.
 (use-package which-key
@@ -82,6 +99,7 @@
 (use-package general
   :config
   ;; Define a space leader key
+  (general-auto-unbind-keys)
   (general-create-definer my-leader-def
     :states 'normal
     :keymaps 'override
@@ -91,29 +109,61 @@
 
   ;; Example usage of the space leader key
   (my-leader-def
-    ;; Top-level headers.
-    "f" '(:ignore t :which-key "file")
-    "b" '(:ignore t :which-key "buf")
-    "o" '(:ignore t :which-key "org")
-
-    ;; Buffers.
-    "bb" '(switch-to-buffer :which-key "switch")
-    "bk" '(kill-this-buffer :which-key "kill")
-
-    ;; Files.
-    "fs" '(save-buffer :which-key "save")
-    "ff" '(find-file   :which-key "find")
-
-    ;; Org-mode.
-    "oa" '(org-agenda :which-key "agenda")
-
-    ;; Actions.
     "SPC" '(execute-extended-command :which-key "cmd")
-    "TAB" '(switch-to-buffer :which-key "buf")
-    "`"   '(eshell :which-key "sh")
+    "TAB" '(switch-to-buffer :which-key "buffer")
+    "`" 'ace-window
+
+    "l" '(eval-expression :which-key "lisp")
+
+    "c" '(:ignore t :which-key "change")
+    "ct" '(consult-theme :which-key "theme")
+
+    "o" '(:ignore t :which-key "org")
+    "oo" '(org-agenda :which-key "agenda")
+    "oi" '(lambda () (interactive) (find-file-other-tab "~/Desktop/Inbox.org") :which-key "inbox")
+    "oj" '(lambda () (interactive) (find-file-other-tab "~/Desktop/Journal.org") :which-key "journal")
+    "ok" '(org-capture :which-key "capture")
+
+    "i" '(consult-imenu :which-key "imenu")
+
+    "h" '(:keymap help-map :which-key "help")
+
+    "w" '(:keymap evil-window-map :which-key "win")
+
+    "f" '(:ignore t :which-key "file")
+    "ff" '(find-file :which-key "find")
+    "fs" '(save-buffer :which-key "save")
+    "fk" '(kill-this-buffer :which-key "kill")
+    "fr" '(consult-recent-file :which-key "recent")
+
+    "g" '(:ignore t :which-key "git")
+    "gg" '(magit :which-key "status")
+
+    "u" '(universal-argument :which-key "unarg")
+    ;; Actions
+
+    "[" 'evil-tab-prev
+    "]" 'evil-tab-next
+    ; "`"   '(eshell :which-key "sh")
+    "e"   '(eval-defun :which-key "eval")
     ))
 
-;; Rest of your configurations (Evil, Vertico, etc.)
+;; Misc
+(set-frame-font "JetBrains Mono NL 14" nil t)
+(tool-bar-mode +1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(recentf-mode 1)
+(winner-mode 1)
+(blink-cursor-mode -1)
+(pixel-scroll-precision-mode 1)
+(tab-bar-mode)
+(setq tab-bar-close-button-show nil
+      tab-bar-new-button-show nil)
+
+;; Inbox
+(use-package ace-window)
+(use-package magit)
 
 ;; End of init.el file
 
@@ -124,8 +174,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("80214de566132bf2c844b9dee3ec0599f65c5a1f2d6ff21a2c8309e6e70f9242" default))
  '(package-selected-packages
-   '(which-key general kaolin-themes corfu orderless marginalia consult vertico evil-collection evil)))
+   '(magit ace-window org-modern catppuccin-theme catppuccin which-key general kaolin-themes corfu orderless marginalia consult vertico evil-collection evil)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
