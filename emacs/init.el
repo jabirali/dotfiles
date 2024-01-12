@@ -178,8 +178,8 @@
 
     "o" '(:ignore t :which-key "org")
     "oo" '(org-agenda :which-key "agenda")
-    "oi" '(lambda () (interactive) (find-file-other-tab "~/Sync/Org/Inbox.org") :which-key "inbox")
-    "oj" '(lambda () (interactive) (find-file-other-tab "~/Sync/Org/Journal.org") :which-key "journal")
+    "oi" '(lambda () (interactive) (find-file-other-tab "~/Sync/Org/inbox.org") :which-key "inbox")
+    "oj" '(lambda () (interactive) (find-file-other-tab "~/Sync/Org/journal.org") :which-key "journal")
     "ok" '(org-capture :which-key "capture")
 
     "i" '(consult-imenu :which-key "imenu")
