@@ -90,6 +90,7 @@
   " Language support
   Plug 'kalekundert/vim-coiled-snake'
   Plug 'vim-pandoc/vim-pandoc'
+  Plug 'vim-pandoc/vim-pandoc-syntax'
   Plug 'lervag/vimtex'
 
   " Aesthetics
@@ -121,7 +122,7 @@
 
   " Package management
   nnoremap <leader>e :edit ~/.vim/<cr>
-  nnoremap <leader>p :PlugInstall<cr>
+  nnoremap <leader>p :source<bar>PlugInstall<cr>
 
   " Personal wiki (todo/note/journal)
   nnoremap <leader>t :WikiIndex<cr>
