@@ -16,7 +16,6 @@ GUI mode, or meta (⌥) if Emacs is running in a terminal."
 (⌘ ";" 'comment-line)
 (⌘ "/" 'dabbrev-expand)
 (⌘ "." 'xref-find-definitions)
-(⌘ "," 'xref-go-back)
 (⌘ "b" 'switch-to-buffer)
 (⌘ "B" 'ibuffer)
 (⌘ "f" 'find-file)
@@ -24,15 +23,15 @@ GUI mode, or meta (⌥) if Emacs is running in a terminal."
 (⌘ "e" 'eval-defun)
 (⌘ "g" 'magit)
 (⌘ "o" 'ace-window)
-(⌘ "k" 'kill-this-buffer)
-(⌘ "K" 'kill-some-buffers)
-(⌘ "q" 'fill-paragraph)
+(⌘ "q" 'kill-buffer-and-window)
+(⌘ "Q" 'kill-some-buffers)
 (⌘ "r" 'consult-recent-file)
 (⌘ "u" 'universal-argument)
 (⌘ "x" 'execute-extended-command)
 
 ;; MacOS-like keybindings.
-(⌘ "p" 'execute-extended-command)
+(⌘ "k" 'execute-extended-command)
+(⌘ "p" 'project-find-file)
 (⌘ "s" 'save-buffer)
 (⌘ "S" 'save-some-buffers)
 (⌘ "t" 'tab-bar-new-tab)
@@ -41,6 +40,7 @@ GUI mode, or meta (⌥) if Emacs is running in a terminal."
 (⌘ "}" 'tab-bar-switch-to-next-tab)
 (⌘ "[" 'tab-bar-history-back)
 (⌘ "]" 'tab-bar-history-forward)
+(⌘ "," 'baba/config)
 
 ;; Org-mode keybindings.
 (⌘ "<return>" 'org-capture)
@@ -80,7 +80,11 @@ GUI mode, or meta (⌥) if Emacs is running in a terminal."
   (scroll-bar-mode -1)
   (blink-cursor-mode -1)
   (pixel-scroll-precision-mode 1)
-  (setq ring-bell-function 'ignore))
+  (setq ring-bell-function 'ignore)
+
+  (defun baba/config ()
+      (interactive)
+      (find-file (expand-file-name "~/.config/emacs/init.el"))))
 
 (use-package tab-bar
   :custom
