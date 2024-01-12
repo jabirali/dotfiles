@@ -17,10 +17,11 @@
   :config
   (set-frame-font "JetBrains Mono NL 14" nil t)
   (setq-default line-spacing 0.15)
+  (setq inhibit-startup-message t)
   ;; UI modes.
+  (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (blink-cursor-mode -1)
-  (tool-bar-mode -1)
   (pixel-scroll-precision-mode 1)
   ;; UX modes.
   (recentf-mode 1))
@@ -34,18 +35,16 @@
   (tab-bar-mode 1)
   (tab-bar-history-mode 1)
   :bind
-  ;; Browser-like keybindings for tab switching.
+  ;; Browser-like keybindings for tabs.
   ("M-{" . tab-bar-switch-to-prev-tab)
   ("M-}" . tab-bar-switch-to-next-tab)
+  ("M-w" . tab-bar-close-tab)
+  ("M-t" . tab-bar-new-tab)
   ;; Browser-like keybindings for history.
   ("M-[" . tab-bar-history-back)
   ("M-]" . tab-bar-history-forward))
 
-;; General Emacs settings
-(setq inhibit-startup-message t)
-
 ;; Theming
-
 (use-package doom-themes
   :config
   (load-theme 'doom-oksolar-light t))
@@ -72,6 +71,10 @@
 
 ;; Org mode
 (use-package org
+  :bind
+  (:map org-mode-map
+	("M-{" . nil)
+	("M-}" . nil))
   :custom
   (org-ctrl-k-protect-subtree t)
   (org-auto-align-tags nil)
@@ -144,9 +147,8 @@
   (my-leader-def
     "SPC" '(execute-extended-command :which-key "cmd")
     "TAB" '(switch-to-buffer :which-key "buffer")
-    "`" 'ace-window
 
-    "l" '(eval-expression :which-key "lisp")
+    ";" '(eval-expression :which-key "lisp")
 
     "c" '(:ignore t :which-key "change")
     "ct" '(consult-theme :which-key "theme")
@@ -178,20 +180,15 @@
     "pc" 'package-autoremove
 
     "u" '(universal-argument :which-key "unarg")
-    ;; Actions
 
-    "[" 'evil-tab-prev
-    "]" 'evil-tab-next
-    ; "`"   '(eshell :which-key "sh")
     "e"   '(eval-defun :which-key "eval")
     ))
 
-(evil-define-key 'normal 'global "]t" 'tab-bar-switch-to-next-tab)
-(evil-define-key 'normal 'global "[t" 'tab-bar-switch-to-prev-tab)
-
-
 ;; Inbox
-(use-package ace-window)
+(use-package ace-window
+  :bind
+  ("M-o" . 'ace-window))
+
 (use-package magit)
 
 (setq org-todo-keywords
