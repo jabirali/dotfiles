@@ -12,6 +12,9 @@ fish/fish_variables
 .bash_history
 .history
 
+# Emacs
+*.elc
+
 # Python
 ipython/*/startup/README
 ipython/*/db

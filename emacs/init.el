@@ -5,10 +5,47 @@
   :custom
   (use-package-always-ensure t))
 
+;; Prevent config spam.
+(use-package no-littering
+  :init
+  (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (load custom-file))
+
+;; Load bundled modes.
+(use-package emacs
+  :config
+  (set-frame-font "JetBrains Mono NL 14" nil t)
+  (setq-default line-spacing 0.15)
+  ;; UI modes.
+  (scroll-bar-mode -1)
+  (blink-cursor-mode -1)
+  (tool-bar-mode -1)
+  (pixel-scroll-precision-mode 1)
+  ;; UX modes.
+  (recentf-mode 1))
+
+(use-package tab-bar
+  :custom
+  (tab-bar-show 1)
+  (tab-bar-close-button-show nil)
+  (tab-bar-new-button-show nil)
+  :config
+  (tab-bar-mode 1)
+  (tab-bar-history-mode 1)
+  :bind
+  ;; Browser-like keybindings for tab switching.
+  ("M-{" . tab-bar-switch-to-prev-tab)
+  ("M-}" . tab-bar-switch-to-next-tab)
+  ;; Browser-like keybindings for history.
+  ("M-[" . tab-bar-history-back)
+  ("M-]" . tab-bar-history-forward))
+
 ;; General Emacs settings
 (setq inhibit-startup-message t)
 
 ;; Theming
+
 (use-package doom-themes
   :config
   (load-theme 'doom-oksolar-light t))
@@ -87,32 +124,6 @@
 ;;   :init
 ;;   (global-corfu-mode))
 
-;; Eglot configuration with Pyright for Python files
-;; (use-package eglot
-;;   :config
-;;   (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
-;;   :hook
-;;   (python-mode . eglot-ensure))
-
-;; Theme configuration
-;; (use-package catppuccin-theme
-;;   :config
-;;   (load-theme 'catppuccin t))
-  
-;; (use-package kaolin-themes
-;;   :config
-;;   (load-theme 'kaolin-dark t))
-
-;; (defun toggle-kaolin-theme ()
-;;   "Toggle between Kaolin light and dark themes."
-;;   (interactive)
-;;   (if (eq (car custom-enabled-themes) 'kaolin-dark)
-;;       (load-theme 'kaolin-light t)
-;;     (load-theme 'kaolin-dark t)))
-
-;; ;; Hotkey to toggle themes
-;; (global-set-key (kbd "C-c t") 'toggle-kaolin-theme)
-
 ;;; Spacemacs Lite.
 (use-package which-key
   :config
@@ -179,21 +190,6 @@
 (evil-define-key 'normal 'global "[t" 'tab-bar-switch-to-prev-tab)
 
 
-;; Misc
-(set-frame-font "JetBrains Mono NL 14" nil t)
-(tool-bar-mode +1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(recentf-mode 1)
-(winner-mode 1)
-(blink-cursor-mode -1)
-(pixel-scroll-precision-mode 1)
-; (tab-bar-mode)
-(setq tab-bar-close-button-show nil
-      tab-bar-new-button-show nil)
-
-(setq org-agenda-files '("~/Sync/Org"))
-
 ;; Inbox
 (use-package ace-window)
 (use-package magit)
@@ -201,30 +197,5 @@
 (setq org-todo-keywords
       '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
 	(sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
-(setq-default line-spacing 0.15)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(magit ace-window general which-key catppuccin-theme orderless marginalia consult vertico org-download org-modern evil-collection evil spacious-padding doom-modeline doom-themes)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(fringe ((t :background "#FBF7EF")))
- '(header-line ((t :box (:line-width 4 :color "#eeeae3" :style nil))))
- '(header-line-highlight ((t :box (:color "#657377"))))
- '(keycast-key ((t)))
- '(line-number ((t :background "#FBF7EF")))
- '(mode-line ((t :box (:line-width 6 :color "#eeeae3" :style nil))))
- '(mode-line-active ((t :box (:line-width 6 :color "#eeeae3" :style nil))))
- '(mode-line-highlight ((t :box (:color "#657377"))))
- '(mode-line-inactive ((t :box (:line-width 6 :color "#f4f0e9" :style nil))))
- '(tab-bar-tab ((t :box (:line-width 4 :color "#FBF7EF" :style nil))))
- '(tab-bar-tab-inactive ((t :box (:line-width 4 :color "#F1E9D2" :style nil))))
- '(window-divider ((t :background "#FBF7EF" :foreground "#FBF7EF")))
- '(window-divider-first-pixel ((t :background "#FBF7EF" :foreground "#FBF7EF")))
- '(window-divider-last-pixel ((t :background "#FBF7EF" :foreground "#FBF7EF"))))
+
+(setq org-agenda-files '("~/Sync/Org"))
