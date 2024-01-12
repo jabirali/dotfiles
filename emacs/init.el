@@ -14,42 +14,67 @@
 
 ;; Load bundled modes.
 (use-package emacs
+  :custom
+  (mac-command-modifier 'super)
+  (mac-option-modifier 'meta)
+  (inhibit-startup-message t)
+  (line-spacing 0.15)
+  :custom-face
+  (default ((t (:family "JetBrains Mono NL" :height 140))))
   :config
-  (set-frame-font "JetBrains Mono NL 14" nil t)
-  (setq-default line-spacing 0.15)
-  (setq inhibit-startup-message t)
-  ;; UI modes.
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (blink-cursor-mode -1)
   (pixel-scroll-precision-mode 1)
-  ;; UX modes.
+  :bind
+  ("s-x" . execute-extended-command)
+  ("s-;" . execute-extended-command)
+  ("s-:" . eval-expression))
+
+(use-package recentf
+  :config
   (recentf-mode 1))
+
+(use-package savehist
+  :config
+  (savehist-mode 1))
 
 (use-package tab-bar
   :custom
   (tab-bar-show 1)
   (tab-bar-close-button-show nil)
-  (tab-bar-new-button-show nil)
+  (tab-bar-new-tab-choice "*scratch*")
+  (tab-bar-tab-hints t)
+  (tab-bar-select-tab-modifiers '(super))
+  (tab-bar-format '(tab-bar-format-tabs tab-bar-separator))
   :config
   (tab-bar-mode 1)
   (tab-bar-history-mode 1)
   :bind
   ;; Browser-like keybindings for tabs.
-  ("M-{" . tab-bar-switch-to-prev-tab)
-  ("M-}" . tab-bar-switch-to-next-tab)
-  ("M-w" . tab-bar-close-tab)
-  ("M-t" . tab-bar-new-tab)
+  ("s-{" . tab-bar-switch-to-prev-tab)
+  ("s-}" . tab-bar-switch-to-next-tab)
+  ("s-w" . tab-bar-close-tab)
+  ("s-t" . tab-bar-new-tab)
   ;; Browser-like keybindings for history.
-  ("M-[" . tab-bar-history-back)
-  ("M-]" . tab-bar-history-forward))
+  ("s-[" . tab-bar-history-back)
+  ("s-]" . tab-bar-history-forward))
 
 ;; Theming
 (use-package doom-themes
   :config
   (load-theme 'doom-oksolar-light t))
 
-(use-package doom-modeline)
+(use-package doom-modeline
+  :custom
+  (doom-modeline-icon nil)
+  (doom-modeline-modal nil)
+  (doom-modeline-buffer-encoding nil)
+  (doom-modeline-buffer-modification-icon nil)
+  (doom-modeline-workspace-name nil)
+  :config
+  (doom-modeline-mode))
+
 
 (use-package spacious-padding
   :config
@@ -58,9 +83,11 @@
 ;; Evil mode configuration
 (use-package evil
   :init
-  (setq evil-want-keybinding nil)
-  (setq evil-want-integration t)
-  (setq evil-want-C-u-scroll t)
+  :custom
+  (evil-want-keybinding nil)
+  (evil-want-integration t)
+  (evil-want-C-u-scroll t)
+  (evil-respect-visual-line-mode t)
   :config
   (evil-mode 1))
 
@@ -71,10 +98,6 @@
 
 ;; Org mode
 (use-package org
-  :bind
-  (:map org-mode-map
-	("M-{" . nil)
-	("M-}" . nil))
   :custom
   (org-ctrl-k-protect-subtree t)
   (org-auto-align-tags nil)
@@ -104,7 +127,7 @@
   (setq org-download-annotate-function (lambda (_link) ""))
   (org-download-enable)
   :bind (:map org-mode-map
-	      ("M-p" . org-download-clipboard)))
+	      ("s-v" . org-download-clipboard)))
 
 ;; Vertico, Consult, Marginalia, Orderless, and Corfu setup
 (use-package vertico
@@ -187,7 +210,7 @@
 ;; Inbox
 (use-package ace-window
   :bind
-  ("M-o" . 'ace-window))
+  ("s-o" . 'ace-window))
 
 (use-package magit)
 
