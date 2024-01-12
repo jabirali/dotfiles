@@ -1,22 +1,23 @@
-;; Initialize package sources
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-
-;; Ensure use-package is installed
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(eval-when-compile
-  (require 'use-package))
+;; Use 'use-package' for package management
+(use-package use-package
+  :config
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  :custom
+  (use-package-always-ensure t))
 
 ;; General Emacs settings
 (setq inhibit-startup-message t)
 
-;; Use 'use-package' for package management
-(require 'use-package)
-(setq use-package-always-ensure t)
+;; Theming
+(use-package doom-themes
+  :config
+  (load-theme 'doom-oksolar-light t))
+
+(use-package doom-modeline)
+
+(use-package spacious-padding
+  :config
+  (spacious-padding-mode))
 
 ;; Evil mode configuration
 (use-package evil
@@ -33,7 +34,16 @@
   (evil-collection-init))
 
 ;; Org mode
-(use-package org)
+(use-package org
+  :custom
+  (org-ctrl-k-protect-subtree t)
+  (org-auto-align-tags nil)
+  (org-startup-with-inline-images t)
+  (org-image-actual-width '(400))
+  (org-reverse-note-order t)
+  (org-startup-indented t)
+  (org-startup-folded 'content)
+  (org-pretty-entities t))
 
 (use-package org-modern
   :after org
@@ -43,6 +53,18 @@
   :config
   (global-org-modern-mode))
 
+(use-package org-download
+  :after org
+  :custom
+  (org-download-method 'directory)
+  (org-download-image-dir "assets")
+  (org-download-timestamp "%Y%m%d%H%M%S")
+  (org-download-screenshot-basename ".png")
+  :config
+  (setq org-download-annotate-function (lambda (_link) ""))
+  (org-download-enable)
+  :bind (:map org-mode-map
+	      ("M-p" . org-download-clipboard)))
 
 ;; Vertico, Consult, Marginalia, Orderless, and Corfu setup
 (use-package vertico
@@ -66,16 +88,16 @@
 ;;   (global-corfu-mode))
 
 ;; Eglot configuration with Pyright for Python files
-(use-package eglot
-  :config
-  (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
-  :hook
-  (python-mode . eglot-ensure))
+;; (use-package eglot
+;;   :config
+;;   (add-to-list 'eglot-server-programs '(python-mode . ("pyright-langserver" "--stdio")))
+;;   :hook
+;;   (python-mode . eglot-ensure))
 
 ;; Theme configuration
-(use-package catppuccin-theme
-  :config
-  (load-theme 'catppuccin t))
+;; (use-package catppuccin-theme
+;;   :config
+;;   (load-theme 'catppuccin t))
   
 ;; (use-package kaolin-themes
 ;;   :config
@@ -120,8 +142,8 @@
 
     "o" '(:ignore t :which-key "org")
     "oo" '(org-agenda :which-key "agenda")
-    "oi" '(lambda () (interactive) (find-file-other-tab "~/Desktop/Inbox.org") :which-key "inbox")
-    "oj" '(lambda () (interactive) (find-file-other-tab "~/Desktop/Journal.org") :which-key "journal")
+    "oi" '(lambda () (interactive) (find-file-other-tab "~/Sync/Org/Inbox.org") :which-key "inbox")
+    "oj" '(lambda () (interactive) (find-file-other-tab "~/Sync/Org/Journal.org") :which-key "journal")
     "ok" '(org-capture :which-key "capture")
 
     "i" '(consult-imenu :which-key "imenu")
@@ -139,6 +161,11 @@
     "g" '(:ignore t :which-key "git")
     "gg" '(magit :which-key "status")
 
+    "pi" 'package-install
+    "pp" 'package-upgrade-all
+    "pr" 'package-delete
+    "pc" 'package-autoremove
+
     "u" '(universal-argument :which-key "unarg")
     ;; Actions
 
@@ -147,6 +174,10 @@
     ; "`"   '(eshell :which-key "sh")
     "e"   '(eval-defun :which-key "eval")
     ))
+
+(evil-define-key 'normal 'global "]t" 'tab-bar-switch-to-next-tab)
+(evil-define-key 'normal 'global "[t" 'tab-bar-switch-to-prev-tab)
+
 
 ;; Misc
 (set-frame-font "JetBrains Mono NL 14" nil t)
@@ -157,30 +188,43 @@
 (winner-mode 1)
 (blink-cursor-mode -1)
 (pixel-scroll-precision-mode 1)
-(tab-bar-mode)
+; (tab-bar-mode)
 (setq tab-bar-close-button-show nil
       tab-bar-new-button-show nil)
+
+(setq org-agenda-files '("~/Sync/Org"))
 
 ;; Inbox
 (use-package ace-window)
 (use-package magit)
 
-;; End of init.el file
-
-
-;; End of init.el file
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+	(sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
+(setq-default line-spacing 0.15)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("80214de566132bf2c844b9dee3ec0599f65c5a1f2d6ff21a2c8309e6e70f9242" default))
  '(package-selected-packages
-   '(magit ace-window org-modern catppuccin-theme catppuccin which-key general kaolin-themes corfu orderless marginalia consult vertico evil-collection evil)))
+   '(magit ace-window general which-key catppuccin-theme orderless marginalia consult vertico org-download org-modern evil-collection evil spacious-padding doom-modeline doom-themes)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(fringe ((t :background "#FBF7EF")))
+ '(header-line ((t :box (:line-width 4 :color "#eeeae3" :style nil))))
+ '(header-line-highlight ((t :box (:color "#657377"))))
+ '(keycast-key ((t)))
+ '(line-number ((t :background "#FBF7EF")))
+ '(mode-line ((t :box (:line-width 6 :color "#eeeae3" :style nil))))
+ '(mode-line-active ((t :box (:line-width 6 :color "#eeeae3" :style nil))))
+ '(mode-line-highlight ((t :box (:color "#657377"))))
+ '(mode-line-inactive ((t :box (:line-width 6 :color "#f4f0e9" :style nil))))
+ '(tab-bar-tab ((t :box (:line-width 4 :color "#FBF7EF" :style nil))))
+ '(tab-bar-tab-inactive ((t :box (:line-width 4 :color "#F1E9D2" :style nil))))
+ '(window-divider ((t :background "#FBF7EF" :foreground "#FBF7EF")))
+ '(window-divider-first-pixel ((t :background "#FBF7EF" :foreground "#FBF7EF")))
+ '(window-divider-last-pixel ((t :background "#FBF7EF" :foreground "#FBF7EF"))))
