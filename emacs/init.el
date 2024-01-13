@@ -191,7 +191,7 @@ If a directory is provided, we look for the file there."
     "o ." (+open-file user-init-file)
     "o a" 'org-agenda
     "o b" 'switch-to-buffer
-    "o d" 'dired
+    "o d" 'dired-jump
     "o f" 'find-file
     "o i" (+open-file "inbox.org" 'org-directory)
     "o j" (+open-file "journal.org" 'org-directory)
