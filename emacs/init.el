@@ -2,13 +2,15 @@
 ;; These keybindings are setup *before* any `use-package' statements.
 ;; This ensures that they remain available even if I break my config.
 
-(defun +bind (key cmd)
-  "Bind the chord mod+key to the given interactive command.
+(defun +bind (key cmd &optional no-prefix)
+  "Bind the chord mod+key globally to a given interactive command.
 
 The modifier key is automatically set to super (⌘) if Emacs is in
-GUI mode, or meta (⌥) if Emacs is running in a terminal."
+GUI mode, or meta (⌥) if Emacs is running in a terminal. If the
+optional argument no-prefix is set to 't, don't use a modifier."
   (let* ((mod (if (display-graphic-p) "s-" "M-"))
-	 (chord (concat mod key)))
+	 (prefix (if (null no-prefix) mod ""))
+	 (chord (concat prefix key)))
     (global-set-key (kbd chord) cmd)))
 
 (defun +open (file &optional dir)
@@ -21,41 +23,51 @@ If a directory is provided, we will look for the file there."
 	 (find-file (expand-file-name ,file))
 		    (find-file (expand-file-name ,file ,dir)))))
 
-(+bind "." 'xref-find-definitions)
-(+bind "/" 'dabbrev-expand)
+;; Emacs-inspired keybindings. Most of these have built-in
+;; equivalents bound to similar C-x ... or M-... keybindings.
 (+bind ":" 'eval-expression)
-(+bind ";" 'comment-line)
 (+bind "b" 'switch-to-buffer)
 (+bind "B" 'ibuffer)
 (+bind "d" 'dired)
 (+bind "e" 'eval-defun)
 (+bind "f" 'find-file)
 (+bind "g" 'magit)
-(+bind "k" 'execute-extended-command)
-(+bind "o" 'ace-window)
-(+bind "p" 'project-find-file)
 (+bind "q" 'kill-buffer-and-window)
 (+bind "Q" 'kill-some-buffers)
-(+bind "r" 'consult-recent-file)
+(+bind "r" 'recentf)
 (+bind "u" 'universal-argument)
 (+bind "x" 'execute-extended-command)
-(+bind "y" 'package-upgrade-all)
+(+bind "o" 'ace-window)
 
+;; MacOS-inspired keybindings. Most are similar in e.g. browsers.
 (+bind "s" 'save-buffer)
 (+bind "S" 'save-some-buffers)
 (+bind "w" 'tab-bar-close-tab)
 (+bind "t" 'tab-bar-new-tab)
 (+bind "{" 'tab-bar-switch-to-prev-tab)
 (+bind "}" 'tab-bar-switch-to-next-tab)
-(+bind "[" 'tab-bar-history-back)
-(+bind "]" 'tab-bar-history-forward)
+(+bind "[" 'previous-buffer)
+(+bind "]" 'next-buffer)
 (+bind "," (+open user-init-file))
 
-(+bind "<return>" 'org-capture)
+(+bind "<left>" 'tab-bar-history-back)
+(+bind "<right>" 'tab-bar-history-forward)
+(+bind "<down>" 'xref-find-definitions)
+(+bind "<up>" 'xref-go-back)
+
+;; Org-mode keybindings.
 (+bind "a" 'org-agenda)
 (+bind "i" (+open "inbox.org" 'org-directory))
 (+bind "j" (+open "journal.org" 'org-directory))
+(+bind "k" 'org-capture)
 
+;; Personal keybindings.
+(+bind "<return>" 'execute-extended-command)
+(+bind ";" 'execute-extended-command)
+(+bind "/" 'comment-line)
+(+bind "y" 'package-upgrade-all)
+
+;; Choice of modifiers.
 (setq mac-command-modifier 'super)
 (setq mac-option-modifier 'meta)
 
@@ -167,6 +179,12 @@ If a directory is provided, we will look for the file there."
   (evil-want-C-u-scroll t)
   (evil-respect-visual-line-mode t)
   :config
+  (defun +nmap (key cmd)
+    "Global normal-state mapping of key to command."
+    (evil-define-key 'normal 'global (kbd key) cmd))
+  (defun +imap (key cmd)
+    "Global insert-state mapping of key to command."
+    (evil-define-key 'insert 'global (kbd key) cmd))
   (evil-mode 1))
 
 (use-package evil-collection
