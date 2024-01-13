@@ -1,4 +1,4 @@
-;;; Custom keybindings:
+;;; Global keybindings:
 ;; These keybindings are setup *before* any `use-package' statements.
 ;; This ensures that they remain available even if I break my config.
 
@@ -21,46 +21,41 @@ If a directory is provided, we will look for the file there."
 	 (find-file (expand-file-name ,file))
 		    (find-file (expand-file-name ,file ,dir)))))
 
+(+bind "." 'xref-find-definitions)
+(+bind "/" 'dabbrev-expand)
 (+bind ":" 'eval-expression)
 (+bind ";" 'comment-line)
-(+bind "/" 'dabbrev-expand)
-(+bind "." 'xref-find-definitions)
 (+bind "b" 'switch-to-buffer)
 (+bind "B" 'ibuffer)
-(+bind "f" 'find-file)
 (+bind "d" 'dired)
 (+bind "e" 'eval-defun)
+(+bind "f" 'find-file)
 (+bind "g" 'magit)
+(+bind "k" 'execute-extended-command)
 (+bind "o" 'ace-window)
+(+bind "p" 'project-find-file)
 (+bind "q" 'kill-buffer-and-window)
 (+bind "Q" 'kill-some-buffers)
 (+bind "r" 'consult-recent-file)
 (+bind "u" 'universal-argument)
 (+bind "x" 'execute-extended-command)
+(+bind "y" 'package-upgrade-all)
 
-;; MacOS-like keybindings.
-(+bind "k" 'execute-extended-command)
-(+bind "p" 'project-find-file)
 (+bind "s" 'save-buffer)
 (+bind "S" 'save-some-buffers)
-(+bind "t" 'tab-bar-new-tab)
 (+bind "w" 'tab-bar-close-tab)
+(+bind "t" 'tab-bar-new-tab)
 (+bind "{" 'tab-bar-switch-to-prev-tab)
 (+bind "}" 'tab-bar-switch-to-next-tab)
 (+bind "[" 'tab-bar-history-back)
 (+bind "]" 'tab-bar-history-forward)
-
-;; Org-mode keybindings.
-(+bind "<return>" 'org-capture)
-(+bind "a" 'org-agenda)
-(+bind "y" 'package-upgrade-all)
-
-;; File openers
-(+bind "i" (+open "inbox.org" 'org-directory))
-(+bind "j" (+open "journal.org" 'org-directory))
 (+bind "," (+open user-init-file))
 
-;; Modifier keys
+(+bind "<return>" 'org-capture)
+(+bind "a" 'org-agenda)
+(+bind "i" (+open "inbox.org" 'org-directory))
+(+bind "j" (+open "journal.org" 'org-directory))
+
 (setq mac-command-modifier 'super)
 (setq mac-option-modifier 'meta)
 
@@ -74,7 +69,6 @@ If a directory is provided, we will look for the file there."
   (use-package-always-ensure t))
 
 ;; Prevent packages from spamming my config directory with junk.
-
 (use-package no-littering
   :init
   (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
@@ -124,7 +118,7 @@ If a directory is provided, we will look for the file there."
   :config
   (savehist-mode 1))
 
-;;; Aesthetics
+;;; User interface:
 (use-package doom-themes
   :config
   (load-theme 'doom-oksolar-light t))
@@ -143,7 +137,28 @@ If a directory is provided, we will look for the file there."
   :config
   (spacious-padding-mode))
 
-;;; Keybindings
+;;; User experience:
+(use-package vertico
+  :init
+  (vertico-mode))
+
+(use-package consult
+  :after vertico)
+
+(use-package marginalia
+  :after vertico
+  :config
+  (marginalia-mode))
+
+(use-package orderless
+  :init
+  (setq completion-styles '(orderless)))
+
+(use-package ace-window)
+
+(use-package magit)
+
+;;; Evil mode:
 (use-package evil
   :init
   :custom
@@ -202,28 +217,6 @@ If a directory is provided, we will look for the file there."
   (org-download-enable)
   :bind (:map org-mode-map
 	      ("s-v" . org-download-clipboard)))
-
-;;; Modern user experience
-(use-package vertico
-  :init
-  (vertico-mode))
-
-(use-package consult
-  :after vertico)
-
-(use-package marginalia
-  :after vertico
-  :config
-  (marginalia-mode))
-
-(use-package orderless
-  :init
-  (setq completion-styles '(orderless)))
-
-(use-package ace-window)
-
-;;; Integrations
-(use-package magit)
 
 ;;; Inbox
 ;; This section is for newly added and not-yet-integrated elisp.
