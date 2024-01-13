@@ -2,7 +2,7 @@
 ;; These keybindings are setup *before* any `use-package' statements.
 ;; This ensures that they remain available even if I break my config.
 
-(defun ⌘ (key cmd)
+(defun +bind (key cmd)
   "Bind the chord mod+key to the given interactive command.
 
 The modifier key is automatically set to super (⌘) if Emacs is in
@@ -11,43 +11,56 @@ GUI mode, or meta (⌥) if Emacs is running in a terminal."
 	 (chord (concat mod key)))
     (global-set-key (kbd chord) cmd)))
 
-;; Emacs-like keybindings.
-(⌘ ":" 'eval-expression)
-(⌘ ";" 'comment-line)
-(⌘ "/" 'dabbrev-expand)
-(⌘ "." 'xref-find-definitions)
-(⌘ "b" 'switch-to-buffer)
-(⌘ "B" 'ibuffer)
-(⌘ "f" 'find-file)
-(⌘ "d" 'dired)
-(⌘ "e" 'eval-defun)
-(⌘ "g" 'magit)
-(⌘ "o" 'ace-window)
-(⌘ "q" 'kill-buffer-and-window)
-(⌘ "Q" 'kill-some-buffers)
-(⌘ "r" 'consult-recent-file)
-(⌘ "u" 'universal-argument)
-(⌘ "x" 'execute-extended-command)
+(defun +open (file &optional dir)
+  "Create an interactive command for opening a given file.
+
+If a directory is provided, we will look for the file there."
+  `(lambda ()
+     (interactive)
+     (if (null ,dir)
+	 (find-file (expand-file-name ,file))
+		    (find-file (expand-file-name ,file ,dir)))))
+
+(+bind ":" 'eval-expression)
+(+bind ";" 'comment-line)
+(+bind "/" 'dabbrev-expand)
+(+bind "." 'xref-find-definitions)
+(+bind "b" 'switch-to-buffer)
+(+bind "B" 'ibuffer)
+(+bind "f" 'find-file)
+(+bind "d" 'dired)
+(+bind "e" 'eval-defun)
+(+bind "g" 'magit)
+(+bind "o" 'ace-window)
+(+bind "q" 'kill-buffer-and-window)
+(+bind "Q" 'kill-some-buffers)
+(+bind "r" 'consult-recent-file)
+(+bind "u" 'universal-argument)
+(+bind "x" 'execute-extended-command)
 
 ;; MacOS-like keybindings.
-(⌘ "k" 'execute-extended-command)
-(⌘ "p" 'project-find-file)
-(⌘ "s" 'save-buffer)
-(⌘ "S" 'save-some-buffers)
-(⌘ "t" 'tab-bar-new-tab)
-(⌘ "w" 'tab-bar-close-tab)
-(⌘ "{" 'tab-bar-switch-to-prev-tab)
-(⌘ "}" 'tab-bar-switch-to-next-tab)
-(⌘ "[" 'tab-bar-history-back)
-(⌘ "]" 'tab-bar-history-forward)
-(⌘ "," 'baba/config)
+(+bind "k" 'execute-extended-command)
+(+bind "p" 'project-find-file)
+(+bind "s" 'save-buffer)
+(+bind "S" 'save-some-buffers)
+(+bind "t" 'tab-bar-new-tab)
+(+bind "w" 'tab-bar-close-tab)
+(+bind "{" 'tab-bar-switch-to-prev-tab)
+(+bind "}" 'tab-bar-switch-to-next-tab)
+(+bind "[" 'tab-bar-history-back)
+(+bind "]" 'tab-bar-history-forward)
 
 ;; Org-mode keybindings.
-(⌘ "<return>" 'org-capture)
-(⌘ "a" 'org-agenda)
-(⌘ "i" 'baba/org-inbox)
-(⌘ "j" 'baba/org-journal)
+(+bind "<return>" 'org-capture)
+(+bind "a" 'org-agenda)
+(+bind "y" 'package-upgrade-all)
 
+;; File openers
+(+bind "i" (+open "inbox.org" 'org-directory))
+(+bind "j" (+open "journal.org" 'org-directory))
+(+bind "," (+open user-init-file))
+
+;; Modifier keys
 (setq mac-command-modifier 'super)
 (setq mac-option-modifier 'meta)
 
@@ -57,6 +70,7 @@ GUI mode, or meta (⌥) if Emacs is running in a terminal."
   :config
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
   :custom
+  (use-package-always-demand t)
   (use-package-always-ensure t))
 
 ;; Prevent packages from spamming my config directory with junk.
@@ -71,6 +85,7 @@ GUI mode, or meta (⌥) if Emacs is running in a terminal."
 (use-package emacs
   :custom
   (inhibit-startup-message t)
+  (use-short-answers t)
   (truncate-lines t)
   (line-spacing 0.15)
   :custom-face
@@ -80,11 +95,7 @@ GUI mode, or meta (⌥) if Emacs is running in a terminal."
   (scroll-bar-mode -1)
   (blink-cursor-mode -1)
   (pixel-scroll-precision-mode 1)
-  (setq ring-bell-function 'ignore)
-
-  (defun baba/config ()
-      (interactive)
-      (find-file (expand-file-name "~/.config/emacs/init.el"))))
+  (setq ring-bell-function 'ignore))
 
 (use-package tab-bar
   :custom
@@ -154,15 +165,6 @@ GUI mode, or meta (⌥) if Emacs is running in a terminal."
 
 ;;; Org mode
 (use-package org
-  :config
-  (defun baba/org-inbox ()
-    "Open my task management system."
-    (interactive)
-    (find-file (expand-file-name "inbox.org" org-directory)))
-  (defun baba/org-journal ()
-    "Open my daily research journal."
-    (interactive)
-    (find-file (expand-file-name "journal.org" org-directory)))
   :hook
   (org-mode . visual-line-mode)
   :custom
