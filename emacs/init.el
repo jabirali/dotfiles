@@ -2,6 +2,11 @@
 ;; These are various helper functions used throughout my config.
 ;; I define them here at the top so that they're available below.
 
+(defun +eval-init ()
+  "Reload the main 'init.el' configuration file."
+  (interactive)
+  (load-file user-init-file))
+
 (defun +open-file (file &optional dir)
   "Create an interactive command for opening a given file.
 
@@ -122,10 +127,7 @@ If a directory is provided, we look for the file there."
 
 (use-package ace-window)
 
-(use-package magit
-  :bind
-  (:map magit-status-mode-map
-	("SPC" . nil)))
+(use-package magit)
 
 ;;; Evil mode:
 (use-package evil
@@ -157,11 +159,13 @@ If a directory is provided, we look for the file there."
   :after evil
   :config
   (general-override-mode)
-  ;; Evil leader-based keybindings.
-  (general-create-definer +leader
+  (general-create-definer +leader-map
+    :keymaps 'override
     :states '(normal visual)
     :prefix "SPC")
-  (+leader
+
+  ;; Global leader mappings.
+  (+leader-map
     ;; Important.
     "SPC" 'execute-extended-command
     "TAB" 'ace-window
@@ -175,6 +179,8 @@ If a directory is provided, we look for the file there."
     "w" '+close-window
     "q" '+kill-buffer-and-close-window
     "g" 'magit
+    "r" '+reload
+    "/" 'occur
 
     ;; Tab switching.
     "1" 'tab-bar-select-tab
@@ -199,42 +205,10 @@ If a directory is provided, we look for the file there."
     "o p" 'project-find-file
     "o r" 'recentf)
 
-  ;; Global meta-based keybindings.
-  (general-define-key
-   ;; General.
-   "M-p" 'execute-extended-command
-   "M-P" 'eval-expression
-   "M-e" 'eval-buffer
-   "M-b" 'switch-to-buffer
-   "M-k" 'kill-this-buffer
-   "M-`" 'ace-window
-
-   ;; Tabs.
-   "M-t" 'tab-bar-new-tab
-   "M-w" 'tab-bar-close-tab
-   "M-{" 'tab-bar-switch-to-prev-tab
-   "M-}" 'tab-bar-switch-to-next-tab
-   "M-[" 'tab-bar-history-back
-   "M-]" 'tab-bar-history-forward
-
-   ;; Search.
-   "M-s p" 'consult-git-grep
-
-   ;; Goto.
-   "M-g g" 'magit
-   "M-g b" 'ibuffer
-
-   ;; Open.
-   "M-o f" 'find-file
-   "M-o t" 'tab-bar-new-tab
-   "M-o d" 'dired
-   "M-o p" 'project-find-file
-   "M-o r" 'recentf
-   "M-o a" 'org-agenda
-   "M-o k" 'org-capture
-   "M-o i" (+open-file "inbox.org" 'org-directory)
-   "M-o j" (+open-file "journal.org" 'org-directory)
-   "M-o ." (+open-file user-init-file)))
+  ;; Major-mode mappings.
+  (+leader-map emacs-lisp-mode-map
+	      "e e" '+eval-init
+	      "e d" 'eval-defun))
 
 ;;; Org mode
 (use-package org
