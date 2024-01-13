@@ -12,6 +12,19 @@ If a directory is provided, we look for the file there."
 	 (find-file (expand-file-name ,file))
 		    (find-file (expand-file-name ,file ,dir)))))
 
+(defun +close-window ()
+  "Close window. If it's the last window, close the whole tab."
+  (interactive)
+  (if (one-window-p)
+      (tab-bar-close-tab)
+    (delete-window)))
+
+(defun +kill-buffer-and-close-window ()
+  "Kill buffer and then close the currently active window."
+  (interactive)
+  (kill-buffer)
+  (+close-window))
+
 ;;; Package management:
 ;; Setup 'use-package' to automatically download MELPA packages.
 (use-package use-package
@@ -140,6 +153,39 @@ If a directory is provided, we look for the file there."
 (use-package general
   :config
   (general-override-mode)
+  ;; Evil leader-based keybindings.
+  (general-create-definer +leader
+    :states '(normal visual)
+    :non-normal-prefix "M-"
+    :prefix "SPC")
+  (+leader
+    ;; Important.
+    "SPC" 'execute-extended-command
+    "TAB" 'ace-window
+
+    ;; Common actions.
+    "s" 'save-buffer
+    "t" 'tab-bar-new-tab
+    "w" '+close-window
+    "q" '+kill-buffer-and-close-window
+    "g" 'magit
+
+    ;; Existing maps.
+    "h" help-map
+
+    ;; Open stuff.
+    "o ." (+open-file user-init-file)
+    "o a" 'org-agenda
+    "o b" 'switch-to-buffer
+    "o d" 'dired
+    "o f" 'find-file
+    "o i" (+open-file "inbox.org" 'org-directory)
+    "o j" (+open-file "journal.org" 'org-directory)
+    "o k" 'org-capture
+    "o p" 'project-find-file
+    "o r" 'recentf)
+
+  ;; Global meta-based keybindings.
   (general-define-key
    ;; General.
    "M-p" 'execute-extended-command
@@ -166,6 +212,7 @@ If a directory is provided, we look for the file there."
 
    ;; Open.
    "M-o f" 'find-file
+   "M-o t" 'tab-bar-new-tab
    "M-o d" 'dired
    "M-o p" 'project-find-file
    "M-o r" 'recentf
