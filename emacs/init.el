@@ -1,75 +1,16 @@
-;;; Global keybindings:
-;; These keybindings are setup *before* any `use-package' statements.
-;; This ensures that they remain available even if I break my config.
+;;; Custom functions:
+;; These are various helper functions used throughout my config.
+;; I define them here at the top so that they're available below.
 
-(defun +bind (key cmd &optional no-prefix)
-  "Bind the chord mod+key globally to a given interactive command.
-
-The modifier key is automatically set to super (⌘) if Emacs is in
-GUI mode, or meta (⌥) if Emacs is running in a terminal. If the
-optional argument no-prefix is set to 't, don't use a modifier."
-  (let* ((mod (if (display-graphic-p) "s-" "M-"))
-	 (prefix (if (null no-prefix) mod ""))
-	 (chord (concat prefix key)))
-    (global-set-key (kbd chord) cmd)))
-
-(defun +open (file &optional dir)
+(defun +open-file (file &optional dir)
   "Create an interactive command for opening a given file.
 
-If a directory is provided, we will look for the file there."
+If a directory is provided, we look for the file there."
   `(lambda ()
      (interactive)
      (if (null ,dir)
 	 (find-file (expand-file-name ,file))
 		    (find-file (expand-file-name ,file ,dir)))))
-
-;; Emacs-inspired keybindings. Most of these have built-in
-;; equivalents bound to similar C-x ... or M-... keybindings.
-(+bind ":" 'eval-expression)
-(+bind "b" 'switch-to-buffer)
-(+bind "B" 'ibuffer)
-(+bind "d" 'dired)
-(+bind "e" 'eval-defun)
-(+bind "f" 'find-file)
-(+bind "g" 'magit)
-(+bind "q" 'kill-buffer-and-window)
-(+bind "Q" 'kill-some-buffers)
-(+bind "r" 'recentf)
-(+bind "u" 'universal-argument)
-(+bind "x" 'execute-extended-command)
-(+bind "o" 'ace-window)
-
-;; MacOS-inspired keybindings. Most are similar in e.g. browsers.
-(+bind "s" 'save-buffer)
-(+bind "S" 'save-some-buffers)
-(+bind "w" 'tab-bar-close-tab)
-(+bind "t" 'tab-bar-new-tab)
-(+bind "{" 'tab-bar-switch-to-prev-tab)
-(+bind "}" 'tab-bar-switch-to-next-tab)
-(+bind "[" 'previous-buffer)
-(+bind "]" 'next-buffer)
-(+bind "," (+open user-init-file))
-
-(+bind "<left>" 'tab-bar-history-back)
-(+bind "<right>" 'tab-bar-history-forward)
-(+bind "<down>" 'xref-find-definitions)
-(+bind "<up>" 'xref-go-back)
-
-;; Org-mode keybindings.
-(+bind "a" 'org-agenda)
-(+bind "i" (+open "inbox.org" 'org-directory))
-(+bind "j" (+open "journal.org" 'org-directory))
-(+bind "k" 'org-capture)
-
-;; Personal keybindings.
-(+bind "<return>" 'execute-extended-command)
-(+bind ";" 'execute-extended-command)
-(+bind "/" 'comment-line)
-(+bind "y" 'package-upgrade-all)
-
-;; Choice of modifiers.
-(setq mac-command-modifier 'super)
-(setq mac-option-modifier 'meta)
 
 ;;; Package management:
 ;; Setup 'use-package' to automatically download MELPA packages.
@@ -196,6 +137,44 @@ If a directory is provided, we will look for the file there."
   :config
   (which-key-mode))
 
+(use-package general
+  :config
+  (general-override-mode)
+  (general-define-key
+   ;; General.
+   "M-p" 'execute-extended-command
+   "M-P" 'eval-expression
+   "M-e" 'eval-buffer
+   "M-b" 'switch-to-buffer
+   "M-k" 'kill-this-buffer
+   "M-`" 'ace-window
+
+   ;; Tabs.
+   "M-t" 'tab-bar-new-tab
+   "M-w" 'tab-bar-close-tab
+   "M-{" 'tab-bar-switch-to-prev-tab
+   "M-}" 'tab-bar-switch-to-next-tab
+   "M-[" 'tab-bar-history-back
+   "M-]" 'tab-bar-history-forward
+
+   ;; Search.
+   "M-s p" 'consult-git-grep
+
+   ;; Goto.
+   "M-g g" 'magit
+   "M-g b" 'ibuffer
+
+   ;; Open.
+   "M-o f" 'find-file
+   "M-o d" 'dired
+   "M-o p" 'project-find-file
+   "M-o r" 'recentf
+   "M-o a" 'org-agenda
+   "M-o k" 'org-capture
+   "M-o i" (+open-file "inbox.org" 'org-directory)
+   "M-o j" (+open-file "journal.org" 'org-directory)
+   "M-o ." (+open-file user-init-file)))
+
 ;;; Org mode
 (use-package org
   :hook
@@ -215,14 +194,6 @@ If a directory is provided, we will look for the file there."
   (org-startup-folded 'content)
   (org-pretty-entities t))
 
-(use-package org-modern
-  :after org
-  :custom
-  (org-modern-list nil)
-  (org-modern-star nil)
-  :config
-  (global-org-modern-mode))
-
 (use-package org-download
   :after org
   :custom
@@ -234,7 +205,15 @@ If a directory is provided, we will look for the file there."
   (setq org-download-annotate-function (lambda (_link) ""))
   (org-download-enable)
   :bind (:map org-mode-map
-	      ("s-v" . org-download-clipboard)))
+              ("s-v" . org-download-clipboard)))
+
+(use-package org-modern
+  :after org
+  :custom
+  (org-modern-list nil)
+  (org-modern-star nil)
+  :config
+  (global-org-modern-mode))
 
 ;;; Inbox
 ;; This section is for newly added and not-yet-integrated elisp.
