@@ -122,7 +122,10 @@ If a directory is provided, we look for the file there."
 
 (use-package ace-window)
 
-(use-package magit)
+(use-package magit
+  :bind
+  (:map magit-status-mode-map
+	("SPC" . nil)))
 
 ;;; Evil mode:
 (use-package evil
@@ -151,12 +154,12 @@ If a directory is provided, we look for the file there."
   (which-key-mode))
 
 (use-package general
+  :after evil
   :config
   (general-override-mode)
   ;; Evil leader-based keybindings.
   (general-create-definer +leader
     :states '(normal visual)
-    :non-normal-prefix "M-"
     :prefix "SPC")
   (+leader
     ;; Important.
