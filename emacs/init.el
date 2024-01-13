@@ -2,11 +2,6 @@
 ;; These are various helper functions used throughout my config.
 ;; I define them here at the top so that they're available below.
 
-(defun +eval-init ()
-  "Reload the main 'init.el' configuration file."
-  (interactive)
-  (load-file user-init-file))
-
 (defun +open-file (file &optional dir)
   "Create an interactive command for opening a given file.
 
@@ -22,7 +17,8 @@ If a directory is provided, we look for the file there."
   (interactive)
   (if (one-window-p)
       (tab-bar-close-tab)
-    (delete-window)))
+    (delete-window)
+    (balance-windows)))
 
 (defun +kill-buffer-and-close-window ()
   "Kill buffer and then close the currently active window."
@@ -179,8 +175,6 @@ If a directory is provided, we look for the file there."
     "w" '+close-window
     "q" '+kill-buffer-and-close-window
     "g" 'magit
-    "r" '+reload
-    "/" 'occur
 
     ;; Tab switching.
     "1" 'tab-bar-select-tab
@@ -207,7 +201,7 @@ If a directory is provided, we look for the file there."
 
   ;; Major-mode mappings.
   (+leader-map emacs-lisp-mode-map
-	      "e e" '+eval-init
+	      "e e" 'eval-buffer
 	      "e d" 'eval-defun))
 
 ;;; Org mode
