@@ -166,6 +166,9 @@ If a directory is provided, we look for the file there."
     "SPC" 'execute-extended-command
     "TAB" 'ace-window
 
+    ;; Existing keymaps.
+    "h" help-map
+
     ;; Common actions.
     "s" 'save-buffer
     "t" 'tab-bar-new-tab
@@ -173,8 +176,16 @@ If a directory is provided, we look for the file there."
     "q" '+kill-buffer-and-close-window
     "g" 'magit
 
-    ;; Existing maps.
-    "h" help-map
+    ;; Tab switching.
+    "1" 'tab-bar-select-tab
+    "2" 'tab-bar-select-tab
+    "3" 'tab-bar-select-tab
+    "4" 'tab-bar-select-tab
+    "5" 'tab-bar-select-tab
+    "6" 'tab-bar-select-tab
+    "7" 'tab-bar-select-tab
+    "8" 'tab-bar-select-tab
+    "9" 'tab-bar-select-tab
 
     ;; Open stuff.
     "o ." (+open-file user-init-file)
@@ -255,7 +266,7 @@ If a directory is provided, we look for the file there."
   (setq org-download-annotate-function (lambda (_link) ""))
   (org-download-enable)
   :bind (:map org-mode-map
-              ("s-v" . org-download-clipboard)))
+              ("M-v" . org-download-clipboard)))
 
 (use-package org-modern
   :after org
