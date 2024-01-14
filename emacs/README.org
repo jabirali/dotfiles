@@ -2,13 +2,95 @@
 #+AUTHOR: Jabir Ali Ouassou
 #+PROPERTY: header-args:emacs-lisp :tangle init.el
 
-This is my personal Emacs config file. My configuration is mostly based around Org-mode and Evil-mode, as I do most of my actual programming in Vim.
+This is my configuration for Emacs 29+. My setup is mostly based
+around =org-mode= and =evil-mode=, as I mostly use Vim for coding.
 
-* Inbox
-This section is a placeholder for newly added code or configuration. This code will be moved to another section as it matures and proves useful.
-* Custom functions
+* Package management
+Since Emacs 29, =use-package= has been included in the base
+distribution. There are however some defaults we need to fix,
+notably third-party package repos and automatic installation.
+
+#+begin_src emacs-lisp
+(use-package use-package
+  :config
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  :custom
+  (use-package-always-demand t)
+  (use-package-always-ensure t))
+#+end_src
+
+Many Emacs packages throw their cache files in my =~/.config/emacs/=
+directory by default. This is annoying when that directory is kept
+under version control. Luckily, =no-littering= can help with that.
+#+begin_src emacs-lisp
+(use-package no-littering
+  :init
+  (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (load custom-file))
+#+end_src
+
+* Built-in packages
+The Emacs defaults are quite dated. This makes it look like the 2020s.
+#+begin_src emacs-lisp
+  (use-package emacs
+    :custom
+    (inhibit-startup-message t)
+    (use-short-answers t)
+    (truncate-lines t)
+    (line-spacing 0.15)
+    :custom-face
+    (default ((t (:family "JetBrains Mono NL" :height 140))))
+    :config
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)
+    (blink-cursor-mode -1)
+    (pixel-scroll-precision-mode 1)
+    (setq ring-bell-function 'ignore))
+#+end_src
+
+Emacs recently added a tab bar which works similarly to Vim or Tmux,
+i.e. each tab corresponds to a numbered "window configuration" that
+you can easily switch between. Moreover, it can record a per-tab
+history of recent window configurations, similarly to a web browser.
+#+begin_src emacs-lisp
+  (use-package tab-bar
+    :custom
+    (tab-bar-show 1)
+    (tab-bar-close-button-show nil)
+    (tab-bar-new-tab-choice "*scratch*")
+    (tab-bar-tab-hints t)
+    (tab-bar-select-tab-modifiers '(super))
+    (tab-bar-format '(tab-bar-format-tabs tab-bar-separator tab-bar-format-align-right tab-bar-format-global))
+    :config
+    (tab-bar-mode 1)
+    (tab-bar-history-mode 1))
+    #+end_src
+
+Enable code folding using =outline-minor-mode= for all programming
+file types. Note that it integrates with =evil-mode=, so you can use
+keybindings like e.g. =za= / =zM= / =zR= to control the folding.
+#+begin_src emacs-lisp
+  (use-package outline
+    :custom
+    (outline-blank-line t)
+    :hook
+    (prog-mode . outline-minor-mode))
+#+end_src
+
+I also want Emacs to remember my recent files and commands.
+#+begin_src emacs-lisp
+  (use-package recentf
+    :config
+    (recentf-mode 1))
+
+  (use-package savehist
+    :config
+    (savehist-mode 1))
+#+end_src
+
+* Helper functions
 These are various helper functions used throughout my config.
-I define them here at the top so that they're available below.
 
 #+begin_src emacs-lisp
 (defun +open-file (file &optional dir)
@@ -34,72 +116,6 @@ If a directory is provided, we look for the file there."
   (interactive)
   (kill-buffer)
   (+close-window))
-#+end_src
-
-* Package management
-Setup 'use-package' to automatically download MELPA packages.
-
-#+begin_src emacs-lisp
-(use-package use-package
-  :config
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  :custom
-  (use-package-always-demand t)
-  (use-package-always-ensure t))
-#+end_src
-
-Prevent packages from spamming my config directory with junk.
-#+begin_src emacs-lisp
-(use-package no-littering
-  :init
-  (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
-  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-  (load custom-file))
-#+end_src
-
-* Built-in packages
-#+begin_src emacs-lisp
-(use-package emacs
-  :custom
-  (inhibit-startup-message t)
-  (use-short-answers t)
-  (truncate-lines t)
-  (line-spacing 0.15)
-  :custom-face
-  (default ((t (:family "JetBrains Mono NL" :height 140))))
-  :config
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (blink-cursor-mode -1)
-  (pixel-scroll-precision-mode 1)
-  (setq ring-bell-function 'ignore))
-
-(use-package tab-bar
-  :custom
-  (tab-bar-show 1)
-  (tab-bar-close-button-show nil)
-  (tab-bar-new-tab-choice "*scratch*")
-  (tab-bar-tab-hints t)
-  (tab-bar-select-tab-modifiers '(super))
-  (tab-bar-format '(tab-bar-format-tabs tab-bar-separator tab-bar-format-align-right tab-bar-format-global))
-  :config
-  (tab-bar-mode 1)
-  (tab-bar-history-mode 1)
-  (display-time-mode 1))
-
-(use-package outline
-  :custom
-  (outline-blank-line t)
-  :hook
-  (prog-mode . outline-minor-mode))
-
-(use-package recentf
-  :config
-  (recentf-mode 1))
-
-(use-package savehist
-  :config
-  (savehist-mode 1))
 #+end_src
 
 * User interface
@@ -220,7 +236,7 @@ Prevent packages from spamming my config directory with junk.
     "o" '(:ignore t :which-key "open")
     "o o" '(switch-to-buffer :which-key "buffer")
     "o s" '(scratch-buffer :which-key "scratch")
-    "o e" `(,(+open-file user-init-file) :which-key "emacs")
+    "o e" `(,(+open-file "~/.config/emacs/README.org") :which-key "emacs")
     "o a" '(org-agenda :which-key "agenda")
     "o d" '(dired-jump :which-key "directory")
     "o f" '(find-file :which-key "file")

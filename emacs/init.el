@@ -1,27 +1,3 @@
-(defun +open-file (file &optional dir)
-  "Create an interactive command for opening a given file.
-
-If a directory is provided, we look for the file there."
-  `(lambda ()
-     (interactive)
-     (if (null ,dir)
-	 (find-file (expand-file-name ,file))
-		    (find-file (expand-file-name ,file ,dir)))))
-
-(defun +close-window ()
-  "Close window. If it's the last window, close the whole tab."
-  (interactive)
-  (if (one-window-p)
-      (tab-bar-close-tab)
-    (delete-window)
-    (balance-windows)))
-
-(defun +kill-buffer-and-close-window ()
-  "Kill buffer and then close the currently active window."
-  (interactive)
-  (kill-buffer)
-  (+close-window))
-
 (use-package use-package
   :config
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -60,8 +36,7 @@ If a directory is provided, we look for the file there."
   (tab-bar-format '(tab-bar-format-tabs tab-bar-separator tab-bar-format-align-right tab-bar-format-global))
   :config
   (tab-bar-mode 1)
-  (tab-bar-history-mode 1)
-  (display-time-mode 1))
+  (tab-bar-history-mode 1))
 
 (use-package outline
   :custom
@@ -76,6 +51,30 @@ If a directory is provided, we look for the file there."
 (use-package savehist
   :config
   (savehist-mode 1))
+
+(defun +open-file (file &optional dir)
+  "Create an interactive command for opening a given file.
+
+If a directory is provided, we look for the file there."
+  `(lambda ()
+     (interactive)
+     (if (null ,dir)
+	 (find-file (expand-file-name ,file))
+		    (find-file (expand-file-name ,file ,dir)))))
+
+(defun +close-window ()
+  "Close window. If it's the last window, close the whole tab."
+  (interactive)
+  (if (one-window-p)
+      (tab-bar-close-tab)
+    (delete-window)
+    (balance-windows)))
+
+(defun +kill-buffer-and-close-window ()
+  "Kill buffer and then close the currently active window."
+  (interactive)
+  (kill-buffer)
+  (+close-window))
 
 (use-package doom-themes
   :config
@@ -184,7 +183,7 @@ If a directory is provided, we look for the file there."
     "o" '(:ignore t :which-key "open")
     "o o" '(switch-to-buffer :which-key "buffer")
     "o s" '(scratch-buffer :which-key "scratch")
-    "o e" `(,(+open-file user-init-file) :which-key "emacs")
+    "o e" `(,(+open-file "~/.config/emacs/README.org") :which-key "emacs")
     "o a" '(org-agenda :which-key "agenda")
     "o d" '(dired-jump :which-key "directory")
     "o f" '(find-file :which-key "file")
