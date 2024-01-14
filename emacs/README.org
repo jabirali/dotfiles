@@ -11,27 +11,27 @@ distribution. There are however some defaults we need to fix,
 notably third-party package repos and automatic installation.
 
 #+begin_src emacs-lisp
-(use-package use-package
-  :config
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  :custom
-  (use-package-always-demand t)
-  (use-package-always-ensure t))
+  (use-package use-package
+    :config
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+    :custom
+    (use-package-always-demand t)
+    (use-package-always-ensure t))
 #+end_src
 
 Many Emacs packages throw their cache files in my =~/.config/emacs/=
 directory by default. This is annoying when that directory is kept
 under version control. Luckily, =no-littering= can help with that.
 #+begin_src emacs-lisp
-(use-package no-littering
-  :init
-  (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
-  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-  (load custom-file))
+  (use-package no-littering
+    :init
+    (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
+    (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+    (load custom-file))
 #+end_src
 
 * Built-in packages
-The Emacs defaults are quite dated. This makes it look like the 2020s.
+The Emacs defaults are quite dated. This makes it fit in the 2020s.
 #+begin_src emacs-lisp
   (use-package emacs
     :custom
@@ -39,6 +39,7 @@ The Emacs defaults are quite dated. This makes it look like the 2020s.
     (use-short-answers t)
     (truncate-lines t)
     (line-spacing 0.15)
+    (sentence-end-double-space nil)
     :custom-face
     (default ((t (:family "JetBrains Mono NL" :height 140))))
     :config
@@ -67,9 +68,8 @@ history of recent window configurations, similarly to a web browser.
     (tab-bar-history-mode 1))
     #+end_src
 
-Enable code folding using =outline-minor-mode= for all programming
-file types. Note that it integrates with =evil-mode=, so you can use
-keybindings like e.g. =za= / =zM= / =zR= to control the folding.
+Code folding with =outline-minor-mode=. This is the package that
+=org-mode= is built on, and it integrates well with =evil-mode=.
 #+begin_src emacs-lisp
   (use-package outline
     :custom
@@ -78,7 +78,7 @@ keybindings like e.g. =za= / =zM= / =zR= to control the folding.
     (prog-mode . outline-minor-mode))
 #+end_src
 
-I also want Emacs to remember my recent files and commands.
+I want Emacs to remember my recently used files and commands.
 #+begin_src emacs-lisp
   (use-package recentf
     :config
@@ -93,210 +93,230 @@ I also want Emacs to remember my recent files and commands.
 These are various helper functions used throughout my config.
 
 #+begin_src emacs-lisp
-(defun +open-file (file &optional dir)
-  "Create an interactive command for opening a given file.
+  (defun +open-file (file &optional dir)
+    "Create an interactive command for opening a given file.
 
-If a directory is provided, we look for the file there."
-  `(lambda ()
-     (interactive)
-     (if (null ,dir)
-	 (find-file (expand-file-name ,file))
-		    (find-file (expand-file-name ,file ,dir)))))
+  If a directory is provided, we look for the file there."
+    `(lambda ()
+       (interactive)
+       (if (null ,dir)
+           (find-file (expand-file-name ,file))
+                      (find-file (expand-file-name ,file ,dir)))))
 
-(defun +close-window ()
-  "Close window. If it's the last window, close the whole tab."
-  (interactive)
-  (if (one-window-p)
-      (tab-bar-close-tab)
-    (delete-window)
-    (balance-windows)))
+  (defun +close-window ()
+    "Close window. If it's the last window, close the whole tab."
+    (interactive)
+    (if (one-window-p)
+        (tab-bar-close-tab)
+      (delete-window)
+      (balance-windows)))
 
-(defun +kill-buffer-and-close-window ()
-  "Kill buffer and then close the currently active window."
-  (interactive)
-  (kill-buffer)
-  (+close-window))
+  (defun +kill-buffer-and-close-window ()
+    "Kill buffer and then close the currently active window."
+    (interactive)
+    (kill-buffer)
+    (+close-window))
 #+end_src
 
 * User interface
+External packages that gives Emacs a modern look (inspired by Doom).
 #+begin_src emacs-lisp
-(use-package doom-themes
-  :config
-  (load-theme 'doom-oksolar-light t))
+  (use-package doom-themes
+    :config
+    (load-theme 'doom-oksolar-light t))
 
-(use-package doom-modeline
-  :custom
-  (doom-modeline-icon nil)
-  (doom-modeline-modal nil)
-  (doom-modeline-buffer-encoding nil)
-  (doom-modeline-buffer-modification-icon nil)
-  (doom-modeline-workspace-name nil)
-  :config
-  (doom-modeline-mode))
+  (use-package doom-modeline
+    :custom
+    (doom-modeline-icon nil)
+    (doom-modeline-modal nil)
+    (doom-modeline-buffer-encoding nil)
+    (doom-modeline-buffer-modification-icon nil)
+    (doom-modeline-workspace-name nil)
+    :config
+    (doom-modeline-mode))
 
-(use-package spacious-padding
-  :config
-  (spacious-padding-mode))
+  (use-package spacious-padding
+    :config
+    (spacious-padding-mode))
 #+end_src
 
 * User experience
+Packages for enabling fuzzy-finding across the Emacs user interface.
 #+begin_src emacs-lisp
-(use-package vertico
-  :init
-  (vertico-mode))
+  (use-package vertico
+    :init
+    (vertico-mode))
 
-(use-package consult
-  :after vertico)
+  (use-package consult
+    :after vertico)
 
-(use-package marginalia
-  :after vertico
-  :config
-  (marginalia-mode))
+  (use-package marginalia
+    :after vertico
+    :config
+    (marginalia-mode))
 
-(use-package orderless
-  :init
-  (setq completion-styles '(orderless)))
+  (use-package orderless
+    :init
+    (setq completion-styles '(orderless)))
+#+end_src
 
-(use-package ace-window)
+Better workflow for switching between visible windows.
+#+begin_src emacs-lisp
+  (use-package ace-window)
+#+end_src
 
-(use-package magit)
+Better integration with Git version control.
+#+begin_src emacs-lisp
+  (use-package magit)
 #+end_src
 
 * Modal editing
+I've used Vim keybindings for nearly two decades, and still regularly
+use it for programming or quick remote edits. Moreover, every time
+I've tried to switch to Emacs keybindings, my RSI has flared up. So
+for me, =evil-mode= is a prerequisite for using Emacs at all.
 #+begin_src emacs-lisp
-(use-package evil
-  :init
-  :custom
-  (evil-want-keybinding nil)
-  (evil-want-integration t)
-  (evil-want-C-u-scroll t)
-  (evil-respect-visual-line-mode t)
-  :config
-  (defun +nmap (key cmd)
-    "Global normal-state mapping of key to command."
-    (evil-define-key 'normal 'global (kbd key) cmd))
-  (defun +imap (key cmd)
-    "Global insert-state mapping of key to command."
-    (evil-define-key 'insert 'global (kbd key) cmd))
-  (evil-mode 1))
+  (use-package evil
+    :init
+    :custom
+    (evil-want-keybinding nil)
+    (evil-want-integration t)
+    (evil-want-C-u-scroll t)
+    (evil-respect-visual-line-mode t)
+    :config
+    (evil-mode 1))
+#+end_src
 
-(use-package evil-collection
-  :after evil
-  :config
-  (evil-collection-init))
+Evil is great, but by default it only works in text-editing modes.
+This makes it work across nearly all Emacs modes and packages.
+#+begin_src emacs-lisp
+  (use-package evil-collection
+    :after evil
+    :config
+    (evil-collection-init))
 #+end_src
 
 * Global menu
+I like the "space menu" that is provided by default in e.g. Spacemacs
+and Doom Emacs. This is my personalized version of this concept.
 #+begin_src emacs-lisp
-(use-package which-key
-  :config
-  (which-key-mode))
+  (use-package which-key
+    :config
+    (which-key-mode))
 
-(use-package general
-  :after evil
-  :config
-  (general-override-mode)
-  (general-create-definer +leader-map
-    :keymaps 'override
-    :states '(normal visual)
-    :prefix "SPC"
-    :global-prefix "C-c")
+  (use-package general
+    :after evil
+    :config
+    (general-override-mode)
+    (general-create-definer +leader-map
+      :keymaps 'override
+      :states '(normal visual)
+      :prefix "SPC"
+      :global-prefix "C-c")
 
-  ;; Global leader mappings.
-  (+leader-map
-    ;; Important.
-    "SPC" '(execute-extended-command :which-key "command")
-    "TAB" '(ace-window :which-key "switch")
+    ;; Global leader mappings.
+    (+leader-map
+      ;; Important.
+      "SPC" '(execute-extended-command :which-key "command")
+      "TAB" '(ace-window :which-key "switch")
 
-    ;; Existing keymaps.
-    "h" '(help-map :which-key "+help")
+      ;; Existing keymaps.
+      "h" '(help-map :which-key "+help")
 
-    ;; Common actions.
-    "s" '(save-buffer :which-key "save")
-    "t" '(tab-bar-new-tab :which-key "tab")
-    "w" '(+close-window :which-key "close")
-    "q" '(+kill-buffer-and-close-window :which-key "quit")
-    "g" '(magit :which-key "git")
+      ;; Common actions.
+      "s" '(save-buffer :which-key "save")
+      "t" '(tab-bar-new-tab :which-key "tab")
+      "w" '(+close-window :which-key "close")
+      "q" '(+kill-buffer-and-close-window :which-key "quit")
+      "g" '(magit :which-key "git")
 
-    ;; Reserved for major modes.
-    "e" '(:ignore t :which-key "eval")
+      ;; Reserved for major modes.
+      "e" '(:ignore t :which-key "eval")
 
-    ;; Tab switching.
-    "1" '(tab-bar-select-tab :which-key "1")
-    "2" '(tab-bar-select-tab :which-key "2")
-    "3" '(tab-bar-select-tab :which-key "3")
-    "4" '(tab-bar-select-tab :which-key "4")
-    "5" '(tab-bar-select-tab :which-key "5")
-    "6" '(tab-bar-select-tab :which-key "6")
-    "7" '(tab-bar-select-tab :which-key "7")
-    "8" '(tab-bar-select-tab :which-key "8")
-    "9" '(tab-bar-select-tab :which-key "9")
+      ;; Tab switching.
+      "1" '(tab-bar-select-tab :which-key "1")
+      "2" '(tab-bar-select-tab :which-key "2")
+      "3" '(tab-bar-select-tab :which-key "3")
+      "4" '(tab-bar-select-tab :which-key "4")
+      "5" '(tab-bar-select-tab :which-key "5")
+      "6" '(tab-bar-select-tab :which-key "6")
+      "7" '(tab-bar-select-tab :which-key "7")
+      "8" '(tab-bar-select-tab :which-key "8")
+      "9" '(tab-bar-select-tab :which-key "9")
 
-    ;; Open stuff.
-    "o" '(:ignore t :which-key "open")
-    "o o" '(switch-to-buffer :which-key "buffer")
-    "o s" '(scratch-buffer :which-key "scratch")
-    "o e" `(,(+open-file "~/.config/emacs/README.org") :which-key "emacs")
-    "o a" '(org-agenda :which-key "agenda")
-    "o d" '(dired-jump :which-key "directory")
-    "o f" '(find-file :which-key "file")
-    "o i" `(,(+open-file "inbox.org" 'org-directory) :which-key "inbox")
-    "o j" `(,(+open-file "journal.org" 'org-directory) :which-key "journal")
-    "o k" '(org-capture :which-key "capture")
-    "o p" '(project-find-file :which-key "project")
-    "o r" '(recentf :which-key "recent"))
+      ;; Open stuff.
+      "o" '(:ignore t :which-key "open")
+      "o o" '(switch-to-buffer :which-key "buffer")
+      "o s" '(scratch-buffer :which-key "scratch")
+      "o e" `(,(+open-file "~/.config/emacs/README.org") :which-key "emacs")
+      "o a" '(org-agenda :which-key "agenda")
+      "o d" '(dired-jump :which-key "directory")
+      "o f" '(find-file :which-key "file")
+      "o i" `(,(+open-file "inbox.org" 'org-directory) :which-key "inbox")
+      "o j" `(,(+open-file "journal.org" 'org-directory) :which-key "journal")
+      "o k" '(org-capture :which-key "capture")
+      "o p" '(project-find-file :which-key "project")
+      "o r" '(recentf :which-key "recent"))
 
-  ;; Major-mode mappings.
-  (+leader-map emacs-lisp-mode-map
-	      "e e" '(eval-buffer :which-key "buffer")
-	      "e d" '(eval-defun :which-key "defun")))
+    ;; Major-mode mappings.
+    (+leader-map emacs-lisp-mode-map
+                "e e" '(eval-buffer :which-key "buffer")
+                "e d" '(eval-defun :which-key "defun")))
 #+end_src
 
 * Org mode
+Emacs =org-mode= is my favorite note-taking app.
 #+begin_src emacs-lisp
-(use-package org
-  :hook
-  (org-mode . visual-line-mode)
-  :custom
-  (org-todo-keywords
-   '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-     (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
-  (org-directory "~/Sync/Org")
-  (org-agenda-files (list org-directory))
-  (org-ctrl-k-protect-subtree t)
-  (org-auto-align-tags nil)
-  (org-startup-with-inline-images t)
-  (org-image-actual-width '(400))
-  (org-reverse-note-order t)
-  (org-startup-indented t)
-  (org-startup-folded 'content)
-  (org-pretty-entities t))
+  (use-package org
+    :custom
+    (org-todo-keywords
+     '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+       (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
+    (org-directory "~/Sync/Org")
+    (org-agenda-files (list org-directory))
+    (org-ctrl-k-protect-subtree t)
+    (org-auto-align-tags nil)
+    (org-startup-with-inline-images t)
+    (org-image-actual-width '(400))
+    (org-reverse-note-order t)
+    (org-startup-indented t)
+    (org-startup-folded 'content)
+    (org-pretty-entities t))
+#+end_src
 
-(use-package org-download
-  :after org
-  :custom
-  (org-download-method 'directory)
-  (org-download-image-dir "assets")
-  (org-download-timestamp "%Y%m%d%H%M%S")
-  (org-download-screenshot-basename ".png")
-  :config
-  (setq org-download-annotate-function (lambda (_link) ""))
-  (org-download-enable)
-  :bind (:map org-mode-map
-              ("M-v" . org-download-clipboard)))
+This lets me copy-paste images into my Org notes. Especially useful
+for keeping a research journal, as it lets me paste important plots
+into my daily log. (Workflow inspired by Logseq.)
+#+begin_src emacs-lisp
+  (use-package org-download
+    :after org
+    :custom
+    (org-download-method 'directory)
+    (org-download-image-dir "assets")
+    (org-download-timestamp "%Y%m%d%H%M%S")
+    (org-download-screenshot-basename ".png")
+    :config
+    (setq org-download-annotate-function (lambda (_link) ""))
+    (org-download-enable)
+    :bind (:map org-mode-map
+                ("M-v" . org-download-clipboard)))
 
-(use-package org-modern
-  :after org
-  :custom
-  (org-modern-list nil)
-  (org-modern-star nil)
-  :config
-  (global-org-modern-mode))
+  #+end_src
+
+Give =org-mode= a modern facelift.
+  #+begin_src emacs-lisp
+  (use-package org-modern
+    :after org
+    :custom
+    (org-modern-list nil)
+    (org-modern-star nil)
+    :config
+    (global-org-modern-mode))
 #+end_src
 
 * Tangle
-This code ensures that this config is automatically exported to elisp and then evaluated in full whenever the file is saved from within Emacs.
-
+This code ensures that this config is automatically exported to elisp
+and then evaluated in full whenever the file is saved within Emacs.
 #+begin_src
 Local Variables:
     eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle) (load-file user-init-file)) nil t)

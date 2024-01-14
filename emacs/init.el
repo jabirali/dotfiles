@@ -17,6 +17,7 @@
   (use-short-answers t)
   (truncate-lines t)
   (line-spacing 0.15)
+  (sentence-end-double-space nil)
   :custom-face
   (default ((t (:family "JetBrains Mono NL" :height 140))))
   :config
@@ -59,8 +60,8 @@ If a directory is provided, we look for the file there."
   `(lambda ()
      (interactive)
      (if (null ,dir)
-	 (find-file (expand-file-name ,file))
-		    (find-file (expand-file-name ,file ,dir)))))
+         (find-file (expand-file-name ,file))
+                    (find-file (expand-file-name ,file ,dir)))))
 
 (defun +close-window ()
   "Close window. If it's the last window, close the whole tab."
@@ -122,12 +123,6 @@ If a directory is provided, we look for the file there."
   (evil-want-C-u-scroll t)
   (evil-respect-visual-line-mode t)
   :config
-  (defun +nmap (key cmd)
-    "Global normal-state mapping of key to command."
-    (evil-define-key 'normal 'global (kbd key) cmd))
-  (defun +imap (key cmd)
-    "Global insert-state mapping of key to command."
-    (evil-define-key 'insert 'global (kbd key) cmd))
   (evil-mode 1))
 
 (use-package evil-collection
@@ -195,12 +190,10 @@ If a directory is provided, we look for the file there."
 
   ;; Major-mode mappings.
   (+leader-map emacs-lisp-mode-map
-	      "e e" '(eval-buffer :which-key "buffer")
-	      "e d" '(eval-defun :which-key "defun")))
+              "e e" '(eval-buffer :which-key "buffer")
+              "e d" '(eval-defun :which-key "defun")))
 
 (use-package org
-  :hook
-  (org-mode . visual-line-mode)
   :custom
   (org-todo-keywords
    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
