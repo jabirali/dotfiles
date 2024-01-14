@@ -147,6 +147,7 @@ If a directory is provided, we look for the file there."
   :config
   (evil-collection-init))
 
+;;; Spacemacs-like leader key.
 (use-package which-key
   :config
   (which-key-mode))
@@ -158,51 +159,57 @@ If a directory is provided, we look for the file there."
   (general-create-definer +leader-map
     :keymaps 'override
     :states '(normal visual)
-    :prefix "SPC")
+    :prefix "SPC"
+    :global-prefix "C-c")
 
   ;; Global leader mappings.
   (+leader-map
     ;; Important.
-    "SPC" 'execute-extended-command
-    "TAB" 'ace-window
+    "SPC" '(execute-extended-command :which-key "command")
+    "TAB" '(ace-window :which-key "switch")
 
     ;; Existing keymaps.
-    "h" help-map
+    "h" '(help-map :which-key "+help")
 
     ;; Common actions.
-    "s" 'save-buffer
-    "t" 'tab-bar-new-tab
-    "w" '+close-window
-    "q" '+kill-buffer-and-close-window
-    "g" 'magit
+    "s" '(save-buffer :which-key "save")
+    "t" '(tab-bar-new-tab :which-key "tab")
+    "w" '(+close-window :which-key "close")
+    "q" '(+kill-buffer-and-close-window :which-key "quit")
+    "g" '(magit :which-key "git")
+
+    ;; Reserved for major modes.
+    "e" '(:ignore t :which-key "eval")
 
     ;; Tab switching.
-    "1" 'tab-bar-select-tab
-    "2" 'tab-bar-select-tab
-    "3" 'tab-bar-select-tab
-    "4" 'tab-bar-select-tab
-    "5" 'tab-bar-select-tab
-    "6" 'tab-bar-select-tab
-    "7" 'tab-bar-select-tab
-    "8" 'tab-bar-select-tab
-    "9" 'tab-bar-select-tab
+    "1" '(tab-bar-select-tab :which-key "1")
+    "2" '(tab-bar-select-tab :which-key "2")
+    "3" '(tab-bar-select-tab :which-key "3")
+    "4" '(tab-bar-select-tab :which-key "4")
+    "5" '(tab-bar-select-tab :which-key "5")
+    "6" '(tab-bar-select-tab :which-key "6")
+    "7" '(tab-bar-select-tab :which-key "7")
+    "8" '(tab-bar-select-tab :which-key "8")
+    "9" '(tab-bar-select-tab :which-key "9")
 
     ;; Open stuff.
-    "o ." (+open-file user-init-file)
-    "o a" 'org-agenda
-    "o b" 'switch-to-buffer
-    "o d" 'dired-jump
-    "o f" 'find-file
-    "o i" (+open-file "inbox.org" 'org-directory)
-    "o j" (+open-file "journal.org" 'org-directory)
-    "o k" 'org-capture
-    "o p" 'project-find-file
-    "o r" 'recentf)
+    "o" '(:ignore t :which-key "open")
+    "o o" '(switch-to-buffer :which-key "buffer")
+    "o s" '(scratch-buffer :which-key "scratch")
+    "o e" `(,(+open-file user-init-file) :which-key "emacs")
+    "o a" '(org-agenda :which-key "agenda")
+    "o d" '(dired-jump :which-key "directory")
+    "o f" '(find-file :which-key "file")
+    "o i" `(,(+open-file "inbox.org" 'org-directory) :which-key "inbox")
+    "o j" `(,(+open-file "journal.org" 'org-directory) :which-key "journal")
+    "o k" '(org-capture :which-key "capture")
+    "o p" '(project-find-file :which-key "project")
+    "o r" '(recentf :which-key "recent"))
 
   ;; Major-mode mappings.
   (+leader-map emacs-lisp-mode-map
-	      "e e" 'eval-buffer
-	      "e d" 'eval-defun))
+	      "e e" '(eval-buffer :which-key "buffer")
+	      "e d" '(eval-defun :which-key "defun")))
 
 ;;; Org mode
 (use-package org
