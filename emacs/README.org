@@ -1,3 +1,14 @@
+#+TITLE: Emacs configuration
+#+AUTHOR: Jabir Ali Ouassou
+#+PROPERTY: header-args:emacs-lisp :tangle init.el
+
+* Inbox
+This section is a placeholder for newly added code or configuration. This code will be moved to another section as it matures and proves useful.
+* Custom functions
+These are various helper functions used throughout my config.
+I define them here at the top so that they're available below.
+
+#+begin_src emacs-lisp
 (defun +open-file (file &optional dir)
   "Create an interactive command for opening a given file.
 
@@ -21,20 +32,31 @@ If a directory is provided, we look for the file there."
   (interactive)
   (kill-buffer)
   (+close-window))
+#+end_src
 
+* Package management
+Setup 'use-package' to automatically download MELPA packages.
+
+#+begin_src emacs-lisp
 (use-package use-package
   :config
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
   :custom
   (use-package-always-demand t)
   (use-package-always-ensure t))
+#+end_src
 
+Prevent packages from spamming my config directory with junk.
+#+begin_src emacs-lisp
 (use-package no-littering
   :init
   (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (load custom-file))
+#+end_src
 
+* Built-in packages
+#+begin_src emacs-lisp
 (use-package emacs
   :custom
   (inhibit-startup-message t)
@@ -76,7 +98,10 @@ If a directory is provided, we look for the file there."
 (use-package savehist
   :config
   (savehist-mode 1))
+#+end_src
 
+* User interface
+#+begin_src emacs-lisp
 (use-package doom-themes
   :config
   (load-theme 'doom-oksolar-light t))
@@ -94,7 +119,10 @@ If a directory is provided, we look for the file there."
 (use-package spacious-padding
   :config
   (spacious-padding-mode))
+#+end_src
 
+* User experience
+#+begin_src emacs-lisp
 (use-package vertico
   :init
   (vertico-mode))
@@ -114,7 +142,10 @@ If a directory is provided, we look for the file there."
 (use-package ace-window)
 
 (use-package magit)
+#+end_src
 
+* Modal editing
+#+begin_src emacs-lisp
 (use-package evil
   :init
   :custom
@@ -135,7 +166,10 @@ If a directory is provided, we look for the file there."
   :after evil
   :config
   (evil-collection-init))
+#+end_src
 
+* Global menu
+#+begin_src emacs-lisp
 (use-package which-key
   :config
   (which-key-mode))
@@ -198,7 +232,10 @@ If a directory is provided, we look for the file there."
   (+leader-map emacs-lisp-mode-map
 	      "e e" '(eval-buffer :which-key "buffer")
 	      "e d" '(eval-defun :which-key "defun")))
+#+end_src
 
+* Org mode
+#+begin_src emacs-lisp
 (use-package org
   :hook
   (org-mode . visual-line-mode)
@@ -237,3 +274,14 @@ If a directory is provided, we look for the file there."
   (org-modern-star nil)
   :config
   (global-org-modern-mode))
+#+end_src
+
+* Tangle
+This code ensures that this config is automatically exported to elisp and then evaluated in full whenever the file is saved from within Emacs.
+
+#+begin_src
+Local Variables:
+    eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle) (load-file user-init-file)) nil t)
+End:
+#+end_src
+
