@@ -2,6 +2,8 @@
 #+AUTHOR: Jabir Ali Ouassou
 #+PROPERTY: header-args:emacs-lisp :tangle init.el
 
+This is my personal Emacs config file. My configuration is mostly based around Org-mode and Evil-mode, as I do most of my actual programming in Vim.
+
 * Inbox
 This section is a placeholder for newly added code or configuration. This code will be moved to another section as it matures and proves useful.
 * Custom functions
