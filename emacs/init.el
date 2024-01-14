@@ -1,5 +1,4 @@
 (use-package use-package
-
   :config
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
   :custom
@@ -11,6 +10,8 @@
   (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (load custom-file))
+
+(use-package quelpa-use-package)
 
 (use-package emacs
   :custom
@@ -179,7 +180,7 @@ If a directory is provided, we look for the file there."
     "o" '(:ignore t :which-key "open")
     "o o" '(switch-to-buffer :which-key "buffer")
     "o s" '(scratch-buffer :which-key "scratch")
-    "o e" `(,(+open-file "~/.config/emacs/README.org") :which-key "emacs")
+    "o ." `(,(+open-file "~/.config/emacs/README.org") :which-key "dotfile")
     "o a" '(org-agenda :which-key "agenda")
     "o d" '(dired-jump :which-key "directory")
     "o f" '(find-file :which-key "file")

@@ -5,7 +5,7 @@
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle ~/.config/emacs/init.el
 :END:
-This is my configuration for Emacs 29+. My setup is mostly based
+This is my configuration for Emacs 29+ on macOS. My setup is based
 around =org-mode= and =evil-mode=, as I mostly use Vim for coding.
 
 ** Package management
@@ -15,7 +15,6 @@ notably third-party package repos and automatic installation.
 
 #+begin_src emacs-lisp
   (use-package use-package
-
     :config
     (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
     :custom
@@ -32,6 +31,14 @@ under version control. Luckily, =no-littering= can help with that.
     (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
     (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
     (load custom-file))
+#+end_src
+
+By default, =use-package= uses the built-in =package.el= for package
+management, which can only install packages from Emacs repositories.
+The following integrates it with =quelpa= as well, thus permitting
+the direct installation of Emacs packages hosted on e.g. GitHub.
+#+begin_src emacs-lisp
+  (use-package quelpa-use-package)
 #+end_src
 
 ** Built-in packages
@@ -252,7 +259,7 @@ and Doom Emacs. This is my personalized version of this concept.
       "o" '(:ignore t :which-key "open")
       "o o" '(switch-to-buffer :which-key "buffer")
       "o s" '(scratch-buffer :which-key "scratch")
-      "o e" `(,(+open-file "~/.config/emacs/README.org") :which-key "emacs")
+      "o ." `(,(+open-file "~/.config/emacs/README.org") :which-key "dotfile")
       "o a" '(org-agenda :which-key "agenda")
       "o d" '(dired-jump :which-key "directory")
       "o f" '(find-file :which-key "file")
