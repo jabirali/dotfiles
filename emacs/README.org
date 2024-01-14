@@ -1,17 +1,21 @@
 #+TITLE: Emacs configuration
 #+AUTHOR: Jabir Ali Ouassou
-#+PROPERTY: header-args:emacs-lisp :tangle init.el
 
+* Emacs
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle ~/.config/emacs/init.el
+:END:
 This is my configuration for Emacs 29+. My setup is mostly based
 around =org-mode= and =evil-mode=, as I mostly use Vim for coding.
 
-* Package management
+** Package management
 Since Emacs 29, =use-package= has been included in the base
 distribution. There are however some defaults we need to fix,
 notably third-party package repos and automatic installation.
 
 #+begin_src emacs-lisp
   (use-package use-package
+
     :config
     (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
     :custom
@@ -30,7 +34,7 @@ under version control. Luckily, =no-littering= can help with that.
     (load custom-file))
 #+end_src
 
-* Built-in packages
+** Built-in packages
 The Emacs defaults are quite dated. This makes it fit in the 2020s.
 #+begin_src emacs-lisp
   (use-package emacs
@@ -89,7 +93,7 @@ I want Emacs to remember my recently used files and commands.
     (savehist-mode 1))
 #+end_src
 
-* Helper functions
+** Helper functions
 These are various helper functions used throughout my config.
 
 #+begin_src emacs-lisp
@@ -118,7 +122,7 @@ These are various helper functions used throughout my config.
     (+close-window))
 #+end_src
 
-* User interface
+** User interface
 External packages that gives Emacs a modern look (inspired by Doom).
 #+begin_src emacs-lisp
   (use-package doom-themes
@@ -140,7 +144,7 @@ External packages that gives Emacs a modern look (inspired by Doom).
     (spacious-padding-mode))
 #+end_src
 
-* User experience
+** User experience
 Packages for enabling fuzzy-finding across the Emacs user interface.
 #+begin_src emacs-lisp
   (use-package vertico
@@ -170,7 +174,7 @@ Better integration with Git version control.
   (use-package magit)
 #+end_src
 
-* Modal editing
+** Modal editing
 I've used Vim keybindings for nearly two decades, and still regularly
 use it for programming or quick remote edits. Moreover, every time
 I've tried to switch to Emacs keybindings, my RSI has flared up. So
@@ -196,7 +200,7 @@ This makes it work across nearly all Emacs modes and packages.
     (evil-collection-init))
 #+end_src
 
-* Global menu
+** Global menu
 I like the "space menu" that is provided by default in e.g. Spacemacs
 and Doom Emacs. This is my personalized version of this concept.
 #+begin_src emacs-lisp
@@ -264,7 +268,7 @@ and Doom Emacs. This is my personalized version of this concept.
                 "e d" '(eval-defun :which-key "defun")))
 #+end_src
 
-* Org mode
+** Org mode
 Emacs =org-mode= is my favorite note-taking app.
 #+begin_src emacs-lisp
   (use-package org
@@ -303,7 +307,7 @@ into my daily log. (Workflow inspired by Logseq.)
 
   #+end_src
 
-Give =org-mode= a modern facelift.
+Give =org-mode= a facelift.
   #+begin_src emacs-lisp
   (use-package org-modern
     :after org
@@ -314,7 +318,7 @@ Give =org-mode= a modern facelift.
     (global-org-modern-mode))
 #+end_src
 
-* Tangle
+* Export
 This code ensures that this config is automatically exported to elisp
 and then evaluated in full whenever the file is saved within Emacs.
 #+begin_src
