@@ -64,7 +64,8 @@ The Emacs defaults are quite dated. This makes it fit in the 2020s.
     (tool-bar-mode -1)
     (scroll-bar-mode -1)
     (blink-cursor-mode -1)
-    (pixel-scroll-precision-mode 1)
+    (fringe-mode -1)
+    (desktop-save-mode 1)
     (setq ring-bell-function 'ignore))
 #+end_src
 
@@ -220,6 +221,9 @@ Evil is great, but by default it only works in text-editing modes. This makes it
 
   (use-package evil-org
     :after (evil org)
+    :config
+    (general-evil-define-key 'normal 'org-mode-map
+      "RET" 'org-open-at-point)
     :hook (org-mode . evil-org-mode))
 #+end_src
 
@@ -305,21 +309,29 @@ Emacs =org-mode= is my favorite note-taking app.
   (use-package org
     :hook
     (org-mode . visual-line-mode)
+    :bind
+    (:map org-mode-map
+          ("M-p" . org-priority)
+          ("M-t" . org-set-tags-command))
     :custom
     (org-todo-keywords
      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
        (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
-    (org-archive-location "::* Archive")
     (org-directory "~/Sync/Org")
     (org-agenda-files (list org-directory))
+    (org-archive-location "::* Archive")
     (org-ctrl-k-protect-subtree t)
-    (org-auto-align-tags nil)
-    (org-startup-with-inline-images t)
     (org-image-actual-width '(400))
-    (org-reverse-note-order t)
-    (org-startup-indented t)
+    (org-pretty-entities t)
     (org-startup-folded 'content)
-    (org-pretty-entities t))
+    (org-startup-indented t)
+    (org-startup-with-inline-images t)
+    (org-tags-column -65)
+    :config
+    (defun +url-handler-zotero (link)
+      "Open a zotero:// link in the Zotero desktop app."
+      (start-process "zotero_open" nil "open" (concat "zotero:" link)))
+    (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
 #+end_src
 
 This lets me copy-paste images into my Org notes. Especially useful for keeping a research journal, as it lets me paste important plots into my daily log. (Workflow inspired by Logseq.)

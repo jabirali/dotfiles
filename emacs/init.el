@@ -36,7 +36,8 @@
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (blink-cursor-mode -1)
-  (pixel-scroll-precision-mode 1)
+  (fringe-mode -1)
+  (desktop-save-mode 1)
   (setq ring-bell-function 'ignore))
 
 (use-package tab-bar
@@ -89,6 +90,11 @@ If a directory is provided, we look for the file there."
   (kill-buffer)
   (+close-window))
 
+(defun +insert-date ()
+  "Insert an ISO date stamp corresponding to today."
+  (interactive)
+  (insert (format-time-string "%Y-%m-%d %A")))
+
 (use-package doom-themes
   :config
   (load-theme 'doom-oksolar-light t))
@@ -129,7 +135,9 @@ If a directory is provided, we look for the file there."
   :bind
   ("M-o" . 'ace-window))
 
-(use-package magit)
+(use-package magit
+  :config
+  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 
 (use-package evil
   :init
@@ -145,6 +153,13 @@ If a directory is provided, we look for the file there."
   :after evil
   :config
   (evil-collection-init))
+
+(use-package evil-org
+  :after (evil org)
+  :config
+  (general-evil-define-key 'normal 'org-mode-map
+    "RET" 'org-open-at-point)
+  :hook (org-mode . evil-org-mode))
 
 (use-package which-key
   :config
@@ -167,7 +182,7 @@ If a directory is provided, we look for the file there."
     "RET" '(scratch-buffer :which-key "scratch")
 
     ;; Existing keymaps.
-    "h" '(help-map :which-key "+help")
+    "h" `(,help-map :which-key "+help")
 
     ;; Common actions.
     "s" '(save-buffer :which-key "save")
@@ -196,6 +211,10 @@ If a directory is provided, we look for the file there."
     "8" '(tab-bar-select-tab :which-key "8")
     "9" '(tab-bar-select-tab :which-key "9")
 
+    ;; Insert stuff.
+    "i" '(:ignore t :which-key "insert")
+    "id" '(+insert-date :which-key "date")
+
     ;; Open stuff.
     "o" '(:ignore t :which-key "open")
     "o o" '(switch-to-buffer :which-key "buffer")
@@ -217,21 +236,29 @@ If a directory is provided, we look for the file there."
 (use-package org
   :hook
   (org-mode . visual-line-mode)
+  :bind
+  (:map org-mode-map
+        ("M-p" . org-priority)
+        ("M-t" . org-set-tags-command))
   :custom
   (org-todo-keywords
    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
      (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
-  (org-archive-location "::* Archive")
   (org-directory "~/Sync/Org")
   (org-agenda-files (list org-directory))
+  (org-archive-location "::* Archive")
   (org-ctrl-k-protect-subtree t)
-  (org-auto-align-tags nil)
-  (org-startup-with-inline-images t)
   (org-image-actual-width '(400))
-  (org-reverse-note-order t)
-  (org-startup-indented t)
+  (org-pretty-entities t)
   (org-startup-folded 'content)
-  (org-pretty-entities t))
+  (org-startup-indented t)
+  (org-startup-with-inline-images t)
+  (org-tags-column -65)
+  :config
+  (defun +url-handler-zotero (link)
+    "Open a zotero:// link in the Zotero desktop app."
+    (start-process "zotero_open" nil "open" (concat "zotero:" link)))
+  (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
 
 (use-package org-download
   :after org
@@ -245,14 +272,6 @@ If a directory is provided, we look for the file there."
   (org-download-enable)
   :bind (:map org-mode-map
               ("M-v" . org-download-clipboard)))
-
-(use-package org-modern
-  :after org
-  :custom
-  (org-modern-list nil)
-  (org-modern-star nil)
-  :config
-  (global-org-modern-mode))
 
 (use-package persistent-scratch
   :after org
