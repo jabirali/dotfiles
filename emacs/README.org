@@ -8,13 +8,19 @@
 This is my configuration for Emacs 29+ on macOS. My setup is based
 around =org-mode= and =evil-mode=, as I mostly use Vim for coding.
 
-** Package management
-Since Emacs 29, =use-package= has been included in the base distribution. There are however some defaults we need to fix, notably third-party package repos and automatic installation.
+** Bootstrapping
+First, setup the Emacs package manager. We want to prevent it from polluting my dotfiles and also add the MELPA community repository.
+#+begin_src emacs-lisp
+  (require 'package)
+  (setq package-user-dir "~/.cache/emacs/elpa")
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (package-initialize)
+#+end_src
 
+Since Emacs 29, =use-package= has been included in the base distribution. This configuration file is structured as =use-package= statements.
 #+begin_src emacs-lisp
   (use-package use-package
     :config
-    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
     :custom
     (use-package-always-demand t)
     (use-package-always-ensure t))
@@ -34,6 +40,10 @@ By default, =use-package= uses the built-in =package.el= for package management,
   (use-package quelpa-use-package)
 #+end_src
 
+Finally, let's start the Emacs server by default. This lets us quickly connect to the running Emacs instance from a terminal via =emacsclient=.
+#+begin_src emacs-lisp
+  (server-start)
+#+end_src
 ** Built-in packages
 The Emacs defaults are quite dated. This makes it fit in the 2020s.
 #+begin_src emacs-lisp
@@ -54,10 +64,7 @@ The Emacs defaults are quite dated. This makes it fit in the 2020s.
     (setq ring-bell-function 'ignore))
 #+end_src
 
-Emacs recently added a tab bar which works similarly to Vim or Tmux,
-i.e. each tab corresponds to a numbered "window configuration" that
-you can easily switch between. Moreover, it can record a per-tab
-history of recent window configurations, similarly to a web browser.
+Emacs recently added a tab bar which works similarly to Vim or Tmux, i.e. each tab corresponds to a numbered "window configuration" that you can easily switch between. Moreover, it can record a per-tab history of recent window configurations, similarly to a web browser.
 #+begin_src emacs-lisp
   (use-package tab-bar
     :custom

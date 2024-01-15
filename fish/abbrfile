@@ -23,6 +23,9 @@ c    cd ~/Dropbox/Code/$(ls ~/Dropbox/Code | fzf)
 
 d    dotfiles
 
+e    emacsclient -nw -a ""
+ee   tangle
+
 g    git
 ga   git add
 gb   git branch

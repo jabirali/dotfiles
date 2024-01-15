@@ -1,6 +1,10 @@
+(require 'package)
+(setq package-user-dir "~/.cache/emacs/elpa")
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+
 (use-package use-package
   :config
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
   :custom
   (use-package-always-demand t)
   (use-package-always-ensure t))
@@ -12,6 +16,8 @@
   (load custom-file))
 
 (use-package quelpa-use-package)
+
+(server-start)
 
 (use-package emacs
   :custom
