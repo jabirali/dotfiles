@@ -330,6 +330,17 @@ Give =org-mode= a facelift.
     (global-org-modern-mode))
 #+end_src
 
+The "scratch buffer" is a nice place to dump random thoughts like the plan for the day -- especially if it's set to use Org-mode as its format. It's a bit risky though, as if Emacs is restarted for any reason (e.g. config updates), everything in the scratch buffer is lost. This fixes that.
+#+begin_src emacs-lisp
+  (use-package persistent-scratch
+    :after org
+    :custom
+    (initial-major-mode 'org-mode)
+    (initial-scratch-message "")
+   :config
+    (persistent-scratch-setup-default)
+    (persistent-scratch-autosave-mode))
+#+end_src
 * Export
 This code ensures that this config is automatically exported to elisp
 and then evaluated in full whenever the file is saved within Emacs.

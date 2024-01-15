@@ -8,8 +8,7 @@
 (use-package no-littering
   :init
   (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
-  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-  (load custom-file))
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory)))
 
 (use-package quelpa-use-package)
 
@@ -99,7 +98,9 @@ If a directory is provided, we look for the file there."
 
 (use-package vertico
   :init
-  (vertico-mode))
+  (vertico-mode)
+  (vertico-mouse-mode)
+  (vertico-reverse-mode))
 
 (use-package consult
   :after vertico)
@@ -197,9 +198,9 @@ If a directory is provided, we look for the file there."
               "e d" '(eval-defun :which-key "defun")))
 
 (use-package org
+  :hook
+  (org-mode . visual-line-mode)
   :custom
-  (initial-major-mode 'org-mode)
-  (initial-scratch-message (format-time-string "#+TITLE:  Scratch\n#+AUTHOR: Jabir Ali Ouassou\n#+DATE:   %Y-W%W\n\n"))
   (org-todo-keywords
    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
      (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
@@ -234,3 +235,12 @@ If a directory is provided, we look for the file there."
   (org-modern-star nil)
   :config
   (global-org-modern-mode))
+
+(use-package persistent-scratch
+  :after org
+  :custom
+  (initial-major-mode 'org-mode)
+  (initial-scratch-message "")
+ :config
+  (persistent-scratch-setup-default)
+  (persistent-scratch-autosave-mode))
