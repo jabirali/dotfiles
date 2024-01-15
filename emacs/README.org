@@ -192,7 +192,9 @@ Better workflow for switching between visible windows.
 
 Better integration with Git version control.
 #+begin_src emacs-lisp
-  (use-package magit)
+  (use-package magit
+    :config
+    (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 #+end_src
 
 ** Modal editing
