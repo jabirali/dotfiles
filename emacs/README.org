@@ -156,7 +156,9 @@ Packages for enabling fuzzy-finding across the Emacs user interface.
 #+begin_src emacs-lisp
   (use-package vertico
     :init
-    (vertico-mode))
+    (vertico-mode)
+    (vertico-mouse-mode)
+    (vertico-reverse-mode))
 
   (use-package consult
     :after vertico)
@@ -280,9 +282,9 @@ and Doom Emacs. This is my personalized version of this concept.
 Emacs =org-mode= is my favorite note-taking app.
 #+begin_src emacs-lisp
   (use-package org
+    :hook
+    (org-mode . visual-line-mode)
     :custom
-    (initial-major-mode 'org-mode)
-    (initial-scratch-message (format-time-string "#+TITLE:  Scratch\n#+AUTHOR: Jabir Ali Ouassou\n#+DATE:   %Y-W%W\n\n"))
     (org-todo-keywords
      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
        (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
