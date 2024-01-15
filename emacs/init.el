@@ -8,7 +8,8 @@
 (use-package no-littering
   :init
   (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
-  (setq custom-file (expand-file-name "custom.el" user-emacs-directory)))
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (load custom-file))
 
 (use-package quelpa-use-package)
 
@@ -204,6 +205,7 @@ If a directory is provided, we look for the file there."
   (org-todo-keywords
    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
      (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
+  (org-archive-location "::* Archive")
   (org-directory "~/Sync/Org")
   (org-agenda-files (list org-directory))
   (org-ctrl-k-protect-subtree t)
@@ -240,7 +242,7 @@ If a directory is provided, we look for the file there."
   :after org
   :custom
   (initial-major-mode 'org-mode)
-  (initial-scratch-message "")
+  (initial-scratch-message "#+TITLE: Scratch buffer\n")
  :config
   (persistent-scratch-setup-default)
   (persistent-scratch-autosave-mode))

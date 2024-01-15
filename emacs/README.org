@@ -9,9 +9,7 @@ This is my configuration for Emacs 29+ on macOS. My setup is based
 around =org-mode= and =evil-mode=, as I mostly use Vim for coding.
 
 ** Package management
-Since Emacs 29, =use-package= has been included in the base
-distribution. There are however some defaults we need to fix,
-notably third-party package repos and automatic installation.
+Since Emacs 29, =use-package= has been included in the base distribution. There are however some defaults we need to fix, notably third-party package repos and automatic installation.
 
 #+begin_src emacs-lisp
   (use-package use-package
@@ -22,9 +20,7 @@ notably third-party package repos and automatic installation.
     (use-package-always-ensure t))
 #+end_src
 
-Many Emacs packages throw their cache files in my =~/.config/emacs/=
-directory by default. This is annoying when that directory is kept
-under version control. Luckily, =no-littering= can help with that.
+Many Emacs packages throw their cache files in my =~/.config/emacs/= directory by default. This is annoying when that directory is kept under version control. Luckily, =no-littering= can help with that.
 #+begin_src emacs-lisp
   (use-package no-littering
     :init
@@ -33,10 +29,7 @@ under version control. Luckily, =no-littering= can help with that.
     (load custom-file))
 #+end_src
 
-By default, =use-package= uses the built-in =package.el= for package
-management, which can only install packages from Emacs repositories.
-The following integrates it with =quelpa= as well, thus permitting
-the direct installation of Emacs packages hosted on e.g. GitHub.
+By default, =use-package= uses the built-in =package.el= for package management, which can only install packages from Emacs repositories. The following integrates it with =quelpa= as well, thus permitting the direct installation of Emacs packages hosted on e.g. GitHub.
 #+begin_src emacs-lisp
   (use-package quelpa-use-package)
 #+end_src
@@ -77,10 +70,9 @@ history of recent window configurations, similarly to a web browser.
     :config
     (tab-bar-mode 1)
     (tab-bar-history-mode 1))
-    #+end_src
+#+end_src
 
-Code folding with =outline-minor-mode=. This is the package that
-=org-mode= is built on, and it integrates well with =evil-mode=.
+Code folding with =outline-minor-mode=. This is the package that =org-mode= is built on, and it integrates well with =evil-mode=.
 #+begin_src emacs-lisp
   (use-package outline
     :custom
@@ -184,10 +176,7 @@ Better integration with Git version control.
 #+end_src
 
 ** Modal editing
-I've used Vim keybindings for nearly two decades, and still regularly
-use it for programming or quick remote edits. Moreover, every time
-I've tried to switch to Emacs keybindings, my RSI has flared up. So
-for me, =evil-mode= is a prerequisite for using Emacs at all.
+I've used Vim keybindings for nearly two decades, and still regularly use it for programming or quick remote edits. Moreover, every time I've tried to switch to Emacs keybindings, my RSI has flared up. So for me, =evil-mode= is a prerequisite for using Emacs at all.
 #+begin_src emacs-lisp
   (use-package evil
     :init
@@ -200,8 +189,7 @@ for me, =evil-mode= is a prerequisite for using Emacs at all.
     (evil-mode 1))
 #+end_src
 
-Evil is great, but by default it only works in text-editing modes.
-This makes it work across nearly all Emacs modes and packages.
+Evil is great, but by default it only works in text-editing modes. This makes it work across nearly all Emacs modes and packages.
 #+begin_src emacs-lisp
   (use-package evil-collection
     :after evil
@@ -210,8 +198,7 @@ This makes it work across nearly all Emacs modes and packages.
 #+end_src
 
 ** Global menu
-I like the "space menu" that is provided by default in e.g. Spacemacs
-and Doom Emacs. This is my personalized version of this concept.
+I like the "space menu" that is provided by default in e.g. Spacemacs and Doom Emacs. This is my personalized version of this concept.
 #+begin_src emacs-lisp
   (use-package which-key
     :config
@@ -288,6 +275,7 @@ Emacs =org-mode= is my favorite note-taking app.
     (org-todo-keywords
      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
        (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
+    (org-archive-location "::* Archive")
     (org-directory "~/Sync/Org")
     (org-agenda-files (list org-directory))
     (org-ctrl-k-protect-subtree t)
@@ -300,9 +288,7 @@ Emacs =org-mode= is my favorite note-taking app.
     (org-pretty-entities t))
 #+end_src
 
-This lets me copy-paste images into my Org notes. Especially useful
-for keeping a research journal, as it lets me paste important plots
-into my daily log. (Workflow inspired by Logseq.)
+This lets me copy-paste images into my Org notes. Especially useful for keeping a research journal, as it lets me paste important plots into my daily log. (Workflow inspired by Logseq.)
 #+begin_src emacs-lisp
   (use-package org-download
     :after org
@@ -317,7 +303,7 @@ into my daily log. (Workflow inspired by Logseq.)
     :bind (:map org-mode-map
                 ("M-v" . org-download-clipboard)))
 
-  #+end_src
+#+end_src
 
 Give =org-mode= a facelift.
   #+begin_src emacs-lisp
@@ -336,14 +322,13 @@ The "scratch buffer" is a nice place to dump random thoughts like the plan for t
     :after org
     :custom
     (initial-major-mode 'org-mode)
-    (initial-scratch-message "")
+    (initial-scratch-message "#+TITLE: Scratch buffer\n")
    :config
     (persistent-scratch-setup-default)
     (persistent-scratch-autosave-mode))
 #+end_src
 * Export
-This code ensures that this config is automatically exported to elisp
-and then evaluated in full whenever the file is saved within Emacs.
+This code ensures that this config is automatically exported to elisp and then evaluated in full whenever the file is saved within Emacs.
 #+begin_src
 Local Variables:
     eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle) (load-file user-init-file)) nil t)
