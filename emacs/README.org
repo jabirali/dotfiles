@@ -245,6 +245,10 @@ I like the "space menu" that is provided by default in e.g. Spacemacs and Doom E
       "Q" '(server-edit :which-key "done")
       "g" '(magit :which-key "git")
 
+      ;; Bookmarks.
+      "m" '(bookmark-set :which-key "set mark")
+      "'" '(bookmark-jump :which-key "goto mark")
+
       ;; Reserved for major modes.
       "e" '(:ignore t :which-key "eval")
 

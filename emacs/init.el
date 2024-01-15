@@ -178,6 +178,10 @@ If a directory is provided, we look for the file there."
     "Q" '(server-edit :which-key "done")
     "g" '(magit :which-key "git")
 
+    ;; Bookmarks.
+    "m" '(bookmark-set :which-key "set mark")
+    "'" '(bookmark-jump :which-key "goto mark")
+
     ;; Reserved for major modes.
     "e" '(:ignore t :which-key "eval")
 
