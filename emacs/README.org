@@ -208,6 +208,10 @@ Evil is great, but by default it only works in text-editing modes. This makes it
     :after evil
     :config
     (evil-collection-init))
+
+  (use-package evil-org
+    :after (evil org)
+    :hook (org-mode . evil-org-mode))
 #+end_src
 
 ** Global menu
@@ -320,17 +324,6 @@ This lets me copy-paste images into my Org notes. Especially useful for keeping 
     :bind (:map org-mode-map
                 ("M-v" . org-download-clipboard)))
 
-#+end_src
-
-Give =org-mode= a facelift.
-  #+begin_src emacs-lisp
-  (use-package org-modern
-    :after org
-    :custom
-    (org-modern-list nil)
-    (org-modern-star nil)
-    :config
-    (global-org-modern-mode))
 #+end_src
 
 The "scratch buffer" is a nice place to dump random thoughts like the plan for the day -- especially if it's set to use Org-mode as its format. It's a bit risky though, as if Emacs is restarted for any reason (e.g. config updates), everything in the scratch buffer is lost. This fixes that.
