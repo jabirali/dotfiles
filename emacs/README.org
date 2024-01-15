@@ -132,6 +132,13 @@ These are various helper functions used throughout my config.
     (+close-window))
 #+end_src
 
+#+begin_src emacs-lisp
+  (defun +insert-date ()
+    "Insert an ISO date stamp corresponding to today."
+    (interactive)
+    (insert (format-time-string "%Y-%m-%d %A")))
+#+end_src
+
 ** User interface
 External packages that gives Emacs a modern look (inspired by Doom).
 #+begin_src emacs-lisp
@@ -238,7 +245,7 @@ I like the "space menu" that is provided by default in e.g. Spacemacs and Doom E
       "RET" '(scratch-buffer :which-key "scratch")
 
       ;; Existing keymaps.
-      "h" '(help-map :which-key "+help")
+      "h" `(,help-map :which-key "+help")
 
       ;; Common actions.
       "s" '(save-buffer :which-key "save")
@@ -266,6 +273,10 @@ I like the "space menu" that is provided by default in e.g. Spacemacs and Doom E
       "7" '(tab-bar-select-tab :which-key "7")
       "8" '(tab-bar-select-tab :which-key "8")
       "9" '(tab-bar-select-tab :which-key "9")
+
+      ;; Insert stuff.
+      "i" '(:ignore t :which-key "insert")
+      "id" '(+insert-date :which-key "date")
 
       ;; Open stuff.
       "o" '(:ignore t :which-key "open")
