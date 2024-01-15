@@ -151,6 +151,7 @@ If a directory is provided, we look for the file there."
     ;; Important.
     "SPC" '(execute-extended-command :which-key "command")
     "TAB" '(ace-window :which-key "switch")
+    "RET" '(scratch-buffer :which-key "scratch")
 
     ;; Existing keymaps.
     "h" '(help-map :which-key "+help")
@@ -159,6 +160,7 @@ If a directory is provided, we look for the file there."
     "s" '(save-buffer :which-key "save")
     "t" '(tab-bar-new-tab :which-key "tab")
     "w" '(+close-window :which-key "close")
+    "d" '(split-window-below :which-key "split")
     "q" '(+kill-buffer-and-close-window :which-key "quit")
     "g" '(magit :which-key "git")
 
@@ -179,7 +181,6 @@ If a directory is provided, we look for the file there."
     ;; Open stuff.
     "o" '(:ignore t :which-key "open")
     "o o" '(switch-to-buffer :which-key "buffer")
-    "o s" '(scratch-buffer :which-key "scratch")
     "o ." `(,(+open-file "~/.config/emacs/README.org") :which-key "dotfile")
     "o a" '(org-agenda :which-key "agenda")
     "o d" '(dired-jump :which-key "directory")
@@ -197,6 +198,8 @@ If a directory is provided, we look for the file there."
 
 (use-package org
   :custom
+  (initial-major-mode 'org-mode)
+  (initial-scratch-message (format-time-string "#+TITLE:  Scratch\n#+AUTHOR: Jabir Ali Ouassou\n#+DATE:   %Y-W%W\n\n"))
   (org-todo-keywords
    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
      (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
