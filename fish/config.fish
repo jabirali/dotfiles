@@ -6,6 +6,7 @@
 
 # Environment variables.
 export EDITOR="vim"
+export ALTERNATE_EDITOR=""
 export MANPAGER="vim +MANPAGER --not-a-term -"
 export DIRENV_LOG_FORMAT=
 

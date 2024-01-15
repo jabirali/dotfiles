@@ -42,8 +42,10 @@ By default, =use-package= uses the built-in =package.el= for package management,
 
 Finally, let's start the Emacs server by default. This lets us quickly connect to the running Emacs instance from a terminal via =emacsclient=.
 #+begin_src emacs-lisp
-  (unless (server-running-p)
-    (server-start))
+  (use-package server
+    :config
+    (unless (server-running-p)
+      (server-start)))
 #+end_src
 ** Built-in packages
 The Emacs defaults are quite dated. This makes it fit in the 2020s.
@@ -58,6 +60,7 @@ The Emacs defaults are quite dated. This makes it fit in the 2020s.
     :custom-face
     (default ((t (:family "JetBrains Mono NL" :height 140))))
     :config
+    (menu-bar-mode -1)
     (tool-bar-mode -1)
     (scroll-bar-mode -1)
     (blink-cursor-mode -1)
@@ -221,8 +224,7 @@ I like the "space menu" that is provided by default in e.g. Spacemacs and Doom E
     (general-create-definer +leader-map
       :keymaps 'override
       :states '(normal visual)
-      :prefix "SPC"
-      :global-prefix "C-c")
+      :prefix "SPC")
 
     ;; Global leader mappings.
     (+leader-map
@@ -240,6 +242,7 @@ I like the "space menu" that is provided by default in e.g. Spacemacs and Doom E
       "w" '(+close-window :which-key "close")
       "d" '(split-window-below :which-key "split")
       "q" '(+kill-buffer-and-close-window :which-key "quit")
+      "Q" '(server-edit :which-key "done")
       "g" '(magit :which-key "git")
 
       ;; Reserved for major modes.
@@ -336,6 +339,26 @@ The "scratch buffer" is a nice place to dump random thoughts like the plan for t
    :config
     (persistent-scratch-setup-default)
     (persistent-scratch-autosave-mode))
+#+end_src
+** Hacks
+When I start Emacs as a GUI, and start the Emacs server from this process, none of my shell environment variables are loaded. This can be an issue if I later want to connect from =emacsclient=. We can however make macOS set those variables globally instead.
+#+begin_src xml :tangle ~/Library/LaunchAgents/environment.plist
+  <?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+  <plist version="1.0">
+  <dict>
+      <key>Label</key>
+      <string>Environment</string>
+      <key>ProgramArguments</key>
+      <array>
+          <string>sh</string>
+          <string>-c</string>
+          <string>launchctl setenv COLORTERM truecolor</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+  </dict>
+  </plist>
 #+end_src
 * Export
 This code ensures that this config is automatically exported to elisp and then evaluated in full whenever the file is saved within Emacs.

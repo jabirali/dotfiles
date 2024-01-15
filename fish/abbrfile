@@ -23,7 +23,7 @@ c    cd ~/Dropbox/Code/$(ls ~/Dropbox/Code | fzf)
 
 d    dotfiles
 
-e    emacsclient -nw -a ""
+e    emacsclient -nw
 ee   tangle
 
 g    git

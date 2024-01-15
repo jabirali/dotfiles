@@ -17,8 +17,10 @@
 
 (use-package quelpa-use-package)
 
-(unless (server-running-p)
-  (server-start))
+(use-package server
+  :config
+  (unless (server-running-p)
+    (server-start)))
 
 (use-package emacs
   :custom
@@ -30,6 +32,7 @@
   :custom-face
   (default ((t (:family "JetBrains Mono NL" :height 140))))
   :config
+  (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (blink-cursor-mode -1)
@@ -154,8 +157,7 @@ If a directory is provided, we look for the file there."
   (general-create-definer +leader-map
     :keymaps 'override
     :states '(normal visual)
-    :prefix "SPC"
-    :global-prefix "C-c")
+    :prefix "SPC")
 
   ;; Global leader mappings.
   (+leader-map
@@ -173,6 +175,7 @@ If a directory is provided, we look for the file there."
     "w" '(+close-window :which-key "close")
     "d" '(split-window-below :which-key "split")
     "q" '(+kill-buffer-and-close-window :which-key "quit")
+    "Q" '(server-edit :which-key "done")
     "g" '(magit :which-key "git")
 
     ;; Reserved for major modes.
