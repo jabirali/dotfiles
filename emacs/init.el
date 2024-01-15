@@ -17,7 +17,8 @@
 
 (use-package quelpa-use-package)
 
-(server-start)
+(unless (server-running-p)
+  (server-start))
 
 (use-package emacs
   :custom
@@ -121,7 +122,9 @@ If a directory is provided, we look for the file there."
   :init
   (setq completion-styles '(orderless)))
 
-(use-package ace-window)
+(use-package ace-window
+  :bind
+  ("M-o" . 'ace-window))
 
 (use-package magit)
 

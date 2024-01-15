@@ -42,7 +42,8 @@ By default, =use-package= uses the built-in =package.el= for package management,
 
 Finally, let's start the Emacs server by default. This lets us quickly connect to the running Emacs instance from a terminal via =emacsclient=.
 #+begin_src emacs-lisp
-  (server-start)
+  (unless (server-running-p)
+    (server-start))
 #+end_src
 ** Built-in packages
 The Emacs defaults are quite dated. This makes it fit in the 2020s.
@@ -174,7 +175,9 @@ Packages for enabling fuzzy-finding across the Emacs user interface.
 
 Better workflow for switching between visible windows.
 #+begin_src emacs-lisp
-  (use-package ace-window)
+  (use-package ace-window
+    :bind
+    ("M-o" . 'ace-window))
 #+end_src
 
 Better integration with Git version control.
