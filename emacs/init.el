@@ -93,10 +93,6 @@ If a directory is provided, we look for the file there."
   (interactive)
   (insert (format-time-string "%Y-%m-%d %A")))
 
-(use-package doom-themes
-  :config
-  (load-theme 'doom-snazzy t))
-
 (use-package doom-modeline
   :custom
   (doom-modeline-buffer-encoding nil)
@@ -111,7 +107,12 @@ If a directory is provided, we look for the file there."
 
 (use-package spacious-padding
   :config
-  (spacious-padding-mode)
+  (spacious-padding-mode))
+
+(use-package doom-themes
+  :config
+  (load-theme 'doom-ayu-mirage t)
+
   ;; Make tabs and dividers match the mode-line.
   (let ((bg  (face-attribute 'mode-line :background))
         (box (face-attribute 'mode-line :box)))
@@ -152,7 +153,7 @@ If a directory is provided, we look for the file there."
   (evil-want-keybinding nil)
   (evil-want-integration t)
   (evil-want-C-u-scroll t)
-  (evil-respect-visual-line-mode t)
+  ;; (evil-respect-visual-line-mode t)
   :config
   (evil-mode 1))
 
