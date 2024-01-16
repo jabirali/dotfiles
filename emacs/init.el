@@ -39,12 +39,12 @@
 
 (use-package tab-bar
   :custom
-  (tab-bar-show 1)
   (tab-bar-close-button-show nil)
-  (tab-bar-new-tab-choice "*scratch*")
-  (tab-bar-tab-hints t)
-  (tab-bar-select-tab-modifiers '(super))
   (tab-bar-format '(tab-bar-format-tabs))
+  (tab-bar-new-tab-choice "*scratch*")
+  (tab-bar-select-tab-modifiers '(super))
+  (tab-bar-show 1)
+  (tab-bar-tab-hints t)
   (frame-title-format "")
   :config
   (tab-bar-mode 1))
@@ -273,6 +273,8 @@ If a directory is provided, we look for the file there."
   (org-startup-indented t)
   (org-startup-with-inline-images t)
   (org-tags-column -65)
+  (initial-major-mode 'org-mode)
+  (initial-scratch-message "")
   :config
   (defun +url-handler-zotero (link)
     "Open a zotero:// link in the Zotero desktop app."
@@ -284,22 +286,20 @@ If a directory is provided, we look for the file there."
   :custom
   (org-download-method 'directory)
   (org-download-image-dir "assets")
+  (org-download-heading-lvl nil)
   (org-download-timestamp "%Y%m%d%H%M%S")
-  (org-download-screenshot-basename ".png")
   :config
+  (defun +org-download-file-format (filename)
+    "Purely date-based naming of attachments."
+    (concat
+      (format-time-string org-download-timestamp)
+      "."
+      (file-name-extension filename)))
+  (setq org-download-file-format-function #'+org-download-file-format)
   (setq org-download-annotate-function (lambda (_link) ""))
   (org-download-enable)
   :bind (:map org-mode-map
               ("M-v" . org-download-clipboard)))
-
-(use-package persistent-scratch
-  :after org
-  :custom
-  (initial-major-mode 'org-mode)
-  (initial-scratch-message "#+TITLE: Scratch buffer\n")
- :config
-  (persistent-scratch-setup-default)
-  (persistent-scratch-autosave-mode))
 
 (use-package python
   :after (outline evil general)

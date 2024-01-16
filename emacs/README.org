@@ -66,12 +66,12 @@ Emacs recently added a tab bar which works similarly to Vim or Tmux, i.e. each t
 #+begin_src emacs-lisp
   (use-package tab-bar
     :custom
-    (tab-bar-show 1)
     (tab-bar-close-button-show nil)
-    (tab-bar-new-tab-choice "*scratch*")
-    (tab-bar-tab-hints t)
-    (tab-bar-select-tab-modifiers '(super))
     (tab-bar-format '(tab-bar-format-tabs))
+    (tab-bar-new-tab-choice "*scratch*")
+    (tab-bar-select-tab-modifiers '(super))
+    (tab-bar-show 1)
+    (tab-bar-tab-hints t)
     (frame-title-format "")
     :config
     (tab-bar-mode 1))
@@ -350,6 +350,8 @@ Emacs =org-mode= is my favorite note-taking app.
     (org-startup-indented t)
     (org-startup-with-inline-images t)
     (org-tags-column -65)
+    (initial-major-mode 'org-mode)
+    (initial-scratch-message "")
     :config
     (defun +url-handler-zotero (link)
       "Open a zotero:// link in the Zotero desktop app."
@@ -364,26 +366,21 @@ This lets me copy-paste images into my Org notes. Especially useful for keeping 
     :custom
     (org-download-method 'directory)
     (org-download-image-dir "assets")
+    (org-download-heading-lvl nil)
     (org-download-timestamp "%Y%m%d%H%M%S")
-    (org-download-screenshot-basename ".png")
     :config
+    (defun +org-download-file-format (filename)
+      "Purely date-based naming of attachments."
+      (concat
+        (format-time-string org-download-timestamp)
+        "."
+        (file-name-extension filename)))
+    (setq org-download-file-format-function #'+org-download-file-format)
     (setq org-download-annotate-function (lambda (_link) ""))
     (org-download-enable)
     :bind (:map org-mode-map
                 ("M-v" . org-download-clipboard)))
 
-#+end_src
-
-The "scratch buffer" is a nice place to dump random thoughts like the plan for the day -- especially if it's set to use Org-mode as its format. It's a bit risky though, as if Emacs is restarted for any reason (e.g. config updates), everything in the scratch buffer is lost. This fixes that.
-#+begin_src emacs-lisp
-  (use-package persistent-scratch
-    :after org
-    :custom
-    (initial-major-mode 'org-mode)
-    (initial-scratch-message "#+TITLE: Scratch buffer\n")
-   :config
-    (persistent-scratch-setup-default)
-    (persistent-scratch-autosave-mode))
 #+end_src
 
 ** Programming
