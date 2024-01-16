@@ -4,14 +4,19 @@
 (package-initialize)
 
 (use-package use-package
-  :config
   :custom
   (use-package-always-demand t)
   (use-package-always-ensure t))
 
 (use-package no-littering
-  :init
+  :config
+  ;; Set nearly all cache files to follow the XDG specification.
   (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
+  (setq no-littering-var-directory user-emacs-directory)
+  (setq no-littering-etc-directory user-emacs-directory)
+  ;; Also move the backup~ and #auto-save# files out of the way.
+  (no-littering-theme-backups)
+  ;; Customizations are host-specific and not suitable for dotfiles.
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (load custom-file))
 
@@ -118,7 +123,7 @@ If a directory is provided, we look for the file there."
     (set-face-attribute 'vertical-border nil :background bg :foreground bg)))
 
 (use-package vertico
-  :init
+  :config
   (vertico-mode)
   (vertico-mouse-mode)
   (vertico-reverse-mode))
@@ -132,7 +137,7 @@ If a directory is provided, we look for the file there."
   (marginalia-mode))
 
 (use-package orderless
-  :init
+  :config
   (setq completion-styles '(orderless)))
 
 (use-package ace-window
@@ -144,7 +149,6 @@ If a directory is provided, we look for the file there."
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 
 (use-package evil
-  :init
   :custom
   (evil-want-keybinding nil)
   (evil-want-integration t)

@@ -8,7 +8,7 @@
 This is my configuration for Emacs 29+ @ macOS. My setup is based around =org-mode= and =evil-mode=; I mostly use Emacs for Org-mode and and Vim for programming, this setup keeps them mostly interchangeable.
 
 ** Package management
-First, setup the Emacs package manager. We want to prevent it from polluting my dotfiles and also add the MELPA community repository.
+Bootstrap the Emacs package manager. Specifically, I want to prevent it from polluting my dotfiles with third-party packages, and I want to ensure that the community package repositories are available.
 #+begin_src emacs-lisp
   (require 'package)
   (setq package-user-dir "~/.cache/emacs/elpa")
@@ -16,20 +16,25 @@ First, setup the Emacs package manager. We want to prevent it from polluting my 
   (package-initialize)
 #+end_src
 
-Since Emacs 29, =use-package= has been included in the base distribution. This configuration file is structured as =use-package= statements.
+Since Emacs 29, =use-package= has been included in the base distribution. This is a vastly better way to configure Emacs than manually wrangling packages, hooks, keybindings, etc. This configuration file is therefore structured as much as possible in terms of =use-package= statements.
 #+begin_src emacs-lisp
   (use-package use-package
-    :config
     :custom
     (use-package-always-demand t)
     (use-package-always-ensure t))
 #+end_src
 
-Many Emacs packages throw their cache files in my =~/.config/emacs/= directory by default. This is annoying when that directory is kept under version control. Luckily, =no-littering= can help with that.
+Many Emacs packages throw their cache files in =~/.config/emacs/= by default, which is very annoying when that directory is kept under version control. Luckily, =no-littering= can help us tame those packages.
 #+begin_src emacs-lisp
   (use-package no-littering
-    :init
+    :config
+    ;; Set nearly all cache files to follow the XDG specification.
     (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
+    (setq no-littering-var-directory user-emacs-directory)
+    (setq no-littering-etc-directory user-emacs-directory)
+    ;; Also move the backup~ and #auto-save# files out of the way.
+    (no-littering-theme-backups)
+    ;; Customizations are host-specific and not suitable for dotfiles.
     (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
     (load custom-file))
 #+end_src
@@ -168,7 +173,7 @@ External packages that gives Emacs a modern look (inspired by Doom).
 Packages for enabling fuzzy-finding across the Emacs user interface.
 #+begin_src emacs-lisp
   (use-package vertico
-    :init
+    :config
     (vertico-mode)
     (vertico-mouse-mode)
     (vertico-reverse-mode))
@@ -182,7 +187,7 @@ Packages for enabling fuzzy-finding across the Emacs user interface.
     (marginalia-mode))
 
   (use-package orderless
-    :init
+    :config
     (setq completion-styles '(orderless)))
 #+end_src
 
@@ -204,7 +209,6 @@ Better integration with Git version control.
 I've used Vim keybindings for nearly two decades, and still regularly use it for programming or quick remote edits. Moreover, every time I've tried to switch to Emacs keybindings, my RSI has flared up. So for me, =evil-mode= is a prerequisite for using Emacs at all.
 #+begin_src emacs-lisp
   (use-package evil
-    :init
     :custom
     (evil-want-keybinding nil)
     (evil-want-integration t)
