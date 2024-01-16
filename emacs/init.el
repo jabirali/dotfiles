@@ -17,11 +17,6 @@
 
 (use-package quelpa-use-package)
 
-(use-package server
-  :config
-  (unless (server-running-p)
-    (server-start)))
-
 (use-package emacs
   :custom
   (inhibit-startup-message t)
@@ -37,20 +32,18 @@
   (scroll-bar-mode -1)
   (blink-cursor-mode -1)
   (fringe-mode -1)
-  (desktop-save-mode 1)
   (setq ring-bell-function 'ignore))
 
 (use-package tab-bar
   :custom
-  (tab-bar-show 1)
   (tab-bar-close-button-show nil)
   (tab-bar-new-tab-choice "*scratch*")
   (tab-bar-tab-hints t)
   (tab-bar-select-tab-modifiers '(super))
-  (tab-bar-format '(tab-bar-format-tabs tab-bar-separator tab-bar-format-align-right tab-bar-format-global))
+  (tab-bar-format '(tab-bar-format-tabs))
+  (frame-title-format "")
   :config
-  (tab-bar-mode 1)
-  (tab-bar-history-mode 1))
+  (tab-bar-mode 1))
 
 (use-package outline
   :custom
@@ -65,6 +58,10 @@
 (use-package savehist
   :config
   (savehist-mode 1))
+
+(use-package server
+  :config
+  (server-mode 1))
 
 (defun +open-file (file &optional dir)
   "Create an interactive command for opening a given file.
@@ -97,21 +94,33 @@ If a directory is provided, we look for the file there."
 
 (use-package doom-themes
   :config
-  (load-theme 'doom-oksolar-light t))
+  (load-theme 'doom-snazzy t))
 
 (use-package doom-modeline
   :custom
-  (doom-modeline-icon nil)
-  (doom-modeline-modal nil)
   (doom-modeline-buffer-encoding nil)
   (doom-modeline-buffer-modification-icon nil)
+  (doom-modeline-icon nil)
+  (doom-modeline-modal nil)
+  (doom-modeline-position-line-format nil)
+  (doom-modeline-time nil)
   (doom-modeline-workspace-name nil)
   :config
   (doom-modeline-mode))
 
 (use-package spacious-padding
   :config
-  (spacious-padding-mode))
+  (spacious-padding-mode)
+  ;; Make the tab-bar match the mode-line.
+  (set-face-attribute 'tab-bar nil
+    :background (face-attribute 'mode-line :background)
+    :box (face-attribute 'mode-line :box))
+  (set-face-attribute 'tab-bar-tab-inactive nil
+     :background (face-attribute 'mode-line :background)
+     :box (face-attribute 'mode-line :box))
+  (set-face-attribute 'tab-bar-tab nil
+     :background (face-attribute 'mode-line :background)
+     :box (face-attribute 'mode-line :box) :weight 'bold))
 
 (use-package vertico
   :init
@@ -160,6 +169,11 @@ If a directory is provided, we look for the file there."
   (general-evil-define-key 'normal 'org-mode-map
     "RET" 'org-open-at-point)
   :hook (org-mode . evil-org-mode))
+
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
 
 (use-package which-key
   :config

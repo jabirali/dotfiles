@@ -5,9 +5,14 @@
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle ~/.config/emacs/init.el
 :END:
-This is my configuration for Emacs 29+ on macOS. My setup is based
-around =org-mode= and =evil-mode=, as I mostly use Vim for coding.
+This is my configuration for Emacs 29+ @ macOS. My setup is based around =org-mode= and =evil-mode=; I mostly use Emacs for Org-mode and and Vim for programming, and this setup keeps them mostly interchangeable.
 
+** Installation
+Make the configuration look a bit nicer.
+#+begin_src bash
+  defaults write org.gnu.Emacs TransparentTitleBar DARK
+  defaults write org.gnu.Emacs HideDocumentIcon YES
+#+end_src
 ** Bootstrapping
 First, setup the Emacs package manager. We want to prevent it from polluting my dotfiles and also add the MELPA community repository.
 #+begin_src emacs-lisp
@@ -40,13 +45,6 @@ By default, =use-package= uses the built-in =package.el= for package management,
   (use-package quelpa-use-package)
 #+end_src
 
-Finally, let's start the Emacs server by default. This lets us quickly connect to the running Emacs instance from a terminal via =emacsclient=.
-#+begin_src emacs-lisp
-  (use-package server
-    :config
-    (unless (server-running-p)
-      (server-start)))
-#+end_src
 ** Built-in packages
 The Emacs defaults are quite dated. This makes it fit in the 2020s.
 #+begin_src emacs-lisp
@@ -65,7 +63,6 @@ The Emacs defaults are quite dated. This makes it fit in the 2020s.
     (scroll-bar-mode -1)
     (blink-cursor-mode -1)
     (fringe-mode -1)
-    (desktop-save-mode 1)
     (setq ring-bell-function 'ignore))
 #+end_src
 
@@ -73,15 +70,14 @@ Emacs recently added a tab bar which works similarly to Vim or Tmux, i.e. each t
 #+begin_src emacs-lisp
   (use-package tab-bar
     :custom
-    (tab-bar-show 1)
     (tab-bar-close-button-show nil)
     (tab-bar-new-tab-choice "*scratch*")
     (tab-bar-tab-hints t)
     (tab-bar-select-tab-modifiers '(super))
-    (tab-bar-format '(tab-bar-format-tabs tab-bar-separator tab-bar-format-align-right tab-bar-format-global))
+    (tab-bar-format '(tab-bar-format-tabs))
+    (frame-title-format "")
     :config
-    (tab-bar-mode 1)
-    (tab-bar-history-mode 1))
+    (tab-bar-mode 1))
 #+end_src
 
 Code folding with =outline-minor-mode=. This is the package that =org-mode= is built on, and it integrates well with =evil-mode=.
@@ -104,9 +100,15 @@ I want Emacs to remember my recently used files and commands.
     (savehist-mode 1))
 #+end_src
 
+Finally, let's start the Emacs daemon by default. This lets us quickly connect to the running Emacs instance from a terminal via =emacsclient=.
+#+begin_src emacs-lisp
+  (use-package server
+    :config
+    (server-mode 1))
+#+end_src
+
 ** Helper functions
 These are various helper functions used throughout my config.
-
 #+begin_src emacs-lisp
   (defun +open-file (file &optional dir)
     "Create an interactive command for opening a given file.
@@ -145,21 +147,33 @@ External packages that gives Emacs a modern look (inspired by Doom).
 #+begin_src emacs-lisp
   (use-package doom-themes
     :config
-    (load-theme 'doom-oksolar-light t))
+    (load-theme 'doom-snazzy t))
 
   (use-package doom-modeline
     :custom
-    (doom-modeline-icon nil)
-    (doom-modeline-modal nil)
     (doom-modeline-buffer-encoding nil)
     (doom-modeline-buffer-modification-icon nil)
+    (doom-modeline-icon nil)
+    (doom-modeline-modal nil)
+    (doom-modeline-position-line-format nil)
+    (doom-modeline-time nil)
     (doom-modeline-workspace-name nil)
     :config
     (doom-modeline-mode))
 
   (use-package spacious-padding
     :config
-    (spacious-padding-mode))
+    (spacious-padding-mode)
+    ;; Make the tab-bar match the mode-line.
+    (set-face-attribute 'tab-bar nil
+      :background (face-attribute 'mode-line :background)
+      :box (face-attribute 'mode-line :box))
+    (set-face-attribute 'tab-bar-tab-inactive nil
+       :background (face-attribute 'mode-line :background)
+       :box (face-attribute 'mode-line :box))
+    (set-face-attribute 'tab-bar-tab nil
+       :background (face-attribute 'mode-line :background)
+       :box (face-attribute 'mode-line :box) :weight 'bold))
 #+end_src
 
 ** User experience
@@ -218,7 +232,10 @@ Evil is great, but by default it only works in text-editing modes. This makes it
     :after evil
     :config
     (evil-collection-init))
+#+end_src
 
+Org-mode is a different beast, and requires some extra integration to work well with Evil.
+#+begin_src emacs-lisp
   (use-package evil-org
     :after (evil org)
     :config
@@ -226,6 +243,14 @@ Evil is great, but by default it only works in text-editing modes. This makes it
       "RET" 'org-open-at-point)
     :hook (org-mode . evil-org-mode))
 #+end_src
+
+Some Vim plugins are also worth taking with us into Emacs.
+#+begin_src emacs-lisp
+  (use-package evil-surround
+    :ensure t
+    :config
+    (global-evil-surround-mode 1))
+#+end_src 
 
 ** Global menu
 I like the "space menu" that is provided by default in e.g. Spacemacs and Doom Emacs. This is my personalized version of this concept.
