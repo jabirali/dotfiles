@@ -5,20 +5,8 @@
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle ~/.config/emacs/init.el
 :END:
-This is my configuration for Emacs 29+ @ macOS. My setup is based around =org-mode= and =evil-mode=; I mostly use Emacs for Org-mode and and Vim for programming, and this setup keeps them mostly interchangeable.
+This is my configuration for Emacs 29+ @ macOS. My setup is based around =org-mode= and =evil-mode=; I mostly use Emacs for Org-mode and and Vim for programming, this setup keeps them mostly interchangeable.
 
-** Operating system
-Install the relevant Emacs version. The cask version unfortunately misses some features (most notably native compilation), but it has way fewer bugs related to e.g. running it from a terminal.
-#+begin_src bash
-  brew tap "railwaycat/emacsmacport"
-  brew install --cask emacs-mac
-#+end_src bash
-    
-Some tweaks to make the app look a bit nicer with =tab-bar-mode=.
-#+begin_src bash
-  defaults write org.gnu.Emacs TransparentTitleBar DARK
-  defaults write org.gnu.Emacs HideDocumentIcon YES
-#+end_src
 ** Package management
 First, setup the Emacs package manager. We want to prevent it from polluting my dotfiles and also add the MELPA community repository.
 #+begin_src emacs-lisp
@@ -84,30 +72,11 @@ Emacs recently added a tab bar which works similarly to Vim or Tmux, i.e. each t
     (tab-bar-mode 1))
 #+end_src
 
-Code folding with =outline-minor-mode=. This is the package that =org-mode= is built on, and it integrates well with =evil-mode=. Note that the keybindings need to be bound in the ='local= (current major mode) map to prevent it from breaking Magit.
+Code folding with =outline-minor-mode=. This is the package that =org-mode= is built on, and it integrates well with =evil-mode=. Note that any keybindings need to be bound in the ='local= (major mode) map to prevent it from breaking Magit. I'll do that when loading/configuring the specific programming modes below.
 #+begin_src emacs-lisp
   (use-package outline
-    :after evil
     :custom
-    (outline-blank-line t)
-    :config
-    ;; Filetype-specific outline patterns.
-    (defun +outline-python ()
-      "Org-mode-like folding in Python."
-      ;; Only fold definitions and decorators.
-      (setq outline-regexp
-            (rx (or
-                 (group (group (* space)) bow (or "class" "def") eow)
-                 (group (group (* space)) "@"))))
-      ;; Org-mode-like keybindings.
-      (evil-define-key 'motion 'local (kbd "<tab>")
-        (general-predicate-dispatch nil (derived-mode-p  'prog-mode) 'outline-cycle))
-      (evil-define-key 'motion 'local (kbd "<backtab>")
-        (general-predicate-dispatch nil (derived-mode-p 'prog-mode) 'outline-cycle-buffer))
-      ;; Enable the mode.
-      (outline-minor-mode 1))
-    :hook
-    (python-mode . +outline-python))
+    (outline-blank-line t))
 #+end_src
 
 I want Emacs to remember my recently used files and commands.
@@ -184,7 +153,7 @@ External packages that gives Emacs a modern look (inspired by Doom).
 
   (use-package doom-themes
     :config
-    (load-theme 'doom-ayu-mirage t)
+    (load-theme 'doom-oksolar-light t)
 
     ;; Make tabs and dividers match the mode-line.
     (let ((bg  (face-attribute 'mode-line :background))
@@ -240,7 +209,6 @@ I've used Vim keybindings for nearly two decades, and still regularly use it for
     (evil-want-keybinding nil)
     (evil-want-integration t)
     (evil-want-C-u-scroll t)
-    ;; (evil-respect-visual-line-mode t)
     :config
     (evil-mode 1))
 #+end_src
@@ -406,8 +374,46 @@ The "scratch buffer" is a nice place to dump random thoughts like the plan for t
     (persistent-scratch-setup-default)
     (persistent-scratch-autosave-mode))
 #+end_src
-** Hacks
-When I start Emacs as a GUI, and start the Emacs server from this process, none of my shell environment variables are loaded. This can be an issue if I later want to connect from =emacsclient=. We can however make macOS set those variables globally instead.
+
+** Programming
+I mostly do programming in Vim these days, but it's still nice to have a decent Emacs setup for reading code while taking notes.
+#+begin_src emacs-lisp
+  (use-package python
+    :after (outline evil general)
+    :config
+    ;; Filetype-specific outline patterns.
+    (defun +outline-python ()
+      "Fold Python code like Org-mode headings."
+      ;; Only fold definitions and decorators.
+      (setq outline-regexp
+            (rx (or
+                 (group (group (* space)) bow (or "class" "def") eow)
+                 (group (group (* space)) "@"))))
+      ;; Org-mode-like keybindings.
+      (evil-define-key 'motion 'local (kbd "<tab>")
+        (general-predicate-dispatch nil (derived-mode-p  'prog-mode) 'outline-cycle))
+      (evil-define-key 'motion 'local (kbd "<backtab>")
+        (general-predicate-dispatch nil (derived-mode-p 'prog-mode) 'outline-cycle-buffer))
+      ;; Enable the mode.
+      (outline-minor-mode 1))
+    :hook
+    (python-mode . +outline-python))
+#+end_src
+
+** Operating system
+In my experience, the [[https://bitbucket.org/mituharu/emacs-mac/src/master/][Emacs Mac port]] remains the best option for macOS. For instance, it has the best handling of Retina (hiDPI) screens. Unfortunately, installing it from source is required to enable some features (notably native compilation), but at the same time breaks some other features (e.g. starting the Emacs GUI from a terminal). I'm therefore sticking to the precompiled Cask for now.
+#+begin_src bash
+  brew tap "railwaycat/emacsmacport"
+  brew install --cask emacs-mac
+#+end_src bash
+    
+These tweaks makes the app look a bit nicer when using =tab-bar-mode=.
+#+begin_src bash
+  defaults write org.gnu.Emacs TransparentTitleBar DARK
+  defaults write org.gnu.Emacs HideDocumentIcon YES
+#+end_src
+
+Emacs doesn't know my shell environment variables when started as a GUI, and those variables end up affecting =emacsclient= processes that are launched from a terminal later. This is a workaround whereby macOS is told to set those environment variables globally.
 #+begin_src xml :tangle ~/Library/LaunchAgents/environment.plist
   <?xml version="1.0" encoding="UTF-8"?>
   <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -426,6 +432,7 @@ When I start Emacs as a GUI, and start the Emacs server from this process, none 
   </dict>
   </plist>
 #+end_src
+
 * Export
 This code ensures that this config is automatically exported to elisp and then evaluated in full whenever the file is saved within Emacs.
 #+begin_src

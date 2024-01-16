@@ -45,27 +45,8 @@
   (tab-bar-mode 1))
 
 (use-package outline
-  :after evil
   :custom
-  (outline-blank-line t)
-  :config
-  ;; Filetype-specific outline patterns.
-  (defun +outline-python ()
-    "Org-mode-like folding in Python."
-    ;; Only fold definitions and decorators.
-    (setq outline-regexp
-          (rx (or
-               (group (group (* space)) bow (or "class" "def") eow)
-               (group (group (* space)) "@"))))
-    ;; Org-mode-like keybindings.
-    (evil-define-key 'motion 'local (kbd "<tab>")
-      (general-predicate-dispatch nil (derived-mode-p  'prog-mode) 'outline-cycle))
-    (evil-define-key 'motion 'local (kbd "<backtab>")
-      (general-predicate-dispatch nil (derived-mode-p 'prog-mode) 'outline-cycle-buffer))
-    ;; Enable the mode.
-    (outline-minor-mode 1))
-  :hook
-  (python-mode . +outline-python))
+  (outline-blank-line t))
 
 (use-package recentf
   :config
@@ -126,7 +107,7 @@ If a directory is provided, we look for the file there."
 
 (use-package doom-themes
   :config
-  (load-theme 'doom-ayu-mirage t)
+  (load-theme 'doom-oksolar-light t)
 
   ;; Make tabs and dividers match the mode-line.
   (let ((bg  (face-attribute 'mode-line :background))
@@ -168,7 +149,6 @@ If a directory is provided, we look for the file there."
   (evil-want-keybinding nil)
   (evil-want-integration t)
   (evil-want-C-u-scroll t)
-  ;; (evil-respect-visual-line-mode t)
   :config
   (evil-mode 1))
 
@@ -309,3 +289,24 @@ If a directory is provided, we look for the file there."
  :config
   (persistent-scratch-setup-default)
   (persistent-scratch-autosave-mode))
+
+(use-package python
+  :after (outline evil general)
+  :config
+  ;; Filetype-specific outline patterns.
+  (defun +outline-python ()
+    "Fold Python code like Org-mode headings."
+    ;; Only fold definitions and decorators.
+    (setq outline-regexp
+          (rx (or
+               (group (group (* space)) bow (or "class" "def") eow)
+               (group (group (* space)) "@"))))
+    ;; Org-mode-like keybindings.
+    (evil-define-key 'motion 'local (kbd "<tab>")
+      (general-predicate-dispatch nil (derived-mode-p  'prog-mode) 'outline-cycle))
+    (evil-define-key 'motion 'local (kbd "<backtab>")
+      (general-predicate-dispatch nil (derived-mode-p 'prog-mode) 'outline-cycle-buffer))
+    ;; Enable the mode.
+    (outline-minor-mode 1))
+  :hook
+  (python-mode . +outline-python))
