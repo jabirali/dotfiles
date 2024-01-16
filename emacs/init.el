@@ -36,6 +36,7 @@
 
 (use-package tab-bar
   :custom
+  (tab-bar-show 1)
   (tab-bar-close-button-show nil)
   (tab-bar-new-tab-choice "*scratch*")
   (tab-bar-tab-hints t)
@@ -111,16 +112,13 @@ If a directory is provided, we look for the file there."
 (use-package spacious-padding
   :config
   (spacious-padding-mode)
-  ;; Make the tab-bar match the mode-line.
-  (set-face-attribute 'tab-bar nil
-    :background (face-attribute 'mode-line :background)
-    :box (face-attribute 'mode-line :box))
-  (set-face-attribute 'tab-bar-tab-inactive nil
-     :background (face-attribute 'mode-line :background)
-     :box (face-attribute 'mode-line :box))
-  (set-face-attribute 'tab-bar-tab nil
-     :background (face-attribute 'mode-line :background)
-     :box (face-attribute 'mode-line :box) :weight 'bold))
+  ;; Make tabs and dividers match the mode-line.
+  (let ((bg  (face-attribute 'mode-line :background))
+        (box (face-attribute 'mode-line :box)))
+    (set-face-attribute 'tab-bar nil :background bg :box box)
+    (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
+    (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold)
+    (set-face-attribute 'vertical-border nil :background bg :foreground bg)))
 
 (use-package vertico
   :init
