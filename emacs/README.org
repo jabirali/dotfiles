@@ -40,10 +40,7 @@ Many Emacs packages throw their cache files in my =~/.config/emacs/= directory b
     (load custom-file))
 #+end_src
 
-By default, =use-package= uses the built-in =package.el= for package management, which can only install packages from Emacs repositories. The following integrates it with =quelpa= as well, thus permitting the direct installation of Emacs packages hosted on e.g. GitHub.
-#+begin_src emacs-lisp
-  (use-package quelpa-use-package)
-#+end_src
+As of Emacs 29, there is no easy way to install Emacs packages directly from GitHub. The best workarounds are [[https://github.com/slotThe/vc-use-package][vc-use-package]] or [[https://github.com/quelpa/quelpa-use-package][quelpa-use-package]]. However, [[https://tony-zorman.com/posts/use-package-vc.html][in Emacs 30]], there is a =:vc= keyword for =use-package= coming. So if you start relying on GitHub packages, consider just upgrading to v30.
 
 ** Built-in packages
 The Emacs defaults are quite dated. This makes it fit in the 2020s.
@@ -81,13 +78,30 @@ Emacs recently added a tab bar which works similarly to Vim or Tmux, i.e. each t
     (tab-bar-mode 1))
 #+end_src
 
-Code folding with =outline-minor-mode=. This is the package that =org-mode= is built on, and it integrates well with =evil-mode=.
+Code folding with =outline-minor-mode=. This is the package that =org-mode= is built on, and it integrates well with =evil-mode=. Note that the keybindings need to be bound in the ='local= (current major mode) map to prevent it from breaking Magit.
 #+begin_src emacs-lisp
   (use-package outline
+    :after evil
     :custom
     (outline-blank-line t)
+    :config
+    ;; Filetype-specific outline patterns.
+    (defun +outline-python ()
+      "Org-mode-like folding in Python."
+      ;; Only fold definitions and decorators.
+      (setq outline-regexp
+            (rx (or
+                 (group (group (* space)) bow (or "class" "def") eow)
+                 (group (group (* space)) "@"))))
+      ;; Org-mode-like keybindings.
+      (evil-define-key 'motion 'local (kbd "<tab>")
+        (general-predicate-dispatch nil (derived-mode-p  'prog-mode) 'outline-cycle))
+      (evil-define-key 'motion 'local (kbd "<backtab>")
+        (general-predicate-dispatch nil (derived-mode-p 'prog-mode) 'outline-cycle-buffer))
+      ;; Enable the mode.
+      (outline-minor-mode 1))
     :hook
-    (prog-mode . outline-minor-mode))
+    (python-mode . +outline-python))
 #+end_src
 
 I want Emacs to remember my recently used files and commands.

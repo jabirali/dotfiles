@@ -15,8 +15,6 @@
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (load custom-file))
 
-(use-package quelpa-use-package)
-
 (use-package emacs
   :custom
   (inhibit-startup-message t)
@@ -47,10 +45,27 @@
   (tab-bar-mode 1))
 
 (use-package outline
+  :after evil
   :custom
   (outline-blank-line t)
+  :config
+  ;; Filetype-specific outline patterns.
+  (defun +outline-python ()
+    "Org-mode-like folding in Python."
+    ;; Only fold definitions and decorators.
+    (setq outline-regexp
+          (rx (or
+               (group (group (* space)) bow (or "class" "def") eow)
+               (group (group (* space)) "@"))))
+    ;; Org-mode-like keybindings.
+    (evil-define-key 'motion 'local (kbd "<tab>")
+      (general-predicate-dispatch nil (derived-mode-p  'prog-mode) 'outline-cycle))
+    (evil-define-key 'motion 'local (kbd "<backtab>")
+      (general-predicate-dispatch nil (derived-mode-p 'prog-mode) 'outline-cycle-buffer))
+    ;; Enable the mode.
+    (outline-minor-mode 1))
   :hook
-  (prog-mode . outline-minor-mode))
+  (python-mode . +outline-python))
 
 (use-package recentf
   :config
