@@ -7,13 +7,19 @@
 :END:
 This is my configuration for Emacs 29+ @ macOS. My setup is based around =org-mode= and =evil-mode=; I mostly use Emacs for Org-mode and and Vim for programming, and this setup keeps them mostly interchangeable.
 
-** Installation
-Make the configuration look a bit nicer.
+** Operating system
+Install the relevant Emacs version. The cask version unfortunately misses some features (most notably native compilation), but it has way fewer bugs related to e.g. running it from a terminal.
+#+begin_src bash
+  brew tap "railwaycat/emacsmacport"
+  brew install --cask emacs-mac
+#+end_src bash
+    
+Some tweaks to make the app look a bit nicer with =tab-bar-mode=.
 #+begin_src bash
   defaults write org.gnu.Emacs TransparentTitleBar DARK
   defaults write org.gnu.Emacs HideDocumentIcon YES
 #+end_src
-** Bootstrapping
+** Package management
 First, setup the Emacs package manager. We want to prevent it from polluting my dotfiles and also add the MELPA community repository.
 #+begin_src emacs-lisp
   (require 'package)
