@@ -221,14 +221,21 @@ Evil is great, but by default it only works in text-editing modes. This makes it
     (evil-collection-init))
 #+end_src
 
-Org-mode is a different beast, and requires some extra integration to work well with Evil.
+Org-mode is a different beast, and requires some extra integration to work well with Evil. Note that =evil-org-agenda= is provided by =evil-org=, it's for some reason just not activated by default.
 #+begin_src emacs-lisp
   (use-package evil-org
     :after (evil org)
     :config
     (general-evil-define-key 'normal 'org-mode-map
       "RET" 'org-open-at-point)
-    :hook (org-mode . evil-org-mode))
+    :hook
+    (org-mode . evil-org-mode))
+
+  (use-package evil-org-agenda
+    :ensure nil
+    :after evil-org
+    :config
+    (evil-org-agenda-set-keys))
 #+end_src
 
 Some Vim plugins are also worth taking with us into Emacs.
@@ -252,7 +259,7 @@ I like the "space menu" that is provided by default in e.g. Spacemacs and Doom E
     (general-override-mode)
     (general-create-definer +leader-map
       :keymaps 'override
-      :states '(normal visual)
+      :states '(motion normal visual)
       :prefix "SPC")
 
     ;; Global leader mappings.
@@ -376,20 +383,19 @@ The "scratch buffer" is a nice place to dump random thoughts like the plan for t
 #+end_src
 
 ** Programming
-I mostly do programming in Vim these days, but it's still nice to have a decent Emacs setup for reading code while taking notes.
+I mostly do programming in Vim these days, and am at the moment trying to re-adopt Emacs first and foremost for Org-mode. However, it's still nice to have a decent Emacs setup for reading code while taking Org notes.
 #+begin_src emacs-lisp
   (use-package python
     :after (outline evil general)
     :config
-    ;; Filetype-specific outline patterns.
     (defun +outline-python ()
       "Fold Python code like Org-mode headings."
-      ;; Only fold definitions and decorators.
+      ;; Only fold definitions and decorators (not e.g. loops and conditions).
       (setq outline-regexp
             (rx (or
                  (group (group (* space)) bow (or "class" "def") eow)
                  (group (group (* space)) "@"))))
-      ;; Org-mode-like keybindings.
+      ;; Org-mode-like keybindings for cycling through outline states.
       (evil-define-key 'motion 'local (kbd "<tab>")
         (general-predicate-dispatch nil (derived-mode-p  'prog-mode) 'outline-cycle))
       (evil-define-key 'motion 'local (kbd "<backtab>")

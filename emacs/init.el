@@ -162,7 +162,14 @@ If a directory is provided, we look for the file there."
   :config
   (general-evil-define-key 'normal 'org-mode-map
     "RET" 'org-open-at-point)
-  :hook (org-mode . evil-org-mode))
+  :hook
+  (org-mode . evil-org-mode))
+
+(use-package evil-org-agenda
+  :ensure nil
+  :after evil-org
+  :config
+  (evil-org-agenda-set-keys))
 
 (use-package evil-surround
   :ensure t
@@ -179,7 +186,7 @@ If a directory is provided, we look for the file there."
   (general-override-mode)
   (general-create-definer +leader-map
     :keymaps 'override
-    :states '(normal visual)
+    :states '(motion normal visual)
     :prefix "SPC")
 
   ;; Global leader mappings.
@@ -293,15 +300,14 @@ If a directory is provided, we look for the file there."
 (use-package python
   :after (outline evil general)
   :config
-  ;; Filetype-specific outline patterns.
   (defun +outline-python ()
     "Fold Python code like Org-mode headings."
-    ;; Only fold definitions and decorators.
+    ;; Only fold definitions and decorators (not e.g. loops and conditions).
     (setq outline-regexp
           (rx (or
                (group (group (* space)) bow (or "class" "def") eow)
                (group (group (* space)) "@"))))
-    ;; Org-mode-like keybindings.
+    ;; Org-mode-like keybindings for cycling through outline states.
     (evil-define-key 'motion 'local (kbd "<tab>")
       (general-predicate-dispatch nil (derived-mode-p  'prog-mode) 'outline-cycle))
     (evil-define-key 'motion 'local (kbd "<backtab>")
