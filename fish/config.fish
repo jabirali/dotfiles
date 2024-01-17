@@ -13,6 +13,8 @@ export DIRENV_LOG_FORMAT=
 export BAT_STYLE="plain"
 export BAT_THEME="ansi"
 
+fish_add_path /opt/homebrew/opt/coreutils/libexec/gnubin
+
 # Bootstrap the package manager.
 if not functions -q fisher
 	curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish

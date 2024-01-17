@@ -1,11 +1,9 @@
 #+TITLE: Emacs configuration
 #+AUTHOR: Jabir Ali Ouassou
+#+PROPERTY: header-args:emacs-lisp :tangle ~/.config/emacs/init.el
 
 * Emacs
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle ~/.config/emacs/init.el
-:END:
-This is my configuration for Emacs 29+ @ macOS. My setup is based around =org-mode= and =evil-mode=; I mostly use Emacs for Org-mode and and Vim for programming, this setup keeps them mostly interchangeable.
+This is my configuration for Emacs 29+ @ macOS. My setup is mostly based around =org-mode= and =evil-mode=; I use Emacs for Org-mode, but often use Vim for programming, and this keeps them interchangeable.
 
 ** Package management
 Bootstrap the Emacs package manager. Specifically, I want to prevent it from polluting my dotfiles with third-party packages, and I want to ensure that the community package repositories are available.
@@ -47,10 +45,11 @@ The Emacs defaults are quite dated. This makes it fit in the 2020s.
   (use-package emacs
     :custom
     (inhibit-startup-message t)
-    (use-short-answers t)
-    (truncate-lines t)
     (line-spacing 0.15)
+    (mouse-highlight nil)
     (sentence-end-double-space nil)
+    (truncate-lines t)
+    (use-short-answers t)
     :custom-face
     (default ((t (:family "JetBrains Mono NL" :height 140))))
     :config
@@ -100,6 +99,21 @@ Finally, let's start the Emacs daemon by default. This lets us quickly connect t
   (use-package server
     :config
     (server-mode 1))
+#+end_src
+
+** File management
+Setup =dired= comfortably. Note that this assumes we're using GNU coreutils.
+#+begin_src emacs-lisp
+  (use-package dired
+    :ensure nil
+    :custom
+    (dired-listing-switches "-lhgG --group-directories-first --time-style=long-iso"))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package diredfl
+    :config
+    (diredfl-global-mode 1))
 #+end_src
 
 ** Helper functions
@@ -158,7 +172,7 @@ External packages that gives Emacs a modern look (inspired by Doom).
 
   (use-package modus-themes
     :custom
-    (modus-themes-org-blocks 'gray-background)
+    (modus-themes-org-blocks nil)
     (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
     :bind
     ("<f12>" . modus-themes-toggle)
@@ -236,10 +250,9 @@ Evil is great, but by default it only works in text-editing modes. This makes it
 Org-mode is a different beast, and requires some extra integration to work well with Evil. Note that =evil-org-agenda= is provided by =evil-org=, it's for some reason just not activated by default.
 #+begin_src emacs-lisp
   (use-package evil-org
-    :after (evil org)
+    :after (evil org general)
     :config
-    (general-evil-define-key 'normal 'org-mode-map
-      "RET" 'org-open-at-point)
+    (mmap :map org-mode-map "RET" 'org-open-at-point)
     :hook
     (org-mode . evil-org-mode))
 
@@ -268,6 +281,7 @@ I like the "space menu" that is provided by default in e.g. Spacemacs and Doom E
   (use-package general
     :after evil
     :config
+    (general-evil-setup t)
     (general-override-mode)
     (general-create-definer +leader-map
       :keymaps 'override
@@ -446,12 +460,22 @@ I mostly do programming in Vim these days, and am at the moment trying to re-ado
   (prog-mode . hl-todo-mode))
 #+end_src
 
+** Environment
+GNU Emacs seems to work best with GNU coreutils (see e.g. =dired=).
+#+begin_src bash
+  brew install coreutils
+#+end_src
+#+begin_src emacs-lisp
+  (if (eq system-type 'darwin)
+      (add-to-list 'exec-path "/opt/homebrew/opt/coreutils/libexec/gnubin"))
+#+end_src
+
 ** Operating system
 In my experience, the [[https://bitbucket.org/mituharu/emacs-mac/src/master/][Emacs Mac port]] remains the best option for macOS. For instance, it has the best handling of Retina (hiDPI) screens. Unfortunately, installing it from source is required to enable some features (notably native compilation), but at the same time breaks some other features (e.g. starting the Emacs GUI from a terminal). I'm therefore sticking to the precompiled Cask for now.
 #+begin_src bash
   brew tap "railwaycat/emacsmacport"
   brew install --cask emacs-mac
-#+end_src bash
+#+end_src
     
 These tweaks makes the app look a bit nicer when using =tab-bar-mode=.
 #+begin_src bash

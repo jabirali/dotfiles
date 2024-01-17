@@ -23,10 +23,11 @@
 (use-package emacs
   :custom
   (inhibit-startup-message t)
-  (use-short-answers t)
-  (truncate-lines t)
   (line-spacing 0.15)
+  (mouse-highlight nil)
   (sentence-end-double-space nil)
+  (truncate-lines t)
+  (use-short-answers t)
   :custom-face
   (default ((t (:family "JetBrains Mono NL" :height 140))))
   :config
@@ -64,6 +65,15 @@
 (use-package server
   :config
   (server-mode 1))
+
+(use-package dired
+  :ensure nil
+  :custom
+  (dired-listing-switches "-lhgG --group-directories-first --time-style=long-iso"))
+
+(use-package diredfl
+  :config
+  (diredfl-global-mode 1))
 
 (defun +open-file (file &optional dir)
   "Create an interactive command for opening a given file.
@@ -112,7 +122,7 @@ If a directory is provided, we look for the file there."
 
 (use-package modus-themes
   :custom
-  (modus-themes-org-blocks 'gray-background)
+  (modus-themes-org-blocks nil)
   (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
   :bind
   ("<f12>" . modus-themes-toggle)
@@ -170,10 +180,9 @@ If a directory is provided, we look for the file there."
   (evil-collection-init))
 
 (use-package evil-org
-  :after (evil org)
+  :after (evil org general)
   :config
-  (general-evil-define-key 'normal 'org-mode-map
-    "RET" 'org-open-at-point)
+  (mmap :map org-mode-map "RET" 'org-open-at-point)
   :hook
   (org-mode . evil-org-mode))
 
@@ -195,6 +204,7 @@ If a directory is provided, we look for the file there."
 (use-package general
   :after evil
   :config
+  (general-evil-setup t)
   (general-override-mode)
   (general-create-definer +leader-map
     :keymaps 'override
@@ -353,3 +363,6 @@ If a directory is provided, we look for the file there."
 (use-package hl-todo
   :hook
   (prog-mode . hl-todo-mode))
+
+(if (eq system-type 'darwin)
+    (add-to-list 'exec-path "/opt/homebrew/opt/coreutils/libexec/gnubin"))
