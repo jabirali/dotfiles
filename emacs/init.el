@@ -110,17 +110,25 @@ If a directory is provided, we look for the file there."
   :config
   (spacious-padding-mode))
 
-(use-package doom-themes
+(use-package modus-themes
+  :custom
+  (modus-themes-org-blocks 'gray-background)
+  (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
+  :bind
+  ("<f12>" . modus-themes-toggle)
   :config
-  (load-theme 'doom-oksolar-light t)
-
   ;; Make tabs and dividers match the mode-line.
-  (let ((bg  (face-attribute 'mode-line :background))
-        (box (face-attribute 'mode-line :box)))
-    (set-face-attribute 'tab-bar nil :background bg :box box)
-    (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
-    (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold)
-    (set-face-attribute 'vertical-border nil :background bg :foreground bg)))
+  (defadvice load-theme (after run-after-load-theme-hook activate)
+    "Fix the tab-bar-mode after any theme has been loaded."
+    (let ((bg  (face-attribute 'mode-line :background))
+          (box (face-attribute 'mode-line :box)))
+      (set-face-attribute 'tab-bar nil :background bg :box box)
+      (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
+      (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold)
+      (set-face-attribute 'vertical-border nil :background bg :foreground bg))
+      (set-face-background 'scroll-bar "transparent"))
+  ;; Load the Modus themes.
+  (load-theme 'modus-vivendi-tinted t))
 
 (use-package vertico
   :config
@@ -265,8 +273,11 @@ If a directory is provided, we look for the file there."
      (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
   (org-directory "~/Sync/Org")
   (org-agenda-files (list org-directory))
+  (org-agenda-skip-scheduled-if-done t)
+  (org-agenda-window-setup 'other-tab)
   (org-archive-location "::* Archive")
   (org-ctrl-k-protect-subtree t)
+  (org-fontify-quote-and-verse-blocks t)
   (org-image-actual-width '(400))
   (org-pretty-entities t)
   (org-startup-folded 'content)
@@ -301,6 +312,13 @@ If a directory is provided, we look for the file there."
   :bind (:map org-mode-map
               ("M-v" . org-download-clipboard)))
 
+(use-package idle-org-agenda
+  :after org-agenda
+  :custom
+  (idle-org-agenda-interval 300)
+  :config
+  (idle-org-agenda-mode))
+
 (use-package python
   :after (outline evil general)
   :config
@@ -320,3 +338,7 @@ If a directory is provided, we look for the file there."
     (outline-minor-mode 1))
   :hook
   (python-mode . +outline-python))
+
+(use-package hl-todo
+  :hook
+  (prog-mode . hl-todo-mode))

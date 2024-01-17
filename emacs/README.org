@@ -156,17 +156,25 @@ External packages that gives Emacs a modern look (inspired by Doom).
     :config
     (spacious-padding-mode))
 
-  (use-package doom-themes
+  (use-package modus-themes
+    :custom
+    (modus-themes-org-blocks 'gray-background)
+    (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
+    :bind
+    ("<f12>" . modus-themes-toggle)
     :config
-    (load-theme 'doom-oksolar-light t)
-
     ;; Make tabs and dividers match the mode-line.
-    (let ((bg  (face-attribute 'mode-line :background))
-          (box (face-attribute 'mode-line :box)))
-      (set-face-attribute 'tab-bar nil :background bg :box box)
-      (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
-      (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold)
-      (set-face-attribute 'vertical-border nil :background bg :foreground bg)))
+    (defadvice load-theme (after run-after-load-theme-hook activate)
+      "Fix the tab-bar-mode after any theme has been loaded."
+      (let ((bg  (face-attribute 'mode-line :background))
+            (box (face-attribute 'mode-line :box)))
+        (set-face-attribute 'tab-bar nil :background bg :box box)
+        (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
+        (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold)
+        (set-face-attribute 'vertical-border nil :background bg :foreground bg))
+        (set-face-background 'scroll-bar "transparent"))
+    ;; Load the Modus themes.
+    (load-theme 'modus-vivendi-tinted t))
 #+end_src
 
 ** User experience
@@ -326,7 +334,7 @@ I like the "space menu" that is provided by default in e.g. Spacemacs and Doom E
                 "e d" '(eval-defun :which-key "defun")))
 #+end_src
 
-** Org mode
+** Org-mode
 Emacs =org-mode= is my favorite note-taking app.
 #+begin_src emacs-lisp
   (use-package org
@@ -342,8 +350,11 @@ Emacs =org-mode= is my favorite note-taking app.
        (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
     (org-directory "~/Sync/Org")
     (org-agenda-files (list org-directory))
+    (org-agenda-skip-scheduled-if-done t)
+    (org-agenda-window-setup 'other-tab)
     (org-archive-location "::* Archive")
     (org-ctrl-k-protect-subtree t)
+    (org-fontify-quote-and-verse-blocks t)
     (org-image-actual-width '(400))
     (org-pretty-entities t)
     (org-startup-folded 'content)
@@ -383,6 +394,15 @@ This lets me copy-paste images into my Org notes. Especially useful for keeping 
 
 #+end_src
 
+#+begin_src emacs-lisp
+  (use-package idle-org-agenda
+    :after org-agenda
+    :custom
+    (idle-org-agenda-interval 300)
+    :config
+    (idle-org-agenda-mode))
+#+end_src
+
 ** Programming
 I mostly do programming in Vim these days, and am at the moment trying to re-adopt Emacs first and foremost for Org-mode. However, it's still nice to have a decent Emacs setup for reading code while taking Org notes.
 #+begin_src emacs-lisp
@@ -405,6 +425,12 @@ I mostly do programming in Vim these days, and am at the moment trying to re-ado
       (outline-minor-mode 1))
     :hook
     (python-mode . +outline-python))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package hl-todo
+  :hook
+  (prog-mode . hl-todo-mode))
 #+end_src
 
 ** Operating system
