@@ -219,6 +219,8 @@ If a directory is provided, we look for the file there."
     "q" '(+kill-buffer-and-close-window :which-key "quit")
     "Q" '(server-edit :which-key "done")
     "g" '(magit :which-key "git")
+    "b" '(switch-to-buffer :which-key "buffer")
+    "B" '(ibuffer :which-key "buffers")
 
     ;; Bookmarks.
     "m" '(bookmark-set :which-key "set mark")
@@ -244,7 +246,6 @@ If a directory is provided, we look for the file there."
 
     ;; Open stuff.
     "o" '(:ignore t :which-key "open")
-    "o o" '(switch-to-buffer :which-key "buffer")
     "o ." `(,(+open-file "~/.config/emacs/README.org") :which-key "dotfile")
     "o a" '(org-agenda :which-key "agenda")
     "o d" '(dired-jump :which-key "directory")
@@ -273,7 +274,10 @@ If a directory is provided, we look for the file there."
      (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
   (org-directory "~/Sync/Org")
   (org-agenda-files (list org-directory))
+  (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-scheduled-if-done t)
+  (org-agenda-span 10)
+  (org-agenda-start-on-weekday nil)
   (org-agenda-window-setup 'other-tab)
   (org-archive-location "::* Archive")
   (org-ctrl-k-protect-subtree t)
@@ -318,6 +322,13 @@ If a directory is provided, we look for the file there."
   (idle-org-agenda-interval 300)
   :config
   (idle-org-agenda-mode))
+
+(use-package org-super-agenda
+  :custom
+  (org-super-agenda-groups '((:auto-parent t)))
+  :config
+  (setq org-super-agenda-header-map (make-sparse-keymap))
+  (org-super-agenda-mode 1))
 
 (use-package python
   :after (outline evil general)

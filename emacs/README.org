@@ -292,6 +292,8 @@ I like the "space menu" that is provided by default in e.g. Spacemacs and Doom E
       "q" '(+kill-buffer-and-close-window :which-key "quit")
       "Q" '(server-edit :which-key "done")
       "g" '(magit :which-key "git")
+      "b" '(switch-to-buffer :which-key "buffer")
+      "B" '(ibuffer :which-key "buffers")
 
       ;; Bookmarks.
       "m" '(bookmark-set :which-key "set mark")
@@ -317,7 +319,6 @@ I like the "space menu" that is provided by default in e.g. Spacemacs and Doom E
 
       ;; Open stuff.
       "o" '(:ignore t :which-key "open")
-      "o o" '(switch-to-buffer :which-key "buffer")
       "o ." `(,(+open-file "~/.config/emacs/README.org") :which-key "dotfile")
       "o a" '(org-agenda :which-key "agenda")
       "o d" '(dired-jump :which-key "directory")
@@ -350,7 +351,10 @@ Emacs =org-mode= is my favorite note-taking app.
        (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
     (org-directory "~/Sync/Org")
     (org-agenda-files (list org-directory))
+    (org-agenda-skip-deadline-if-done t)
     (org-agenda-skip-scheduled-if-done t)
+    (org-agenda-span 10)
+    (org-agenda-start-on-weekday nil)
     (org-agenda-window-setup 'other-tab)
     (org-archive-location "::* Archive")
     (org-ctrl-k-protect-subtree t)
@@ -401,6 +405,15 @@ This lets me copy-paste images into my Org notes. Especially useful for keeping 
     (idle-org-agenda-interval 300)
     :config
     (idle-org-agenda-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package org-super-agenda
+    :custom
+    (org-super-agenda-groups '((:auto-parent t)))
+    :config
+    (setq org-super-agenda-header-map (make-sparse-keymap))
+    (org-super-agenda-mode 1))
 #+end_src
 
 ** Programming
