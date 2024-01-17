@@ -1,4 +1,4 @@
-# ~/.zshrc	vim: foldmethod=marker
+# ~/.zshrc -*- mode: shell-script -*-
 #
 # This is my personal Zsh config file, which uses the `zsh4humans` system
 # to get (i) Fish-like sensible defaults and (ii) an ssh-portable config.

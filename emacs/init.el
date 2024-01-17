@@ -26,6 +26,7 @@
   (line-spacing 0.15)
   (mouse-highlight nil)
   (sentence-end-double-space nil)
+  (tab-width 4) 
   (truncate-lines t)
   (use-short-answers t)
   :custom-face
@@ -68,8 +69,11 @@
 
 (use-package dired
   :ensure nil
+  :after (evil general)
   :custom
-  (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso"))
+  (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
+  :config
+  (mmap "^" 'dired-jump))
 
 (use-package diredfl
   :config
@@ -363,6 +367,8 @@ If a directory is provided, we look for the file there."
 (use-package hl-todo
   :hook
   (prog-mode . hl-todo-mode))
+
+(use-package gnuplot)
 
 (if (eq system-type 'darwin)
     (add-to-list 'exec-path "/opt/homebrew/opt/coreutils/libexec/gnubin"))

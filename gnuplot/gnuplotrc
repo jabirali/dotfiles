@@ -1,3 +1,5 @@
+# -*- mode: gnuplot -*-
+
 # Terminal
 set terminal qt enhanced font 'Libertinus Serif,24' size 640,480
 set size ratio 0.75

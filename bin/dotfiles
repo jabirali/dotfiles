@@ -1,3 +1,0 @@
-#!/bin/sh
-
-subl ~/.config/$(git -C ~/.config ls-files | fzf) ~/.config

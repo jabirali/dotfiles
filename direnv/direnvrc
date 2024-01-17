@@ -1,3 +1,5 @@
+# -*- mode: shell -*-
+
 layout_python() {
 	# Determine the virtualenv location.
 	local venv="$HOME/.cache/virtualenvs/$(basename "$PWD")"

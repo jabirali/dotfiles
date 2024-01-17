@@ -6,7 +6,6 @@
 cat   bat -p
 find  fd
 grep  rg
-ls    exa
 tree  exa -T
 
 # Shorter commands.
@@ -19,11 +18,9 @@ br   brew remove
 bu   brew upgrade
 bs   brew search
 
-c    cd ~/Dropbox/Code/$(ls ~/Dropbox/Code | fzf)
-
 d    dotfiles
 
-e    emacsclient -nw -c
+e    emacsclient -c -nw
 ee   tangle
 
 g    git
@@ -41,12 +38,6 @@ gP   git push
 gs   git status
 gr   git reset
 
-j    vim +WikiJournal
-
-l    ls
-l    gls --hyperlink=always
-l    exa
-
 o    open
 o    xdg-open
 o    explorer.exe
@@ -57,5 +48,3 @@ q    qlmanage -p
 
 v    vi
 v    vim
-
-w    vim +WikiIndex

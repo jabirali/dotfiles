@@ -48,6 +48,7 @@ The Emacs defaults are quite dated. This makes it fit in the 2020s.
     (line-spacing 0.15)
     (mouse-highlight nil)
     (sentence-end-double-space nil)
+    (tab-width 4) 
     (truncate-lines t)
     (use-short-answers t)
     :custom-face
@@ -106,8 +107,11 @@ Setup =dired= comfortably. Note that this assumes we're using GNU coreutils.
 #+begin_src emacs-lisp
   (use-package dired
     :ensure nil
+    :after (evil general)
     :custom
-    (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso"))
+    (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
+    :config
+    (mmap "^" 'dired-jump))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -460,6 +464,11 @@ I mostly do programming in Vim these days, and am at the moment trying to re-ado
   (prog-mode . hl-todo-mode))
 #+end_src
 
+** Miscellaneous
+*** Gnuplot
+#+begin_src emacs-lisp
+  (use-package gnuplot)
+#+end_src
 ** Environment
 GNU Emacs seems to work best with GNU coreutils (see e.g. =dired=).
 #+begin_src bash

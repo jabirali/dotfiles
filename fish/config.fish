@@ -34,6 +34,7 @@ fish_add_path /Applications/Matlab.app/bin
 
 # Default command-line arguments.
 alias exa 'exa --group-directories-first --time-style=long-iso'
+alias ll 'ls -hlLgG --group-directories-first --time-style=long-iso --hyperlink=auto'
 alias ipython 'env TERM=linux ipython'  # ANSI colors
 alias matlab 'matlab -nosplash -nodesktop'  # CLI mode
 alias wget 'wget -e robots=off'  # Web scraping
