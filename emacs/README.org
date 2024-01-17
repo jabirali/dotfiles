@@ -107,7 +107,7 @@ Setup =dired= comfortably. Note that this assumes we're using GNU coreutils.
   (use-package dired
     :ensure nil
     :custom
-    (dired-listing-switches "-lhgG --group-directories-first --time-style=long-iso"))
+    (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso"))
 #+end_src
 
 #+begin_src emacs-lisp

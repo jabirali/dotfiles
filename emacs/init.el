@@ -69,7 +69,7 @@
 (use-package dired
   :ensure nil
   :custom
-  (dired-listing-switches "-lhgG --group-directories-first --time-style=long-iso"))
+  (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso"))
 
 (use-package diredfl
   :config

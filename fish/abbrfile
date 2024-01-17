@@ -44,6 +44,7 @@ gr   git reset
 j    vim +WikiJournal
 
 l    ls
+l    gls --hyperlink=always
 l    exa
 
 o    open
