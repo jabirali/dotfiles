@@ -221,6 +221,7 @@ If a directory is provided, we look for the file there."
     "g" '(magit :which-key "git")
     "b" '(switch-to-buffer :which-key "buffer")
     "B" '(ibuffer :which-key "buffers")
+    "a" '(org-agenda :which-key "agenda")
 
     ;; Bookmarks.
     "m" '(bookmark-set :which-key "set mark")
@@ -247,7 +248,6 @@ If a directory is provided, we look for the file there."
     ;; Open stuff.
     "o" '(:ignore t :which-key "open")
     "o ." `(,(+open-file "~/.config/emacs/README.org") :which-key "dotfile")
-    "o a" '(org-agenda :which-key "agenda")
     "o d" '(dired-jump :which-key "directory")
     "o f" '(find-file :which-key "file")
     "o i" `(,(+open-file "inbox.org" 'org-directory) :which-key "inbox")
@@ -276,7 +276,7 @@ If a directory is provided, we look for the file there."
   (org-agenda-files (list org-directory))
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-scheduled-if-done t)
-  (org-agenda-span 10)
+  (org-agenda-span 'day)
   (org-agenda-start-on-weekday nil)
   (org-agenda-window-setup 'other-tab)
   (org-archive-location "::* Archive")
