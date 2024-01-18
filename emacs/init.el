@@ -123,18 +123,20 @@ If a directory is provided, we look for the file there."
   :bind
   ("<f12>" . modus-themes-toggle)
   :config
-  ;; Make tabs and dividers match the mode-line.
+  ;; make tabs and dividers match the mode-line.
   (defadvice load-theme (after run-after-load-theme-hook activate)
-    "Fix the tab-bar-mode after any theme has been loaded."
+    "fix the tab-bar-mode after any theme has been loaded."
     (let ((bg  (face-attribute 'mode-line :background))
           (box (face-attribute 'mode-line :box)))
       (set-face-attribute 'tab-bar nil :background bg :box box)
       (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
       (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold)
       (set-face-attribute 'vertical-border nil :background bg :foreground bg))
-      (set-face-background 'scroll-bar "transparent"))
-  ;; Load the Modus themes.
-  (load-theme 'modus-vivendi-tinted t))
+      (set-face-background 'scroll-bar "transparent")))
+
+(use-package doom-themes
+  :config
+  (load-theme 'doom-dracula t))
 
 (use-package vertico
   :config
@@ -167,6 +169,7 @@ If a directory is provided, we look for the file there."
   (evil-want-keybinding nil)
   (evil-want-integration t)
   (evil-want-C-u-scroll t)
+  (evil-undo-system 'undo-redo)
   :config
   (evil-mode 1))
 
@@ -262,10 +265,71 @@ If a directory is provided, we look for the file there."
     "o p" '(project-find-file :which-key "project")
     "o r" '(recentf :which-key "recent"))
 
-  ;; Major-mode mappings.
-  (+leader-map emacs-lisp-mode-map
-              "e e" '(eval-buffer :which-key "buffer")
-              "e d" '(eval-defun :which-key "defun")))
+  ;; Map "C-c C-x" to ", x" for all letters "x". These are
+  ;; generally keybindings defined by the current major mode.
+  (mmap :prefix "," :keymaps 'override
+    "a" (general-key "C-c C-a")
+    "b" (general-key "C-c C-b")
+    "c" (general-key "C-c C-c")
+    "d" (general-key "C-c C-d")
+    "e" (general-key "C-c C-e")
+    "f" (general-key "C-c C-f")
+    "g" (general-key "C-c C-g")
+    "h" (general-key "C-c C-h")
+    "i" (general-key "C-c C-i")
+    "j" (general-key "C-c C-j")
+    "k" (general-key "C-c C-k")
+    "l" (general-key "C-c C-l")
+    "m" (general-key "C-c C-m")
+    "n" (general-key "C-c C-n")
+    "o" (general-key "C-c C-o")
+    "p" (general-key "C-c C-p")
+    "q" (general-key "C-c C-q")
+    "r" (general-key "C-c C-r")
+    "s" (general-key "C-c C-s")
+    "t" (general-key "C-c C-t")
+    "u" (general-key "C-c C-u")
+    "v" (general-key "C-c C-v")
+    "w" (general-key "C-c C-w")
+    "x" (general-key "C-c C-x")
+    "y" (general-key "C-c C-y")
+    "z" (general-key "C-c C-z"))
+
+  ;; Map "C-c ?" to ", ?" for all symbols "?". This includes some
+  ;; major-mode keybindings and most minor-mode keybindings.
+  (mmap :prefix "," :keymaps 'override
+    "!"  (general-key "C-c !" )
+    "\"" (general-key "C-c \"")
+    "#"  (general-key "C-c #" )
+    "$"  (general-key "C-c $" )
+    "%"  (general-key "C-c %" )
+    "&"  (general-key "C-c &" )
+    "'"  (general-key "C-c '" )
+    "("  (general-key "C-c (" )
+    ")"  (general-key "C-c )" )
+    "*"  (general-key "C-c *" )
+    "+"  (general-key "C-c +" )
+    ","  (general-key "C-c ," )
+    "-"  (general-key "C-c -" )
+    "."  (general-key "C-c ." )
+    "/"  (general-key "C-c /" )
+    ":"  (general-key "C-c :" )
+    ";"  (general-key "C-c ;" )
+    "<"  (general-key "C-c <" )
+    "="  (general-key "C-c =" )
+    ">"  (general-key "C-c >" )
+    "?"  (general-key "C-c ?" )
+    "@"  (general-key "C-c @" )
+    "["  (general-key "C-c [" )
+    "\\" (general-key "C-c \\")
+    "]"  (general-key "C-c ]" )
+    "^"  (general-key "C-c ^" )
+    "_"  (general-key "C-c _" )
+    "`"  (general-key "C-c `" )
+    "{"  (general-key "C-c {" )
+    "|"  (general-key "C-c |" )
+    "}"  (general-key "C-c }" )
+    "~"  (general-key "C-c ~" )))
 
 (use-package org
   :hook
