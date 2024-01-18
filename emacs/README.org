@@ -18,7 +18,6 @@ Since Emacs 29, =use-package= has been included in the base distribution. This i
 #+begin_src emacs-lisp
   (use-package use-package
     :custom
-    (use-package-always-demand t)
     (use-package-always-ensure t))
 #+end_src
 
@@ -95,29 +94,18 @@ I want Emacs to remember my recently used files and commands.
     (savehist-mode 1))
 #+end_src
 
+Project management.
+#+begin_src emacs-lisp
+  (use-package project
+    :config
+    (project-remember-projects-under (expand-file-name "~/Sync/") t))
+#+end_src
+
 Finally, let's start the Emacs daemon by default. This lets us quickly connect to the running Emacs instance from a terminal via =emacsclient=.
 #+begin_src emacs-lisp
-  (use-package server
-    :config
-    (server-mode 1))
-#+end_src
-
-** File management
-Setup =dired= comfortably. Note that this assumes we're using GNU coreutils.
-#+begin_src emacs-lisp
-  (use-package dired
-    :ensure nil
-    :after (evil general)
-    :custom
-    (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
-    :config
-    (mmap "^" 'dired-jump))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package diredfl
-    :config
-    (diredfl-global-mode 1))
+    (use-package server
+      :config
+      (server-mode 1))
 #+end_src
 
 ** Helper functions
@@ -175,6 +163,7 @@ External packages that gives Emacs a modern look (inspired by Doom).
     (spacious-padding-mode))
 
   (use-package modus-themes
+    :demand t
     :custom
     (modus-themes-org-blocks nil)
     (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
@@ -469,6 +458,25 @@ I mostly do programming in Vim these days, and am at the moment trying to re-ado
 #+begin_src emacs-lisp
   (use-package gnuplot)
 #+end_src
+*** File management
+Setup =dired= comfortably. Note that this assumes we're using GNU coreutils.
+#+begin_src emacs-lisp
+  (use-package dired
+    :ensure nil
+    :after (evil general)
+    :custom
+    (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
+    :config
+    (mmap "^" 'dired-jump))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package diredfl
+    :after dired
+    :config
+    (diredfl-global-mode 1))
+#+end_src
+
 ** Environment
 GNU Emacs seems to work best with GNU coreutils (see e.g. =dired=).
 #+begin_src bash

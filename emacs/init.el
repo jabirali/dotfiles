@@ -5,7 +5,6 @@
 
 (use-package use-package
   :custom
-  (use-package-always-demand t)
   (use-package-always-ensure t))
 
 (use-package no-littering
@@ -63,21 +62,13 @@
   :config
   (savehist-mode 1))
 
+(use-package project
+  :config
+  (project-remember-projects-under (expand-file-name "~/Sync/") t))
+
 (use-package server
   :config
   (server-mode 1))
-
-(use-package dired
-  :ensure nil
-  :after (evil general)
-  :custom
-  (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
-  :config
-  (mmap "^" 'dired-jump))
-
-(use-package diredfl
-  :config
-  (diredfl-global-mode 1))
 
 (defun +open-file (file &optional dir)
   "Create an interactive command for opening a given file.
@@ -125,6 +116,7 @@ If a directory is provided, we look for the file there."
   (spacious-padding-mode))
 
 (use-package modus-themes
+  :demand t
   :custom
   (modus-themes-org-blocks nil)
   (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
@@ -369,6 +361,19 @@ If a directory is provided, we look for the file there."
   (prog-mode . hl-todo-mode))
 
 (use-package gnuplot)
+
+(use-package dired
+  :ensure nil
+  :after (evil general)
+  :custom
+  (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
+  :config
+  (mmap "^" 'dired-jump))
+
+(use-package diredfl
+  :after dired
+  :config
+  (diredfl-global-mode 1))
 
 (if (eq system-type 'darwin)
     (add-to-list 'exec-path "/opt/homebrew/opt/coreutils/libexec/gnubin"))
