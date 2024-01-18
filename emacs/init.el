@@ -8,15 +8,16 @@
   (use-package-always-ensure t))
 
 (use-package no-littering
-  :config
+  :init
   ;; Set nearly all cache files to follow the XDG specification.
   (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
   (setq no-littering-var-directory user-emacs-directory)
   (setq no-littering-etc-directory user-emacs-directory)
-  ;; Also move the backup~ and #auto-save# files out of the way.
+  :config
+  ;; Move backup~ and #auto-save# files out of the way.
   (no-littering-theme-backups)
-  ;; Customizations are host-specific and not suitable for dotfiles.
-  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+  ;; Move host-specific customization out of 'init.el'.
+  (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
   (load custom-file))
 
 (use-package emacs

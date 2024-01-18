@@ -3,7 +3,7 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.config/emacs/init.el
 
 * Emacs
-This is my configuration for Emacs 29+ @ macOS. My setup is mostly based around =org-mode= and =evil-mode=; I use Emacs for Org-mode, but often use Vim for programming, and this keeps them interchangeable.
+This is my configuration for Emacs 29+ on macOS. My setup is mostly based around =org-mode= and =evil-mode=; I use Emacs for Org-mode, but often use Vim for programming, and this keeps them interchangeable.
 
 ** Package management
 Bootstrap the Emacs package manager. Specifically, I want to prevent it from polluting my dotfiles with third-party packages, and I want to ensure that the community package repositories are available.
@@ -24,15 +24,16 @@ Since Emacs 29, =use-package= has been included in the base distribution. This i
 Many Emacs packages throw their cache files in =~/.config/emacs/= by default, which is very annoying when that directory is kept under version control. Luckily, =no-littering= can help us tame those packages.
 #+begin_src emacs-lisp
   (use-package no-littering
-    :config
+    :init
     ;; Set nearly all cache files to follow the XDG specification.
     (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
     (setq no-littering-var-directory user-emacs-directory)
     (setq no-littering-etc-directory user-emacs-directory)
-    ;; Also move the backup~ and #auto-save# files out of the way.
+    :config
+    ;; Move backup~ and #auto-save# files out of the way.
     (no-littering-theme-backups)
-    ;; Customizations are host-specific and not suitable for dotfiles.
-    (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+    ;; Move host-specific customization out of 'init.el'.
+    (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
     (load custom-file))
 #+end_src
 
