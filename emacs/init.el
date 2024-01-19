@@ -27,6 +27,7 @@
   (inhibit-startup-message t)
   (line-spacing 0.15)
   (mouse-highlight nil)
+  (outline-blank-line t)
   (ring-bell-function 'ignore)
   (sentence-end-double-space nil)
   (tab-width 4) 
@@ -80,6 +81,10 @@ If a directory is provided, we look for the file there."
   "Insert an ISO date stamp corresponding to today."
   (interactive)
   (insert (format-time-string "%Y-%m-%d %A")))
+
+(defun +find-projects ()
+  (interactive)
+  (project-remember-projects-under (expand-file-name "~/Sync/") t))
 
 (use-package evil
   :custom
@@ -420,11 +425,3 @@ If a directory is provided, we look for the file there."
 (use-package magit
   :config
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
-
-(use-package outline
-  :custom
-  (outline-blank-line t))
-
-(use-package project
-  :config
-  (project-remember-projects-under (expand-file-name "~/Sync/") t))

@@ -80,6 +80,7 @@ Let's fix some outdated Emacs default settings.
     (inhibit-startup-message t)
     (line-spacing 0.15)
     (mouse-highlight nil)
+    (outline-blank-line t)
     (ring-bell-function 'ignore)
     (sentence-end-double-space nil)
     (tab-width 4) 
@@ -149,6 +150,13 @@ This can be useful in e.g. when writing Org notes.
     "Insert an ISO date stamp corresponding to today."
     (interactive)
     (insert (format-time-string "%Y-%m-%d %A")))
+#+end_src
+
+Function for auto-detecting projects.
+#+begin_src emacs-lisp
+  (defun +find-projects ()
+    (interactive)
+    (project-remember-projects-under (expand-file-name "~/Sync/") t))
 #+end_src
 
 ** Keybindings
@@ -573,7 +581,7 @@ nice to have a decent Emacs setup for reading code while taking Org notes.
 
 ** Miscellaneous
 *** dired
-Setup =dired= comfortably. Note that this assumes we're using GNU coreutils.
+Make =dired= a bit nicer. This assumes we're using GNU coreutils.
 #+begin_src emacs-lisp
   (use-package dired
     :ensure nil
@@ -584,6 +592,7 @@ Setup =dired= comfortably. Note that this assumes we're using GNU coreutils.
     (mmap "^" 'dired-jump))
 #+end_src
 
+Make =dired= a bit more colorful. Makes it easier to skim.
 #+begin_src emacs-lisp
   (use-package diredfl
     :after dired
@@ -597,31 +606,11 @@ Setup =dired= comfortably. Note that this assumes we're using GNU coreutils.
 #+end_src
 
 *** magit
-Better integration with Git version control.
+Better integration with Git version control. Which just works.
 #+begin_src emacs-lisp
   (use-package magit
     :config
     (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
-#+end_src
-
-*** outline
-Code folding with =outline-minor-mode=. This is the package that
-=org-mode= is built on, and it integrates well with =evil-mode=.
-Note that any keybindings need to be bound in the ='local= (major
-mode) map to prevent it from breaking Magit. I'll do that when
-loading/configuring the specific programming modes below.
-#+begin_src emacs-lisp
-  (use-package outline
-    :custom
-    (outline-blank-line t))
-#+end_src
-
-*** project
-Emacs' built-in system for working with projects (Git repos).
-#+begin_src emacs-lisp
-  (use-package project
-    :config
-    (project-remember-projects-under (expand-file-name "~/Sync/") t))
 #+end_src
 
 * Export
