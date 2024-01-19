@@ -118,7 +118,7 @@ If a directory is provided, we look for the file there."
   :config
   ;; make tabs and dividers match the mode-line.
   (defadvice load-theme (after run-after-load-theme-hook activate)
-    "fix the tab-bar-mode after any theme has been loaded."
+    "Fix the tab-bar-mode after any theme has been loaded."
     (let ((bg  (face-attribute 'mode-line :background))
           (box (face-attribute 'mode-line :box)))
       (set-face-attribute 'tab-bar nil :background bg :box box)

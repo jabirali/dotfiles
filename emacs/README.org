@@ -9,6 +9,7 @@ based around =org-mode= and =evil-mode=. (I use Emacs for Org-mode,
 but regularly switch over to Vim/Sublime/VSCode for programming.)
 
 ** Core configuration
+*** package
 Bootstrap the Emacs package manager and enable the community repos.
 #+begin_src emacs-lisp
   (require 'package)
@@ -17,6 +18,7 @@ Bootstrap the Emacs package manager and enable the community repos.
   (package-initialize)
 #+end_src
 
+*** use-package
 This config is structured around the =use-package= macro. Since Emacs 29,
 this has been upstreamed and no longer has to be manually installed.
 #+begin_src emacs-lisp
@@ -24,7 +26,10 @@ this has been upstreamed and no longer has to be manually installed.
     :custom
     (use-package-always-ensure t))
 #+end_src
+Note that from Emacs 30, =use-package= will obtain a new keyword =:vc=
+that can be used to install packages directly from e.g. GitHub repos.
 
+*** no-littering
 By default, Emacs throws files all over the place. The =no-littering=
 package helps relocate cache and backup files into a single location.
 This is particularly helpful when =~/.config/emacs/= is in a Git repo.
@@ -43,6 +48,7 @@ This is particularly helpful when =~/.config/emacs/= is in a Git repo.
     (load custom-file))
 #+end_src
 
+*** emacs
 Let's fix some outdated Emacs default settings. We'll also start the
 Emacs server to enable quick =emacsclient= edits from the terminal.
 #+begin_src emacs-lisp
@@ -70,6 +76,7 @@ Emacs server to enable quick =emacsclient= edits from the terminal.
 #+end_src
 
 ** Built-in packages
+*** tab-bar
 Emacs recently added a tab bar which works similarly to Vim or Tmux,
 i.e. each tab corresponds to a numbered "window configuration" that
 you can easily switch between. Moreover, it can record a per-tab
@@ -89,6 +96,7 @@ history of recent window configurations, similarly to a web browser.
     (tab-bar-history-mode 1))
 #+end_src
 
+*** outline
 Code folding with =outline-minor-mode=. This is the package that
 =org-mode= is built on, and it integrates well with =evil-mode=.
 Note that any keybindings need to be bound in the ='local= (major
@@ -171,7 +179,7 @@ External packages that gives Emacs a modern look (inspired by Doom).
     :config
     ;; make tabs and dividers match the mode-line.
     (defadvice load-theme (after run-after-load-theme-hook activate)
-      "fix the tab-bar-mode after any theme has been loaded."
+      "Fix the tab-bar-mode after any theme has been loaded."
       (let ((bg  (face-attribute 'mode-line :background))
             (box (face-attribute 'mode-line :box)))
         (set-face-attribute 'tab-bar nil :background bg :box box)
@@ -187,26 +195,37 @@ External packages that gives Emacs a modern look (inspired by Doom).
 
 ** User experience
 Packages for enabling fuzzy-finding across the Emacs user interface.
+*** vertico
 #+begin_src emacs-lisp
   (use-package vertico
     :config
     (vertico-mode)
     (vertico-mouse-mode)
     (vertico-reverse-mode))
+#+end_src
 
+*** consult
+#+begin_src emacs-lisp
   (use-package consult
     :after vertico)
+#+end_src
 
+*** marginalia
+#+begin_src emacs-lisp
   (use-package marginalia
     :after vertico
     :config
     (marginalia-mode))
+#+end_src
 
+*** orderless
+#+begin_src emacs-lisp
   (use-package orderless
     :config
     (setq completion-styles '(orderless)))
 #+end_src
 
+*** ace-window
 Better workflow for switching between visible windows.
 #+begin_src emacs-lisp
   (use-package ace-window
@@ -214,6 +233,7 @@ Better workflow for switching between visible windows.
     ("M-o" . 'ace-window))
 #+end_src
 
+*** magit
 Better integration with Git version control.
 #+begin_src emacs-lisp
   (use-package magit
@@ -222,6 +242,7 @@ Better integration with Git version control.
 #+end_src
 
 ** Modal editing
+*** evil
 I've used Vim keybindings for nearly two decades, and still regularly
 use it for programming or quick remote edits. Moreover, every time
 I've tried to switch to Emacs keybindings, my RSI has flared up. So
@@ -237,6 +258,7 @@ for me, =evil-mode= is a prerequisite for using Emacs at all.
     (evil-mode 1))
 #+end_src
 
+*** evil-collection
 Evil is great, but by default it only works in text-editing modes.
 This makes it work across nearly all Emacs modes and packages.
 #+begin_src emacs-lisp
@@ -246,6 +268,7 @@ This makes it work across nearly all Emacs modes and packages.
     (evil-collection-init))
 #+end_src
 
+*** evil-org
 Org-mode is a different beast, and requires some extra integration to
 work well with Evil. Note that =evil-org-agenda= is provided by
 =evil-org=, it's for some reason just not activated by default.
@@ -264,6 +287,7 @@ work well with Evil. Note that =evil-org-agenda= is provided by
     (evil-org-agenda-set-keys))
 #+end_src
 
+*** evil-surround
 Some Vim plugins are also worth taking with us into Emacs.
 #+begin_src emacs-lisp
   (use-package evil-surround
