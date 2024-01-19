@@ -6,6 +6,49 @@ This is my configuration for Emacs 29+ on macOS. My setup is mostly
 based around [[org-mode]] and [[evil-mode]]; I use Emacs for knowledge and
 task management, but often use Vim/Sublime/VSCode for actual coding.
 
+* Overview                                                  :toc:
+- [[#bootstrap][Bootstrap]]
+  - [[#macos][macOS]]
+  - [[#package][package]]
+  - [[#use-package][use-package]]
+  - [[#no-littering][no-littering]]
+  - [[#defaults][defaults]]
+- [[#definitions][Definitions]]
+  - [[#variables][variables]]
+  - [[#functions][functions]]
+- [[#vim-keybindings][Vim keybindings]]
+  - [[#which-key][which-key]]
+  - [[#evil-mode][evil-mode]]
+  - [[#evil-collection][evil-collection]]
+  - [[#evil-surround][evil-surround]]
+  - [[#evil-org][evil-org]]
+  - [[#evil-org-agenda][evil-org-agenda]]
+  - [[#general][general]]
+- [[#modern-interface][Modern interface]]
+  - [[#tab-bar][tab-bar]]
+  - [[#spacious-padding][spacious-padding]]
+  - [[#doom-themes][doom-themes]]
+  - [[#doom-modeline][doom-modeline]]
+  - [[#vertico][vertico]]
+  - [[#orderless][orderless]]
+  - [[#consult][consult]]
+  - [[#marginalia][marginalia]]
+  - [[#ace-window][ace-window]]
+- [[#organization][Organization]]
+  - [[#org-mode][org-mode]]
+  - [[#org-download][org-download]]
+  - [[#org-super-agenda][org-super-agenda]]
+  - [[#idle-org-agenda][idle-org-agenda]]
+  - [[#org-toc][org-toc]]
+- [[#programming][Programming]]
+  - [[#python][python]]
+- [[#miscellaneous][Miscellaneous]]
+  - [[#dired][dired]]
+  - [[#gnuplot][gnuplot]]
+  - [[#hl-todo][hl-todo]]
+  - [[#magit][magit]]
+- [[#literate-config][Literate config]]
+
 * Bootstrap
 ** macOS
 In my experience, the [[https://bitbucket.org/mituharu/emacs-mac/src/master/][Emacs Mac port]] remains the best option for
@@ -565,6 +608,14 @@ Prevents me from forgetting what upcoming deadlines to prioritize.
     (idle-org-agenda-mode 1))
 #+end_src
 
+** org-toc
+Package renamed from =org-toc= to =toc-org= a while back.
+#+begin_src emacs-lisp
+  (use-package toc-org
+    :hook
+    (org-mode . toc-org-mode))
+#+end_src
+
 * Programming
 ** python
 I mostly do programming in Vim these days, and am at the moment trying
@@ -634,9 +685,6 @@ Better integration with Git version control. Which just works.
     :config
     (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 #+end_src
-
-
-
 
 * Literate config
 This script lets us tangle this Org file into Emacs Lisp files without

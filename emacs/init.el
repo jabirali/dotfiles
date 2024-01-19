@@ -382,6 +382,10 @@ If a directory is provided, we look for the file there."
   :config
   (idle-org-agenda-mode 1))
 
+(use-package toc-org
+  :hook
+  (org-mode . toc-org-mode))
+
 (use-package python
   :after (outline evil general)
   :config
