@@ -120,13 +120,13 @@ If a directory is provided, we look for the file there."
 
 (use-package which-key
   :config
-  (which-key-mode))
+  (which-key-mode 1))
 
 (use-package general
   :after evil
   :config
   (general-evil-setup t)
-  (general-override-mode)
+  (general-override-mode 1)
   (general-create-definer +leader-map
     :keymaps 'override
     :states '(motion normal visual)
@@ -275,7 +275,7 @@ If a directory is provided, we look for the file there."
 
 (use-package spacious-padding
   :config
-  (spacious-padding-mode))
+  (spacious-padding-mode 1))
 
 (use-package doom-themes
   :config
@@ -292,13 +292,13 @@ If a directory is provided, we look for the file there."
   (doom-modeline-time nil)
   (doom-modeline-workspace-name nil)
   :config
-  (doom-modeline-mode))
+  (doom-modeline-mode 1))
 
 (use-package vertico
   :config
-  (vertico-mode)
-  (vertico-mouse-mode)
-  (vertico-reverse-mode))
+  (vertico-mode 1)
+  (vertico-mouse-mode 1)
+  (vertico-reverse-mode 1))
 
 (use-package consult
   :after vertico)
@@ -306,7 +306,7 @@ If a directory is provided, we look for the file there."
 (use-package marginalia
   :after vertico
   :config
-  (marginalia-mode))
+  (marginalia-mode 1))
 
 (use-package orderless
   :config
@@ -317,10 +317,8 @@ If a directory is provided, we look for the file there."
   ("M-o" . 'ace-window))
 
 (use-package org
-  :bind
-  (:map org-mode-map
-        ("M-p" . org-priority)
-        ("M-t" . org-set-tags-command))
+  :hook
+  (org-mode . auto-fill-mode)
   :custom
   (org-todo-keywords
    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
@@ -381,7 +379,7 @@ If a directory is provided, we look for the file there."
   :custom
   (idle-org-agenda-interval 3600)
   :config
-  (idle-org-agenda-mode))
+  (idle-org-agenda-mode 1))
 
 (use-package python
   :after (outline evil general)
@@ -403,10 +401,6 @@ If a directory is provided, we look for the file there."
   :hook
   (python-mode . +outline-python))
 
-(use-package hl-todo
-  :hook
-  (prog-mode . hl-todo-mode))
-
 (use-package dired
   :ensure nil
   :after (evil general)
@@ -421,6 +415,10 @@ If a directory is provided, we look for the file there."
   (diredfl-global-mode 1))
 
 (use-package gnuplot)
+
+(use-package hl-todo
+  :hook
+  (prog-mode . hl-todo-mode))
 
 (use-package magit
   :config

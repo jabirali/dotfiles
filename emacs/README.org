@@ -215,12 +215,11 @@ Some Vim plugins are also worth taking with us into Emacs.
 #+end_src 
 
 *** which-key
-I like the "space menu" that is provided by default in e.g. Spacemacs
-and Doom Emacs. This is my personalized version of this concept.
+Make the keybindings more discoverable by providing interactive hints.
 #+begin_src emacs-lisp
   (use-package which-key
     :config
-    (which-key-mode))
+    (which-key-mode 1))
 #+end_src
 
 *** general
@@ -229,7 +228,7 @@ and Doom Emacs. This is my personalized version of this concept.
     :after evil
     :config
     (general-evil-setup t)
-    (general-override-mode)
+    (general-override-mode 1)
     (general-create-definer +leader-map
       :keymaps 'override
       :states '(motion normal visual)
@@ -395,7 +394,7 @@ way in giving the Emacs interface a more modern and aesthetic look.
 #+begin_src emacs-lisp
   (use-package spacious-padding
     :config
-    (spacious-padding-mode))
+    (spacious-padding-mode 1))
 #+end_src
 
 *** doom-themes
@@ -418,16 +417,16 @@ way in giving the Emacs interface a more modern and aesthetic look.
     (doom-modeline-time nil)
     (doom-modeline-workspace-name nil)
     :config
-    (doom-modeline-mode))
+    (doom-modeline-mode 1))
 #+end_src
 
 *** vertico
 #+begin_src emacs-lisp
   (use-package vertico
     :config
-    (vertico-mode)
-    (vertico-mouse-mode)
-    (vertico-reverse-mode))
+    (vertico-mode 1)
+    (vertico-mouse-mode 1)
+    (vertico-reverse-mode 1))
 #+end_src
 
 *** consult
@@ -441,7 +440,7 @@ way in giving the Emacs interface a more modern and aesthetic look.
   (use-package marginalia
     :after vertico
     :config
-    (marginalia-mode))
+    (marginalia-mode 1))
 #+end_src
 
 *** orderless
@@ -461,13 +460,14 @@ Better workflow for switching between visible windows.
 
 ** Org-mode
 *** org
-Emacs =org-mode= is my current research journal and task management system.
+I'm using Org as my research journal and task management system. After
+some deliberation, I picked =auto-fill-mode= over =visual-line-mode=
+as wrapping strategy. This makes embedded code blocks more readable,
+and the surrounding text remains more legible if Emacs is resized.
 #+begin_src emacs-lisp
   (use-package org
-    :bind
-    (:map org-mode-map
-          ("M-p" . org-priority)
-          ("M-t" . org-set-tags-command))
+    :hook
+    (org-mode . auto-fill-mode)
     :custom
     (org-todo-keywords
      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
@@ -499,8 +499,8 @@ Emacs =org-mode= is my current research journal and task management system.
 
 *** org-download
 This lets me copy-paste images into my Org notes. Especially useful
-for keeping a research journal, as it lets me paste important plots
-into my daily log. (Workflow inspired by Logseq.)
+for keeping a research journal, as it lets me paste and tag important
+plots in my daily log. (Workflow inspired by Logseq.)
 #+begin_src emacs-lisp
   (use-package org-download
     :after org
@@ -524,7 +524,14 @@ into my daily log. (Workflow inspired by Logseq.)
 
 #+end_src
 
+Remember to install the system dependency for handling screenshots:
+#+begin_src bash
+  brew install pngpaste
+#+end_src
+
 *** org-super-agenda
+The default Org agenda is messy. This sorts my upcoming tasks and
+deadlines by project, making it easier to keep an overview.
 #+begin_src emacs-lisp
   (use-package org-super-agenda
     :custom
@@ -543,7 +550,7 @@ Prevents me from forgetting what upcoming deadlines to prioritize.
     :custom
     (idle-org-agenda-interval 3600)
     :config
-    (idle-org-agenda-mode))
+    (idle-org-agenda-mode 1))
 #+end_src
 
 ** Programming
@@ -573,12 +580,6 @@ nice to have a decent Emacs setup for reading code while taking Org notes.
     (python-mode . +outline-python))
 #+end_src
 
-#+begin_src emacs-lisp
-(use-package hl-todo
-  :hook
-  (prog-mode . hl-todo-mode))
-#+end_src
-
 ** Miscellaneous
 *** dired
 Make =dired= a bit nicer. This assumes we're using GNU coreutils.
@@ -601,8 +602,17 @@ Make =dired= a bit more colorful. Makes it easier to skim.
 #+end_src
 
 *** gnuplot
+Nice to have. Mostly just to edit Gnuplot scripts and configs.
 #+begin_src emacs-lisp
   (use-package gnuplot)
+#+end_src
+
+*** hl-todo
+Highlight TODOs in code files (similarly to Vim).
+#+begin_src emacs-lisp
+(use-package hl-todo
+  :hook
+  (prog-mode . hl-todo-mode))
 #+end_src
 
 *** magit
