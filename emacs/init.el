@@ -4,10 +4,12 @@
 (package-initialize)
 
 (use-package use-package
+  :demand t
   :custom
   (use-package-always-ensure t))
 
 (use-package no-littering
+  :demand t
   :init
   ;; Make cache files follow the XDG specification.
   (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
@@ -39,29 +41,16 @@
   (blink-cursor-mode -1)
   (fringe-mode -1)
   (recentf-mode 1)
-  (savehist-mode 1)
-  (server-mode 1))
+  (savehist-mode 1))
 
-(use-package tab-bar
-  :custom
-  (frame-title-format "")
-  (tab-bar-close-button-show nil)
-  (tab-bar-format '(tab-bar-format-tabs))
-  (tab-bar-new-tab-choice "*scratch*")
-  (tab-bar-select-tab-modifiers '(super))
-  (tab-bar-show 1)
-  (tab-bar-tab-hints t)
+(use-package server
+  :demand t
   :config
-  (tab-bar-mode 1)
-  (tab-bar-history-mode 1))
+  (unless (server-running-p)
+    (server-mode 1)))
 
-(use-package outline
-  :custom
-  (outline-blank-line t))
-
-(use-package project
-  :config
-  (project-remember-projects-under (expand-file-name "~/Sync/") t))
+(if (eq system-type 'darwin)
+    (add-to-list 'exec-path "/opt/homebrew/opt/coreutils/libexec/gnubin"))
 
 (defun +open-file (file &optional dir)
   "Create an interactive command for opening a given file.
@@ -91,62 +80,6 @@ If a directory is provided, we look for the file there."
   "Insert an ISO date stamp corresponding to today."
   (interactive)
   (insert (format-time-string "%Y-%m-%d %A")))
-
-(use-package spacious-padding
-  :config
-  (spacious-padding-mode))
-
-(use-package doom-themes
-  :config
-  (defadvice load-theme (after run-after-load-theme-hook activate)
-    "Fix the tab-bar-mode after any theme has been loaded."
-    (let ((bg  (face-attribute 'mode-line :background))
-          (box (face-attribute 'mode-line :box)))
-      (set-face-attribute 'tab-bar nil :background bg :box box)
-      (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
-      (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold)
-      (set-face-attribute 'vertical-border nil :background bg :foreground bg))
-    (set-face-background 'scroll-bar "transparent"))
-  (load-theme 'doom-dracula t))
-
-(use-package doom-modeline
-  :after doom-themes
-  :custom
-  (doom-modeline-buffer-encoding nil)
-  (doom-modeline-buffer-modification-icon nil)
-  (doom-modeline-icon nil)
-  (doom-modeline-modal nil)
-  (doom-modeline-position-line-format nil)
-  (doom-modeline-time nil)
-  (doom-modeline-workspace-name nil)
-  :config
-  (doom-modeline-mode))
-
-(use-package vertico
-  :config
-  (vertico-mode)
-  (vertico-mouse-mode)
-  (vertico-reverse-mode))
-
-(use-package consult
-  :after vertico)
-
-(use-package marginalia
-  :after vertico
-  :config
-  (marginalia-mode))
-
-(use-package orderless
-  :config
-  (setq completion-styles '(orderless)))
-
-(use-package ace-window
-  :bind
-  ("M-o" . 'ace-window))
-
-(use-package magit
-  :config
-  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 
 (use-package evil
   :custom
@@ -315,6 +248,69 @@ If a directory is provided, we look for the file there."
     "}"  (general-key "C-c }" )
     "~"  (general-key "C-c ~" )))
 
+(use-package tab-bar
+  :custom
+  (frame-title-format "")
+  (tab-bar-close-button-show nil)
+  (tab-bar-format '(tab-bar-format-tabs))
+  (tab-bar-new-tab-choice "*scratch*")
+  (tab-bar-select-tab-modifiers '(super))
+  (tab-bar-show 1)
+  (tab-bar-tab-hints t)
+  :config
+  (tab-bar-mode 1)
+  (tab-bar-history-mode 1)
+  (defadvice load-theme (after run-after-load-theme-hook activate)
+    "Fix `tab-bar-mode' after any theme has been loaded."
+    (let ((bg  (face-attribute 'mode-line :background))
+          (box (face-attribute 'mode-line :box)))
+      (set-face-attribute 'tab-bar nil :background bg :box box)
+      (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
+      (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold))))
+
+(use-package spacious-padding
+  :config
+  (spacious-padding-mode))
+
+(use-package doom-themes
+  :config
+  (load-theme 'doom-dracula t))
+
+(use-package doom-modeline
+  :after doom-themes
+  :custom
+  (doom-modeline-buffer-encoding nil)
+  (doom-modeline-buffer-modification-icon nil)
+  (doom-modeline-icon nil)
+  (doom-modeline-modal nil)
+  (doom-modeline-position-line-format nil)
+  (doom-modeline-time nil)
+  (doom-modeline-workspace-name nil)
+  :config
+  (doom-modeline-mode))
+
+(use-package vertico
+  :config
+  (vertico-mode)
+  (vertico-mouse-mode)
+  (vertico-reverse-mode))
+
+(use-package consult
+  :after vertico)
+
+(use-package marginalia
+  :after vertico
+  :config
+  (marginalia-mode))
+
+(use-package orderless
+  :config
+  (setq completion-styles '(orderless)))
+
+(use-package ace-window
+  :bind
+  ("M-o" . 'ace-window))
+
 (use-package org
   :bind
   (:map org-mode-map
@@ -378,7 +374,7 @@ If a directory is provided, we look for the file there."
 (use-package idle-org-agenda
   :after org-agenda
   :custom
-  (idle-org-agenda-interval 300)
+  (idle-org-agenda-interval 3600)
   :config
   (idle-org-agenda-mode))
 
@@ -406,8 +402,6 @@ If a directory is provided, we look for the file there."
   :hook
   (prog-mode . hl-todo-mode))
 
-(use-package gnuplot)
-
 (use-package dired
   :ensure nil
   :after (evil general)
@@ -421,5 +415,16 @@ If a directory is provided, we look for the file there."
   :config
   (diredfl-global-mode 1))
 
-(if (eq system-type 'darwin)
-    (add-to-list 'exec-path "/opt/homebrew/opt/coreutils/libexec/gnubin"))
+(use-package gnuplot)
+
+(use-package magit
+  :config
+  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
+
+(use-package outline
+  :custom
+  (outline-blank-line t))
+
+(use-package project
+  :config
+  (project-remember-projects-under (expand-file-name "~/Sync/") t))

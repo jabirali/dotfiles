@@ -2,13 +2,35 @@
 #+AUTHOR: Jabir Ali Ouassou
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.config/emacs/init.el
 
-
 * Emacs
 This is my configuration for Emacs 29+ on macOS. My setup is mostly
 based around =org-mode= and =evil-mode=. (I use Emacs for Org-mode,
 but regularly switch over to Vim/Sublime/VSCode for programming.)
 
-** Core configuration
+** Bootstrap
+*** macOS
+In my experience, the [[https://bitbucket.org/mituharu/emacs-mac/src/master/][Emacs Mac port]] remains the best option for
+macOS. For instance, it has the best handling of Retina (hiDPI)
+screens. Unfortunately, installing it from source is required to
+enable some features (notably native compilation), but at the same
+time breaks some other features (e.g. starting the Emacs GUI from a
+terminal). I'm therefore sticking to the precompiled Cask for now.
+#+begin_src bash
+  brew tap "railwaycat/emacsmacport"
+  brew install --cask emacs-mac
+#+end_src
+    
+These tweaks makes the app look a bit nicer when using =tab-bar-mode=.
+#+begin_src bash
+  defaults write org.gnu.Emacs TransparentTitleBar DARK
+  defaults write org.gnu.Emacs HideDocumentIcon YES
+#+end_src
+
+GNU Emacs seems to work best with GNU coreutils (see e.g. =dired=).
+#+begin_src bash
+  brew install coreutils
+#+end_src
+
 *** package
 Bootstrap the Emacs package manager and enable the community repos.
 #+begin_src emacs-lisp
@@ -23,6 +45,7 @@ This config is structured around the =use-package= macro. Since Emacs 29,
 this has been upstreamed and no longer has to be manually installed.
 #+begin_src emacs-lisp
   (use-package use-package
+    :demand t
     :custom
     (use-package-always-ensure t))
 #+end_src
@@ -35,6 +58,7 @@ package helps relocate cache and backup files into a single location.
 This is particularly helpful when =~/.config/emacs/= is in a Git repo.
 #+begin_src emacs-lisp
   (use-package no-littering
+    :demand t
     :init
     ;; Make cache files follow the XDG specification.
     (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
@@ -48,9 +72,8 @@ This is particularly helpful when =~/.config/emacs/= is in a Git repo.
     (load custom-file))
 #+end_src
 
-*** emacs
-Let's fix some outdated Emacs default settings. We'll also start the
-Emacs server to enable quick =emacsclient= edits from the terminal.
+*** defaults
+Let's fix some outdated Emacs default settings. 
 #+begin_src emacs-lisp
   (use-package emacs
     :custom
@@ -71,51 +94,28 @@ Emacs server to enable quick =emacsclient= edits from the terminal.
     (blink-cursor-mode -1)
     (fringe-mode -1)
     (recentf-mode 1)
-    (savehist-mode 1)
-    (server-mode 1))
+    (savehist-mode 1))
 #+end_src
 
-** Built-in packages
-*** tab-bar
-Emacs recently added a tab bar which works similarly to Vim or Tmux,
-i.e. each tab corresponds to a numbered "window configuration" that
-you can easily switch between. Moreover, it can record a per-tab
-history of recent window configurations, similarly to a web browser.
+We'll also start the Emacs server to enable quick =emacsclient= edits
+from the terminal. But we only want one Emacs daemon at a time.
 #+begin_src emacs-lisp
-  (use-package tab-bar
-    :custom
-    (frame-title-format "")
-    (tab-bar-close-button-show nil)
-    (tab-bar-format '(tab-bar-format-tabs))
-    (tab-bar-new-tab-choice "*scratch*")
-    (tab-bar-select-tab-modifiers '(super))
-    (tab-bar-show 1)
-    (tab-bar-tab-hints t)
+  (use-package server
+    :demand t
     :config
-    (tab-bar-mode 1)
-    (tab-bar-history-mode 1))
+    (unless (server-running-p)
+      (server-mode 1)))
 #+end_src
 
-*** outline
-Code folding with =outline-minor-mode=. This is the package that
-=org-mode= is built on, and it integrates well with =evil-mode=.
-Note that any keybindings need to be bound in the ='local= (major
-mode) map to prevent it from breaking Magit. I'll do that when
-loading/configuring the specific programming modes below.
+** Definitions
+*** variables
+Ensure that GNU coreutils is available in $PATH.
 #+begin_src emacs-lisp
-  (use-package outline
-    :custom
-    (outline-blank-line t))
+  (if (eq system-type 'darwin)
+      (add-to-list 'exec-path "/opt/homebrew/opt/coreutils/libexec/gnubin"))
 #+end_src
 
-Project management.
-#+begin_src emacs-lisp
-  (use-package project
-    :config
-    (project-remember-projects-under (expand-file-name "~/Sync/") t))
-#+end_src
-
-** Helper functions
+*** functions
 These are various helper functions used throughout my config.
 #+begin_src emacs-lisp
   (defun +open-file (file &optional dir)
@@ -143,6 +143,7 @@ These are various helper functions used throughout my config.
     (+close-window))
 #+end_src
 
+This can be useful in e.g. when writing Org notes.
 #+begin_src emacs-lisp
   (defun +insert-date ()
     "Insert an ISO date stamp corresponding to today."
@@ -150,95 +151,7 @@ These are various helper functions used throughout my config.
     (insert (format-time-string "%Y-%m-%d %A")))
 #+end_src
 
-** User interface
-*** spacious-padding
-#+begin_src emacs-lisp
-  (use-package spacious-padding
-    :config
-    (spacious-padding-mode))
-#+end_src
-
-*** doom-themes
-#+begin_src emacs-lisp
-  (use-package doom-themes
-    :config
-    (defadvice load-theme (after run-after-load-theme-hook activate)
-      "Fix the tab-bar-mode after any theme has been loaded."
-      (let ((bg  (face-attribute 'mode-line :background))
-            (box (face-attribute 'mode-line :box)))
-        (set-face-attribute 'tab-bar nil :background bg :box box)
-        (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
-        (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold)
-        (set-face-attribute 'vertical-border nil :background bg :foreground bg))
-      (set-face-background 'scroll-bar "transparent"))
-    (load-theme 'doom-dracula t))
-#+end_src
-
-*** doom-modeline
-#+begin_src emacs-lisp
-  (use-package doom-modeline
-    :after doom-themes
-    :custom
-    (doom-modeline-buffer-encoding nil)
-    (doom-modeline-buffer-modification-icon nil)
-    (doom-modeline-icon nil)
-    (doom-modeline-modal nil)
-    (doom-modeline-position-line-format nil)
-    (doom-modeline-time nil)
-    (doom-modeline-workspace-name nil)
-    :config
-    (doom-modeline-mode))
-#+end_src
-
-** User experience
-Packages for enabling fuzzy-finding across the Emacs user interface.
-*** vertico
-#+begin_src emacs-lisp
-  (use-package vertico
-    :config
-    (vertico-mode)
-    (vertico-mouse-mode)
-    (vertico-reverse-mode))
-#+end_src
-
-*** consult
-#+begin_src emacs-lisp
-  (use-package consult
-    :after vertico)
-#+end_src
-
-*** marginalia
-#+begin_src emacs-lisp
-  (use-package marginalia
-    :after vertico
-    :config
-    (marginalia-mode))
-#+end_src
-
-*** orderless
-#+begin_src emacs-lisp
-  (use-package orderless
-    :config
-    (setq completion-styles '(orderless)))
-#+end_src
-
-*** ace-window
-Better workflow for switching between visible windows.
-#+begin_src emacs-lisp
-  (use-package ace-window
-    :bind
-    ("M-o" . 'ace-window))
-#+end_src
-
-*** magit
-Better integration with Git version control.
-#+begin_src emacs-lisp
-  (use-package magit
-    :config
-    (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
-#+end_src
-
-** Modal editing
+** Keybindings
 *** evil
 I've used Vim keybindings for nearly two decades, and still regularly
 use it for programming or quick remote edits. Moreover, every time
@@ -293,7 +206,6 @@ Some Vim plugins are also worth taking with us into Emacs.
     (global-evil-surround-mode 1))
 #+end_src 
 
-** Global menu
 *** which-key
 I like the "space menu" that is provided by default in e.g. Spacemacs
 and Doom Emacs. This is my personalized version of this concept.
@@ -437,6 +349,108 @@ and Doom Emacs. This is my personalized version of this concept.
       "~"  (general-key "C-c ~" )))
 #+end_src
 
+** Modern interface
+*** tab-bar
+Emacs offers a tab bar which works similarly to Vim or Tmux: Each
+"tab" corresponds to a numbered window configuration" hat you can
+easily switch between. Moreover, it can record a per-tab history of
+recent window configurations, offering browser-like navigation.
+
+Most themes either don't theme the tab bar properly, or theme it
+differently from the mode line. I patch =load-theme= to fix that.
+#+begin_src emacs-lisp
+  (use-package tab-bar
+    :custom
+    (frame-title-format "")
+    (tab-bar-close-button-show nil)
+    (tab-bar-format '(tab-bar-format-tabs))
+    (tab-bar-new-tab-choice "*scratch*")
+    (tab-bar-select-tab-modifiers '(super))
+    (tab-bar-show 1)
+    (tab-bar-tab-hints t)
+    :config
+    (tab-bar-mode 1)
+    (tab-bar-history-mode 1)
+    (defadvice load-theme (after run-after-load-theme-hook activate)
+      "Fix `tab-bar-mode' after any theme has been loaded."
+      (let ((bg  (face-attribute 'mode-line :background))
+            (box (face-attribute 'mode-line :box)))
+        (set-face-attribute 'tab-bar nil :background bg :box box)
+        (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
+        (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold))))
+#+end_src
+
+*** spacious-padding
+Add extra space around key components of the user interface, such as
+e.g. frames, windows, mode lines, and the tab bar. This goes a long
+way in giving the Emacs interface a more modern and aesthetic look.
+#+begin_src emacs-lisp
+  (use-package spacious-padding
+    :config
+    (spacious-padding-mode))
+#+end_src
+
+*** doom-themes
+#+begin_src emacs-lisp
+  (use-package doom-themes
+    :config
+    (load-theme 'doom-dracula t))
+#+end_src
+
+*** doom-modeline
+#+begin_src emacs-lisp
+  (use-package doom-modeline
+    :after doom-themes
+    :custom
+    (doom-modeline-buffer-encoding nil)
+    (doom-modeline-buffer-modification-icon nil)
+    (doom-modeline-icon nil)
+    (doom-modeline-modal nil)
+    (doom-modeline-position-line-format nil)
+    (doom-modeline-time nil)
+    (doom-modeline-workspace-name nil)
+    :config
+    (doom-modeline-mode))
+#+end_src
+
+*** vertico
+#+begin_src emacs-lisp
+  (use-package vertico
+    :config
+    (vertico-mode)
+    (vertico-mouse-mode)
+    (vertico-reverse-mode))
+#+end_src
+
+*** consult
+#+begin_src emacs-lisp
+  (use-package consult
+    :after vertico)
+#+end_src
+
+*** marginalia
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :after vertico
+    :config
+    (marginalia-mode))
+#+end_src
+
+*** orderless
+#+begin_src emacs-lisp
+  (use-package orderless
+    :config
+    (setq completion-styles '(orderless)))
+#+end_src
+
+*** ace-window
+Better workflow for switching between visible windows.
+#+begin_src emacs-lisp
+  (use-package ace-window
+    :bind
+    ("M-o" . 'ace-window))
+#+end_src
+
 ** Org-mode
 *** org
 Emacs =org-mode= is my current research journal and task management system.
@@ -513,11 +527,13 @@ into my daily log. (Workflow inspired by Logseq.)
 #+end_src
 
 *** idle-org-agenda
+After an hour of inactivity, let's pop up the agenda automatically.
+Prevents me from forgetting what upcoming deadlines to prioritize.
 #+begin_src emacs-lisp
   (use-package idle-org-agenda
     :after org-agenda
     :custom
-    (idle-org-agenda-interval 300)
+    (idle-org-agenda-interval 3600)
     :config
     (idle-org-agenda-mode))
 #+end_src
@@ -556,11 +572,6 @@ nice to have a decent Emacs setup for reading code while taking Org notes.
 #+end_src
 
 ** Miscellaneous
-*** gnuplot
-#+begin_src emacs-lisp
-  (use-package gnuplot)
-#+end_src
-
 *** dired
 Setup =dired= comfortably. Note that this assumes we're using GNU coreutils.
 #+begin_src emacs-lisp
@@ -580,55 +591,37 @@ Setup =dired= comfortably. Note that this assumes we're using GNU coreutils.
     (diredfl-global-mode 1))
 #+end_src
 
-** Environment
-GNU Emacs seems to work best with GNU coreutils (see e.g. =dired=).
-#+begin_src bash
-  brew install coreutils
-#+end_src
+*** gnuplot
 #+begin_src emacs-lisp
-  (if (eq system-type 'darwin)
-      (add-to-list 'exec-path "/opt/homebrew/opt/coreutils/libexec/gnubin"))
+  (use-package gnuplot)
 #+end_src
 
-** Operating system
-In my experience, the [[https://bitbucket.org/mituharu/emacs-mac/src/master/][Emacs Mac port]] remains the best option for
-macOS. For instance, it has the best handling of Retina (hiDPI)
-screens. Unfortunately, installing it from source is required to
-enable some features (notably native compilation), but at the same
-time breaks some other features (e.g. starting the Emacs GUI from a
-terminal). I'm therefore sticking to the precompiled Cask for now.
-#+begin_src bash
-  brew tap "railwaycat/emacsmacport"
-  brew install --cask emacs-mac
-#+end_src
-    
-These tweaks makes the app look a bit nicer when using =tab-bar-mode=.
-#+begin_src bash
-  defaults write org.gnu.Emacs TransparentTitleBar DARK
-  defaults write org.gnu.Emacs HideDocumentIcon YES
+*** magit
+Better integration with Git version control.
+#+begin_src emacs-lisp
+  (use-package magit
+    :config
+    (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 #+end_src
 
-Emacs doesn't know my shell environment variables when started as a
-GUI, and those variables end up affecting =emacsclient= processes that
-are launched from a terminal later. This is a workaround whereby macOS
-is told to set those environment variables globally.
-#+begin_src xml :tangle ~/Library/LaunchAgents/environment.plist
-  <?xml version="1.0" encoding="UTF-8"?>
-  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-  <plist version="1.0">
-  <dict>
-      <key>Label</key>
-      <string>Environment</string>
-      <key>ProgramArguments</key>
-      <array>
-          <string>sh</string>
-          <string>-c</string>
-          <string>launchctl setenv COLORTERM truecolor</string>
-      </array>
-      <key>RunAtLoad</key>
-      <true/>
-  </dict>
-  </plist>
+*** outline
+Code folding with =outline-minor-mode=. This is the package that
+=org-mode= is built on, and it integrates well with =evil-mode=.
+Note that any keybindings need to be bound in the ='local= (major
+mode) map to prevent it from breaking Magit. I'll do that when
+loading/configuring the specific programming modes below.
+#+begin_src emacs-lisp
+  (use-package outline
+    :custom
+    (outline-blank-line t))
+#+end_src
+
+*** project
+Emacs' built-in system for working with projects (Git repos).
+#+begin_src emacs-lisp
+  (use-package project
+    :config
+    (project-remember-projects-under (expand-file-name "~/Sync/") t))
 #+end_src
 
 * Export

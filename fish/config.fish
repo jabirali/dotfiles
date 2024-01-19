@@ -9,9 +9,9 @@ export EDITOR="vim"
 export ALTERNATE_EDITOR=""
 export MANPAGER="vim +MANPAGER --not-a-term -"
 export DIRENV_LOG_FORMAT=
-
 export BAT_STYLE="plain"
 export BAT_THEME="ansi"
+export COLORTERM="truecolor"
 
 fish_add_path /opt/homebrew/opt/coreutils/libexec/gnubin
 
