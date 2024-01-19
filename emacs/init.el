@@ -92,7 +92,25 @@ If a directory is provided, we look for the file there."
   (interactive)
   (insert (format-time-string "%Y-%m-%d %A")))
 
+(use-package spacious-padding
+  :config
+  (spacious-padding-mode))
+
+(use-package doom-themes
+  :config
+  (defadvice load-theme (after run-after-load-theme-hook activate)
+    "Fix the tab-bar-mode after any theme has been loaded."
+    (let ((bg  (face-attribute 'mode-line :background))
+          (box (face-attribute 'mode-line :box)))
+      (set-face-attribute 'tab-bar nil :background bg :box box)
+      (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
+      (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold)
+      (set-face-attribute 'vertical-border nil :background bg :foreground bg))
+    (set-face-background 'scroll-bar "transparent"))
+  (load-theme 'doom-dracula t))
+
 (use-package doom-modeline
+  :after doom-themes
   :custom
   (doom-modeline-buffer-encoding nil)
   (doom-modeline-buffer-modification-icon nil)
@@ -103,33 +121,6 @@ If a directory is provided, we look for the file there."
   (doom-modeline-workspace-name nil)
   :config
   (doom-modeline-mode))
-
-(use-package spacious-padding
-  :config
-  (spacious-padding-mode))
-
-(use-package modus-themes
-  :demand t
-  :custom
-  (modus-themes-org-blocks nil)
-  (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
-  :bind
-  ("<f12>" . modus-themes-toggle)
-  :config
-  ;; make tabs and dividers match the mode-line.
-  (defadvice load-theme (after run-after-load-theme-hook activate)
-    "Fix the tab-bar-mode after any theme has been loaded."
-    (let ((bg  (face-attribute 'mode-line :background))
-          (box (face-attribute 'mode-line :box)))
-      (set-face-attribute 'tab-bar nil :background bg :box box)
-      (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
-      (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold)
-      (set-face-attribute 'vertical-border nil :background bg :foreground bg))
-      (set-face-background 'scroll-bar "transparent")))
-
-(use-package doom-themes
-  :config
-  (load-theme 'doom-dracula t))
 
 (use-package vertico
   :config
@@ -377,19 +368,19 @@ If a directory is provided, we look for the file there."
   :bind (:map org-mode-map
               ("M-v" . org-download-clipboard)))
 
-(use-package idle-org-agenda
-  :after org-agenda
-  :custom
-  (idle-org-agenda-interval 300)
-  :config
-  (idle-org-agenda-mode))
-
 (use-package org-super-agenda
   :custom
   (org-super-agenda-groups '((:auto-parent t)))
   :config
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode 1))
+
+(use-package idle-org-agenda
+  :after org-agenda
+  :custom
+  (idle-org-agenda-interval 300)
+  :config
+  (idle-org-agenda-mode))
 
 (use-package python
   :after (outline evil general)

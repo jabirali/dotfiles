@@ -151,9 +151,33 @@ These are various helper functions used throughout my config.
 #+end_src
 
 ** User interface
-External packages that gives Emacs a modern look (inspired by Doom).
+*** spacious-padding
+#+begin_src emacs-lisp
+  (use-package spacious-padding
+    :config
+    (spacious-padding-mode))
+#+end_src
+
+*** doom-themes
+#+begin_src emacs-lisp
+  (use-package doom-themes
+    :config
+    (defadvice load-theme (after run-after-load-theme-hook activate)
+      "Fix the tab-bar-mode after any theme has been loaded."
+      (let ((bg  (face-attribute 'mode-line :background))
+            (box (face-attribute 'mode-line :box)))
+        (set-face-attribute 'tab-bar nil :background bg :box box)
+        (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
+        (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold)
+        (set-face-attribute 'vertical-border nil :background bg :foreground bg))
+      (set-face-background 'scroll-bar "transparent"))
+    (load-theme 'doom-dracula t))
+#+end_src
+
+*** doom-modeline
 #+begin_src emacs-lisp
   (use-package doom-modeline
+    :after doom-themes
     :custom
     (doom-modeline-buffer-encoding nil)
     (doom-modeline-buffer-modification-icon nil)
@@ -164,33 +188,6 @@ External packages that gives Emacs a modern look (inspired by Doom).
     (doom-modeline-workspace-name nil)
     :config
     (doom-modeline-mode))
-
-  (use-package spacious-padding
-    :config
-    (spacious-padding-mode))
-
-  (use-package modus-themes
-    :demand t
-    :custom
-    (modus-themes-org-blocks nil)
-    (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
-    :bind
-    ("<f12>" . modus-themes-toggle)
-    :config
-    ;; make tabs and dividers match the mode-line.
-    (defadvice load-theme (after run-after-load-theme-hook activate)
-      "Fix the tab-bar-mode after any theme has been loaded."
-      (let ((bg  (face-attribute 'mode-line :background))
-            (box (face-attribute 'mode-line :box)))
-        (set-face-attribute 'tab-bar nil :background bg :box box)
-        (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
-        (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold)
-        (set-face-attribute 'vertical-border nil :background bg :foreground bg))
-        (set-face-background 'scroll-bar "transparent")))
-
-  (use-package doom-themes
-    :config
-    (load-theme 'doom-dracula t))
 #+end_src
 
 ** User experience
@@ -297,13 +294,17 @@ Some Vim plugins are also worth taking with us into Emacs.
 #+end_src 
 
 ** Global menu
+*** which-key
 I like the "space menu" that is provided by default in e.g. Spacemacs
 and Doom Emacs. This is my personalized version of this concept.
 #+begin_src emacs-lisp
   (use-package which-key
     :config
     (which-key-mode))
+#+end_src
 
+*** general
+#+begin_src emacs-lisp
   (use-package general
     :after evil
     :config
@@ -437,7 +438,8 @@ and Doom Emacs. This is my personalized version of this concept.
 #+end_src
 
 ** Org-mode
-Emacs =org-mode= is my favorite note-taking app.
+*** org
+Emacs =org-mode= is my current research journal and task management system.
 #+begin_src emacs-lisp
   (use-package org
     :bind
@@ -473,6 +475,7 @@ Emacs =org-mode= is my favorite note-taking app.
     (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
 #+end_src
 
+*** org-download
 This lets me copy-paste images into my Org notes. Especially useful
 for keeping a research journal, as it lets me paste important plots
 into my daily log. (Workflow inspired by Logseq.)
@@ -499,15 +502,7 @@ into my daily log. (Workflow inspired by Logseq.)
 
 #+end_src
 
-#+begin_src emacs-lisp
-  (use-package idle-org-agenda
-    :after org-agenda
-    :custom
-    (idle-org-agenda-interval 300)
-    :config
-    (idle-org-agenda-mode))
-#+end_src
-
+*** org-super-agenda
 #+begin_src emacs-lisp
   (use-package org-super-agenda
     :custom
@@ -517,7 +512,18 @@ into my daily log. (Workflow inspired by Logseq.)
     (org-super-agenda-mode 1))
 #+end_src
 
+*** idle-org-agenda
+#+begin_src emacs-lisp
+  (use-package idle-org-agenda
+    :after org-agenda
+    :custom
+    (idle-org-agenda-interval 300)
+    :config
+    (idle-org-agenda-mode))
+#+end_src
+
 ** Programming
+*** python
 I mostly do programming in Vim these days, and am at the moment trying
 to re-adopt Emacs first and foremost for Org-mode. However, it's still
 nice to have a decent Emacs setup for reading code while taking Org notes.
@@ -550,12 +556,12 @@ nice to have a decent Emacs setup for reading code while taking Org notes.
 #+end_src
 
 ** Miscellaneous
-*** Gnuplot
+*** gnuplot
 #+begin_src emacs-lisp
   (use-package gnuplot)
 #+end_src
 
-*** File management
+*** dired
 Setup =dired= comfortably. Note that this assumes we're using GNU coreutils.
 #+begin_src emacs-lisp
   (use-package dired
