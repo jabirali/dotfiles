@@ -3,6 +3,11 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
+(use-package use-package
+  :demand t
+  :custom
+  (use-package-always-ensure t))
+
 (use-package no-littering
   :demand t
   :init
@@ -423,3 +428,9 @@ If a directory is provided, we look for the file there."
 (use-package magit
   :config
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
+
+(use-package openwith
+  :config
+  (setq openwith-associations
+         '(("\\.\\(png\\|jpg\\|svg\\|pdf\\)$" "qlmanage -p" (file))))
+  (openwith-mode 1))
