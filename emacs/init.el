@@ -86,6 +86,10 @@ If a directory is provided, we look for the file there."
   (interactive)
   (project-remember-projects-under (expand-file-name "~/Sync/") t))
 
+(use-package which-key
+  :config
+  (which-key-mode 1))
+
 (use-package evil
   :custom
   (evil-want-keybinding nil)
@@ -100,6 +104,11 @@ If a directory is provided, we look for the file there."
   :config
   (evil-collection-init))
 
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
+
 (use-package evil-org
   :after (evil org general)
   :config
@@ -112,15 +121,6 @@ If a directory is provided, we look for the file there."
   :after evil-org
   :config
   (evil-org-agenda-set-keys))
-
-(use-package evil-surround
-  :ensure t
-  :config
-  (global-evil-surround-mode 1))
-
-(use-package which-key
-  :config
-  (which-key-mode 1))
 
 (use-package general
   :after evil
@@ -300,6 +300,11 @@ If a directory is provided, we look for the file there."
   (vertico-mouse-mode 1)
   (vertico-reverse-mode 1))
 
+(use-package orderless
+  :after vertico
+  :config
+  (setq completion-styles '(orderless)))
+
 (use-package consult
   :after vertico)
 
@@ -307,10 +312,6 @@ If a directory is provided, we look for the file there."
   :after vertico
   :config
   (marginalia-mode 1))
-
-(use-package orderless
-  :config
-  (setq completion-styles '(orderless)))
 
 (use-package ace-window
   :bind

@@ -1,14 +1,15 @@
+# -*- eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle) (load-file user-init-file)) nil t); -*-
+
 #+TITLE: Emacs configuration
 #+AUTHOR: Jabir Ali Ouassou
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.config/emacs/init.el
 
-* Emacs
 This is my configuration for Emacs 29+ on macOS. My setup is mostly
-based around =org-mode= and =evil-mode=. (I use Emacs for Org-mode,
-but regularly switch over to Vim/Sublime/VSCode for programming.)
+based around [[org-mode]] and [[evil-mode]]; I use Emacs for knowledge and
+task management, but often use Vim/Sublime/VSCode for actual coding.
 
-** Bootstrap
-*** macOS
+* Bootstrap
+** macOS
 In my experience, the [[https://bitbucket.org/mituharu/emacs-mac/src/master/][Emacs Mac port]] remains the best option for
 macOS. For instance, it has the best handling of Retina (hiDPI)
 screens. Unfortunately, installing it from source is required to
@@ -31,7 +32,7 @@ GNU Emacs seems to work best with GNU coreutils (see e.g. =dired=).
   brew install coreutils
 #+end_src
 
-*** package
+** package
 Bootstrap the Emacs package manager and enable the community repos.
 #+begin_src emacs-lisp
   (require 'package)
@@ -40,7 +41,7 @@ Bootstrap the Emacs package manager and enable the community repos.
   (package-initialize)
 #+end_src
 
-*** use-package
+** use-package
 This config is structured around the =use-package= macro. Since Emacs 29,
 this has been upstreamed and no longer has to be manually installed.
 #+begin_src emacs-lisp
@@ -52,7 +53,7 @@ this has been upstreamed and no longer has to be manually installed.
 Note that from Emacs 30, =use-package= will obtain a new keyword =:vc=
 that can be used to install packages directly from e.g. GitHub repos.
 
-*** no-littering
+** no-littering
 By default, Emacs throws files all over the place. The =no-littering=
 package helps relocate cache and backup files into a single location.
 This is particularly helpful when =~/.config/emacs/= is in a Git repo.
@@ -72,7 +73,7 @@ This is particularly helpful when =~/.config/emacs/= is in a Git repo.
     (load custom-file))
 #+end_src
 
-*** defaults
+** defaults
 Let's fix some outdated Emacs default settings. 
 #+begin_src emacs-lisp
   (use-package emacs
@@ -108,15 +109,15 @@ from the terminal. But we only want one Emacs daemon at a time.
       (server-mode 1)))
 #+end_src
 
-** Definitions
-*** variables
+* Definitions
+** variables
 Ensure that GNU coreutils is available in $PATH.
 #+begin_src emacs-lisp
   (if (eq system-type 'darwin)
       (add-to-list 'exec-path "/opt/homebrew/opt/coreutils/libexec/gnubin"))
 #+end_src
 
-*** functions
+** functions
 These are various helper functions used throughout my config.
 #+begin_src emacs-lisp
   (defun +open-file (file &optional dir)
@@ -159,12 +160,20 @@ Function for auto-detecting projects.
     (project-remember-projects-under (expand-file-name "~/Sync/") t))
 #+end_src
 
-** Keybindings
-*** evil
+* Vim keybindings
+** which-key
+Make keybindings more discoverable by providing interactive hints.
+#+begin_src emacs-lisp
+  (use-package which-key
+    :config
+    (which-key-mode 1))
+#+end_src
+
+** evil-mode
 I've used Vim keybindings for nearly two decades, and still regularly
 use it for programming or quick remote edits. Moreover, every time
-I've tried to switch to Emacs keybindings, my RSI has flared up. So
-for me, =evil-mode= is a prerequisite for using Emacs at all.
+I've tried to switch fully to Emacs keybindings, my RSI has flared up.
+So for me, =evil-mode= is a prerequisite to using Emacs at all.
 #+begin_src emacs-lisp
   (use-package evil
     :custom
@@ -176,9 +185,9 @@ for me, =evil-mode= is a prerequisite for using Emacs at all.
     (evil-mode 1))
 #+end_src
 
-*** evil-collection
-Evil is great, but by default it only works in text-editing modes.
-This makes it work across nearly all Emacs modes and packages.
+** evil-collection
+By default, Evil handles text editing but not "Emacs apps" like
+=magit= and =dired=. This makes Evil take over every Emacs mode.
 #+begin_src emacs-lisp
   (use-package evil-collection
     :after evil
@@ -186,26 +195,7 @@ This makes it work across nearly all Emacs modes and packages.
     (evil-collection-init))
 #+end_src
 
-*** evil-org
-Org-mode is a different beast, and requires some extra integration to
-work well with Evil. Note that =evil-org-agenda= is provided by
-=evil-org=, it's for some reason just not activated by default.
-#+begin_src emacs-lisp
-  (use-package evil-org
-    :after (evil org general)
-    :config
-    (mmap :map org-mode-map "RET" 'org-open-at-point)
-    :hook
-    (org-mode . evil-org-mode))
-
-  (use-package evil-org-agenda
-    :ensure nil
-    :after evil-org
-    :config
-    (evil-org-agenda-set-keys))
-#+end_src
-
-*** evil-surround
+** evil-surround
 Some Vim plugins are also worth taking with us into Emacs.
 #+begin_src emacs-lisp
   (use-package evil-surround
@@ -214,15 +204,32 @@ Some Vim plugins are also worth taking with us into Emacs.
     (global-evil-surround-mode 1))
 #+end_src 
 
-*** which-key
-Make the keybindings more discoverable by providing interactive hints.
+** evil-org
+Org-mode is a huge system and not well-covered by =evil-collection=,
+so we need an extra package to make Org-mode work as expected. Let's
+also add in a VimWiki-like keybinding to handle links in Org files.
 #+begin_src emacs-lisp
-  (use-package which-key
+  (use-package evil-org
+    :after (evil org general)
     :config
-    (which-key-mode 1))
+    (mmap :map org-mode-map "RET" 'org-open-at-point)
+    :hook
+    (org-mode . evil-org-mode))
 #+end_src
 
-*** general
+** evil-org-agenda
+The package =evil-org= also offers =org-agenda= integration, but for
+some reason doesn't toggle it on by default. Let's fix that.
+#+begin_src emacs-lisp
+    (use-package evil-org-agenda
+      :ensure nil
+      :after evil-org
+      :config
+      (evil-org-agenda-set-keys))
+#+end_src
+
+** general
+Package that simplifies custom keybinding definitions.
 #+begin_src emacs-lisp
   (use-package general
     :after evil
@@ -356,8 +363,8 @@ Make the keybindings more discoverable by providing interactive hints.
       "~"  (general-key "C-c ~" )))
 #+end_src
 
-** Modern interface
-*** tab-bar
+* Modern interface
+** tab-bar
 Emacs offers a tab bar which works similarly to Vim or Tmux: Each
 "tab" corresponds to a numbered window configuration" hat you can
 easily switch between. Moreover, it can record a per-tab history of
@@ -387,7 +394,7 @@ differently from the mode line. I patch =load-theme= to fix that.
         (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold))))
 #+end_src
 
-*** spacious-padding
+** spacious-padding
 Add extra space around key components of the user interface, such as
 e.g. frames, windows, mode lines, and the tab bar. This goes a long
 way in giving the Emacs interface a more modern and aesthetic look.
@@ -397,14 +404,16 @@ way in giving the Emacs interface a more modern and aesthetic look.
     (spacious-padding-mode 1))
 #+end_src
 
-*** doom-themes
+** doom-themes
+Massive pack of high-quality color themes.
 #+begin_src emacs-lisp
   (use-package doom-themes
     :config
     (load-theme 'doom-dracula t))
 #+end_src
 
-*** doom-modeline
+** doom-modeline
+Make the mode line easier on the eyes.
 #+begin_src emacs-lisp
   (use-package doom-modeline
     :after doom-themes
@@ -420,7 +429,8 @@ way in giving the Emacs interface a more modern and aesthetic look.
     (doom-modeline-mode 1))
 #+end_src
 
-*** vertico
+** vertico
+Modern fuzzy-finding interface for interactive Emacs commands.
 #+begin_src emacs-lisp
   (use-package vertico
     :config
@@ -429,13 +439,24 @@ way in giving the Emacs interface a more modern and aesthetic look.
     (vertico-reverse-mode 1))
 #+end_src
 
-*** consult
+** orderless
+Make =M-x find proj= and =M-x proj find= equivalent in =vertico=.
+#+begin_src emacs-lisp
+  (use-package orderless
+    :after vertico
+    :config
+    (setq completion-styles '(orderless)))
+#+end_src
+
+** consult
+More intuitive wrappers around common interactive commands.
 #+begin_src emacs-lisp
   (use-package consult
     :after vertico)
 #+end_src
 
-*** marginalia
+** marginalia
+Margin notes with extra metadata for common interactive commands.
 #+begin_src emacs-lisp
   (use-package marginalia
     :after vertico
@@ -443,14 +464,7 @@ way in giving the Emacs interface a more modern and aesthetic look.
     (marginalia-mode 1))
 #+end_src
 
-*** orderless
-#+begin_src emacs-lisp
-  (use-package orderless
-    :config
-    (setq completion-styles '(orderless)))
-#+end_src
-
-*** ace-window
+** ace-window
 Better workflow for switching between visible windows.
 #+begin_src emacs-lisp
   (use-package ace-window
@@ -458,8 +472,8 @@ Better workflow for switching between visible windows.
     ("M-o" . 'ace-window))
 #+end_src
 
-** Org-mode
-*** org
+* Organization
+** org-mode
 I'm using Org as my research journal and task management system. After
 some deliberation, I picked =auto-fill-mode= over =visual-line-mode=
 as wrapping strategy. This makes embedded code blocks more readable,
@@ -497,7 +511,7 @@ and the surrounding text remains more legible if Emacs is resized.
     (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
 #+end_src
 
-*** org-download
+** org-download
 This lets me copy-paste images into my Org notes. Especially useful
 for keeping a research journal, as it lets me paste and tag important
 plots in my daily log. (Workflow inspired by Logseq.)
@@ -529,7 +543,7 @@ Remember to install the system dependency for handling screenshots:
   brew install pngpaste
 #+end_src
 
-*** org-super-agenda
+** org-super-agenda
 The default Org agenda is messy. This sorts my upcoming tasks and
 deadlines by project, making it easier to keep an overview.
 #+begin_src emacs-lisp
@@ -541,7 +555,7 @@ deadlines by project, making it easier to keep an overview.
     (org-super-agenda-mode 1))
 #+end_src
 
-*** idle-org-agenda
+** idle-org-agenda
 After an hour of inactivity, let's pop up the agenda automatically.
 Prevents me from forgetting what upcoming deadlines to prioritize.
 #+begin_src emacs-lisp
@@ -553,8 +567,8 @@ Prevents me from forgetting what upcoming deadlines to prioritize.
     (idle-org-agenda-mode 1))
 #+end_src
 
-** Programming
-*** python
+* Programming
+** python
 I mostly do programming in Vim these days, and am at the moment trying
 to re-adopt Emacs first and foremost for Org-mode. However, it's still
 nice to have a decent Emacs setup for reading code while taking Org notes.
@@ -580,8 +594,8 @@ nice to have a decent Emacs setup for reading code while taking Org notes.
     (python-mode . +outline-python))
 #+end_src
 
-** Miscellaneous
-*** dired
+* Miscellaneous
+** dired
 Make =dired= a bit nicer. This assumes we're using GNU coreutils.
 #+begin_src emacs-lisp
   (use-package dired
@@ -601,13 +615,13 @@ Make =dired= a bit more colorful. Makes it easier to skim.
     (diredfl-global-mode 1))
 #+end_src
 
-*** gnuplot
+** gnuplot
 Nice to have. Mostly just to edit Gnuplot scripts and configs.
 #+begin_src emacs-lisp
   (use-package gnuplot)
 #+end_src
 
-*** hl-todo
+** hl-todo
 Highlight TODOs in code files (similarly to Vim).
 #+begin_src emacs-lisp
 (use-package hl-todo
@@ -615,7 +629,7 @@ Highlight TODOs in code files (similarly to Vim).
   (prog-mode . hl-todo-mode))
 #+end_src
 
-*** magit
+** magit
 Better integration with Git version control. Which just works.
 #+begin_src emacs-lisp
   (use-package magit
@@ -623,12 +637,4 @@ Better integration with Git version control. Which just works.
     (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 #+end_src
 
-* Export
-This code ensures that this config is automatically exported to elisp
-and then evaluated in full whenever the file is saved within Emacs.
-#+begin_src
-Local Variables:
-    eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle) (load-file user-init-file)) nil t)
-End:
-#+end_src
 
