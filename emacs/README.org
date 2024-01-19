@@ -2,11 +2,12 @@
 #+AUTHOR: Jabir Ali Ouassou
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.config/emacs/init.el
 
+
 * Emacs
-This is my configuration for Emacs 29+ on macOS. My setup is mostly based around =org-mode= and =evil-mode=; I use Emacs for Org-mode, but often use Vim for programming, and this keeps them interchangeable.
+This is my configuration for Emacs 29+ on macOS. My setup is mostly based around =org-mode= and =evil-mode=. (I use Emacs for Org-mode, but often use Vim for programming.)
 
 ** Package management
-Bootstrap the Emacs package manager. Specifically, I want to prevent it from polluting my dotfiles with third-party packages, and I want to ensure that the community package repositories are available.
+Bootstrap the Emacs package manager and enable the community package repositories.
 #+begin_src emacs-lisp
   (require 'package)
   (setq package-user-dir "~/.cache/emacs/elpa")
@@ -14,14 +15,14 @@ Bootstrap the Emacs package manager. Specifically, I want to prevent it from pol
   (package-initialize)
 #+end_src
 
-Since Emacs 29, =use-package= has been included in the base distribution. This is a vastly better way to configure Emacs than manually wrangling packages, hooks, keybindings, etc. This configuration file is therefore structured as much as possible in terms of =use-package= statements.
+This config is based around =use-package=. Since Emacs v29, this has been upstreamed into Emacs and no longer needs to be manually installed. From v30, it will also obtain a =:vc= keyword that allows package installation directly from Git repositories.
 #+begin_src emacs-lisp
   (use-package use-package
     :custom
     (use-package-always-ensure t))
 #+end_src
 
-Many Emacs packages throw their cache files in =~/.config/emacs/= by default, which is very annoying when that directory is kept under version control. Luckily, =no-littering= can help us tame those packages.
+By default, Emacs tend to throw files all over the place. The =no-littering= package helps relocate various cache files, backup files, and autosave files into a single location.
 #+begin_src emacs-lisp
   (use-package no-littering
     :init
@@ -37,9 +38,7 @@ Many Emacs packages throw their cache files in =~/.config/emacs/= by default, wh
     (load custom-file))
 #+end_src
 
-As of Emacs 29, there is no easy way to install Emacs packages directly from GitHub. The best workarounds are [[https://github.com/slotThe/vc-use-package][vc-use-package]] or [[https://github.com/quelpa/quelpa-use-package][quelpa-use-package]]. However, [[https://tony-zorman.com/posts/use-package-vc.html][in Emacs 30]], there is a =:vc= keyword for =use-package= coming. So if you start relying on GitHub packages, consider just upgrading to v30.
-
-** Built-in packages
+** Sane defaults
 The Emacs defaults are quite dated. This makes it fit in the 2020s.
 #+begin_src emacs-lisp
   (use-package emacs
@@ -47,6 +46,7 @@ The Emacs defaults are quite dated. This makes it fit in the 2020s.
     (inhibit-startup-message t)
     (line-spacing 0.15)
     (mouse-highlight nil)
+    (ring-bell-function 'ignore)
     (sentence-end-double-space nil)
     (tab-width 4) 
     (truncate-lines t)
@@ -59,22 +59,25 @@ The Emacs defaults are quite dated. This makes it fit in the 2020s.
     (scroll-bar-mode -1)
     (blink-cursor-mode -1)
     (fringe-mode -1)
-    (setq ring-bell-function 'ignore))
+    (recentf-mode 1)
+    (savehist-mode 1))
 #+end_src
 
+** Built-in packages
 Emacs recently added a tab bar which works similarly to Vim or Tmux, i.e. each tab corresponds to a numbered "window configuration" that you can easily switch between. Moreover, it can record a per-tab history of recent window configurations, similarly to a web browser.
 #+begin_src emacs-lisp
   (use-package tab-bar
     :custom
+    (frame-title-format "")
     (tab-bar-close-button-show nil)
     (tab-bar-format '(tab-bar-format-tabs))
     (tab-bar-new-tab-choice "*scratch*")
     (tab-bar-select-tab-modifiers '(super))
     (tab-bar-show 1)
     (tab-bar-tab-hints t)
-    (frame-title-format "")
     :config
-    (tab-bar-mode 1))
+    (tab-bar-mode 1)
+    (tab-bar-history-mode 1))
 #+end_src
 
 Code folding with =outline-minor-mode=. This is the package that =org-mode= is built on, and it integrates well with =evil-mode=. Note that any keybindings need to be bound in the ='local= (major mode) map to prevent it from breaking Magit. I'll do that when loading/configuring the specific programming modes below.
@@ -82,17 +85,6 @@ Code folding with =outline-minor-mode=. This is the package that =org-mode= is b
   (use-package outline
     :custom
     (outline-blank-line t))
-#+end_src
-
-I want Emacs to remember my recently used files and commands.
-#+begin_src emacs-lisp
-  (use-package recentf
-    :config
-    (recentf-mode 1))
-
-  (use-package savehist
-    :config
-    (savehist-mode 1))
 #+end_src
 
 Project management.

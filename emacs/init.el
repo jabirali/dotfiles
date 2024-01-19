@@ -25,6 +25,7 @@
   (inhibit-startup-message t)
   (line-spacing 0.15)
   (mouse-highlight nil)
+  (ring-bell-function 'ignore)
   (sentence-end-double-space nil)
   (tab-width 4) 
   (truncate-lines t)
@@ -37,31 +38,25 @@
   (scroll-bar-mode -1)
   (blink-cursor-mode -1)
   (fringe-mode -1)
-  (setq ring-bell-function 'ignore))
+  (recentf-mode 1)
+  (savehist-mode 1))
 
 (use-package tab-bar
   :custom
+  (frame-title-format "")
   (tab-bar-close-button-show nil)
   (tab-bar-format '(tab-bar-format-tabs))
   (tab-bar-new-tab-choice "*scratch*")
   (tab-bar-select-tab-modifiers '(super))
   (tab-bar-show 1)
   (tab-bar-tab-hints t)
-  (frame-title-format "")
   :config
-  (tab-bar-mode 1))
+  (tab-bar-mode 1)
+  (tab-bar-history-mode 1))
 
 (use-package outline
   :custom
   (outline-blank-line t))
-
-(use-package recentf
-  :config
-  (recentf-mode 1))
-
-(use-package savehist
-  :config
-  (savehist-mode 1))
 
 (use-package project
   :config
