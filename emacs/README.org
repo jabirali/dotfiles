@@ -4,10 +4,12 @@
 
 
 * Emacs
-This is my configuration for Emacs 29+ on macOS. My setup is mostly based around =org-mode= and =evil-mode=. (I use Emacs for Org-mode, but often use Vim for programming.)
+This is my configuration for Emacs 29+ on macOS. My setup is mostly
+based around =org-mode= and =evil-mode=. (I use Emacs for Org-mode,
+but regularly switch over to Vim/Sublime/VSCode for programming.)
 
-** Package management
-Bootstrap the Emacs package manager and enable the community package repositories.
+** Core configuration
+Bootstrap the Emacs package manager and enable the community repos.
 #+begin_src emacs-lisp
   (require 'package)
   (setq package-user-dir "~/.cache/emacs/elpa")
@@ -15,18 +17,21 @@ Bootstrap the Emacs package manager and enable the community package repositorie
   (package-initialize)
 #+end_src
 
-This config is based around =use-package=. Since Emacs v29, this has been upstreamed into Emacs and no longer needs to be manually installed. From v30, it will also obtain a =:vc= keyword that allows package installation directly from Git repositories.
+This config is structured around the =use-package= macro. Since Emacs 29,
+this has been upstreamed and no longer has to be manually installed.
 #+begin_src emacs-lisp
   (use-package use-package
     :custom
     (use-package-always-ensure t))
 #+end_src
 
-By default, Emacs tend to throw files all over the place. The =no-littering= package helps relocate various cache files, backup files, and autosave files into a single location.
+By default, Emacs throws files all over the place. The =no-littering=
+package helps relocate cache and backup files into a single location.
+This is particularly helpful when =~/.config/emacs/= is in a Git repo.
 #+begin_src emacs-lisp
   (use-package no-littering
     :init
-    ;; Set nearly all cache files to follow the XDG specification.
+    ;; Make cache files follow the XDG specification.
     (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
     (setq no-littering-var-directory user-emacs-directory)
     (setq no-littering-etc-directory user-emacs-directory)
@@ -38,8 +43,8 @@ By default, Emacs tend to throw files all over the place. The =no-littering= pac
     (load custom-file))
 #+end_src
 
-** Sane defaults
-The Emacs defaults are quite dated. This makes it fit in the 2020s.
+Let's fix some outdated Emacs default settings. We'll also start the
+Emacs server to enable quick =emacsclient= edits from the terminal.
 #+begin_src emacs-lisp
   (use-package emacs
     :custom
@@ -60,11 +65,15 @@ The Emacs defaults are quite dated. This makes it fit in the 2020s.
     (blink-cursor-mode -1)
     (fringe-mode -1)
     (recentf-mode 1)
-    (savehist-mode 1))
+    (savehist-mode 1)
+    (server-mode 1))
 #+end_src
 
 ** Built-in packages
-Emacs recently added a tab bar which works similarly to Vim or Tmux, i.e. each tab corresponds to a numbered "window configuration" that you can easily switch between. Moreover, it can record a per-tab history of recent window configurations, similarly to a web browser.
+Emacs recently added a tab bar which works similarly to Vim or Tmux,
+i.e. each tab corresponds to a numbered "window configuration" that
+you can easily switch between. Moreover, it can record a per-tab
+history of recent window configurations, similarly to a web browser.
 #+begin_src emacs-lisp
   (use-package tab-bar
     :custom
@@ -80,7 +89,11 @@ Emacs recently added a tab bar which works similarly to Vim or Tmux, i.e. each t
     (tab-bar-history-mode 1))
 #+end_src
 
-Code folding with =outline-minor-mode=. This is the package that =org-mode= is built on, and it integrates well with =evil-mode=. Note that any keybindings need to be bound in the ='local= (major mode) map to prevent it from breaking Magit. I'll do that when loading/configuring the specific programming modes below.
+Code folding with =outline-minor-mode=. This is the package that
+=org-mode= is built on, and it integrates well with =evil-mode=.
+Note that any keybindings need to be bound in the ='local= (major
+mode) map to prevent it from breaking Magit. I'll do that when
+loading/configuring the specific programming modes below.
 #+begin_src emacs-lisp
   (use-package outline
     :custom
@@ -92,13 +105,6 @@ Project management.
   (use-package project
     :config
     (project-remember-projects-under (expand-file-name "~/Sync/") t))
-#+end_src
-
-Finally, let's start the Emacs daemon by default. This lets us quickly connect to the running Emacs instance from a terminal via =emacsclient=.
-#+begin_src emacs-lisp
-    (use-package server
-      :config
-      (server-mode 1))
 #+end_src
 
 ** Helper functions
@@ -216,7 +222,10 @@ Better integration with Git version control.
 #+end_src
 
 ** Modal editing
-I've used Vim keybindings for nearly two decades, and still regularly use it for programming or quick remote edits. Moreover, every time I've tried to switch to Emacs keybindings, my RSI has flared up. So for me, =evil-mode= is a prerequisite for using Emacs at all.
+I've used Vim keybindings for nearly two decades, and still regularly
+use it for programming or quick remote edits. Moreover, every time
+I've tried to switch to Emacs keybindings, my RSI has flared up. So
+for me, =evil-mode= is a prerequisite for using Emacs at all.
 #+begin_src emacs-lisp
   (use-package evil
     :custom
@@ -228,7 +237,8 @@ I've used Vim keybindings for nearly two decades, and still regularly use it for
     (evil-mode 1))
 #+end_src
 
-Evil is great, but by default it only works in text-editing modes. This makes it work across nearly all Emacs modes and packages.
+Evil is great, but by default it only works in text-editing modes.
+This makes it work across nearly all Emacs modes and packages.
 #+begin_src emacs-lisp
   (use-package evil-collection
     :after evil
@@ -236,7 +246,9 @@ Evil is great, but by default it only works in text-editing modes. This makes it
     (evil-collection-init))
 #+end_src
 
-Org-mode is a different beast, and requires some extra integration to work well with Evil. Note that =evil-org-agenda= is provided by =evil-org=, it's for some reason just not activated by default.
+Org-mode is a different beast, and requires some extra integration to
+work well with Evil. Note that =evil-org-agenda= is provided by
+=evil-org=, it's for some reason just not activated by default.
 #+begin_src emacs-lisp
   (use-package evil-org
     :after (evil org general)
@@ -261,7 +273,8 @@ Some Vim plugins are also worth taking with us into Emacs.
 #+end_src 
 
 ** Global menu
-I like the "space menu" that is provided by default in e.g. Spacemacs and Doom Emacs. This is my personalized version of this concept.
+I like the "space menu" that is provided by default in e.g. Spacemacs
+and Doom Emacs. This is my personalized version of this concept.
 #+begin_src emacs-lisp
   (use-package which-key
     :config
@@ -298,7 +311,7 @@ I like the "space menu" that is provided by default in e.g. Spacemacs and Doom E
       "b" '(switch-to-buffer :which-key "buffer")
       "B" '(ibuffer :which-key "buffers")
       "a" '(org-agenda :which-key "agenda")
-
+  
       ;; Bookmarks.
       "m" '(bookmark-set :which-key "set mark")
       "'" '(bookmark-jump :which-key "goto mark")
@@ -403,8 +416,6 @@ I like the "space menu" that is provided by default in e.g. Spacemacs and Doom E
 Emacs =org-mode= is my favorite note-taking app.
 #+begin_src emacs-lisp
   (use-package org
-    :hook
-    (org-mode . visual-line-mode)
     :bind
     (:map org-mode-map
           ("M-p" . org-priority)
@@ -438,7 +449,9 @@ Emacs =org-mode= is my favorite note-taking app.
     (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
 #+end_src
 
-This lets me copy-paste images into my Org notes. Especially useful for keeping a research journal, as it lets me paste important plots into my daily log. (Workflow inspired by Logseq.)
+This lets me copy-paste images into my Org notes. Especially useful
+for keeping a research journal, as it lets me paste important plots
+into my daily log. (Workflow inspired by Logseq.)
 #+begin_src emacs-lisp
   (use-package org-download
     :after org
@@ -481,7 +494,9 @@ This lets me copy-paste images into my Org notes. Especially useful for keeping 
 #+end_src
 
 ** Programming
-I mostly do programming in Vim these days, and am at the moment trying to re-adopt Emacs first and foremost for Org-mode. However, it's still nice to have a decent Emacs setup for reading code while taking Org notes.
+I mostly do programming in Vim these days, and am at the moment trying
+to re-adopt Emacs first and foremost for Org-mode. However, it's still
+nice to have a decent Emacs setup for reading code while taking Org notes.
 #+begin_src emacs-lisp
   (use-package python
     :after (outline evil general)
@@ -546,7 +561,12 @@ GNU Emacs seems to work best with GNU coreutils (see e.g. =dired=).
 #+end_src
 
 ** Operating system
-In my experience, the [[https://bitbucket.org/mituharu/emacs-mac/src/master/][Emacs Mac port]] remains the best option for macOS. For instance, it has the best handling of Retina (hiDPI) screens. Unfortunately, installing it from source is required to enable some features (notably native compilation), but at the same time breaks some other features (e.g. starting the Emacs GUI from a terminal). I'm therefore sticking to the precompiled Cask for now.
+In my experience, the [[https://bitbucket.org/mituharu/emacs-mac/src/master/][Emacs Mac port]] remains the best option for
+macOS. For instance, it has the best handling of Retina (hiDPI)
+screens. Unfortunately, installing it from source is required to
+enable some features (notably native compilation), but at the same
+time breaks some other features (e.g. starting the Emacs GUI from a
+terminal). I'm therefore sticking to the precompiled Cask for now.
 #+begin_src bash
   brew tap "railwaycat/emacsmacport"
   brew install --cask emacs-mac
@@ -558,7 +578,10 @@ These tweaks makes the app look a bit nicer when using =tab-bar-mode=.
   defaults write org.gnu.Emacs HideDocumentIcon YES
 #+end_src
 
-Emacs doesn't know my shell environment variables when started as a GUI, and those variables end up affecting =emacsclient= processes that are launched from a terminal later. This is a workaround whereby macOS is told to set those environment variables globally.
+Emacs doesn't know my shell environment variables when started as a
+GUI, and those variables end up affecting =emacsclient= processes that
+are launched from a terminal later. This is a workaround whereby macOS
+is told to set those environment variables globally.
 #+begin_src xml :tangle ~/Library/LaunchAgents/environment.plist
   <?xml version="1.0" encoding="UTF-8"?>
   <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -579,7 +602,8 @@ Emacs doesn't know my shell environment variables when started as a GUI, and tho
 #+end_src
 
 * Export
-This code ensures that this config is automatically exported to elisp and then evaluated in full whenever the file is saved within Emacs.
+This code ensures that this config is automatically exported to elisp
+and then evaluated in full whenever the file is saved within Emacs.
 #+begin_src
 Local Variables:
     eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle) (load-file user-init-file)) nil t)

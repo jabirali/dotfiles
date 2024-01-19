@@ -9,7 +9,7 @@
 
 (use-package no-littering
   :init
-  ;; Set nearly all cache files to follow the XDG specification.
+  ;; Make cache files follow the XDG specification.
   (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
   (setq no-littering-var-directory user-emacs-directory)
   (setq no-littering-etc-directory user-emacs-directory)
@@ -39,7 +39,8 @@
   (blink-cursor-mode -1)
   (fringe-mode -1)
   (recentf-mode 1)
-  (savehist-mode 1))
+  (savehist-mode 1)
+  (server-mode 1))
 
 (use-package tab-bar
   :custom
@@ -61,10 +62,6 @@
 (use-package project
   :config
   (project-remember-projects-under (expand-file-name "~/Sync/") t))
-
-(use-package server
-  :config
-  (server-mode 1))
 
 (defun +open-file (file &optional dir)
   "Create an interactive command for opening a given file.
@@ -328,8 +325,6 @@ If a directory is provided, we look for the file there."
     "~"  (general-key "C-c ~" )))
 
 (use-package org
-  :hook
-  (org-mode . visual-line-mode)
   :bind
   (:map org-mode-map
         ("M-p" . org-priority)
