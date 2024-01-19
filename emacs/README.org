@@ -638,10 +638,21 @@ Better integration with Git version control. Which just works.
 
 
 
-* Tangling                                             :noexport:
-This makes Emacs automatically tangle the Org file on save.
+* Literate config
+This script lets us tangle this Org file into Emacs Lisp files without
+firing up a full Emacs session. Useful to e.g. generate config files
+from the terminal or to bootstrap the =init.el= file from scratch.
+#+begin_src emacs-lisp :tangle ~/.config/bin/tangle
+  #!/usr/bin/env emacs --script
+
+  (require 'org)
+  (org-babel-tangle-file "~/.config/emacs/README.org")
+#+end_src
+
+This autocommand makes Emacs automatically tangle the Org file on save.
+This makes it easier to interactively work on the config when needed.
 #+begin_src conf
-Local Variables:
+  Local Variables:
     eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle) (load-file user-init-file)) nil t)
-End:
+  End:
 #+end_src
