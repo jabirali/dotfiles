@@ -1,5 +1,3 @@
-# -*- eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle) (load-file user-init-file)) nil t); -*-
-
 #+TITLE: Emacs configuration
 #+AUTHOR: Jabir Ali Ouassou
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.config/emacs/init.el
@@ -638,3 +636,12 @@ Better integration with Git version control. Which just works.
 #+end_src
 
 
+
+
+* Tangling                                             :noexport:
+This makes Emacs automatically tangle the Org file on save.
+#+begin_src conf
+Local Variables:
+    eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle) (load-file user-init-file)) nil t)
+End:
+#+end_src
