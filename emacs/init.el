@@ -3,11 +3,6 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-(use-package use-package
-  :demand t
-  :custom
-  (use-package-always-ensure t))
-
 (use-package no-littering
   :demand t
   :init
@@ -86,10 +81,6 @@ If a directory is provided, we look for the file there."
   (interactive)
   (project-remember-projects-under (expand-file-name "~/Sync/") t))
 
-(use-package which-key
-  :config
-  (which-key-mode 1))
-
 (use-package evil
   :custom
   (evil-want-keybinding nil)
@@ -105,7 +96,7 @@ If a directory is provided, we look for the file there."
   (evil-collection-init))
 
 (use-package evil-surround
-  :ensure t
+  :ensure 
   :config
   (global-evil-surround-mode 1))
 
@@ -121,6 +112,10 @@ If a directory is provided, we look for the file there."
   :after evil-org
   :config
   (evil-org-agenda-set-keys))
+
+(use-package which-key
+  :config
+  (which-key-mode 1))
 
 (use-package general
   :after evil
@@ -305,13 +300,13 @@ If a directory is provided, we look for the file there."
   :config
   (setq completion-styles '(orderless)))
 
-(use-package consult
-  :after vertico)
-
 (use-package marginalia
   :after vertico
   :config
   (marginalia-mode 1))
+
+(use-package consult
+  :after vertico)
 
 (use-package ace-window
   :bind

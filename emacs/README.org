@@ -2,11 +2,11 @@
 #+AUTHOR: Jabir Ali Ouassou
 #+PROPERTY: header-args:emacs-lisp :tangle ~/.config/emacs/init.el
 
-This is my configuration for Emacs 29+ on macOS. My setup is mostly
-based around [[org-mode]] and [[evil-mode]]; I use Emacs for knowledge and
-task management, but often use Vim/Sublime/VSCode for actual coding.
+This is my config file for Emacs 29+ on macOS. My setup is mostly
+based around [[org-mode]] and [[evil-mode]]: I use Emacs for Org, but often
+switch to Vim for programming and VSCode for Jupyter notebooks.
 
-* Overview                                                  :toc:
+* Contents                                                  :toc:
 - [[#bootstrap][Bootstrap]]
   - [[#macos][macOS]]
   - [[#package][package]]
@@ -17,12 +17,12 @@ task management, but often use Vim/Sublime/VSCode for actual coding.
   - [[#variables][variables]]
   - [[#functions][functions]]
 - [[#vim-keybindings][Vim keybindings]]
-  - [[#which-key][which-key]]
   - [[#evil-mode][evil-mode]]
   - [[#evil-collection][evil-collection]]
   - [[#evil-surround][evil-surround]]
   - [[#evil-org][evil-org]]
   - [[#evil-org-agenda][evil-org-agenda]]
+  - [[#which-key][which-key]]
   - [[#general][general]]
 - [[#modern-interface][Modern interface]]
   - [[#tab-bar][tab-bar]]
@@ -31,19 +31,20 @@ task management, but often use Vim/Sublime/VSCode for actual coding.
   - [[#doom-modeline][doom-modeline]]
   - [[#vertico][vertico]]
   - [[#orderless][orderless]]
-  - [[#consult][consult]]
   - [[#marginalia][marginalia]]
+  - [[#consult][consult]]
   - [[#ace-window][ace-window]]
 - [[#organization][Organization]]
   - [[#org-mode][org-mode]]
   - [[#org-download][org-download]]
   - [[#org-super-agenda][org-super-agenda]]
   - [[#idle-org-agenda][idle-org-agenda]]
-  - [[#org-toc][org-toc]]
+  - [[#toc-org][toc-org]]
 - [[#programming][Programming]]
   - [[#python][python]]
 - [[#miscellaneous][Miscellaneous]]
   - [[#dired][dired]]
+  - [[#diredfl][diredfl]]
   - [[#gnuplot][gnuplot]]
   - [[#hl-todo][hl-todo]]
   - [[#magit][magit]]
@@ -51,26 +52,17 @@ task management, but often use Vim/Sublime/VSCode for actual coding.
 
 * Bootstrap
 ** macOS
-In my experience, the [[https://bitbucket.org/mituharu/emacs-mac/src/master/][Emacs Mac port]] remains the best option for
-macOS. For instance, it has the best handling of Retina (hiDPI)
-screens. Unfortunately, installing it from source is required to
-enable some features (notably native compilation), but at the same
-time breaks some other features (e.g. starting the Emacs GUI from a
-terminal). I'm therefore sticking to the precompiled Cask for now.
+[[https://bitbucket.org/mituharu/emacs-mac/src/master/][Emacs Mac port]] still handles Retina (hiDPI) screens best. The Cask has
+fewest bugs, but only the Formula seems to support native compilation.
 #+begin_src bash
   brew tap "railwaycat/emacsmacport"
   brew install --cask emacs-mac
 #+end_src
     
-These tweaks makes the app look a bit nicer when using =tab-bar-mode=.
+These settings make the app look a bit nicer when using the [[tab-bar]].
 #+begin_src bash
   defaults write org.gnu.Emacs TransparentTitleBar DARK
   defaults write org.gnu.Emacs HideDocumentIcon YES
-#+end_src
-
-GNU Emacs seems to work best with GNU coreutils (see e.g. =dired=).
-#+begin_src bash
-  brew install coreutils
 #+end_src
 
 ** package
@@ -83,16 +75,6 @@ Bootstrap the Emacs package manager and enable the community repos.
 #+end_src
 
 ** use-package
-This config is structured around the =use-package= macro. Since Emacs 29,
-this has been upstreamed and no longer has to be manually installed.
-#+begin_src emacs-lisp
-  (use-package use-package
-    :demand t
-    :custom
-    (use-package-always-ensure t))
-#+end_src
-Note that from Emacs 30, =use-package= will obtain a new keyword =:vc=
-that can be used to install packages directly from e.g. GitHub repos.
 
 ** no-littering
 By default, Emacs throws files all over the place. The =no-littering=
@@ -115,7 +97,7 @@ This is particularly helpful when =~/.config/emacs/= is in a Git repo.
 #+end_src
 
 ** defaults
-Let's fix some outdated Emacs default settings. 
+Fix the outdated default settings.
 #+begin_src emacs-lisp
   (use-package emacs
     :custom
@@ -202,19 +184,9 @@ Function for auto-detecting projects.
 #+end_src
 
 * Vim keybindings
-** which-key
-Make keybindings more discoverable by providing interactive hints.
-#+begin_src emacs-lisp
-  (use-package which-key
-    :config
-    (which-key-mode 1))
-#+end_src
-
 ** evil-mode
-I've used Vim keybindings for nearly two decades, and still regularly
-use it for programming or quick remote edits. Moreover, every time
-I've tried to switch fully to Emacs keybindings, my RSI has flared up.
-So for me, =evil-mode= is a prerequisite to using Emacs at all.
+I have two decades of Vim muscle memory, and Emacs keybindings usually
+triggers my RSI. So Evil is pretty much a prerequisite to using Emacs.
 #+begin_src emacs-lisp
   (use-package evil
     :custom
@@ -227,8 +199,8 @@ So for me, =evil-mode= is a prerequisite to using Emacs at all.
 #+end_src
 
 ** evil-collection
-By default, Evil handles text editing but not "Emacs apps" like
-=magit= and =dired=. This makes Evil take over every Emacs mode.
+Evil itself provides Vim-like text editing but doesn't theme "apps"
+like =magit= and =dired=. Evil Collection helps us with that.
 #+begin_src emacs-lisp
   (use-package evil-collection
     :after evil
@@ -237,18 +209,17 @@ By default, Evil handles text editing but not "Emacs apps" like
 #+end_src
 
 ** evil-surround
-Some Vim plugins are also worth taking with us into Emacs.
+Emacs port of the famous =surround.vim= plugin.
 #+begin_src emacs-lisp
   (use-package evil-surround
-    :ensure t
+    :ensure 
     :config
     (global-evil-surround-mode 1))
 #+end_src 
 
 ** evil-org
 Org-mode is a huge system and not well-covered by =evil-collection=,
-so we need an extra package to make Org-mode work as expected. Let's
-also add in a VimWiki-like keybinding to handle links in Org files.
+so we need an extra package to make it work as expected.
 #+begin_src emacs-lisp
   (use-package evil-org
     :after (evil org general)
@@ -260,13 +231,21 @@ also add in a VimWiki-like keybinding to handle links in Org files.
 
 ** evil-org-agenda
 The package =evil-org= also offers =org-agenda= integration, but for
-some reason doesn't toggle it on by default. Let's fix that.
+some reason it's not on by default. Let's fix that.
 #+begin_src emacs-lisp
     (use-package evil-org-agenda
       :ensure nil
       :after evil-org
       :config
       (evil-org-agenda-set-keys))
+#+end_src
+
+** which-key
+Make key sequences more discoverable by providing live hints.
+#+begin_src emacs-lisp
+  (use-package which-key
+    :config
+    (which-key-mode 1))
 #+end_src
 
 ** general
@@ -406,13 +385,8 @@ Package that simplifies custom keybinding definitions.
 
 * Modern interface
 ** tab-bar
-Emacs offers a tab bar which works similarly to Vim or Tmux: Each
-"tab" corresponds to a numbered window configuration" hat you can
-easily switch between. Moreover, it can record a per-tab history of
-recent window configurations, offering browser-like navigation.
-
-Most themes either don't theme the tab bar properly, or theme it
-differently from the mode line. I patch =load-theme= to fix that.
+Emacs has a tab bar that works like in Vim and Tmux, i.e. each "tab"
+is a "window configuration". It's off by default, so let's turn it on.
 #+begin_src emacs-lisp
   (use-package tab-bar
     :custom
@@ -434,11 +408,11 @@ differently from the mode line. I patch =load-theme= to fix that.
         (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
         (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold))))
 #+end_src
+Note: Most themes either don't theme the tab bar properly, or theme it
+differently from the mode line. I've patched =load-theme= to fix this.
 
 ** spacious-padding
-Add extra space around key components of the user interface, such as
-e.g. frames, windows, mode lines, and the tab bar. This goes a long
-way in giving the Emacs interface a more modern and aesthetic look.
+Add some "breathing room" around key elements of the user interface.
 #+begin_src emacs-lisp
   (use-package spacious-padding
     :config
@@ -454,7 +428,7 @@ Massive pack of high-quality color themes.
 #+end_src
 
 ** doom-modeline
-Make the mode line easier on the eyes.
+Modernize the "mode line" that sits below each window.
 #+begin_src emacs-lisp
   (use-package doom-modeline
     :after doom-themes
@@ -481,7 +455,7 @@ Modern fuzzy-finding interface for interactive Emacs commands.
 #+end_src
 
 ** orderless
-Make =M-x find proj= and =M-x proj find= equivalent in =vertico=.
+Make e.g. =M-x find proj= and =M-x proj find= equivalent in =vertico=.
 #+begin_src emacs-lisp
   (use-package orderless
     :after vertico
@@ -489,15 +463,8 @@ Make =M-x find proj= and =M-x proj find= equivalent in =vertico=.
     (setq completion-styles '(orderless)))
 #+end_src
 
-** consult
-More intuitive wrappers around common interactive commands.
-#+begin_src emacs-lisp
-  (use-package consult
-    :after vertico)
-#+end_src
-
 ** marginalia
-Margin notes with extra metadata for common interactive commands.
+Add margin notes with relevant metadata to =vertico= prompts.
 #+begin_src emacs-lisp
   (use-package marginalia
     :after vertico
@@ -505,8 +472,15 @@ Margin notes with extra metadata for common interactive commands.
     (marginalia-mode 1))
 #+end_src
 
+** consult
+More intuitive wrappers around some common interactive commands.
+#+begin_src emacs-lisp
+  (use-package consult
+    :after vertico)
+#+end_src
+
 ** ace-window
-Better workflow for switching between visible windows.
+Easily jump directly between any visible window.
 #+begin_src emacs-lisp
   (use-package ace-window
     :bind
@@ -515,10 +489,7 @@ Better workflow for switching between visible windows.
 
 * Organization
 ** org-mode
-I'm using Org as my research journal and task management system. After
-some deliberation, I picked =auto-fill-mode= over =visual-line-mode=
-as wrapping strategy. This makes embedded code blocks more readable,
-and the surrounding text remains more legible if Emacs is resized.
+I'm using Org as my main research journal and task management system.
 #+begin_src emacs-lisp
   (use-package org
     :hook
@@ -551,11 +522,12 @@ and the surrounding text remains more legible if Emacs is resized.
       (start-process "zotero_open" nil "open" (concat "zotero:" link)))
     (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
 #+end_src
+I picked =auto-fill-mode= over =visual-line-mode= as wrapping
+strategy. This makes embedded code blocks more readable, and the
+surrounding text remains more legible if Emacs is resized.
 
 ** org-download
-This lets me copy-paste images into my Org notes. Especially useful
-for keeping a research journal, as it lets me paste and tag important
-plots in my daily log. (Workflow inspired by Logseq.)
+This package lets me copy-paste images directly into Org files.
 #+begin_src emacs-lisp
   (use-package org-download
     :after org
@@ -585,8 +557,7 @@ Remember to install the system dependency for handling screenshots:
 #+end_src
 
 ** org-super-agenda
-The default Org agenda is messy. This sorts my upcoming tasks and
-deadlines by project, making it easier to keep an overview.
+Sort the =org-agenda= by project. Makes it easier to keep an overview.
 #+begin_src emacs-lisp
   (use-package org-super-agenda
     :custom
@@ -597,8 +568,7 @@ deadlines by project, making it easier to keep an overview.
 #+end_src
 
 ** idle-org-agenda
-After an hour of inactivity, let's pop up the agenda automatically.
-Prevents me from forgetting what upcoming deadlines to prioritize.
+Use the =org-agenda= as my screen saver. Helps refocus after a break.
 #+begin_src emacs-lisp
   (use-package idle-org-agenda
     :after org-agenda
@@ -608,8 +578,8 @@ Prevents me from forgetting what upcoming deadlines to prioritize.
     (idle-org-agenda-mode 1))
 #+end_src
 
-** org-toc
-Package renamed from =org-toc= to =toc-org= a while back.
+** toc-org
+Autogenerate table of contents in Org files.
 #+begin_src emacs-lisp
   (use-package toc-org
     :hook
@@ -618,9 +588,7 @@ Package renamed from =org-toc= to =toc-org= a while back.
 
 * Programming
 ** python
-I mostly do programming in Vim these days, and am at the moment trying
-to re-adopt Emacs first and foremost for Org-mode. However, it's still
-nice to have a decent Emacs setup for reading code while taking Org notes.
+Setup better code folding in =python-mode=.
 #+begin_src emacs-lisp
   (use-package python
     :after (outline evil general)
@@ -645,7 +613,8 @@ nice to have a decent Emacs setup for reading code while taking Org notes.
 
 * Miscellaneous
 ** dired
-Make =dired= a bit nicer. This assumes we're using GNU coreutils.
+Sane defaults for the =dired= file manager. Note: this config
+assumes that GNU =coreutils= has been installed on macOS.
 #+begin_src emacs-lisp
   (use-package dired
     :ensure nil
@@ -656,7 +625,8 @@ Make =dired= a bit nicer. This assumes we're using GNU coreutils.
     (mmap "^" 'dired-jump))
 #+end_src
 
-Make =dired= a bit more colorful. Makes it easier to skim.
+** diredfl
+Make =dired= a bit more colorful.
 #+begin_src emacs-lisp
   (use-package diredfl
     :after dired
@@ -665,13 +635,13 @@ Make =dired= a bit more colorful. Makes it easier to skim.
 #+end_src
 
 ** gnuplot
-Nice to have. Mostly just to edit Gnuplot scripts and configs.
+Provides e.g. syntax highlighting of Gnuplot scripts and configs.
 #+begin_src emacs-lisp
   (use-package gnuplot)
 #+end_src
 
 ** hl-todo
-Highlight TODOs in code files (similarly to Vim).
+Automatically highlight TODOs in code files. Works well with Vim.
 #+begin_src emacs-lisp
 (use-package hl-todo
   :hook
@@ -679,7 +649,7 @@ Highlight TODOs in code files (similarly to Vim).
 #+end_src
 
 ** magit
-Better integration with Git version control. Which just works.
+Integration with the Git version control system that "just works".
 #+begin_src emacs-lisp
   (use-package magit
     :config
@@ -687,9 +657,8 @@ Better integration with Git version control. Which just works.
 #+end_src
 
 * Literate config
-This script lets us tangle this Org file into Emacs Lisp files without
-firing up a full Emacs session. Useful to e.g. generate config files
-from the terminal or to bootstrap the =init.el= file from scratch.
+This script lets us tangle this Org file to Emacs Lisp without firing
+up a full Emacs session. Useful when setting things up from scratch.
 #+begin_src emacs-lisp :tangle ~/.config/bin/tangle
   #!/usr/bin/env emacs --script
 
@@ -697,8 +666,8 @@ from the terminal or to bootstrap the =init.el= file from scratch.
   (org-babel-tangle-file "~/.config/emacs/README.org")
 #+end_src
 
-This autocommand makes Emacs automatically tangle the Org file on save.
-This makes it easier to interactively work on the config when needed.
+This autocommand makes Emacs automatically tangle this Org file on
+save. This makes it easier to interactively revise the config file.
 #+begin_src conf
   Local Variables:
     eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle) (load-file user-init-file)) nil t)
