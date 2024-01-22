@@ -1841,6 +1841,8 @@
 			<true/>
 			<key>Allow Title Setting</key>
 			<true/>
+			<key>Allow modifyOtherKeys</key>
+			<false/>
 			<key>Ambiguous Double Width</key>
 			<false/>
 			<key>Ansi 0 Color</key>
@@ -2167,11 +2169,11 @@
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Option Key Sends</key>
-			<integer>2</integer>
+			<integer>1</integer>
 			<key>Prompt Before Closing 2</key>
 			<false/>
 			<key>Right Option Key Sends</key>
-			<integer>2</integer>
+			<integer>1</integer>
 			<key>Rows</key>
 			<integer>25</integer>
 			<key>Screen</key>
@@ -2303,6 +2305,8 @@
 	<integer>10</integer>
 	<key>TerminalVMargin</key>
 	<integer>12</integer>
+	<key>UnderlineHyperlinks</key>
+	<false/>
 	<key>UseBorder</key>
 	<false/>
 	<key>VisualIndicatorForEsc</key>

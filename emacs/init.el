@@ -1,5 +1,7 @@
 (require 'package)
 (setq package-user-dir "~/.cache/emacs/elpa")
+(setq package-native-compile t)
+(setq native-comp-async-report-warnings-errors nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
@@ -90,6 +92,7 @@ If a directory is provided, we look for the file there."
   :custom
   (evil-want-keybinding nil)
   (evil-want-integration t)
+  (evil-want-C-i-jump nil)
   (evil-want-C-u-scroll t)
   (evil-undo-system 'undo-redo)
   :config
@@ -107,8 +110,6 @@ If a directory is provided, we look for the file there."
 
 (use-package evil-org
   :after (evil org general)
-  :config
-  (mmap :map org-mode-map "RET" 'org-open-at-point)
   :hook
   (org-mode . evil-org-mode))
 
@@ -173,8 +174,9 @@ If a directory is provided, we look for the file there."
     "9" '(tab-bar-select-tab :which-key "9")
 
     ;; Insert stuff.
-    "i" '(:ignore t :which-key "insert")
-    "id" '(+insert-date :which-key "date")
+    ;; "i" '(:ignore t :which-key "insert")
+    ;; "id" '(+insert-date :which-key "date")
+    "i" '(consult-imenu :which-key "imenu")
 
     ;; Open stuff.
     "o" '(:ignore t :which-key "open")
@@ -279,7 +281,7 @@ If a directory is provided, we look for the file there."
 
 (use-package doom-themes
   :config
-  (load-theme 'doom-dracula t))
+  (load-theme 'doom-gruvbox-light t))
 
 (use-package doom-modeline
   :after doom-themes
@@ -297,8 +299,7 @@ If a directory is provided, we look for the file there."
 (use-package vertico
   :config
   (vertico-mode 1)
-  (vertico-mouse-mode 1)
-  (vertico-reverse-mode 1))
+  (vertico-mouse-mode 1))
 
 (use-package orderless
   :after vertico
@@ -386,6 +387,23 @@ If a directory is provided, we look for the file there."
   :hook
   (org-mode . toc-org-mode))
 
+(use-package tex
+  :ensure auctex
+  :custom
+  (font-latex-fontify-script nil)
+  (TeX-auto-save t)
+  (TeX-source-correlate-method 'synctex)
+  (TeX-source-correlate-mode t)
+  (TeX-source-correlate-start-server t)
+  (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
+  (TeX-view-program-selection '((output-pdf "Skim")))
+  :hook
+  (LaTeX-mode . prettify-symbols-mode))
+
+(use-package evil-tex
+  :hook
+  (LaTeX-mode . evil-tex-mode))
+
 (use-package python
   :after (outline evil general)
   :config
@@ -432,5 +450,6 @@ If a directory is provided, we look for the file there."
 (use-package openwith
   :config
   (setq openwith-associations
-         '(("\\.\\(png\\|jpg\\|svg\\|pdf\\)$" "qlmanage -p" (file))))
+         '(("\\.\\(png\\|jpg\\|svg\\|pdf\\)$" "qlmanage -p" (file))
+           ("\\.xlsx$" "open" (file))))
   (openwith-mode 1))
