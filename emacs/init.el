@@ -376,6 +376,8 @@ If a directory is provided, we look for the file there."
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode 1))
 
+(use-package ox-pandoc)
+
 (use-package idle-org-agenda
   :after org-agenda
   :custom
@@ -398,7 +400,18 @@ If a directory is provided, we look for the file there."
   (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
   (TeX-view-program-selection '((output-pdf "Skim")))
   :hook
-  (LaTeX-mode . prettify-symbols-mode))
+  (TeX-mode . prettify-symbols-mode))
+
+(use-package reftex
+  :after tex
+  :custom
+  (reftex-cite-format 'bibtex)
+  (reftex-enable-partial-scans t)
+  (reftex-plug-into-AUCTeX t)
+  (reftex-save-parse-info t)
+  (reftex-use-multiple-selection-buffers t)
+  :hook
+  (TeX-mode . turn-on-reftex))
 
 (use-package evil-tex
   :hook
@@ -451,5 +464,5 @@ If a directory is provided, we look for the file there."
   :config
   (setq openwith-associations
          '(("\\.\\(png\\|jpg\\|svg\\|pdf\\)$" "qlmanage -p" (file))
-           ("\\.xlsx$" "open" (file))))
+           ("\\.\\(docx\\|xlsx\\|pptx\\)$" "open" (file))))
   (openwith-mode 1))

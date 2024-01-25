@@ -543,6 +543,12 @@ Sort the =org-agenda= by project. Makes it easier to keep an overview.
     (org-super-agenda-mode 1))
 #+end_src
 
+*** ox-pandoc
+Better export options. Including exporting to DOCX with LaTeX equations.
+#+begin_src emacs-lisp
+  (use-package ox-pandoc)
+#+end_src
+
 *** idle-org-agenda
 Use the =org-agenda= as my screen saver. Helps refocus after a break.
 #+begin_src emacs-lisp
@@ -577,13 +583,26 @@ Better LaTeX typesetting experience. Uses Skim to preview the PDF.
     (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
     (TeX-view-program-selection '((output-pdf "Skim")))
     :hook
-    (LaTeX-mode . prettify-symbols-mode))
+    (TeX-mode . prettify-symbols-mode))
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package evil-tex
-  :hook
-  (LaTeX-mode . evil-tex-mode))
+  (use-package reftex
+    :after tex
+    :custom
+    (reftex-cite-format 'bibtex)
+    (reftex-enable-partial-scans t)
+    (reftex-plug-into-AUCTeX t)
+    (reftex-save-parse-info t)
+    (reftex-use-multiple-selection-buffers t)
+    :hook
+    (TeX-mode . turn-on-reftex))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package evil-tex
+    :hook
+    (LaTeX-mode . evil-tex-mode))
 #+end_src
 
 *** python
@@ -663,7 +682,7 @@ Dired or Org files that contain images from a macOS terminal.
           :config
           (setq openwith-associations
                  '(("\\.\\(png\\|jpg\\|svg\\|pdf\\)$" "qlmanage -p" (file))
-                   ("\\.xlsx$" "open" (file))))
+                   ("\\.\\(docx\\|xlsx\\|pptx\\)$" "open" (file))))
           (openwith-mode 1))
 #+end_src
 
