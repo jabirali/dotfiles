@@ -46,8 +46,8 @@ This config is structured around the =use-package= macro. Since Emacs 29,
 this has been upstreamed and no longer has to be manually installed.
 #+begin_src emacs-lisp
   (use-package use-package
-    :demand t
     :custom
+    (use-package-always-demand t)
     (use-package-always-ensure t))
 #+end_src
 Note that from Emacs 30, =use-package= will obtain a new keyword =:vc=
@@ -59,7 +59,6 @@ package helps relocate cache and backup files into a single location.
 This is particularly helpful when =~/.config/emacs/= is in a Git repo.
 #+begin_src emacs-lisp
   (use-package no-littering
-    :demand t
     :init
     ;; Make cache files follow the XDG specification.
     (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
@@ -103,7 +102,6 @@ We'll also start the Emacs server to enable quick =emacsclient= edits
 from the terminal. But we only want one Emacs daemon at a time.
 #+begin_src emacs-lisp
   (use-package server
-    :demand t
     :config
     (unless (server-running-p)
       (server-mode 1)))
@@ -157,7 +155,7 @@ Function for auto-detecting projects.
 #+begin_src emacs-lisp
   (defun +find-projects ()
     (interactive)
-    (project-remember-projects-under (expand-file-name "~/Sync/") t))
+    (project-remember-projects-under (expand-file-name "~/Work/") t))
 #+end_src
 
 ** Vim keybindings
@@ -362,8 +360,8 @@ Package that simplifies custom keybinding definitions.
 
 ** Modern interface
 *** tab-bar
-Emacs has a tab bar that works like in Vim and Tmux, i.e. each "tab"
-is a "window configuration". It's off by default, so let's turn it on.
+Emacs has a nice tab bar that works like those in Vim/Tmux/iTerm2:
+each "tab" is a "set of windows" not just a "buffer". Turn it on.
 #+begin_src emacs-lisp
   (use-package tab-bar
     :custom
@@ -380,7 +378,9 @@ is a "window configuration". It's off by default, so let's turn it on.
     (defadvice load-theme (after run-after-load-theme-hook activate)
       "Fix `tab-bar-mode' after any theme has been loaded."
       (let ((bg  (face-attribute 'mode-line :background))
+            (brd (face-attribute 'default :background))
             (box (face-attribute 'mode-line :box)))
+        (set-face-attribute 'scroll-bar nil :background brd)
         (set-face-attribute 'tab-bar nil :background bg :box box)
         (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
         (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold))))
@@ -388,27 +388,21 @@ is a "window configuration". It's off by default, so let's turn it on.
 Note: Most themes either don't theme the tab bar properly, or theme it
 differently from the mode line. I've patched =load-theme= to fix this.
 
-*** spacious-padding
-Add some "breathing room" around key elements of the user interface.
+*** modus-themes
 #+begin_src emacs-lisp
-  (use-package spacious-padding
+  (use-package modus-themes
+    :custom
+    (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
     :config
-    (spacious-padding-mode 1))
-#+end_src
-
-*** doom-themes
-Massive pack of high-quality color themes.
-#+begin_src emacs-lisp
-  (use-package doom-themes
-    :config
-    (load-theme 'doom-gruvbox-light t))
+    (load-theme 'modus-vivendi-tinted t)
+    :bind
+    ("<f12>" . modus-themes-toggle))
 #+end_src
 
 *** doom-modeline
 Modernize the "mode line" that sits below each window.
 #+begin_src emacs-lisp
   (use-package doom-modeline
-    :after doom-themes
     :custom
     (doom-modeline-buffer-encoding nil)
     (doom-modeline-buffer-modification-icon nil)
@@ -419,6 +413,22 @@ Modernize the "mode line" that sits below each window.
     (doom-modeline-workspace-name nil)
     :config
     (doom-modeline-mode 1))
+#+end_src
+
+*** doom-themes
+Massive pack of high-quality color themes.
+#+begin_src emacs-lisp
+  ;; (use-package doom-themes
+  ;;   :config
+  ;;   (load-theme 'doom-gruvbox-light t))
+#+end_src
+
+*** spacious-padding
+Add some "breathing room" around key elements of the user interface.
+#+begin_src emacs-lisp
+  (use-package spacious-padding
+    :config
+    (spacious-padding-mode 1))
 #+end_src
 
 *** vertico
@@ -532,6 +542,18 @@ Remember to install the system dependency for handling screenshots:
   brew install pngpaste
 #+end_src
 
+*** org-babel
+#+begin_src emacs-lisp
+  (use-package org-babel
+    :after org
+    :ensure nil
+    :no-require
+    :config
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((python . t))))
+#+end_src
+
 *** org-super-agenda
 Sort the =org-agenda= by project. Makes it easier to keep an overview.
 #+begin_src emacs-lisp
@@ -566,6 +588,14 @@ Autogenerate table of contents in Org files.
   (use-package toc-org
     :hook
     (org-mode . toc-org-mode))
+#+end_src
+
+*** cdlatex
+#+begin_src emacs-lisp
+  (use-package cdlatex
+    :hook
+    ((TeX-mode . turn-on-cdlatex)
+     (org-mode . turn-on-org-cdlatex)))
 #+end_src
 
 ** Programming

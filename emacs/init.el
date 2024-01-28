@@ -6,12 +6,11 @@
 (package-initialize)
 
 (use-package use-package
-  :demand t
   :custom
+  (use-package-always-demand t)
   (use-package-always-ensure t))
 
 (use-package no-littering
-  :demand t
   :init
   ;; Make cache files follow the XDG specification.
   (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
@@ -47,7 +46,6 @@
   (savehist-mode 1))
 
 (use-package server
-  :demand t
   :config
   (unless (server-running-p)
     (server-mode 1)))
@@ -86,7 +84,7 @@ If a directory is provided, we look for the file there."
 
 (defun +find-projects ()
   (interactive)
-  (project-remember-projects-under (expand-file-name "~/Sync/") t))
+  (project-remember-projects-under (expand-file-name "~/Work/") t))
 
 (use-package evil
   :custom
@@ -270,21 +268,22 @@ If a directory is provided, we look for the file there."
   (defadvice load-theme (after run-after-load-theme-hook activate)
     "Fix `tab-bar-mode' after any theme has been loaded."
     (let ((bg  (face-attribute 'mode-line :background))
+          (brd (face-attribute 'default :background))
           (box (face-attribute 'mode-line :box)))
+      (set-face-attribute 'scroll-bar nil :background brd)
       (set-face-attribute 'tab-bar nil :background bg :box box)
       (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
       (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold))))
 
-(use-package spacious-padding
+(use-package modus-themes
+  :custom
+  (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
   :config
-  (spacious-padding-mode 1))
-
-(use-package doom-themes
-  :config
-  (load-theme 'doom-gruvbox-light t))
+  (load-theme 'modus-vivendi-tinted t)
+  :bind
+  ("<f12>" . modus-themes-toggle))
 
 (use-package doom-modeline
-  :after doom-themes
   :custom
   (doom-modeline-buffer-encoding nil)
   (doom-modeline-buffer-modification-icon nil)
@@ -295,6 +294,14 @@ If a directory is provided, we look for the file there."
   (doom-modeline-workspace-name nil)
   :config
   (doom-modeline-mode 1))
+
+;; (use-package doom-themes
+;;   :config
+;;   (load-theme 'doom-gruvbox-light t))
+
+(use-package spacious-padding
+  :config
+  (spacious-padding-mode 1))
 
 (use-package vertico
   :config
@@ -369,6 +376,15 @@ If a directory is provided, we look for the file there."
   :bind (:map org-mode-map
               ("M-v" . org-download-clipboard)))
 
+(use-package org-babel
+  :after org
+  :ensure nil
+  :no-require
+  :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t))))
+
 (use-package org-super-agenda
   :custom
   (org-super-agenda-groups '((:auto-parent t)))
@@ -388,6 +404,11 @@ If a directory is provided, we look for the file there."
 (use-package toc-org
   :hook
   (org-mode . toc-org-mode))
+
+(use-package cdlatex
+  :hook
+  ((TeX-mode . turn-on-cdlatex)
+   (org-mode . turn-on-org-cdlatex)))
 
 (use-package tex
   :ensure auctex
