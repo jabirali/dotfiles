@@ -388,11 +388,12 @@ each "tab" is a "set of windows" not just a "buffer". Turn it on.
       "Fix `tab-bar-mode' after any theme has been loaded."
       (let ((bg  (face-attribute 'mode-line :background))
             (brd (face-attribute 'default :background))
+            (fg  (face-attribute 'success :foreground))
             (box (face-attribute 'mode-line :box)))
         (set-face-attribute 'scroll-bar nil :background brd)
         (set-face-attribute 'tab-bar nil :background bg :box box)
         (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
-        (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold))))
+        (set-face-attribute 'tab-bar-tab nil :foreground fg :background bg :box box))))
 #+end_src
 Note: Most themes either don't theme the tab bar properly, or theme it
 differently from the mode line. I've patched =load-theme= to fix this.
@@ -402,6 +403,7 @@ Modernize the "mode line" that sits below each window.
 #+begin_src emacs-lisp
   (use-package doom-modeline
     :custom
+    (doom-modeline-bar-width 0.1)
     (doom-modeline-buffer-encoding nil)
     (doom-modeline-buffer-modification-icon nil)
     (doom-modeline-icon nil)
@@ -453,18 +455,19 @@ Easily jump directly between any visible window.
     ("M-o" . 'ace-window))
 #+end_src
 
-** Organization
+** Org & TeX
 *** org-mode
 I'm using Org as my main research journal and task management system.
 #+begin_src emacs-lisp
   (use-package org
     :hook
-    (org-mode . auto-fill-mode)
+    (org-mode . visual-line-mode)
     :custom
+    (initial-major-mode 'org-mode)
+    (initial-scratch-message "")
     (org-todo-keywords
      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
        (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
-    (org-directory "~/Sync/Org")
     (org-agenda-files (list org-directory))
     (org-agenda-skip-deadline-if-done t)
     (org-agenda-skip-scheduled-if-done t)
@@ -473,15 +476,14 @@ I'm using Org as my main research journal and task management system.
     (org-agenda-window-setup 'other-tab)
     (org-archive-location "::* Archive")
     (org-ctrl-k-protect-subtree t)
+    (org-directory "~/Sync/Org")
     (org-fontify-quote-and-verse-blocks t)
+    (org-highlight-latex-and-related '(native latex script entities))
     (org-image-actual-width '(400))
-    (org-pretty-entities t)
     (org-startup-folded 'content)
     (org-startup-indented t)
     (org-startup-with-inline-images t)
     (org-tags-column -65)
-    (initial-major-mode 'org-mode)
-    (initial-scratch-message "")
     :config
     (defun +url-handler-zotero (link)
       "Open a zotero:// link in the Zotero desktop app."
@@ -562,23 +564,6 @@ Use the =org-agenda= as my screen saver. Helps refocus after a break.
     (idle-org-agenda-mode 1))
 #+end_src
 
-*** toc-org
-Autogenerate table of contents in Org files.
-#+begin_src emacs-lisp
-  (use-package toc-org
-    :hook
-    (org-mode . toc-org-mode))
-#+end_src
-
-*** cdlatex
-#+begin_src emacs-lisp
-  (use-package cdlatex
-    :hook
-    ((TeX-mode . turn-on-cdlatex)
-     (org-mode . turn-on-org-cdlatex)))
-#+end_src
-
-** Programming
 *** latex
 Better LaTeX typesetting experience. Uses Skim to preview the PDF.
 #+begin_src emacs-lisp
@@ -593,6 +578,7 @@ Better LaTeX typesetting experience. Uses Skim to preview the PDF.
     (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
     (TeX-view-program-selection '((output-pdf "Skim")))
     :hook
+    (TeX-mode . visual-line-mode)
     (TeX-mode . prettify-symbols-mode))
 #+end_src
 
@@ -615,6 +601,15 @@ Better LaTeX typesetting experience. Uses Skim to preview the PDF.
     (LaTeX-mode . evil-tex-mode))
 #+end_src
 
+*** cdlatex
+#+begin_src emacs-lisp
+  (use-package cdlatex
+    :hook
+    ((TeX-mode . turn-on-cdlatex)
+     (org-mode . turn-on-org-cdlatex)))
+#+end_src
+
+** Coding
 *** python
 Setup better code folding in =python-mode=.
 #+begin_src emacs-lisp
@@ -639,7 +634,7 @@ Setup better code folding in =python-mode=.
     (python-mode . +outline-python))
 #+end_src
 
-** Miscellaneous
+** Misc
 *** dired
 Sane defaults for the =dired= file manager. Note: this config
 assumes that GNU =coreutils= has been installed on macOS.
@@ -691,8 +686,8 @@ Dired or Org files that contain images from a macOS terminal.
         (use-package openwith
           :config
           (setq openwith-associations
-                 '(("\\.\\(png\\|jpg\\|svg\\|pdf\\)$" "qlmanage -p" (file))
-                   ("\\.\\(docx\\|xlsx\\|pptx\\)$" "open" (file))))
+                 '(("\\.\\(png\\|jpg\\|svg\\)$" "qlmanage -p" (file))
+                   ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
           (openwith-mode 1))
 #+end_src
 

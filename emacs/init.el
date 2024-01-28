@@ -274,14 +274,16 @@ If a directory is provided, we look for the file there."
     "Fix `tab-bar-mode' after any theme has been loaded."
     (let ((bg  (face-attribute 'mode-line :background))
           (brd (face-attribute 'default :background))
+          (fg  (face-attribute 'success :foreground))
           (box (face-attribute 'mode-line :box)))
       (set-face-attribute 'scroll-bar nil :background brd)
       (set-face-attribute 'tab-bar nil :background bg :box box)
       (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
-      (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold))))
+      (set-face-attribute 'tab-bar-tab nil :foreground fg :background bg :box box))))
 
 (use-package doom-modeline
   :custom
+  (doom-modeline-bar-width 0.1)
   (doom-modeline-buffer-encoding nil)
   (doom-modeline-buffer-modification-icon nil)
   (doom-modeline-icon nil)
@@ -323,12 +325,13 @@ If a directory is provided, we look for the file there."
 
 (use-package org
   :hook
-  (org-mode . auto-fill-mode)
+  (org-mode . visual-line-mode)
   :custom
+  (initial-major-mode 'org-mode)
+  (initial-scratch-message "")
   (org-todo-keywords
    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
      (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
-  (org-directory "~/Sync/Org")
   (org-agenda-files (list org-directory))
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-scheduled-if-done t)
@@ -337,15 +340,14 @@ If a directory is provided, we look for the file there."
   (org-agenda-window-setup 'other-tab)
   (org-archive-location "::* Archive")
   (org-ctrl-k-protect-subtree t)
+  (org-directory "~/Sync/Org")
   (org-fontify-quote-and-verse-blocks t)
+  (org-highlight-latex-and-related '(native latex script entities))
   (org-image-actual-width '(400))
-  (org-pretty-entities t)
   (org-startup-folded 'content)
   (org-startup-indented t)
   (org-startup-with-inline-images t)
   (org-tags-column -65)
-  (initial-major-mode 'org-mode)
-  (initial-scratch-message "")
   :config
   (defun +url-handler-zotero (link)
     "Open a zotero:// link in the Zotero desktop app."
@@ -397,15 +399,6 @@ If a directory is provided, we look for the file there."
   :config
   (idle-org-agenda-mode 1))
 
-(use-package toc-org
-  :hook
-  (org-mode . toc-org-mode))
-
-(use-package cdlatex
-  :hook
-  ((TeX-mode . turn-on-cdlatex)
-   (org-mode . turn-on-org-cdlatex)))
-
 (use-package tex
   :ensure auctex
   :custom
@@ -417,6 +410,7 @@ If a directory is provided, we look for the file there."
   (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
   (TeX-view-program-selection '((output-pdf "Skim")))
   :hook
+  (TeX-mode . visual-line-mode)
   (TeX-mode . prettify-symbols-mode))
 
 (use-package reftex
@@ -433,6 +427,11 @@ If a directory is provided, we look for the file there."
 (use-package evil-tex
   :hook
   (LaTeX-mode . evil-tex-mode))
+
+(use-package cdlatex
+  :hook
+  ((TeX-mode . turn-on-cdlatex)
+   (org-mode . turn-on-org-cdlatex)))
 
 (use-package python
   :after (outline evil general)
@@ -480,6 +479,6 @@ If a directory is provided, we look for the file there."
 (use-package openwith
   :config
   (setq openwith-associations
-         '(("\\.\\(png\\|jpg\\|svg\\|pdf\\)$" "qlmanage -p" (file))
-           ("\\.\\(docx\\|xlsx\\|pptx\\)$" "open" (file))))
+         '(("\\.\\(png\\|jpg\\|svg\\)$" "qlmanage -p" (file))
+           ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
   (openwith-mode 1))
