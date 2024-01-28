@@ -174,7 +174,8 @@ If a directory is provided, we look for the file there."
     ;; Insert stuff.
     ;; "i" '(:ignore t :which-key "insert")
     ;; "id" '(+insert-date :which-key "date")
-    "i" '(consult-imenu :which-key "imenu")
+    "i" '(counsel-imenu :which-key "imenu")
+    "r" '(ivy-resume :which-key "resume")
 
     ;; Open stuff.
     "o" '(:ignore t :which-key "open")
@@ -253,6 +254,10 @@ If a directory is provided, we look for the file there."
     "}"  (general-key "C-c }" )
     "~"  (general-key "C-c ~" )))
 
+(use-package spacious-padding
+  :config
+  (spacious-padding-mode 1))
+
 (use-package tab-bar
   :custom
   (frame-title-format "")
@@ -275,14 +280,6 @@ If a directory is provided, we look for the file there."
       (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
       (set-face-attribute 'tab-bar-tab nil :background bg :box box :weight 'bold))))
 
-(use-package modus-themes
-  :custom
-  (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
-  :config
-  (load-theme 'modus-vivendi-tinted t)
-  :bind
-  ("<f12>" . modus-themes-toggle))
-
 (use-package doom-modeline
   :custom
   (doom-modeline-buffer-encoding nil)
@@ -295,31 +292,30 @@ If a directory is provided, we look for the file there."
   :config
   (doom-modeline-mode 1))
 
-;; (use-package doom-themes
-;;   :config
-;;   (load-theme 'doom-gruvbox-light t))
-
-(use-package spacious-padding
+(use-package modus-themes
+  :custom
+  (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
   :config
-  (spacious-padding-mode 1))
+  (load-theme 'modus-vivendi-tinted t)
+  :bind
+  ("<f12>" . modus-themes-toggle))
 
-(use-package vertico
+(use-package ivy
+  :custom
+  (enable-recursive-minibuffers t)
   :config
-  (vertico-mode 1)
-  (vertico-mouse-mode 1))
+  (ivy-mode 1))
 
-(use-package orderless
-  :after vertico
+(use-package swiper
+  :bind
+  ("C-s" . swiper))
+
+(use-package counsel
   :config
-  (setq completion-styles '(orderless)))
-
-(use-package marginalia
-  :after vertico
-  :config
-  (marginalia-mode 1))
-
-(use-package consult
-  :after vertico)
+  (counsel-mode 1)
+  :bind
+  (:map minibuffer-local-map
+        ("C-r" . counsel-minibuffer-history)))
 
 (use-package ace-window
   :bind

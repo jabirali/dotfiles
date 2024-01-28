@@ -278,7 +278,8 @@ Package that simplifies custom keybinding definitions.
       ;; Insert stuff.
       ;; "i" '(:ignore t :which-key "insert")
       ;; "id" '(+insert-date :which-key "date")
-      "i" '(consult-imenu :which-key "imenu")
+      "i" '(counsel-imenu :which-key "imenu")
+      "r" '(ivy-resume :which-key "resume")
 
       ;; Open stuff.
       "o" '(:ignore t :which-key "open")
@@ -359,6 +360,14 @@ Package that simplifies custom keybinding definitions.
 #+end_src
 
 ** Modern interface
+*** spacious-padding
+Add some "breathing room" around key elements of the user interface.
+#+begin_src emacs-lisp
+  (use-package spacious-padding
+    :config
+    (spacious-padding-mode 1))
+#+end_src
+
 *** tab-bar
 Emacs has a nice tab bar that works like those in Vim/Tmux/iTerm2:
 each "tab" is a "set of windows" not just a "buffer". Turn it on.
@@ -388,17 +397,6 @@ each "tab" is a "set of windows" not just a "buffer". Turn it on.
 Note: Most themes either don't theme the tab bar properly, or theme it
 differently from the mode line. I've patched =load-theme= to fix this.
 
-*** modus-themes
-#+begin_src emacs-lisp
-  (use-package modus-themes
-    :custom
-    (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
-    :config
-    (load-theme 'modus-vivendi-tinted t)
-    :bind
-    ("<f12>" . modus-themes-toggle))
-#+end_src
-
 *** doom-modeline
 Modernize the "mode line" that sits below each window.
 #+begin_src emacs-lisp
@@ -415,54 +413,36 @@ Modernize the "mode line" that sits below each window.
     (doom-modeline-mode 1))
 #+end_src
 
-*** doom-themes
-Massive pack of high-quality color themes.
+*** modus-themes
 #+begin_src emacs-lisp
-  ;; (use-package doom-themes
-  ;;   :config
-  ;;   (load-theme 'doom-gruvbox-light t))
-#+end_src
-
-*** spacious-padding
-Add some "breathing room" around key elements of the user interface.
-#+begin_src emacs-lisp
-  (use-package spacious-padding
+  (use-package modus-themes
+    :custom
+    (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
     :config
-    (spacious-padding-mode 1))
+    (load-theme 'modus-vivendi-tinted t)
+    :bind
+    ("<f12>" . modus-themes-toggle))
 #+end_src
 
-*** vertico
+*** ivy/swiper/counsel
 Modern fuzzy-finding interface for interactive Emacs commands.
 #+begin_src emacs-lisp
-  (use-package vertico
+  (use-package ivy
+    :custom
+    (enable-recursive-minibuffers t)
     :config
-    (vertico-mode 1)
-    (vertico-mouse-mode 1))
-#+end_src
+    (ivy-mode 1))
 
-*** orderless
-Make e.g. =M-x find proj= and =M-x proj find= equivalent in =vertico=.
-#+begin_src emacs-lisp
-  (use-package orderless
-    :after vertico
+  (use-package swiper
+    :bind
+    ("C-s" . swiper))
+
+  (use-package counsel
     :config
-    (setq completion-styles '(orderless)))
-#+end_src
-
-*** marginalia
-Add margin notes with relevant metadata to =vertico= prompts.
-#+begin_src emacs-lisp
-  (use-package marginalia
-    :after vertico
-    :config
-    (marginalia-mode 1))
-#+end_src
-
-*** consult
-More intuitive wrappers around some common interactive commands.
-#+begin_src emacs-lisp
-  (use-package consult
-    :after vertico)
+    (counsel-mode 1)
+    :bind
+    (:map minibuffer-local-map
+          ("C-r" . counsel-minibuffer-history)))
 #+end_src
 
 *** ace-window
