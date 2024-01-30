@@ -117,13 +117,26 @@
   (general-evil-setup t)
   (general-override-mode 1)
 
+  ;; Prepare Spacemacs-like leader keymaps. Here, "gmap" and "lmap"
+  ;; refers to a global map (leader) and local map (localleader).
+  (general-create-definer gmap
+    :keymaps 'override
+    :states '(motion normal visual)
+    :prefix "SPC")
+
+  (general-create-definer lmap
+    :keymaps 'override
+    :states '(motion normal visual)
+    :prefix ",")
+
   ;; Work around keyboard layout differences.
   (define-key key-translation-map (kbd "§") (kbd "`"))
   (define-key key-translation-map (kbd "±") (kbd "~"))
 
   ;; Map "SPC" to my custom "space menu" leader map.
-  (mmap :prefix "SPC" :keymaps 'override
+  (gmap
     "SPC" '(execute-extended-command :which-key "cmd")
+
     "1" '(tab-bar-select-tab :which-key "1")          ; Tmux: C-b 1
     "2" '(tab-bar-select-tab :which-key "2")          ; Tmux: C-b 2
     "3" '(tab-bar-select-tab :which-key "3")          ; Tmux: C-b 3
@@ -133,27 +146,29 @@
     "7" '(tab-bar-select-tab :which-key "7")          ; Tmux: C-b 7
     "8" '(tab-bar-select-tab :which-key "8")          ; Tmux: C-b 8
     "9" '(tab-bar-select-tab :which-key "9")          ; Tmux: C-b 9
+
     "a" '(org-agenda :which-key "agenda")             ; Emacs: C-c a
     "b" '(switch-to-buffer :which-key "buffer")       ; Emacs: C-x b
     "d" '(dired-jump :which-key "dired")              ; Emacs: C-x d
-    "f" '(find-file :which-key "find")                ; Emacs: C-x C-f
+    "f" '(find-file :which-key "file")                ; Emacs: C-x C-f
     "g" '(magit :which-key "git")                     ; Emacs: C-x g
     "h" `(,help-map :which-key "help")                ; Emacs: C-h
     "i" '(imenu :which-key "imenu")                   ; Emacs: M-g i
     "j" '(bookmark-jump :which-key "jump")
     "k" '(kill-this-buffer :which-key "kill")         ; Emacs: C-x k
-    "m" '(compose-mail :which-key "mail")             ; Emacs: C-x m
     "n" `(,narrow-map :which-key "narrow")            ; Emacs: C-x n
     "o" '(ace-window :which-key "other")              ; Emacs: C-x o
     "p" `(,project-prefix-map :which-key "project")   ; Emacs: C-x p
+    "q" '(evil-window-delete :which-key "quit")       ; Vim: :q
     "r" '(recentf :which-key "recent")                ; Emacs: C-c r
     "s" '(save-buffer :which-key "save")              ; Emacs: C-x s
-    "t" '(other-tab-prefix :which-key "tab")          ; Emacs: C-x t t
+    "t" '(tab-bar-new-tab :which-key "tab")           ; Emacs: C-x t n
     "w" `(,evil-window-map :which-key "window"))      ; Vim: C-w
 
   ;; Map "C-c C-x" to ", x" for all letters "x". These are
-  ;; generally keybindings defined by the current major mode.
-  (mmap :prefix "," :keymaps 'override
+  ;; generally keybindings defined by the current major mode,
+  ;; and make a sensible set of default localleader bindings.
+  (lmap
     "a" (general-key "C-c C-a")
     "b" (general-key "C-c C-b")
     "c" (general-key "C-c C-c")
@@ -182,8 +197,9 @@
     "z" (general-key "C-c C-z"))
 
   ;; Map "C-c ?" to ", ?" for all symbols "?". This includes some
-  ;; major-mode keybindings and most minor-mode keybindings.
-  (mmap :prefix "," :keymaps 'override
+  ;; major-mode keybindings and most minor-mode keybindings. One
+  ;; exception: ", ," is mapped to "C-c C-c" for simplicity.
+  (lmap
     "!"  (general-key "C-c !" )
     "\"" (general-key "C-c \"")
     "#"  (general-key "C-c #" )
@@ -195,7 +211,7 @@
     ")"  (general-key "C-c )" )
     "*"  (general-key "C-c *" )
     "+"  (general-key "C-c +" )
-    ","  (general-key "C-c ," )
+    ","  (general-key "C-c C-c" )
     "-"  (general-key "C-c -" )
     "."  (general-key "C-c ." )
     "/"  (general-key "C-c /" )
@@ -324,6 +340,9 @@
   :after org
   :ensure nil
   :no-require
+  :custom
+  (org-confirm-babel-evaluate nil)
+  (org-babel-results-keyword "results")
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages
