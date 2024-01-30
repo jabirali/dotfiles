@@ -126,67 +126,44 @@ If a directory is provided, we look for the file there."
   :config
   (general-evil-setup t)
   (general-override-mode 1)
-  (general-create-definer +leader-map
-    :keymaps 'override
-    :states '(motion normal visual)
-    :prefix "SPC")
 
-  ;; Global leader mappings.
-  (+leader-map
-    ;; Important.
-    "SPC" '(execute-extended-command :which-key "command")
-    "TAB" '(ace-window :which-key "switch")
-    "RET" '(scratch-buffer :which-key "scratch")
+  ;; Work around keyboard layout differences.
+  (define-key key-translation-map (kbd "§") (kbd "`"))
+  (define-key key-translation-map (kbd "±") (kbd "~"))
 
-    ;; Existing keymaps.
-    "h" `(,help-map :which-key "+help")
+  ;; Map "`" to "M-x". Ergonomic command palette.
+  (mmap :keymaps 'override "`" 'execute-extended-command)
 
-    ;; Common actions.
-    "s" '(save-buffer :which-key "save")
-    "t" '(tab-bar-new-tab :which-key "tab")
-    "w" '(+close-window :which-key "close")
-    "d" '(split-window-below :which-key "split")
-    "q" '(+kill-buffer-and-close-window :which-key "quit")
-    "Q" '(server-edit :which-key "done")
-    "g" '(magit :which-key "git")
-    "b" '(switch-to-buffer :which-key "buffer")
-    "B" '(ibuffer :which-key "buffers")
-    "a" '(org-agenda :which-key "agenda")
-
-    ;; Bookmarks.
-    "m" '(bookmark-set :which-key "set mark")
-    "'" '(bookmark-jump :which-key "goto mark")
-
-    ;; Reserved for major modes.
-    "e" '(:ignore t :which-key "eval")
-
-    ;; Tab switching.
-    "1" '(tab-bar-select-tab :which-key "1")
-    "2" '(tab-bar-select-tab :which-key "2")
-    "3" '(tab-bar-select-tab :which-key "3")
-    "4" '(tab-bar-select-tab :which-key "4")
-    "5" '(tab-bar-select-tab :which-key "5")
-    "6" '(tab-bar-select-tab :which-key "6")
-    "7" '(tab-bar-select-tab :which-key "7")
-    "8" '(tab-bar-select-tab :which-key "8")
-    "9" '(tab-bar-select-tab :which-key "9")
-
-    ;; Insert stuff.
-    ;; "i" '(:ignore t :which-key "insert")
-    ;; "id" '(+insert-date :which-key "date")
-    "i" '(counsel-imenu :which-key "imenu")
-    "r" '(ivy-resume :which-key "resume")
-
-    ;; Open stuff.
-    "o" '(:ignore t :which-key "open")
-    "o ." `(,(+open-file "~/.config/emacs/README.org") :which-key "dotfile")
-    "o d" '(dired-jump :which-key "directory")
-    "o f" '(find-file :which-key "file")
-    "o i" `(,(+open-file "inbox.org" 'org-directory) :which-key "inbox")
-    "o j" `(,(+open-file "journal.org" 'org-directory) :which-key "journal")
-    "o k" '(org-capture :which-key "capture")
-    "o p" '(project-find-file :which-key "project")
-    "o r" '(recentf :which-key "recent"))
+  ;; Map "SPC" to my custom leader map. I use Emacs-inspired
+  ;; keybindings for e.g. find-file and save-buffer to make the
+  ;; tab and project maps easier to reuse in my own mappings.
+  (mmap :prefix "SPC" :keymaps 'override
+    "'" '(bookmark-jump :which-key "goto")            ; Vim: '
+    "1" '(tab-bar-select-tab :which-key "1")          ; Tmux: C-b 1
+    "2" '(tab-bar-select-tab :which-key "2")          ; Tmux: C-b 2
+    "3" '(tab-bar-select-tab :which-key "3")          ; Tmux: C-b 3
+    "4" '(tab-bar-select-tab :which-key "4")          ; Tmux: C-b 4
+    "5" '(tab-bar-select-tab :which-key "5")          ; Tmux: C-b 5
+    "6" '(tab-bar-select-tab :which-key "6")          ; Tmux: C-b 6
+    "7" '(tab-bar-select-tab :which-key "7")          ; Tmux: C-b 7
+    "8" '(tab-bar-select-tab :which-key "8")          ; Tmux: C-b 8
+    "9" '(tab-bar-select-tab :which-key "9")          ; Tmux: C-b 9
+    "a" '(org-agenda :which-key "agenda")             ; Emacs: C-c a
+    "b" '(switch-buffer :which-key "buffer")          ; Emacs: C-x b
+    "d" '(dired-jump :which-key "dired")              ; Emacs: C-x d
+    "f" '(find-file :which-key "find")                ; Emacs: C-x C-f
+    "g" '(magit :which-key "git")                     ; Emacs: C-x g
+    "h" `(,help-map :which-key "help")                ; Emacs: C-h
+    "i" '(imenu :which-key "imenu")                   ; Emacs: M-g i
+    "k" '(kill-this-buffer :which-key "kill")         ; Emacs: C-x k
+    "m" '(bookmark-set :which-key "mark")             ; Vim: m
+    "n" `(,narrow-map :which-key "narrow")            ; Emacs: C-x n
+    "o" '(ace-window :which-key "other")              ; Emacs: C-x o
+    "p" `(,project-prefix-map :which-key "project")   ; Emacs: C-x p
+    "r" '(recentf :which-key "recent")                ; Emacs: C-c r
+    "s" '(save-buffer :which-key "save")              ; Emacs: C-x s
+    "t" `(,tab-prefix-map :which-key "tab")           ; Emacs: C-x t
+    "w" `(,evil-window-map :which-key "window"))      ; Vim: C-w
 
   ;; Map "C-c C-x" to ", x" for all letters "x". These are
   ;; generally keybindings defined by the current major mode.
@@ -258,29 +235,6 @@ If a directory is provided, we look for the file there."
   :config
   (spacious-padding-mode 1))
 
-(use-package tab-bar
-  :custom
-  (frame-title-format "")
-  (tab-bar-close-button-show nil)
-  (tab-bar-format '(tab-bar-format-tabs))
-  (tab-bar-new-tab-choice "*scratch*")
-  (tab-bar-select-tab-modifiers '(super))
-  (tab-bar-show 1)
-  (tab-bar-tab-hints t)
-  :config
-  (tab-bar-mode 1)
-  (tab-bar-history-mode 1)
-  (defadvice load-theme (after run-after-load-theme-hook activate)
-    "Fix `tab-bar-mode' after any theme has been loaded."
-    (let ((bg  (face-attribute 'mode-line :background))
-          (brd (face-attribute 'default :background))
-          (fg  (face-attribute 'success :foreground))
-          (box (face-attribute 'mode-line :box)))
-      (set-face-attribute 'scroll-bar nil :background brd)
-      (set-face-attribute 'tab-bar nil :background bg :box box)
-      (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
-      (set-face-attribute 'tab-bar-tab nil :foreground fg :background bg :box box))))
-
 (use-package doom-modeline
   :custom
   (doom-modeline-bar-width 0.1)
@@ -293,6 +247,27 @@ If a directory is provided, we look for the file there."
   (doom-modeline-workspace-name nil)
   :config
   (doom-modeline-mode 1))
+
+(use-package tab-bar
+  :custom
+  (frame-title-format "")
+  (tab-bar-close-button-show nil)
+  (tab-bar-format '(tab-bar-format-tabs))
+  (tab-bar-new-tab-choice "*scratch*")
+  (tab-bar-show 1)
+  (tab-bar-tab-hints t)
+  :config
+  (tab-bar-mode 1)
+  (tab-bar-history-mode 1)
+  (defadvice load-theme (after run-after-load-theme-hook activate)
+    "Fix `tab-bar-mode' after any theme has been loaded."
+    (let ((bg  (face-attribute 'mode-line :background))
+          (brd (face-attribute 'default :background))
+          (fg  (face-attribute 'success :foreground))
+          (box (face-attribute 'mode-line :box)))
+      (set-face-attribute 'tab-bar nil :background bg :box box)
+      (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
+      (set-face-attribute 'tab-bar-tab nil :foreground fg :background bg :box box))))
 
 (use-package modus-themes
   :custom
@@ -319,9 +294,7 @@ If a directory is provided, we look for the file there."
   (:map minibuffer-local-map
         ("C-r" . counsel-minibuffer-history)))
 
-(use-package ace-window
-  :bind
-  ("M-o" . 'ace-window))
+(use-package ace-window)
 
 (use-package org
   :hook
