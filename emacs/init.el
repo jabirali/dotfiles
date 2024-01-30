@@ -56,13 +56,13 @@
   (let ((bg  (face-attribute 'scroll-bar :background))
         (fg  (face-attribute 'success :foreground))
         (def (face-attribute 'default :background)))
-    (set-face-attribute 'tab-bar nil :background bg :box `(:line-width 8 :color ,bg))
-    (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box `(:line-width 8 :color ,bg))
-    (set-face-attribute 'mode-line nil :background bg :box `(:line-width 4 :color ,bg))
-    (set-face-attribute 'mode-line-inactive nil :background bg :box `(:line-width 4 :color ,bg))
-    (set-face-attribute 'vertical-border nil :foreground bg :background bg)
     (set-face-attribute 'fringe nil :foreground def :background def)
-    (set-face-attribute 'tab-bar-tab nil :foreground fg :background bg :box `(:line-width 4 :color ,bg))))
+    (set-face-attribute 'mode-line nil :background bg :box `(:line-width 6 :color ,bg))
+    (set-face-attribute 'mode-line-inactive nil :background bg :box `(:line-width 6 :color ,bg))
+    (set-face-attribute 'tab-bar nil :background bg :box `(:line-width 6 :color ,bg))
+    (set-face-attribute 'tab-bar-tab nil :foreground fg :background bg :box `(:line-width 6 :color ,bg))
+    (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box `(:line-width 6 :color ,bg))
+    (set-face-attribute 'vertical-border nil :foreground bg :background bg)))
 
 (if (eq system-type 'darwin)
     (add-to-list 'exec-path "/opt/homebrew/opt/coreutils/libexec/gnubin"))
@@ -121,12 +121,9 @@
   (define-key key-translation-map (kbd "§") (kbd "`"))
   (define-key key-translation-map (kbd "±") (kbd "~"))
 
-  ;; Map "`" to "M-x". Ergonomic command palette.
-  (mmap :keymaps 'override "`" 'execute-extended-command)
-
   ;; Map "SPC" to my custom "space menu" leader map.
   (mmap :prefix "SPC" :keymaps 'override
-    "'" '(bookmark-jump :which-key "goto")            ; Vim: '
+    "SPC" '(execute-extended-command :which-key "cmd")
     "1" '(tab-bar-select-tab :which-key "1")          ; Tmux: C-b 1
     "2" '(tab-bar-select-tab :which-key "2")          ; Tmux: C-b 2
     "3" '(tab-bar-select-tab :which-key "3")          ; Tmux: C-b 3
@@ -143,14 +140,15 @@
     "g" '(magit :which-key "git")                     ; Emacs: C-x g
     "h" `(,help-map :which-key "help")                ; Emacs: C-h
     "i" '(imenu :which-key "imenu")                   ; Emacs: M-g i
+    "j" '(bookmark-jump :which-key "jump")
     "k" '(kill-this-buffer :which-key "kill")         ; Emacs: C-x k
-    "m" '(bookmark-set :which-key "mark")             ; Vim: m
+    "m" '(compose-mail :which-key "mail")             ; Emacs: C-x m
     "n" `(,narrow-map :which-key "narrow")            ; Emacs: C-x n
     "o" '(ace-window :which-key "other")              ; Emacs: C-x o
     "p" `(,project-prefix-map :which-key "project")   ; Emacs: C-x p
     "r" '(recentf :which-key "recent")                ; Emacs: C-c r
     "s" '(save-buffer :which-key "save")              ; Emacs: C-x s
-    "t" `(,tab-prefix-map :which-key "tab")           ; Emacs: C-x t t
+    "t" '(other-tab-prefix :which-key "tab")          ; Emacs: C-x t t
     "w" `(,evil-window-map :which-key "window"))      ; Vim: C-w
 
   ;; Map "C-c C-x" to ", x" for all letters "x". These are
