@@ -25,6 +25,7 @@
 
 (use-package emacs
   :custom
+  (default-input-method 'TeX)
   (inhibit-startup-message t)
   (line-spacing 0.15)
   (mouse-highlight nil)
@@ -53,30 +54,6 @@
 (if (eq system-type 'darwin)
     (add-to-list 'exec-path "/opt/homebrew/opt/coreutils/libexec/gnubin"))
 
-(defun +open-file (file &optional dir)
-  "Create an interactive command for opening a given file.
-
-If a directory is provided, we look for the file there."
-  `(lambda ()
-     (interactive)
-     (if (null ,dir)
-         (find-file (expand-file-name ,file))
-                    (find-file (expand-file-name ,file ,dir)))))
-
-(defun +close-window ()
-  "Close window. If it's the last window, close the whole tab."
-  (interactive)
-  (if (one-window-p)
-      (tab-bar-close-tab)
-    (delete-window)
-    (balance-windows)))
-
-(defun +kill-buffer-and-close-window ()
-  "Kill buffer and then close the currently active window."
-  (interactive)
-  (kill-buffer)
-  (+close-window))
-
 (defun +insert-date ()
   "Insert an ISO date stamp corresponding to today."
   (interactive)
@@ -84,7 +61,7 @@ If a directory is provided, we look for the file there."
 
 (defun +find-projects ()
   (interactive)
-  (project-remember-projects-under (expand-file-name "~/Work/") t))
+  (project-remember-projects-under (expand-file-name "~/Sync/") t))
 
 (use-package evil
   :custom

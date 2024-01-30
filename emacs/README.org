@@ -73,10 +73,11 @@ This is particularly helpful when =~/.config/emacs/= is in a Git repo.
 #+end_src
 
 *** defaults
-Fix some outdated default settings.
+Improve the Emacs default settings and modes.
 #+begin_src emacs-lisp
   (use-package emacs
     :custom
+    (default-input-method 'TeX)
     (inhibit-startup-message t)
     (line-spacing 0.15)
     (mouse-highlight nil)
@@ -115,46 +116,17 @@ Ensure that GNU coreutils is available in $PATH.
 #+end_src
 
 *** functions
-These are various helper functions used throughout my config.
-#+begin_src emacs-lisp
-  (defun +open-file (file &optional dir)
-    "Create an interactive command for opening a given file.
-
-  If a directory is provided, we look for the file there."
-    `(lambda ()
-       (interactive)
-       (if (null ,dir)
-           (find-file (expand-file-name ,file))
-                      (find-file (expand-file-name ,file ,dir)))))
-
-  (defun +close-window ()
-    "Close window. If it's the last window, close the whole tab."
-    (interactive)
-    (if (one-window-p)
-        (tab-bar-close-tab)
-      (delete-window)
-      (balance-windows)))
-
-  (defun +kill-buffer-and-close-window ()
-    "Kill buffer and then close the currently active window."
-    (interactive)
-    (kill-buffer)
-    (+close-window))
-#+end_src
-
-This can be useful in e.g. when writing Org notes.
+Various helper functions used throughout my config.
 #+begin_src emacs-lisp
   (defun +insert-date ()
     "Insert an ISO date stamp corresponding to today."
     (interactive)
     (insert (format-time-string "%Y-%m-%d %A")))
 #+end_src
-
-Function for auto-detecting projects.
 #+begin_src emacs-lisp
   (defun +find-projects ()
     (interactive)
-    (project-remember-projects-under (expand-file-name "~/Work/") t))
+    (project-remember-projects-under (expand-file-name "~/Sync/") t))
 #+end_src
 
 ** Vim keybindings
