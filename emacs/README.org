@@ -209,9 +209,7 @@ General simplifies making custom keybindings.
     ;; Map "`" to "M-x". Ergonomic command palette.
     (mmap :keymaps 'override "`" 'execute-extended-command)
 
-    ;; Map "SPC" to my custom leader map. I use Emacs-inspired
-    ;; keybindings for e.g. find-file and save-buffer to make the
-    ;; tab and project maps easier to reuse in my own mappings.
+    ;; Map "SPC" to my custom "space menu" leader map.
     (mmap :prefix "SPC" :keymaps 'override
       "'" '(bookmark-jump :which-key "goto")            ; Vim: '
       "1" '(tab-bar-select-tab :which-key "1")          ; Tmux: C-b 1
@@ -237,7 +235,7 @@ General simplifies making custom keybindings.
       "p" `(,project-prefix-map :which-key "project")   ; Emacs: C-x p
       "r" '(recentf :which-key "recent")                ; Emacs: C-c r
       "s" '(save-buffer :which-key "save")              ; Emacs: C-x s
-      "t" `(,tab-prefix-map :which-key "tab")           ; Emacs: C-x t
+      "t" `(,tab-prefix-map :which-key "tab")           ; Emacs: C-x t t
       "w" `(,evil-window-map :which-key "window"))      ; Vim: C-w
 
     ;; Map "C-c C-x" to ", x" for all letters "x". These are
@@ -619,6 +617,9 @@ Automatically highlight TODOs in code files. Works well with Vim.
 Integration with the Git version control system that "just works".
 #+begin_src emacs-lisp
   (use-package magit
+    :bind
+    (:map magit-status-mode-map
+          ("SPC" . nil))
     :config
     (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 #+end_src
