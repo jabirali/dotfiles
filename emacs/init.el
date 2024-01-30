@@ -42,7 +42,7 @@
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (blink-cursor-mode -1)
-  (fringe-mode -1)
+  (fringe-mode 16)
   (recentf-mode 1)
   (savehist-mode 1))
 
@@ -50,6 +50,19 @@
   :config
   (unless (server-running-p)
     (server-mode 1)))
+
+(defadvice load-theme (after run-after-load-theme-hook activate)
+  "Prettify `tab-bar-mode' etc. after any theme has been loaded."
+  (let ((bg  (face-attribute 'scroll-bar :background))
+        (fg  (face-attribute 'success :foreground))
+        (def (face-attribute 'default :background)))
+    (set-face-attribute 'tab-bar nil :background bg :box `(:line-width 8 :color ,bg))
+    (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box `(:line-width 8 :color ,bg))
+    (set-face-attribute 'mode-line nil :background bg :box `(:line-width 4 :color ,bg))
+    (set-face-attribute 'mode-line-inactive nil :background bg :box `(:line-width 4 :color ,bg))
+    (set-face-attribute 'vertical-border nil :foreground bg :background bg)
+    (set-face-attribute 'fringe nil :foreground def :background def)
+    (set-face-attribute 'tab-bar-tab nil :foreground fg :background bg :box `(:line-width 4 :color ,bg))))
 
 (if (eq system-type 'darwin)
     (add-to-list 'exec-path "/opt/homebrew/opt/coreutils/libexec/gnubin"))
@@ -124,7 +137,7 @@
     "8" '(tab-bar-select-tab :which-key "8")          ; Tmux: C-b 8
     "9" '(tab-bar-select-tab :which-key "9")          ; Tmux: C-b 9
     "a" '(org-agenda :which-key "agenda")             ; Emacs: C-c a
-    "b" '(switch-buffer :which-key "buffer")          ; Emacs: C-x b
+    "b" '(switch-to-buffer :which-key "buffer")       ; Emacs: C-x b
     "d" '(dired-jump :which-key "dired")              ; Emacs: C-x d
     "f" '(find-file :which-key "find")                ; Emacs: C-x C-f
     "g" '(magit :which-key "git")                     ; Emacs: C-x g
@@ -206,10 +219,6 @@
     "}"  (general-key "C-c }" )
     "~"  (general-key "C-c ~" )))
 
-(use-package spacious-padding
-  :config
-  (spacious-padding-mode 1))
-
 (use-package doom-modeline
   :custom
   (doom-modeline-bar-width 0.1)
@@ -233,16 +242,7 @@
   (tab-bar-tab-hints t)
   :config
   (tab-bar-mode 1)
-  (tab-bar-history-mode 1)
-  (defadvice load-theme (after run-after-load-theme-hook activate)
-    "Fix `tab-bar-mode' after any theme has been loaded."
-    (let ((bg  (face-attribute 'mode-line :background))
-          (brd (face-attribute 'default :background))
-          (fg  (face-attribute 'success :foreground))
-          (box (face-attribute 'mode-line :box)))
-      (set-face-attribute 'tab-bar nil :background bg :box box)
-      (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box box)
-      (set-face-attribute 'tab-bar-tab nil :foreground fg :background bg :box box))))
+  (tab-bar-history-mode 1))
 
 (use-package modus-themes
   :custom
@@ -422,8 +422,7 @@
 
 (use-package magit
   :bind
-  (:map magit-status-mode-map
-        ("SPC" . nil))
+  (:map magit-status-mode-map ("SPC" . nil))
   :config
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 
