@@ -109,16 +109,16 @@ from the terminal. But we only want one Emacs daemon at a time.
 #+end_src
 ** Definitions
 *** advice
-This makes the themes look a bit nicer and more modern. I've tried
-spacious-padding-mode, but I think this one looks a bit nicer.
+This makes the themes look a bit nicer and more modern.
 #+begin_src emacs-lisp
   (defadvice load-theme (after run-after-load-theme-hook activate)
-    "Prettify `tab-bar-mode' etc. after any theme has been loaded."
-    (let ((bg1 (face-attribute 'scroll-bar :background))
-          (bg2 (face-attribute 'default :background))
+    "Personal customizations of any Emacs theme that is loaded."
+    (let ((bg0 (face-attribute 'default :background))
+          (bg1 (face-attribute 'scroll-bar :background))
           (fg1 (face-attribute 'success :foreground))
           (fg2 (face-attribute 'mode-line :foreground)))
-      
+
+      ;; Make the colorization of the tab bar, mode line, and dividers more minimal.
       (set-face-attribute 'tab-bar nil :foreground bg1 :background bg1 :box `(:line-width 6 :color ,bg1))
       (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg1 :box `(:line-width 6 :color ,bg1))
       (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg1 :box `(:line-width 6 :color ,bg1))
@@ -126,8 +126,13 @@ spacious-padding-mode, but I think this one looks a bit nicer.
       (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
       (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
 
-      (set-face-attribute 'fringe nil :foreground bg2 :background bg2)
-      (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)))
+      (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
+      (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)
+
+      ;; Make the iTerm2 background color match the current theme.
+      (send-string-to-terminal
+       (format "\033]Ph%s\033\\"
+               (substring (face-attribute 'default :background) 1)))))
 #+end_src
 *** variables
 Ensure that GNU coreutils is available in $PATH.
@@ -338,6 +343,37 @@ General simplifies making custom keybindings.
       "|"  (general-key "C-c |" )
       "}"  (general-key "C-c }" )
       "~"  (general-key "C-c ~" )))
+#+end_src
+
+** Terminal support
+*** xterm-mouse-mode
+Enable mouse support even in the terminal.
+#+begin_src emacs-lisp
+  (use-package xt-mouse
+    :ensure nil
+    :config
+    (xterm-mouse-mode t))
+#+end_src
+
+*** mouse-wheel-mode
+Improve the mouse wheel support. Including in terminals.
+#+begin_src emacs-lisp
+  (use-package mwheel
+    :ensure nil
+    :custom
+    (mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+    (mouse-wheel-progressive-speed nil)
+    (mouse-wheel-follow-mouse t)
+    :config
+    (mouse-wheel-mode t))
+    
+*** evil-terminal-cursor-changer
+Change the cursor shape depending on the Evil state.
+#+begin_src emacs-lisp
+  (use-package evil-terminal-cursor-changer
+    :after evil
+    :config
+    (evil-terminal-cursor-changer-activate))
 #+end_src
 
 ** Modern interface

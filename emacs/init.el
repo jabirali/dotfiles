@@ -52,12 +52,13 @@
     (server-mode 1)))
 
 (defadvice load-theme (after run-after-load-theme-hook activate)
-  "Prettify `tab-bar-mode' etc. after any theme has been loaded."
-  (let ((bg1 (face-attribute 'scroll-bar :background))
-        (bg2 (face-attribute 'default :background))
+  "Personal customizations of any Emacs theme that is loaded."
+  (let ((bg0 (face-attribute 'default :background))
+        (bg1 (face-attribute 'scroll-bar :background))
         (fg1 (face-attribute 'success :foreground))
         (fg2 (face-attribute 'mode-line :foreground)))
 
+    ;; Make the colorization of the tab bar, mode line, and dividers more minimal.
     (set-face-attribute 'tab-bar nil :foreground bg1 :background bg1 :box `(:line-width 6 :color ,bg1))
     (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg1 :box `(:line-width 6 :color ,bg1))
     (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg1 :box `(:line-width 6 :color ,bg1))
@@ -65,8 +66,13 @@
     (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
     (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
 
-    (set-face-attribute 'fringe nil :foreground bg2 :background bg2)
-    (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)))
+    (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
+    (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)
+
+    ;; Make the iTerm2 background color match the current theme.
+    (send-string-to-terminal
+     (format "\033]Ph%s\033\\"
+             (substring (face-attribute 'default :background) 1)))))
 
 (if (eq system-type 'darwin)
     (add-to-list 'exec-path "/opt/homebrew/opt/coreutils/libexec/gnubin"))
@@ -236,6 +242,21 @@
     "|"  (general-key "C-c |" )
     "}"  (general-key "C-c }" )
     "~"  (general-key "C-c ~" )))
+
+(use-package xt-mouse
+  :ensure nil
+  :custom
+  (mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+  (mouse-wheel-progressive-speed nil)
+  (mouse-wheel-follow-mouse t)
+  :config
+  (xterm-mouse-mode t)
+  (mouse-wheel-mode t))
+
+(use-package evil-terminal-cursor-changer
+  :after evil
+  :config
+  (evil-terminal-cursor-changer-activate))
 
 (use-package doom-modeline
   :custom
