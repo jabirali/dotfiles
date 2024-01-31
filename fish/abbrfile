@@ -20,7 +20,7 @@ bs   brew search
 
 d    dotfiles
 
-e    emacsclient -c -nw
+e    emacsclient -nc
 ee   tangle
 
 g    git

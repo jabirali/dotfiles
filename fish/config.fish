@@ -5,8 +5,8 @@
 #	fish_plugins	List of packages to automatically install.
 
 # Environment variables.
-export EDITOR="vim"
-export ALTERNATE_EDITOR=""
+export EDITOR="emacsclient"
+export ALTERNATE_EDITOR="emacs -nw"
 export MANPAGER="vim +MANPAGER --not-a-term -"
 export DIRENV_LOG_FORMAT=
 export BAT_STYLE="plain"
