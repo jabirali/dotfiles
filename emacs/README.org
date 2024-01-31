@@ -6,30 +6,8 @@ This is my config file for Emacs 29+ on macOS. My setup is mostly
 based around [[org-mode]] and [[evil-mode]]: I use Emacs for Org, but often
 switch to Vim for programming and VSCode for Jupyter notebooks.
 
-* Emacs
-** Bootstrap
-*** macOS
-[[https://bitbucket.org/mituharu/emacs-mac/src/master/][Emacs Mac port]] still handles Retina (hiDPI) screens best. The Cask has
-fewest bugs, but only the Formula seems to support native compilation.
-#+begin_src bash
-  brew tap "railwaycat/emacsmacport"
-  brew install --cask emacs-mac
-#+end_src
-
-On the other hand, [[https://github.com/d12frosted/homebrew-emacs-plus][Emacs Plus]] for some reason appears to work better
-when you use it in the terminal. Works well with native compilation.
-#+begin_src bash
-  brew tap "d12frosted/emacs-plus"
-  brew install emacs-plus --with-native-comp --with-savchenkovaleriy-big-sur-icon
-#+end_src
-    
-These settings make Emacs Mac port look nicer when using the [[tab-bar]].
-#+begin_src bash
-  defaults write org.gnu.Emacs TransparentTitleBar DARK
-  defaults write org.gnu.Emacs HideDocumentIcon YES
-#+end_src
-
-*** package
+* Bootstrap
+** package
 Bootstrap the Emacs package manager and enable the community repos.
 When available, we also want ahead-of-time native package compilation.
 #+begin_src emacs-lisp
@@ -41,7 +19,7 @@ When available, we also want ahead-of-time native package compilation.
   (package-initialize)
 #+end_src
 
-*** use-package
+** use-package
 This config is structured around the =use-package= macro. Since Emacs 29,
 this has been upstreamed and no longer has to be manually installed.
 #+begin_src emacs-lisp
@@ -53,7 +31,7 @@ this has been upstreamed and no longer has to be manually installed.
 Note that from Emacs 30, =use-package= will obtain a new keyword =:vc=
 that can be used to install packages directly from e.g. GitHub repos.
 
-*** no-littering
+** no-littering
 By default, Emacs throws files all over the place. The =no-littering=
 package helps relocate cache and backup files into a single location.
 This is particularly helpful when =~/.config/emacs/= is in a Git repo.
@@ -72,7 +50,7 @@ This is particularly helpful when =~/.config/emacs/= is in a Git repo.
     (load custom-file))
 #+end_src
 
-*** defaults
+** defaults
 Improve the Emacs default settings and modes.
 #+begin_src emacs-lisp
   (use-package emacs
@@ -107,8 +85,8 @@ from the terminal. But we only want one Emacs daemon at a time.
     (unless (server-running-p)
       (server-mode 1)))
 #+end_src
-** Definitions
-*** advice
+* Definitions
+** advice
 This makes the themes look a bit nicer and more modern.
 #+begin_src emacs-lisp
   (defadvice load-theme (after run-after-load-theme-hook activate)
@@ -134,15 +112,8 @@ This makes the themes look a bit nicer and more modern.
        (format "\033]Ph%s\033\\"
                (substring (face-attribute 'default :background) 1)))))
 #+end_src
-*** variables
-Ensure that GNU coreutils is available in $PATH.
-#+begin_src emacs-lisp
-  (if (eq system-type 'darwin)
-      (add-to-list 'exec-path "/opt/homebrew/opt/coreutils/libexec/gnubin"))
-#+end_src
-
-*** functions
-Various helper functions used throughout my config.
+** functions
+Misc personal helper functions.
 #+begin_src emacs-lisp
   (defun +insert-date ()
     "Insert an ISO date stamp corresponding to today."
@@ -155,8 +126,8 @@ Various helper functions used throughout my config.
     (project-remember-projects-under (expand-file-name "~/Sync/") t))
 #+end_src
 
-** Vim keybindings
-*** evil-mode
+* Vim keybindings
+** evil-mode
 I have two decades of Vim muscle memory, and Emacs keybindings usually
 triggers my RSI. So Evil is pretty much a prerequisite to using Emacs.
 #+begin_src emacs-lisp
@@ -171,7 +142,7 @@ triggers my RSI. So Evil is pretty much a prerequisite to using Emacs.
     (evil-mode 1))
 #+end_src
 
-*** evil-collection
+** evil-collection
 Evil itself provides Vim-like text editing but doesn't theme "apps"
 like =magit= and =dired=. Evil Collection helps us with that.
 #+begin_src emacs-lisp
@@ -181,7 +152,7 @@ like =magit= and =dired=. Evil Collection helps us with that.
     (evil-collection-init))
 #+end_src
 
-*** evil-surround
+** evil-surround
 Emacs port of the famous =surround.vim= plugin.
 #+begin_src emacs-lisp
   (use-package evil-surround
@@ -190,7 +161,7 @@ Emacs port of the famous =surround.vim= plugin.
     (global-evil-surround-mode 1))
 #+end_src 
 
-*** evil-org
+** evil-org
 Org-mode is a huge system and not well-covered by =evil-collection=,
 so we need an extra package to make it work as expected.
 #+begin_src emacs-lisp
@@ -200,7 +171,7 @@ so we need an extra package to make it work as expected.
     (org-mode . evil-org-mode))
 #+end_src
 
-*** evil-org-agenda
+** evil-org-agenda
 The package =evil-org= also offers =org-agenda= integration, but for
 some reason it's not on by default. Let's fix that.
 #+begin_src emacs-lisp
@@ -211,7 +182,7 @@ some reason it's not on by default. Let's fix that.
       (evil-org-agenda-set-keys))
 #+end_src
 
-*** which-key
+** which-key
 Make key sequences more discoverable by providing live hints.
 #+begin_src emacs-lisp
   (use-package which-key
@@ -219,7 +190,7 @@ Make key sequences more discoverable by providing live hints.
     (which-key-mode 1))
 #+end_src
 
-*** general
+** general
 General simplifies making custom keybindings.
 #+begin_src emacs-lisp
   (use-package general
@@ -345,8 +316,8 @@ General simplifies making custom keybindings.
       "~"  (general-key "C-c ~" )))
 #+end_src
 
-** Terminal support
-*** xclip-mode
+* Terminal support
+** xclip-mode
 Cross-platform integration with the OS clipboard.
 #+begin_src emacs-lisp
   (use-package xclip
@@ -354,7 +325,7 @@ Cross-platform integration with the OS clipboard.
     (xclip-mode 1))
 #+end_src
 
-*** xterm-mouse-mode
+** xterm-mouse-mode
 Enable mouse support even in the terminal.
 #+begin_src emacs-lisp
   (use-package xt-mouse
@@ -363,7 +334,7 @@ Enable mouse support even in the terminal.
     (xterm-mouse-mode t))
 #+end_src
 
-*** mouse-wheel-mode
+** mouse-wheel-mode
 Improve the mouse wheel support. Including in terminals.
 #+begin_src emacs-lisp
   (use-package mwheel
@@ -376,7 +347,7 @@ Improve the mouse wheel support. Including in terminals.
     (mouse-wheel-mode t))
  #+end_src
     
-*** evil-terminal-cursor-changer
+** evil-terminal-cursor-changer
 Change the cursor shape depending on the Evil state.
 #+begin_src emacs-lisp
   (use-package evil-terminal-cursor-changer
@@ -385,8 +356,8 @@ Change the cursor shape depending on the Evil state.
     (evil-terminal-cursor-changer-activate))
 #+end_src
 
-** Modern interface
-*** doom-modeline
+* Modern interface
+** doom-modeline
 Modernize the "mode line" that sits below each window.
 #+begin_src emacs-lisp
   (use-package doom-modeline
@@ -403,7 +374,7 @@ Modernize the "mode line" that sits below each window.
     (doom-modeline-mode 1))
 #+end_src
 
-*** tab-bar
+** tab-bar
 Emacs has a nice tab bar that works like those in Vim/Tmux/iTerm2:
 each "tab" is a "set of windows" not just a "buffer". Turn it on.
 #+begin_src emacs-lisp
@@ -422,7 +393,7 @@ each "tab" is a "set of windows" not just a "buffer". Turn it on.
 Note: Most themes either don't theme the tab bar properly, or theme it
 differently from the mode line. I've patched =load-theme= to fix this.
 
-*** themes
+** themes
 #+begin_src emacs-lisp
   (use-package modus-themes
     :custom
@@ -433,7 +404,7 @@ differently from the mode line. I've patched =load-theme= to fix this.
     ("<f12>" . modus-themes-toggle))
 #+end_src
 
-*** ivy/swiper/counsel
+** ivy/swiper/counsel
 Modern fuzzy-finding interface for interactive Emacs commands.
 #+begin_src emacs-lisp
   (use-package ivy
@@ -454,14 +425,14 @@ Modern fuzzy-finding interface for interactive Emacs commands.
           ("C-r" . counsel-minibuffer-history)))
 #+end_src
 
-*** ace-window
+** ace-window
 Easily jump directly between any visible window.
 #+begin_src emacs-lisp
   (use-package ace-window)
 #+end_src
 
-** Org & TeX
-*** org-mode
+* Org & TeX
+** org-mode
 I'm using Org as my main research journal and task management system.
 #+begin_src emacs-lisp
   (use-package org
@@ -496,7 +467,7 @@ I'm using Org as my main research journal and task management system.
     (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
 #+end_src
 
-*** org-download
+** org-download
 This package lets me copy-paste images directly into Org files.
 #+begin_src emacs-lisp
   (use-package org-download
@@ -526,7 +497,7 @@ Remember to install the system dependency for handling screenshots:
   brew install pngpaste
 #+end_src
 
-*** org-babel
+** org-babel
 #+begin_src emacs-lisp
   (use-package org-babel
     :after org
@@ -541,7 +512,7 @@ Remember to install the system dependency for handling screenshots:
      '((python . t))))
 #+end_src
 
-*** org-super-agenda
+** org-super-agenda
 Sort the =org-agenda= by project. Makes it easier to keep an overview.
 #+begin_src emacs-lisp
   (use-package org-super-agenda
@@ -552,13 +523,13 @@ Sort the =org-agenda= by project. Makes it easier to keep an overview.
     (org-super-agenda-mode 1))
 #+end_src
 
-*** ox-pandoc
+** ox-pandoc
 Better export options. Including exporting to DOCX with LaTeX equations.
 #+begin_src emacs-lisp
   (use-package ox-pandoc)
 #+end_src
 
-*** idle-org-agenda
+** idle-org-agenda
 Use the =org-agenda= as my screen saver. Helps refocus after a break.
 #+begin_src emacs-lisp
   (use-package idle-org-agenda
@@ -569,7 +540,7 @@ Use the =org-agenda= as my screen saver. Helps refocus after a break.
     (idle-org-agenda-mode 1))
 #+end_src
 
-*** latex
+** latex
 Better LaTeX typesetting experience. Uses Skim to preview the PDF.
 #+begin_src emacs-lisp
   (use-package tex
@@ -606,7 +577,7 @@ Better LaTeX typesetting experience. Uses Skim to preview the PDF.
     (LaTeX-mode . evil-tex-mode))
 #+end_src
 
-*** cdlatex
+** cdlatex
 #+begin_src emacs-lisp
   (use-package cdlatex
     :hook
@@ -614,8 +585,8 @@ Better LaTeX typesetting experience. Uses Skim to preview the PDF.
      (org-mode . turn-on-org-cdlatex)))
 #+end_src
 
-** Coding
-*** python
+* Coding
+** python
 Setup better code folding in =python-mode=.
 #+begin_src emacs-lisp
   (use-package python
@@ -639,8 +610,8 @@ Setup better code folding in =python-mode=.
     (python-mode . +outline-python))
 #+end_src
 
-** Misc
-*** dired
+* Misc
+** dired
 Sane defaults for the =dired= file manager. Note: this config
 assumes that GNU =coreutils= has been installed on macOS.
 #+begin_src emacs-lisp
@@ -653,7 +624,7 @@ assumes that GNU =coreutils= has been installed on macOS.
     (mmap "^" 'dired-jump))
 #+end_src
 
-*** diredfl
+** diredfl
 Make =dired= a bit more colorful.
 #+begin_src emacs-lisp
   (use-package diredfl
@@ -662,13 +633,13 @@ Make =dired= a bit more colorful.
     (diredfl-global-mode 1))
 #+end_src
 
-*** gnuplot
+** gnuplot
 Provides e.g. syntax highlighting of Gnuplot scripts and configs.
 #+begin_src emacs-lisp
   (use-package gnuplot)
 #+end_src
 
-*** hl-todo
+** hl-todo
 Automatically highlight TODOs in code files. Works well with Vim.
 #+begin_src emacs-lisp
 (use-package hl-todo
@@ -676,7 +647,7 @@ Automatically highlight TODOs in code files. Works well with Vim.
   (prog-mode . hl-todo-mode))
 #+end_src
 
-*** magit
+** magit
 Integration with the Git version control system that "just works".
 #+begin_src emacs-lisp
   (use-package magit
@@ -686,7 +657,7 @@ Integration with the Git version control system that "just works".
     (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 #+end_src
 
-*** openwith
+** openwith
 Use the macOS "Quick Look" to open images. Useful when using e.g.
 Dired or Org files that contain images from a macOS terminal.
 #+begin_src emacs-lisp
@@ -696,13 +667,6 @@ Dired or Org files that contain images from a macOS terminal.
                  '(("\\.\\(png\\|jpg\\|svg\\)$" "qlmanage -p" (file))
                    ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
           (openwith-mode 1))
-#+end_src
-
-* MacOS
-** defaults
-Prevent pop-ups for switching input method in Sonoma and above.
-#+begin_src bash
-  defaults write kCFPreferencesAnyApplication TSMLanguageIndicatorEnabled 0
 #+end_src
 
 * Tangle

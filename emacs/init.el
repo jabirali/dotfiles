@@ -74,9 +74,6 @@
      (format "\033]Ph%s\033\\"
              (substring (face-attribute 'default :background) 1)))))
 
-(if (eq system-type 'darwin)
-    (add-to-list 'exec-path "/opt/homebrew/opt/coreutils/libexec/gnubin"))
-
 (defun +insert-date ()
   "Insert an ISO date stamp corresponding to today."
   (interactive)
