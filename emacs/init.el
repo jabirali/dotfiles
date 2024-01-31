@@ -53,16 +53,20 @@
 
 (defadvice load-theme (after run-after-load-theme-hook activate)
   "Prettify `tab-bar-mode' etc. after any theme has been loaded."
-  (let ((bg  (face-attribute 'scroll-bar :background))
-        (fg  (face-attribute 'success :foreground))
-        (def (face-attribute 'default :background)))
-    (set-face-attribute 'fringe nil :foreground def :background def)
-    (set-face-attribute 'mode-line nil :background bg :box `(:line-width 6 :color ,bg))
-    (set-face-attribute 'mode-line-inactive nil :background bg :box `(:line-width 6 :color ,bg))
-    (set-face-attribute 'tab-bar nil :background bg :box `(:line-width 6 :color ,bg))
-    (set-face-attribute 'tab-bar-tab nil :foreground fg :background bg :box `(:line-width 6 :color ,bg))
-    (set-face-attribute 'tab-bar-tab-inactive nil :background bg :box `(:line-width 6 :color ,bg))
-    (set-face-attribute 'vertical-border nil :foreground bg :background bg)))
+  (let ((bg1 (face-attribute 'scroll-bar :background))
+        (bg2 (face-attribute 'default :background))
+        (fg1 (face-attribute 'success :foreground))
+        (fg2 (face-attribute 'mode-line :foreground)))
+
+    (set-face-attribute 'tab-bar nil :foreground bg1 :background bg1 :box `(:line-width 6 :color ,bg1))
+    (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg1 :box `(:line-width 6 :color ,bg1))
+    (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg1 :box `(:line-width 6 :color ,bg1))
+
+    (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
+    (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
+
+    (set-face-attribute 'fringe nil :foreground bg2 :background bg2)
+    (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)))
 
 (if (eq system-type 'darwin)
     (add-to-list 'exec-path "/opt/homebrew/opt/coreutils/libexec/gnubin"))
