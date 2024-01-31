@@ -243,14 +243,22 @@
     "}"  (general-key "C-c }" )
     "~"  (general-key "C-c ~" )))
 
+(use-package xclip
+  :config
+  (xclip-mode 1))
+
 (use-package xt-mouse
+  :ensure nil
+  :config
+  (xterm-mouse-mode t))
+
+(use-package mwheel
   :ensure nil
   :custom
   (mouse-wheel-scroll-amount '(1 ((shift) . 1)))
   (mouse-wheel-progressive-speed nil)
   (mouse-wheel-follow-mouse t)
   :config
-  (xterm-mouse-mode t)
   (mouse-wheel-mode t))
 
 (use-package evil-terminal-cursor-changer

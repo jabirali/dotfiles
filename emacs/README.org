@@ -346,6 +346,14 @@ General simplifies making custom keybindings.
 #+end_src
 
 ** Terminal support
+*** xclip-mode
+Cross-platform integration with the OS clipboard.
+#+begin_src emacs-lisp
+  (use-package xclip
+    :config
+    (xclip-mode 1))
+#+end_src
+
 *** xterm-mouse-mode
 Enable mouse support even in the terminal.
 #+begin_src emacs-lisp
@@ -366,6 +374,7 @@ Improve the mouse wheel support. Including in terminals.
     (mouse-wheel-follow-mouse t)
     :config
     (mouse-wheel-mode t))
+ #+end_src
     
 *** evil-terminal-cursor-changer
 Change the cursor shape depending on the Evil state.
