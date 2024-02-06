@@ -2,4 +2,3 @@
 
 # This script fixes inconsistent app icons in macOS Big Sur and above.
 curl -s https://parsefiles.back4app.com/JPaQcFfEEQ1ePBxbf6wvzkPMEqKYHhPYv8boI1Rc/0ea87a8eb4152540cabca3fdcc16654d_qJ5YlbB9s5.icns > /Applications/Zotero.app/Contents/Resources/zotero.icns
-curl -s https://github.com/SavchenkoValeriy/emacs-icons/raw/main/flat-svg/Emacs.icns > /Applications/Emacs.app/Contents/Resources/Emacs.icns
