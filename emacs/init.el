@@ -26,6 +26,7 @@
 (use-package emacs
   :custom
   (default-input-method 'TeX)
+  (frame-title-format "%b")
   (inhibit-startup-message t)
   (line-spacing 0.15)
   (mouse-highlight nil)
@@ -35,14 +36,16 @@
   (tab-width 4) 
   (truncate-lines t)
   (use-short-answers t)
+  (xterm-set-window-title t)
   :custom-face
   (default ((t (:family "JetBrains Mono NL" :height 140))))
   :config
   (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
   (blink-cursor-mode -1)
-  (fringe-mode 16)
+  (when (display-graphic-p)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)
+    (fringe-mode 16))
   (recentf-mode 1)
   (savehist-mode 1))
 
@@ -50,6 +53,9 @@
   :config
   (unless (server-running-p)
     (server-mode 1)))
+
+(setq-default left-margin-width 1 right-margin-width 1)
+(set-window-buffer nil (current-buffer))
 
 (defadvice load-theme (after run-after-load-theme-hook activate)
   "Personal customizations of any Emacs theme that is loaded."
@@ -67,12 +73,13 @@
     (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
 
     (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
-    (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)
+    (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1))
 
-    ;; Make the iTerm2 background color match the current theme.
-    (send-string-to-terminal
-     (format "\033]Ph%s\033\\"
-             (substring (face-attribute 'default :background) 1)))))
+  ;; Make the Kitty theme the current Emacs theme.
+  (shell-command
+   (let* ((emacs-theme-name (symbol-name (car custom-enabled-themes)))
+          (kitty-theme-name (capitalize (replace-regexp-in-string "-" " " emacs-theme-name))))
+     (format "kitty +kitten themes %s" kitty-theme-name))))
 
 (defun +insert-date ()
   "Insert an ISO date stamp corresponding to today."
@@ -140,6 +147,9 @@
   (define-key key-translation-map (kbd "§") (kbd "`"))
   (define-key key-translation-map (kbd "±") (kbd "~"))
 
+  ;; Fix terminal keys.
+  (define-key key-translation-map (kbd "M-<return>") (kbd "M-RET"))
+
   ;; Map "SPC" to my custom "space menu" leader map.
   (gmap
     "SPC" '(execute-extended-command :which-key "cmd")
@@ -170,7 +180,8 @@
     "r" '(recentf :which-key "recent")                ; Emacs: C-c r
     "s" '(save-buffer :which-key "save")              ; Emacs: C-x s
     "t" '(tab-bar-new-tab :which-key "tab")           ; Emacs: C-x t n
-    "w" `(,evil-window-map :which-key "window"))      ; Vim: C-w
+    "w" `(,evil-window-map :which-key "window")       ; Vim: C-w
+    "y" '(clone-indirect-buffer-other-window :which-key "indirect"))
 
   ;; Map "C-c C-x" to ", x" for all letters "x". These are
   ;; generally keybindings defined by the current major mode,
@@ -240,6 +251,12 @@
     "}"  (general-key "C-c }" )
     "~"  (general-key "C-c ~" )))
 
+(use-package kkp
+  :custom
+  (kkp-super-modifier 'meta)
+  :config
+  (global-kkp-mode +1))
+
 (use-package xclip
   :config
   (xclip-mode 1))
@@ -278,10 +295,10 @@
 
 (use-package tab-bar
   :custom
-  (frame-title-format "")
   (tab-bar-close-button-show nil)
   (tab-bar-format '(tab-bar-format-tabs))
   (tab-bar-new-tab-choice "*scratch*")
+  (tab-bar-separator "  ")
   (tab-bar-show 1)
   (tab-bar-tab-hints t)
   :config
@@ -336,9 +353,8 @@
   (org-fontify-quote-and-verse-blocks t)
   (org-highlight-latex-and-related '(native latex script entities))
   (org-image-actual-width '(400))
-  (org-startup-folded 'content)
-  (org-startup-indented t)
-  (org-startup-with-inline-images t)
+  (org-startup-folded 'fold)
+  (org-adapt-indentation t)
   (org-tags-column -65)
   :config
   (defun +url-handler-zotero (link)
@@ -470,6 +486,8 @@
 (use-package magit
   :bind
   (:map magit-status-mode-map ("SPC" . nil))
+  :custom
+  (magit-diff-refine-hunk 'all)
   :config
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 
