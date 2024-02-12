@@ -337,6 +337,34 @@
 
 (use-package ace-window)
 
+(use-package eglot
+  :custom
+  (eldoc-echo-area-prefer-doc-buffer t)
+  (eldoc-echo-area-use-multiline-p nil)
+  :config
+  (defun jabirali/eglot-ensure-in-project ()
+	"Run Eglot only if we're in a project."
+	(if (project-current) (eglot-ensure))))
+
+(use-package magit
+  :bind
+  (:map magit-status-mode-map ("SPC" . nil))
+  :custom
+  (magit-diff-refine-hunk 'all)
+  :config
+  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+  ;; Integrate with Project.el.
+  (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
+  (keymap-set project-prefix-map "m" #'magit-project-status))
+
+(use-package company
+  :after eglot
+  :hook (eglot-managed-mode . company-mode))
+
+(use-package yasnippet
+  :config
+  (yas-global-mode 1))
+
 (use-package org
   :hook
   (org-mode . visual-line-mode)
@@ -450,45 +478,13 @@
   ((TeX-mode . turn-on-cdlatex)
    (org-mode . turn-on-org-cdlatex)))
 
-(use-package eglot
-  :custom
-  (eldoc-echo-area-prefer-doc-buffer t)
-  (eldoc-echo-area-use-multiline-p nil)
-  :config
-  (defun jabirali/eglot-ensure-in-project ()
-	"Run Eglot only if we're in a project."
-	(if (project-current) (eglot-ensure))))
-
 (use-package python
-  :after (outline evil general eglot)
-  :config
-  (defun +outline-python ()
-	"Fold Python code like Org-mode headings."
-	;; Only fold definitions and decorators (not loops and conditions).
-	(setq outline-regexp
-		  (rx (or
-			   (group (group (* space)) bow (or "class" "def") eow)
-			   (group (group (* space)) "@"))))
-	;; Org-mode-like keybindings for cycling through outline states.
-	(evil-define-key 'motion 'local (kbd "<tab>")
-	  (general-predicate-dispatch nil (derived-mode-p  'prog-mode) 'outline-cycle))
-	(evil-define-key 'motion 'local (kbd "<backtab>")
-	  (general-predicate-dispatch nil (derived-mode-p 'prog-mode) 'outline-cycle-buffer))
-	;; Enable the mode.
-	(outline-minor-mode 1))
-  :hook
-  (python-mode . jabirali/eglot-ensure-in-project))
-;; (python-mode . +outline-python))
+  :after eglot
+  :hook (python-mode . jabirali/eglot-ensure-in-project))
 
 (use-package julia-mode)
 
-(use-package company
-  :after eglot
-  :hook (eglot-managed-mode . company-mode))
-
-(use-package yasnippet
-  :config
-  (yas-global-mode 1))
+(use-package gnuplot)
 
 (use-package dired
   :ensure nil
@@ -510,23 +506,10 @@
 		  ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
   (openwith-mode 1))
 
-(use-package gnuplot)
-
 (use-package hl-todo
   :hook
   (prog-mode . hl-todo-mode))
 
 (use-package gptel)
-
-(use-package magit
-  :bind
-  (:map magit-status-mode-map ("SPC" . nil))
-  :custom
-  (magit-diff-refine-hunk 'all)
-  :config
-  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
-  ;; Integrate with Project.el.
-  (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
-  (keymap-set project-prefix-map "m" #'magit-project-status))
 
 (setq gc-cons-threshold (* 1024 1024))

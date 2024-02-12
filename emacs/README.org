@@ -423,7 +423,7 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 	   ("<f12>" . modus-themes-toggle))
    #+end_src
 
-** ivy/swiper/counsel
+** vertico
    Modern fuzzy-finding interface for interactive Emacs commands.
    #+begin_src emacs-lisp
 	 (use-package vertico
@@ -445,6 +445,7 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 	   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
    #+end_src
 
+** orderless
    Make "foo bar" and "bar foo" equivalent in completion.
    #+begin_src emacs-lisp
 	 (use-package orderless
@@ -454,6 +455,7 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 	   (completion-category-overrides '((file (styles basic partial-completion)))))
    #+end_src
 
+** swiper
    Better search interface.
    #+begin_src emacs-lisp
 	 (use-package swiper
@@ -467,9 +469,51 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 	 (use-package ace-window)
    #+end_src
 
-* Writing
+* IDE features
+** eglot
+   Integrate Emacs with external language servers. This provides
+   IDE-like features such as smart code navigation and refactoring.
+   #+begin_src emacs-lisp
+	 (use-package eglot
+	   :custom
+	   (eldoc-echo-area-prefer-doc-buffer t)
+	   (eldoc-echo-area-use-multiline-p nil)
+	   :config
+	   (defun jabirali/eglot-ensure-in-project ()
+		 "Run Eglot only if we're in a project."
+		 (if (project-current) (eglot-ensure))))
+   #+end_src
+** magit
+   Integration with the Git version control system that "just works".
+   #+begin_src emacs-lisp
+	 (use-package magit
+	   :bind
+	   (:map magit-status-mode-map ("SPC" . nil))
+	   :custom
+	   (magit-diff-refine-hunk 'all)
+	   :config
+	   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+	   ;; Integrate with Project.el.
+	   (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
+	   (keymap-set project-prefix-map "m" #'magit-project-status))
+   #+end_src
+
+** company
+   Pop-up autocompletion that also works well in the terminal.
+   #+begin_src emacs-lisp
+	 (use-package company
+	   :after eglot
+	   :hook (eglot-managed-mode . company-mode))
+   #+end_src
+** yasnippet
+   #+begin_src emacs-lisp
+	 (use-package yasnippet
+	   :config
+	   (yas-global-mode 1))
+   #+end_src
+* Org-mode
 ** org-mode
-   I'm using Org as my main research journal and task management system.
+   My main research journal and task management system.
    #+begin_src emacs-lisp
 	 (use-package org
 	   :hook
@@ -534,6 +578,7 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
    #+end_src
 
 ** org-babel
+   Enable Jupyter-like execution of code blocks in Org files.
    #+begin_src emacs-lisp
 	 (use-package org-babel
 	   :after org
@@ -560,13 +605,14 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
    #+end_src
 
 ** ox-pandoc
-   Better export options. Including exporting to DOCX with LaTeX equations.
+   High-quality exporter for Org documents, which includes e.g. a
+   Microsoft Word exporter with good support for LaTeX equations.
    #+begin_src emacs-lisp
 	 (use-package ox-pandoc)
    #+end_src
 
 ** idle-org-agenda
-   Use the =org-agenda= as my screen saver. Helps refocus after a break.
+   Use Org Agenda as my screen saver. Helps refocus after a break.
    #+begin_src emacs-lisp
 	 (use-package idle-org-agenda
 	   :after org-agenda
@@ -576,7 +622,8 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 	   (idle-org-agenda-mode 1))
    #+end_src
 
-** latex
+* LaTeX
+** auctex
    Better LaTeX typesetting experience. Uses Skim to preview the PDF.
    #+begin_src emacs-lisp
 	 (use-package tex
@@ -594,6 +641,7 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 	   (TeX-mode . prettify-symbols-mode))
    #+end_src
 
+** reftex
    #+begin_src emacs-lisp
 	 (use-package reftex
 	   :after tex
@@ -606,7 +654,7 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 	   :hook
 	   (TeX-mode . turn-on-reftex))
    #+end_src
-
+** evil-tex
    #+begin_src emacs-lisp
 	 (use-package evil-tex
 	   :hook
@@ -621,63 +669,26 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 		(org-mode . turn-on-org-cdlatex)))
    #+end_src
 
-* Programming
-** eglot
-   Integrate Emacs with external language servers. This provides
-   IDE-like features such as smart code navigation and refactoring.
-   #+begin_src emacs-lisp
-	 (use-package eglot
-	   :custom
-	   (eldoc-echo-area-prefer-doc-buffer t)
-	   (eldoc-echo-area-use-multiline-p nil)
-	   :config
-	   (defun jabirali/eglot-ensure-in-project ()
-		 "Run Eglot only if we're in a project."
-		 (if (project-current) (eglot-ensure))))
-   #+end_src
+* Coding
 ** python
    Configure Emacs for Python programming.
    #+begin_src emacs-lisp
 	 (use-package python
-	   :after (outline evil general eglot)
-	   :config
-	   (defun +outline-python ()
-		 "Fold Python code like Org-mode headings."
-		 ;; Only fold definitions and decorators (not loops and conditions).
-		 (setq outline-regexp
-			   (rx (or
-					(group (group (* space)) bow (or "class" "def") eow)
-					(group (group (* space)) "@"))))
-		 ;; Org-mode-like keybindings for cycling through outline states.
-		 (evil-define-key 'motion 'local (kbd "<tab>")
-		   (general-predicate-dispatch nil (derived-mode-p  'prog-mode) 'outline-cycle))
-		 (evil-define-key 'motion 'local (kbd "<backtab>")
-		   (general-predicate-dispatch nil (derived-mode-p 'prog-mode) 'outline-cycle-buffer))
-		 ;; Enable the mode.
-		 (outline-minor-mode 1))
-	   :hook
-	   (python-mode . jabirali/eglot-ensure-in-project))
-	 ;; (python-mode . +outline-python))
+	   :after eglot
+	   :hook (python-mode . jabirali/eglot-ensure-in-project))
    #+end_src
 ** julia
    Syntax highlighting and Unicode input method for Julia programming.
    #+begin_src emacs-lisp
 	 (use-package julia-mode)
    #+end_src
-** company
-   Pop-up autocompletion that also works well in the terminal.
+** gnuplot
+   Syntax highlighting for Gnuplot scripts and config files.
    #+begin_src emacs-lisp
-	 (use-package company
-	   :after eglot
-	   :hook (eglot-managed-mode . company-mode))
+	 (use-package gnuplot)
    #+end_src
-** yasnippet
-   #+begin_src emacs-lisp
-	 (use-package yasnippet
-	   :config
-	   (yas-global-mode 1))
-   #+end_src
-* File management
+
+* Dired
 ** dired
    Sane defaults for the =dired= file manager. Note: this config
    assumes that GNU =coreutils= has been installed on macOS.
@@ -714,12 +725,6 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
    #+end_src
 
 * Misc
-** gnuplot
-   Provides e.g. syntax highlighting of Gnuplot scripts and configs.
-   #+begin_src emacs-lisp
-	 (use-package gnuplot)
-   #+end_src
-
 ** hl-todo
    Automatically highlight TODOs in code files. Works well with Vim.
    #+begin_src emacs-lisp
@@ -733,21 +738,6 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 	 (use-package gptel)
    #+end_src
   
-** magit
-   Integration with the Git version control system that "just works".
-   #+begin_src emacs-lisp
-	 (use-package magit
-	   :bind
-	   (:map magit-status-mode-map ("SPC" . nil))
-	   :custom
-	   (magit-diff-refine-hunk 'all)
-	   :config
-	   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
-	   ;; Integrate with Project.el.
-	   (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
-	   (keymap-set project-prefix-map "m" #'magit-project-status))
-   #+end_src
-
 * Speed hack
   Minimize garbage collection until we have started Emacs.
   #+begin_src emacs-lisp :tangle ~/.config/emacs/early-init.el
