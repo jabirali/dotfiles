@@ -66,8 +66,6 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 	   (truncate-lines t)
 	   (use-short-answers t)
 	   (xterm-set-window-title t)
-	   :custom-face
-	   (default ((t (:family "JetBrains Mono NL" :height 140))))
 	   :config
 	   (menu-bar-mode -1)
 	   (blink-cursor-mode -1)
@@ -469,7 +467,7 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 	 (use-package ace-window)
    #+end_src
 
-* Org & TeX
+* Writing
 ** org-mode
    I'm using Org as my main research journal and task management system.
    #+begin_src emacs-lisp
@@ -623,16 +621,29 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 		(org-mode . turn-on-org-cdlatex)))
    #+end_src
 
-* Coding
+* Programming
+** eglot
+   Integrate Emacs with external language servers. This provides
+   IDE-like features such as smart code navigation and refactoring.
+   #+begin_src emacs-lisp
+	 (use-package eglot
+	   :custom
+	   (eldoc-echo-area-prefer-doc-buffer t)
+	   (eldoc-echo-area-use-multiline-p nil)
+	   :config
+	   (defun jabirali/eglot-ensure-in-project ()
+		 "Run Eglot only if we're in a project."
+		 (if (project-current) (eglot-ensure))))
+   #+end_src
 ** python
-   Setup better code folding in =python-mode=.
+   Configure Emacs for Python programming.
    #+begin_src emacs-lisp
 	 (use-package python
 	   :after (outline evil general eglot)
 	   :config
 	   (defun +outline-python ()
 		 "Fold Python code like Org-mode headings."
-		 ;; Only fold definitions and decorators (not e.g. loops and conditions).
+		 ;; Only fold definitions and decorators (not loops and conditions).
 		 (setq outline-regexp
 			   (rx (or
 					(group (group (* space)) bow (or "class" "def") eow)
@@ -648,20 +659,13 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 	   (python-mode . jabirali/eglot-ensure-in-project))
 	 ;; (python-mode . +outline-python))
    #+end_src
-
-** eglot
+** julia
+   Syntax highlighting and Unicode input method for Julia programming.
    #+begin_src emacs-lisp
-	 (use-package eglot
-	   :custom
-	   (eldoc-echo-area-prefer-doc-buffer t)
-	   (eldoc-echo-area-use-multiline-p nil)
-	   :config
-	   (defun jabirali/eglot-ensure-in-project ()
-		 "Run Eglot only if we're in a project."
-		 (if (project-current)
-			 (eglot-ensure))))
+	 (use-package julia-mode)
    #+end_src
 ** company
+   Pop-up autocompletion that also works well in the terminal.
    #+begin_src emacs-lisp
 	 (use-package company
 	   :after eglot
@@ -673,7 +677,7 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 	   :config
 	   (yas-global-mode 1))
    #+end_src
-* Misc
+* File management
 ** dired
    Sane defaults for the =dired= file manager. Note: this config
    assumes that GNU =coreutils= has been installed on macOS.
@@ -688,14 +692,28 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
    #+end_src
 
 ** diredfl
-   Make =dired= a bit more colorful.
+   Colorize different sections of the ~dired~ output. This helps
+   visually separate e.g. datetime information from file names.
    #+begin_src emacs-lisp
 	 (use-package diredfl
 	   :after dired
 	   :config
 	   (diredfl-global-mode 1))
    #+end_src
+   
+** openwith
+   Use the macOS "Quick Look" to open images. Useful when using e.g.
+   Dired or Org files that contain images from a macOS terminal.
+   #+begin_src emacs-lisp
+	 (use-package openwith
+	   :config
+	   (setq openwith-associations
+			 '(("\\.\\(png\\|jpg\\|svg\\)$" "qlmanage -p" (file))
+			   ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
+	   (openwith-mode 1))
+   #+end_src
 
+* Misc
 ** gnuplot
    Provides e.g. syntax highlighting of Gnuplot scripts and configs.
    #+begin_src emacs-lisp
@@ -728,18 +746,6 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 	   ;; Integrate with Project.el.
 	   (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
 	   (keymap-set project-prefix-map "m" #'magit-project-status))
-   #+end_src
-
-** openwith
-   Use the macOS "Quick Look" to open images. Useful when using e.g.
-   Dired or Org files that contain images from a macOS terminal.
-   #+begin_src emacs-lisp
-	 (use-package openwith
-	   :config
-	   (setq openwith-associations
-			 '(("\\.\\(png\\|jpg\\|svg\\)$" "qlmanage -p" (file))
-			   ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
-	   (openwith-mode 1))
    #+end_src
 
 * Speed hack
