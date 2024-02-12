@@ -6,705 +6,765 @@ This is my config file for Emacs 29+ on macOS. This is a
 terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 
 * Bootstrap
-** package
-Bootstrap the Emacs package manager and enable the community repos.
-When available, we also want ahead-of-time native package compilation.
-#+begin_src emacs-lisp
-  (require 'package)
-  (setq package-user-dir "~/.cache/emacs/elpa")
-  (setq package-native-compile t)
-  (setq native-comp-async-report-warnings-errors nil)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  (package-initialize)
-#+end_src
+** package                                              :builtin:
+   Bootstrap the Emacs package manager and enable the community repos.
+   When available, we also want ahead-of-time native package compilation.
+   #+begin_src emacs-lisp
+	 (require 'package)
+	 (setq package-user-dir "~/.cache/emacs/elpa")
+	 (setq package-native-compile t)
+	 (setq native-comp-async-report-warnings-errors nil)
+	 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+	 (package-initialize)
+   #+end_src
 
 ** use-package
-This config is structured around the =use-package= macro. Since Emacs 29,
-this has been upstreamed and no longer has to be manually installed.
-#+begin_src emacs-lisp
-  (use-package use-package
-    :custom
-    (use-package-always-demand t)
-    (use-package-always-ensure t))
-#+end_src
-Note that from Emacs 30, =use-package= will obtain a new keyword =:vc=
-that can be used to install packages directly from e.g. GitHub repos.
+   This config is structured around the =use-package= macro. Since Emacs 29,
+   this has been upstreamed and no longer has to be manually installed.
+   #+begin_src emacs-lisp
+	 (use-package use-package
+	   :custom
+	   (use-package-always-demand t)
+	   (use-package-always-ensure t))
+   #+end_src
+   Note that from Emacs 30, =use-package= will obtain a new keyword =:vc=
+   that can be used to install packages directly from e.g. GitHub repos.
 
 ** no-littering
-By default, Emacs throws files all over the place. The =no-littering=
-package helps relocate cache and backup files into a single location.
-This is particularly helpful when =~/.config/emacs/= is in a Git repo.
-#+begin_src emacs-lisp
-  (use-package no-littering
-    :init
-    ;; Make cache files follow the XDG specification.
-    (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
-    (setq no-littering-var-directory user-emacs-directory)
-    (setq no-littering-etc-directory user-emacs-directory)
-    :config
-    ;; Move backup~ and #auto-save# files out of the way.
-    (no-littering-theme-backups)
-    ;; Move host-specific customization out of 'init.el'.
-    (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
-    (load custom-file))
-#+end_src
+   By default, Emacs throws files all over the place. The =no-littering=
+   package helps relocate cache and backup files into a single location.
+   This is particularly helpful when =~/.config/emacs/= is in a Git repo.
+   #+begin_src emacs-lisp
+	 (use-package no-littering
+	   :init
+	   ;; Make cache files follow the XDG specification.
+	   (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
+	   (setq no-littering-var-directory user-emacs-directory)
+	   (setq no-littering-etc-directory user-emacs-directory)
+	   :config
+	   ;; Move backup~ and #auto-save# files out of the way.
+	   (no-littering-theme-backups)
+	   ;; Move host-specific customization out of 'init.el'.
+	   (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
+	   (load custom-file))
+   #+end_src
 
 ** defaults
-Improve the Emacs default settings and modes.
-#+begin_src emacs-lisp
-  (use-package emacs
-    :custom
-    (default-input-method 'TeX)
-    (frame-title-format "%b")
-    (inhibit-startup-message t)
-    (line-spacing 0.15)
-    (mouse-highlight nil)
-    (outline-blank-line t)
-    (ring-bell-function 'ignore)
-    (sentence-end-double-space nil)
-    (tab-width 4) 
-    (truncate-lines t)
-    (use-short-answers t)
-    (xterm-set-window-title t)
-    :custom-face
-    (default ((t (:family "JetBrains Mono NL" :height 140))))
-    :config
-    (menu-bar-mode -1)
-    (blink-cursor-mode -1)
-    (when (display-graphic-p)
-      (tool-bar-mode -1)
-      (scroll-bar-mode -1)
-      (fringe-mode 16))
-    (recentf-mode 1)
-    (savehist-mode 1))
-#+end_src
+   Improve the Emacs default settings and modes.
+   #+begin_src emacs-lisp
+	 (use-package emacs
+	   :custom
+	   (default-input-method 'TeX)
+	   (frame-title-format "%b")
+	   (inhibit-startup-message t)
+	   (line-spacing 0.15)
+	   (mouse-highlight nil)
+	   (outline-blank-line t)
+	   (ring-bell-function 'ignore)
+	   (sentence-end-double-space nil)
+	   (tab-width 4) 
+	   (truncate-lines t)
+	   (use-short-answers t)
+	   (xterm-set-window-title t)
+	   :custom-face
+	   (default ((t (:family "JetBrains Mono NL" :height 140))))
+	   :config
+	   (menu-bar-mode -1)
+	   (blink-cursor-mode -1)
+	   (when (display-graphic-p)
+		 (tool-bar-mode -1)
+		 (scroll-bar-mode -1)
+		 (fringe-mode 16))
+	   (recentf-mode 1)
+	   (savehist-mode 1))
+   #+end_src
 
-We'll also start the Emacs server to enable quick =emacsclient= edits
-from the terminal. But we only want one Emacs daemon at a time.
-#+begin_src emacs-lisp
-  (use-package server
-    :config
-    (unless (server-running-p)
-      (server-mode 1)))
-#+end_src
+   We'll also start the Emacs server to enable quick =emacsclient= edits
+   from the terminal. But we only want one Emacs daemon at a time.
+   #+begin_src emacs-lisp
+	 (use-package server
+	   :config
+	   (unless (server-running-p)
+		 (server-mode 1)))
+   #+end_src
 
-Quick fix to get some nicer margins.
-#+begin_src emacs-lisp
-  (setq-default left-margin-width 1 right-margin-width 1)
-  (set-window-buffer nil (current-buffer))
-#+end_src
+   Quick fix to get some nicer margins.
+   #+begin_src emacs-lisp
+	 (setq-default left-margin-width 1 right-margin-width 1)
+	 (set-window-buffer nil (current-buffer))
+   #+end_src
 * Definitions
 ** advice
-This makes the themes look a bit nicer and more modern.
-#+begin_src emacs-lisp
-  (defadvice load-theme (after run-after-load-theme-hook activate)
-    "Personal customizations of any Emacs theme that is loaded."
-    (let ((bg0 (face-attribute 'default :background))
-          (bg1 (face-attribute 'scroll-bar :background))
-          (fg1 (face-attribute 'success :foreground))
-          (fg2 (face-attribute 'mode-line :foreground)))
+   This makes the themes look a bit nicer and more modern.
+   #+begin_src emacs-lisp
+	 (defadvice load-theme (after run-after-load-theme-hook activate)
+	   "Personal customizations of any Emacs theme that is loaded."
+	   (let ((bg0 (face-attribute 'default :background))
+			 (bg1 (face-attribute 'scroll-bar :background))
+			 (fg1 (face-attribute 'success :foreground))
+			 (fg2 (face-attribute 'mode-line :foreground)))
 
-      ;; Make the colorization of the tab bar, mode line, and dividers more minimal.
-      (set-face-attribute 'tab-bar nil :foreground bg1 :background bg1 :box `(:line-width 6 :color ,bg1))
-      (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg1 :box `(:line-width 6 :color ,bg1))
-      (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg1 :box `(:line-width 6 :color ,bg1))
+		 ;; Make the colorization of the tab bar, mode line, and dividers more minimal.
+		 (set-face-attribute 'tab-bar nil :foreground bg1 :background bg1 :box `(:line-width 6 :color ,bg1))
+		 (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg1 :box `(:line-width 6 :color ,bg1))
+		 (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg1 :box `(:line-width 6 :color ,bg1))
 
-      (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
-      (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
+		 (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
+		 (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
 
-      (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
-      (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1))
+		 (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
+		 (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1))
 
-    ;; Make the Kitty theme the current Emacs theme.
-    (shell-command
-     (let* ((emacs-theme-name (symbol-name (car custom-enabled-themes)))
-            (kitty-theme-name (capitalize (replace-regexp-in-string "-" " " emacs-theme-name))))
-       (format "kitty +kitten themes %s" kitty-theme-name))))
-#+end_src
+	   ;; Make the Kitty theme the current Emacs theme.
+	   (shell-command
+		(let* ((emacs-theme-name (symbol-name (car custom-enabled-themes)))
+			   (kitty-theme-name (capitalize (replace-regexp-in-string "-" " " emacs-theme-name))))
+		  (format "kitty +kitten themes %s" kitty-theme-name))))
+   #+end_src
 ** functions
-Misc personal helper functions.
-#+begin_src emacs-lisp
-  (defun +insert-date ()
-    "Insert an ISO date stamp corresponding to today."
-    (interactive)
-    (insert (format-time-string "%Y-%m-%d %A")))
-#+end_src
-#+begin_src emacs-lisp
-  (defun +find-projects ()
-    (interactive)
-    (project-remember-projects-under (expand-file-name "~/Sync/") t))
-#+end_src
+   Misc personal helper functions.
+   #+begin_src emacs-lisp
+	 (defun +insert-date ()
+	   "Insert an ISO date stamp corresponding to today."
+	   (interactive)
+	   (insert (format-time-string "%Y-%m-%d %A")))
+   #+end_src
+   #+begin_src emacs-lisp
+	 (defun +find-projects ()
+	   (interactive)
+	   (project-remember-projects-under (expand-file-name "~/Sync/") t))
+   #+end_src
 
 * Vim keybindings
 ** evil-mode
-I have two decades of Vim muscle memory, and Emacs keybindings usually
-triggers my RSI. So Evil is pretty much a prerequisite to using Emacs.
-#+begin_src emacs-lisp
-  (use-package evil
-    :custom
-    (evil-want-keybinding nil)
-    (evil-want-integration t)
-    (evil-want-C-i-jump nil)
-    (evil-want-C-u-scroll t)
-    (evil-undo-system 'undo-redo)
-    :config
-    (evil-mode 1))
-#+end_src
+   I have two decades of Vim muscle memory, and Emacs keybindings usually
+   triggers my RSI. So Evil is pretty much a prerequisite to using Emacs.
+   #+begin_src emacs-lisp
+	 (use-package evil
+	   :custom
+	   (evil-want-keybinding nil)
+	   (evil-want-integration t)
+	   (evil-want-C-i-jump nil)
+	   (evil-want-C-u-scroll t)
+	   (evil-undo-system 'undo-redo)
+	   :config
+	   (evil-mode 1))
+   #+end_src
 
 ** evil-collection
-Evil itself provides Vim-like text editing but doesn't theme "apps"
-like =magit= and =dired=. Evil Collection helps us with that.
-#+begin_src emacs-lisp
-  (use-package evil-collection
-    :after evil
-    :config
-    (evil-collection-init))
-#+end_src
+   Evil itself provides Vim-like text editing but doesn't theme "apps"
+   like =magit= and =dired=. Evil Collection helps us with that.
+   #+begin_src emacs-lisp
+	 (use-package evil-collection
+	   :after evil
+	   :config
+	   (evil-collection-init))
+   #+end_src
 
 ** evil-surround
-Emacs port of the famous =surround.vim= plugin.
-#+begin_src emacs-lisp
-  (use-package evil-surround
-    :ensure 
-    :config
-    (global-evil-surround-mode 1))
-#+end_src 
+   Emacs port of the famous =surround.vim= plugin.
+   #+begin_src emacs-lisp
+	 (use-package evil-surround
+	   :ensure 
+	   :config
+	   (global-evil-surround-mode 1))
+   #+end_src 
 
 ** evil-org
-Org-mode is a huge system and not well-covered by =evil-collection=,
-so we need an extra package to make it work as expected.
-#+begin_src emacs-lisp
-  (use-package evil-org
-    :after (evil org general)
-    :hook
-    (org-mode . evil-org-mode))
-#+end_src
+   Org-mode is a huge system and not well-covered by =evil-collection=,
+   so we need an extra package to make it work as expected.
+   #+begin_src emacs-lisp
+	 (use-package evil-org
+	   :after (evil org general)
+	   :hook
+	   (org-mode . evil-org-mode))
+   #+end_src
 
 ** evil-org-agenda
-The package =evil-org= also offers =org-agenda= integration, but for
-some reason it's not on by default. Let's fix that.
-#+begin_src emacs-lisp
-    (use-package evil-org-agenda
-      :ensure nil
-      :after evil-org
-      :config
-      (evil-org-agenda-set-keys))
-#+end_src
+   The package =evil-org= also offers =org-agenda= integration, but for
+   some reason it's not on by default. Let's fix that.
+   #+begin_src emacs-lisp
+	 (use-package evil-org-agenda
+	   :ensure nil
+	   :after evil-org
+	   :config
+	   (evil-org-agenda-set-keys))
+   #+end_src
 
 ** which-key
-Make key sequences more discoverable by providing live hints.
-#+begin_src emacs-lisp
-  (use-package which-key
-    :config
-    (which-key-mode 1))
-#+end_src
+   Make key sequences more discoverable by providing live hints.
+   #+begin_src emacs-lisp
+	 (use-package which-key
+	   :config
+	   (which-key-mode 1))
+   #+end_src
 
 ** general
-General simplifies making custom keybindings.
-#+begin_src emacs-lisp
-  (use-package general
-    :after evil
-    :config
-    (general-evil-setup t)
-    (general-override-mode 1)
+   General simplifies making custom keybindings.
+   #+begin_src emacs-lisp
+	 (use-package general
+	   :after evil
+	   :config
+	   (general-evil-setup t)
+	   (general-override-mode 1)
 
-    ;; Prepare Spacemacs-like leader keymaps. Here, "gmap" and "lmap"
-    ;; refers to a global map (leader) and local map (localleader).
-    (general-create-definer gmap
-      :keymaps 'override
-      :states '(motion normal visual)
-      :prefix "SPC")
+	   ;; Prepare Spacemacs-like leader keymaps. Here, "gmap" and "lmap"
+	   ;; refers to a global map (leader) and local map (localleader).
+	   (general-create-definer gmap
+		 :keymaps 'override
+		 :states '(motion normal visual)
+		 :prefix "SPC")
 
-    (general-create-definer lmap
-      :keymaps 'override
-      :states '(motion normal visual)
-      :prefix ",")
+	   (general-create-definer lmap
+		 :keymaps 'override
+		 :states '(motion normal visual)
+		 :prefix ",")
 
-    ;; Work around keyboard layout differences.
-    (define-key key-translation-map (kbd "§") (kbd "`"))
-    (define-key key-translation-map (kbd "±") (kbd "~"))
+	   ;; Work around keyboard layout differences.
+	   (define-key key-translation-map (kbd "§") (kbd "`"))
+	   (define-key key-translation-map (kbd "±") (kbd "~"))
 
-    ;; Fix terminal keys.
-    (define-key key-translation-map (kbd "M-<return>") (kbd "M-RET"))
+	   ;; Fix terminal keys.
+	   (define-key key-translation-map (kbd "M-<return>") (kbd "M-RET"))
 
-    ;; Map "SPC" to my custom "space menu" leader map.
-    (gmap
-      "SPC" '(execute-extended-command :which-key "cmd")
+	   ;; Map "SPC" to my custom "space menu" leader map.
+	   (gmap
+		 "SPC" '(execute-extended-command :which-key "cmd")
 
-      "1" '(tab-bar-select-tab :which-key "1")          ; Tmux: C-b 1
-      "2" '(tab-bar-select-tab :which-key "2")          ; Tmux: C-b 2
-      "3" '(tab-bar-select-tab :which-key "3")          ; Tmux: C-b 3
-      "4" '(tab-bar-select-tab :which-key "4")          ; Tmux: C-b 4
-      "5" '(tab-bar-select-tab :which-key "5")          ; Tmux: C-b 5
-      "6" '(tab-bar-select-tab :which-key "6")          ; Tmux: C-b 6
-      "7" '(tab-bar-select-tab :which-key "7")          ; Tmux: C-b 7
-      "8" '(tab-bar-select-tab :which-key "8")          ; Tmux: C-b 8
-      "9" '(tab-bar-select-tab :which-key "9")          ; Tmux: C-b 9
+		 "1" '(tab-bar-select-tab :which-key "1")          ; Tmux: C-b 1
+		 "2" '(tab-bar-select-tab :which-key "2")          ; Tmux: C-b 2
+		 "3" '(tab-bar-select-tab :which-key "3")          ; Tmux: C-b 3
+		 "4" '(tab-bar-select-tab :which-key "4")          ; Tmux: C-b 4
+		 "5" '(tab-bar-select-tab :which-key "5")          ; Tmux: C-b 5
+		 "6" '(tab-bar-select-tab :which-key "6")          ; Tmux: C-b 6
+		 "7" '(tab-bar-select-tab :which-key "7")          ; Tmux: C-b 7
+		 "8" '(tab-bar-select-tab :which-key "8")          ; Tmux: C-b 8
+		 "9" '(tab-bar-select-tab :which-key "9")          ; Tmux: C-b 9
 
-      "a" '(org-agenda :which-key "agenda")             ; Emacs: C-c a
-      "b" '(switch-to-buffer :which-key "buffer")       ; Emacs: C-x b
-      "d" '(dired-jump :which-key "dired")              ; Emacs: C-x d
-      "f" '(find-file :which-key "file")                ; Emacs: C-x C-f
-      "g" '(magit :which-key "git")                     ; Emacs: C-x g
-      "h" `(,help-map :which-key "help")                ; Emacs: C-h
-      "i" '(imenu :which-key "imenu")                   ; Emacs: M-g i
-      "j" '(bookmark-jump :which-key "jump")
-      "k" '(kill-this-buffer :which-key "kill")         ; Emacs: C-x k
-      "n" `(,narrow-map :which-key "narrow")            ; Emacs: C-x n
-      "o" '(ace-window :which-key "other")              ; Emacs: C-x o
-      "p" `(,project-prefix-map :which-key "project")   ; Emacs: C-x p
-      "q" '(evil-window-delete :which-key "quit")       ; Vim: :q
-      "r" '(recentf :which-key "recent")                ; Emacs: C-c r
-      "s" '(save-buffer :which-key "save")              ; Emacs: C-x s
-      "t" '(tab-bar-new-tab :which-key "tab")           ; Emacs: C-x t n
-      "w" `(,evil-window-map :which-key "window")       ; Vim: C-w
-      "y" '(clone-indirect-buffer-other-window :which-key "indirect"))
+		 "a" '(org-agenda :which-key "agenda")             ; Emacs: C-c a
+		 "b" '(switch-to-buffer :which-key "buffer")       ; Emacs: C-x b
+		 "d" '(dired-jump :which-key "dired")              ; Emacs: C-x d
+		 "f" '(find-file :which-key "file")                ; Emacs: C-x C-f
+		 "g" '(magit :which-key "git")                     ; Emacs: C-x g
+		 "h" `(,help-map :which-key "help")                ; Emacs: C-h
+		 "i" '(imenu :which-key "imenu")                   ; Emacs: M-g i
+		 "j" '(bookmark-jump :which-key "jump")
+		 "k" '(kill-this-buffer :which-key "kill")         ; Emacs: C-x k
+		 "n" `(,narrow-map :which-key "narrow")            ; Emacs: C-x n
+		 "o" '(ace-window :which-key "other")              ; Emacs: C-x o
+		 "p" `(,project-prefix-map :which-key "project")   ; Emacs: C-x p
+		 "q" '(evil-window-delete :which-key "quit")       ; Vim: :q
+		 "r" '(recentf :which-key "recent")                ; Emacs: C-c r
+		 "s" '(save-buffer :which-key "save")              ; Emacs: C-x s
+		 "t" '(tab-bar-new-tab :which-key "tab")           ; Emacs: C-x t n
+		 "w" `(,evil-window-map :which-key "window")       ; Vim: C-w
+		 "y" '(clone-indirect-buffer-other-window :which-key "indirect"))
 
-    ;; Map "C-c C-x" to ", x" for all letters "x". These are
-    ;; generally keybindings defined by the current major mode,
-    ;; and make a sensible set of default localleader bindings.
-    (lmap
-      "a" (general-key "C-c C-a")
-      "b" (general-key "C-c C-b")
-      "c" (general-key "C-c C-c")
-      "d" (general-key "C-c C-d")
-      "e" (general-key "C-c C-e")
-      "f" (general-key "C-c C-f")
-      "g" (general-key "C-c C-g")
-      "h" (general-key "C-c C-h")
-      "i" (general-key "C-c C-i")
-      "j" (general-key "C-c C-j")
-      "k" (general-key "C-c C-k")
-      "l" (general-key "C-c C-l")
-      "m" (general-key "C-c C-m")
-      "n" (general-key "C-c C-n")
-      "o" (general-key "C-c C-o")
-      "p" (general-key "C-c C-p")
-      "q" (general-key "C-c C-q")
-      "r" (general-key "C-c C-r")
-      "s" (general-key "C-c C-s")
-      "t" (general-key "C-c C-t")
-      "u" (general-key "C-c C-u")
-      "v" (general-key "C-c C-v")
-      "w" (general-key "C-c C-w")
-      "x" (general-key "C-c C-x")
-      "y" (general-key "C-c C-y")
-      "z" (general-key "C-c C-z"))
+	   ;; Map "C-c C-x" to ", x" for all letters "x". These are
+	   ;; generally keybindings defined by the current major mode,
+	   ;; and make a sensible set of default localleader bindings.
+	   (lmap
+		 "a" (general-key "C-c C-a")
+		 "b" (general-key "C-c C-b")
+		 "c" (general-key "C-c C-c")
+		 "d" (general-key "C-c C-d")
+		 "e" (general-key "C-c C-e")
+		 "f" (general-key "C-c C-f")
+		 "g" (general-key "C-c C-g")
+		 "h" (general-key "C-c C-h")
+		 "i" (general-key "C-c C-i")
+		 "j" (general-key "C-c C-j")
+		 "k" (general-key "C-c C-k")
+		 "l" (general-key "C-c C-l")
+		 "m" (general-key "C-c C-m")
+		 "n" (general-key "C-c C-n")
+		 "o" (general-key "C-c C-o")
+		 "p" (general-key "C-c C-p")
+		 "q" (general-key "C-c C-q")
+		 "r" (general-key "C-c C-r")
+		 "s" (general-key "C-c C-s")
+		 "t" (general-key "C-c C-t")
+		 "u" (general-key "C-c C-u")
+		 "v" (general-key "C-c C-v")
+		 "w" (general-key "C-c C-w")
+		 "x" (general-key "C-c C-x")
+		 "y" (general-key "C-c C-y")
+		 "z" (general-key "C-c C-z"))
 
-    ;; Map "C-c ?" to ", ?" for all symbols "?". This includes some
-    ;; major-mode keybindings and most minor-mode keybindings. One
-    ;; exception: ", ," is mapped to "C-c C-c" for simplicity.
-    (lmap
-      "!"  (general-key "C-c !" )
-      "\"" (general-key "C-c \"")
-      "#"  (general-key "C-c #" )
-      "$"  (general-key "C-c $" )
-      "%"  (general-key "C-c %" )
-      "&"  (general-key "C-c &" )
-      "'"  (general-key "C-c '" )
-      "("  (general-key "C-c (" )
-      ")"  (general-key "C-c )" )
-      "*"  (general-key "C-c *" )
-      "+"  (general-key "C-c +" )
-      ","  (general-key "C-c C-c" )
-      "-"  (general-key "C-c -" )
-      "."  (general-key "C-c ." )
-      "/"  (general-key "C-c /" )
-      ":"  (general-key "C-c :" )
-      ";"  (general-key "C-c ;" )
-      "<"  (general-key "C-c <" )
-      "="  (general-key "C-c =" )
-      ">"  (general-key "C-c >" )
-      "?"  (general-key "C-c ?" )
-      "@"  (general-key "C-c @" )
-      "["  (general-key "C-c [" )
-      "\\" (general-key "C-c \\")
-      "]"  (general-key "C-c ]" )
-      "^"  (general-key "C-c ^" )
-      "_"  (general-key "C-c _" )
-      "`"  (general-key "C-c `" )
-      "{"  (general-key "C-c {" )
-      "|"  (general-key "C-c |" )
-      "}"  (general-key "C-c }" )
-      "~"  (general-key "C-c ~" )))
-#+end_src
+	   ;; Map "C-c ?" to ", ?" for all symbols "?". This includes some
+	   ;; major-mode keybindings and most minor-mode keybindings. One
+	   ;; exception: ", ," is mapped to "C-c C-c" for simplicity.
+	   (lmap
+		 "!"  (general-key "C-c !" )
+		 "\"" (general-key "C-c \"")
+		 "#"  (general-key "C-c #" )
+		 "$"  (general-key "C-c $" )
+		 "%"  (general-key "C-c %" )
+		 "&"  (general-key "C-c &" )
+		 "'"  (general-key "C-c '" )
+		 "("  (general-key "C-c (" )
+		 ")"  (general-key "C-c )" )
+		 "*"  (general-key "C-c *" )
+		 "+"  (general-key "C-c +" )
+		 ","  (general-key "C-c C-c" )
+		 "-"  (general-key "C-c -" )
+		 "."  (general-key "C-c ." )
+		 "/"  (general-key "C-c /" )
+		 ":"  (general-key "C-c :" )
+		 ";"  (general-key "C-c ;" )
+		 "<"  (general-key "C-c <" )
+		 "="  (general-key "C-c =" )
+		 ">"  (general-key "C-c >" )
+		 "?"  (general-key "C-c ?" )
+		 "@"  (general-key "C-c @" )
+		 "["  (general-key "C-c [" )
+		 "\\" (general-key "C-c \\")
+		 "]"  (general-key "C-c ]" )
+		 "^"  (general-key "C-c ^" )
+		 "_"  (general-key "C-c _" )
+		 "`"  (general-key "C-c `" )
+		 "{"  (general-key "C-c {" )
+		 "|"  (general-key "C-c |" )
+		 "}"  (general-key "C-c }" )
+		 "~"  (general-key "C-c ~" )))
+   #+end_src
 
 * Terminal support
 ** kitty-keyboard-protocol
-#+begin_src emacs-lisp
-  (use-package kkp
-    :custom
-    (kkp-super-modifier 'meta)
-    :config
-    (global-kkp-mode +1))
-#+end_src
+   #+begin_src emacs-lisp
+	 (use-package kkp
+	   :custom
+	   (kkp-super-modifier 'meta)
+	   :config
+	   (global-kkp-mode +1))
+   #+end_src
 ** xclip-mode
-Cross-platform integration with the OS clipboard.
-#+begin_src emacs-lisp
-  (use-package xclip
-    :config
-    (xclip-mode 1))
-#+end_src
+   Cross-platform integration with the OS clipboard.
+   #+begin_src emacs-lisp
+	 (use-package xclip
+	   :config
+	   (xclip-mode 1))
+   #+end_src
 
 ** xterm-mouse-mode
-Enable mouse support even in the terminal.
-#+begin_src emacs-lisp
-  (use-package xt-mouse
-    :ensure nil
-    :config
-    (xterm-mouse-mode t))
-#+end_src
+   Enable mouse support even in the terminal.
+   #+begin_src emacs-lisp
+	 (use-package xt-mouse
+	   :ensure nil
+	   :config
+	   (xterm-mouse-mode t))
+   #+end_src
 
 ** mouse-wheel-mode
-Improve the mouse wheel support. Including in terminals.
-#+begin_src emacs-lisp
-  (use-package mwheel
-    :ensure nil
-    :custom
-    (mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-    (mouse-wheel-progressive-speed nil)
-    (mouse-wheel-follow-mouse t)
-    :config
-    (mouse-wheel-mode t))
- #+end_src
+   Improve the mouse wheel support. Including in terminals.
+   #+begin_src emacs-lisp
+	 (use-package mwheel
+	   :ensure nil
+	   :custom
+	   (mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+	   (mouse-wheel-progressive-speed nil)
+	   (mouse-wheel-follow-mouse t)
+	   :config
+	   (mouse-wheel-mode t))
+   #+end_src
     
 ** evil-terminal-cursor-changer
-Change the cursor shape depending on the Evil state.
-#+begin_src emacs-lisp
-  (use-package evil-terminal-cursor-changer
-    :after evil
-    :config
-    (evil-terminal-cursor-changer-activate))
-#+end_src
+   Change the cursor shape depending on the Evil state.
+   #+begin_src emacs-lisp
+	 (use-package evil-terminal-cursor-changer
+	   :after evil
+	   :config
+	   (evil-terminal-cursor-changer-activate))
+   #+end_src
 
 * Modern interface
 ** doom-modeline
-Modernize the "mode line" that sits below each window.
-#+begin_src emacs-lisp
-  (use-package doom-modeline
-    :custom
-    (doom-modeline-bar-width 0.1)
-    (doom-modeline-buffer-encoding nil)
-    (doom-modeline-buffer-modification-icon nil)
-    (doom-modeline-icon nil)
-    (doom-modeline-modal nil)
-    (doom-modeline-position-line-format nil)
-    (doom-modeline-time nil)
-    (doom-modeline-workspace-name nil)
-    :config
-    (doom-modeline-mode 1))
-#+end_src
+   Modernize the "mode line" that sits below each window.
+   #+begin_src emacs-lisp
+	 (use-package doom-modeline
+	   :custom
+	   (doom-modeline-bar-width 0.1)
+	   (doom-modeline-buffer-encoding nil)
+	   (doom-modeline-buffer-modification-icon nil)
+	   (doom-modeline-icon nil)
+	   (doom-modeline-modal nil)
+	   (doom-modeline-position-line-format nil)
+	   (doom-modeline-time nil)
+	   (doom-modeline-workspace-name nil)
+	   :config
+	   (doom-modeline-mode 1))
+   #+end_src
 
 ** tab-bar
-Emacs has a nice tab bar that works like those in Vim/Tmux/iTerm2:
-each "tab" is a "set of windows" not just a "buffer". Turn it on.
-#+begin_src emacs-lisp
-  (use-package tab-bar
-    :custom
-    (tab-bar-close-button-show nil)
-    (tab-bar-format '(tab-bar-format-tabs))
-    (tab-bar-new-tab-choice "*scratch*")
-    (tab-bar-separator "  ")
-    (tab-bar-show 1)
-    (tab-bar-tab-hints t)
-    :config
-    (tab-bar-mode 1)
-    (tab-bar-history-mode 1))
-#+end_src
-Note: Most themes either don't theme the tab bar properly, or theme it
-differently from the mode line. I've patched =load-theme= to fix this.
+   Emacs has a nice tab bar that works like those in Vim/Tmux/iTerm2:
+   each "tab" is a "set of windows" not just a "buffer". Turn it on.
+   #+begin_src emacs-lisp
+	 (use-package tab-bar
+	   :custom
+	   (tab-bar-close-button-show nil)
+	   (tab-bar-format '(tab-bar-format-tabs))
+	   (tab-bar-new-tab-choice "*scratch*")
+	   (tab-bar-separator "  ")
+	   (tab-bar-show 1)
+	   (tab-bar-tab-hints t)
+	   :config
+	   (tab-bar-mode 1)
+	   (tab-bar-history-mode 1))
+   #+end_src
+   Note: Most themes either don't theme the tab bar properly, or theme it
+   differently from the mode line. I've patched =load-theme= to fix this.
 
 ** themes
-#+begin_src emacs-lisp
-  (use-package modus-themes
-    :custom
-    (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
-    :config
-    (load-theme 'modus-vivendi-tinted t)
-    :bind
-    ("<f12>" . modus-themes-toggle))
-#+end_src
+   #+begin_src emacs-lisp
+	 (use-package modus-themes
+	   :custom
+	   (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
+	   :config
+	   (load-theme 'modus-vivendi-tinted t)
+	   :bind
+	   ("<f12>" . modus-themes-toggle))
+   #+end_src
 
 ** ivy/swiper/counsel
-Modern fuzzy-finding interface for interactive Emacs commands.
-#+begin_src emacs-lisp
-  (use-package ivy
-    :custom
-    (enable-recursive-minibuffers t)
-    :config
-    (ivy-mode 1))
+   Modern fuzzy-finding interface for interactive Emacs commands.
+   #+begin_src emacs-lisp
+	 (use-package vertico
+	   :config
+	   (vertico-mode 1)
+	   (vertico-mouse-mode 1))
+   #+end_src
 
-  (use-package swiper
-    :bind
-    ("C-s" . swiper))
+   Make vertico directory navigation more like ido and ivy.
+   This includes letting "//" and "~/" reset the file path.
+   #+begin_src emacs-lisp
+	 (use-package vertico-directory
+	   :after vertico
+	   :ensure nil
+	   :bind (:map vertico-map
+				   ("RET" . vertico-directory-enter)
+				   ("DEL" . vertico-directory-delete-char)
+				   ("M-DEL" . vertico-directory-delete-word))
+	   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+   #+end_src
 
-  (use-package counsel
-    :config
-    (counsel-mode 1)
-    :bind
-    (:map minibuffer-local-map
-          ("C-r" . counsel-minibuffer-history)))
-#+end_src
+   Make "foo bar" and "bar foo" equivalent in completion.
+   #+begin_src emacs-lisp
+	 (use-package orderless
+	   :ensure t
+	   :custom
+	   (completion-styles '(orderless basic))
+	   (completion-category-overrides '((file (styles basic partial-completion)))))
+   #+end_src
+
+   Better search interface.
+   #+begin_src emacs-lisp
+	 (use-package swiper
+	   :bind
+	   ("C-s" . swiper))
+   #+end_src
 
 ** ace-window
-Easily jump directly between any visible window.
-#+begin_src emacs-lisp
-  (use-package ace-window)
-#+end_src
+   Easily jump directly between any visible window.
+   #+begin_src emacs-lisp
+	 (use-package ace-window)
+   #+end_src
 
 * Org & TeX
 ** org-mode
-I'm using Org as my main research journal and task management system.
-#+begin_src emacs-lisp
-  (use-package org
-    :hook
-    (org-mode . visual-line-mode)
-    :custom
-    (initial-major-mode 'org-mode)
-    (initial-scratch-message "")
-    (org-todo-keywords
-     '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-       (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
-    (org-agenda-files (list org-directory))
-    (org-agenda-skip-deadline-if-done t)
-    (org-agenda-skip-scheduled-if-done t)
-    (org-agenda-span 'day)
-    (org-agenda-start-on-weekday nil)
-    (org-agenda-window-setup 'other-tab)
-    (org-archive-location "::* Archive")
-    (org-ctrl-k-protect-subtree t)
-    (org-directory "~/Sync/Org")
-    (org-fontify-quote-and-verse-blocks t)
-    (org-highlight-latex-and-related '(native latex script entities))
-    (org-image-actual-width '(400))
-    (org-startup-folded 'fold)
-    (org-adapt-indentation t)
-    (org-tags-column -65)
-    :config
-    (defun +url-handler-zotero (link)
-      "Open a zotero:// link in the Zotero desktop app."
-      (start-process "zotero_open" nil "open" (concat "zotero:" link)))
-    (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
-#+end_src
+   I'm using Org as my main research journal and task management system.
+   #+begin_src emacs-lisp
+	 (use-package org
+	   :hook
+	   (org-mode . visual-line-mode)
+	   :custom
+	   (initial-major-mode 'org-mode)
+	   (initial-scratch-message "")
+	   (org-todo-keywords
+		'((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+		  (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
+	   (org-adapt-indentation t)
+	   (org-agenda-files (list org-directory))
+	   (org-agenda-skip-deadline-if-done t)
+	   (org-agenda-skip-scheduled-if-done t)
+	   (org-agenda-span 'day)
+	   (org-hide-leading-stars t)
+	   (org-agenda-start-on-weekday nil)
+	   (org-agenda-window-setup 'other-tab)
+	   (org-archive-location "::* Archive")
+	   (org-ctrl-k-protect-subtree t)
+	   (org-directory "~/Sync/Org")
+	   (org-fontify-quote-and-verse-blocks t)
+	   (org-highlight-latex-and-related '(native latex script entities))
+	   (org-image-actual-width '(400))
+	   (org-startup-folded 'fold)
+	   (org-tags-column -65)
+	   :config
+	   (defun +url-handler-zotero (link)
+		 "Open a zotero:// link in the Zotero desktop app."
+		 (start-process "zotero_open" nil "open" (concat "zotero:" link)))
+	   (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
+   #+end_src
 
 ** org-download
-This package lets me copy-paste images directly into Org files.
-#+begin_src emacs-lisp
-  (use-package org-download
-    :after org
-    :custom
-    (org-download-method 'directory)
-    (org-download-image-dir "assets")
-    (org-download-heading-lvl nil)
-    (org-download-timestamp "%Y%m%d%H%M%S")
-    :config
-    (defun +org-download-file-format (filename)
-      "Purely date-based naming of attachments."
-      (concat
-        (format-time-string org-download-timestamp)
-        "."
-        (file-name-extension filename)))
-    (setq org-download-file-format-function #'+org-download-file-format)
-    (setq org-download-annotate-function (lambda (_link) ""))
-    (org-download-enable)
-    :bind (:map org-mode-map
-                ("M-v" . org-download-clipboard)))
+   This package lets me copy-paste images directly into Org files.
+   #+begin_src emacs-lisp
+	 (use-package org-download
+	   :after org
+	   :custom
+	   (org-download-method 'directory)
+	   (org-download-image-dir "assets")
+	   (org-download-heading-lvl nil)
+	   (org-download-timestamp "%Y%m%d%H%M%S")
+	   :config
+	   (defun +org-download-file-format (filename)
+		 "Purely date-based naming of attachments."
+		 (concat
+		  (format-time-string org-download-timestamp)
+		  "."
+		  (file-name-extension filename)))
+	   (setq org-download-file-format-function #'+org-download-file-format)
+	   (setq org-download-annotate-function (lambda (_link) ""))
+	   (org-download-enable)
+	   :bind (:map org-mode-map
+				   ("M-S-v" . org-download-clipboard)))
 
-#+end_src
+   #+end_src
 
-Remember to install the system dependency for handling screenshots:
-#+begin_src bash
-  brew install pngpaste
-#+end_src
+   Remember to install the system dependency for handling screenshots:
+   #+begin_src bash
+	 brew install pngpaste
+   #+end_src
 
 ** org-babel
-#+begin_src emacs-lisp
-  (use-package org-babel
-    :after org
-    :ensure nil
-    :no-require
-    :custom
-    (org-confirm-babel-evaluate nil)
-    (org-babel-results-keyword "results")
-    :config
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((python . t))))
-#+end_src
+   #+begin_src emacs-lisp
+	 (use-package org-babel
+	   :after org
+	   :ensure nil
+	   :no-require
+	   :custom
+	   (org-confirm-babel-evaluate nil)
+	   (org-babel-results-keyword "results")
+	   :config
+	   (org-babel-do-load-languages
+		'org-babel-load-languages
+		'((python . t))))
+   #+end_src
 
 ** org-super-agenda
-Sort the =org-agenda= by project. Makes it easier to keep an overview.
-#+begin_src emacs-lisp
-  (use-package org-super-agenda
-    :custom
-    (org-super-agenda-groups '((:auto-parent t)))
-    :config
-    (setq org-super-agenda-header-map (make-sparse-keymap))
-    (org-super-agenda-mode 1))
-#+end_src
+   Sort the =org-agenda= by project. Makes it easier to keep an overview.
+   #+begin_src emacs-lisp
+	 (use-package org-super-agenda
+	   :custom
+	   (org-super-agenda-groups '((:auto-parent t)))
+	   :config
+	   (setq org-super-agenda-header-map (make-sparse-keymap))
+	   (org-super-agenda-mode 1))
+   #+end_src
 
 ** ox-pandoc
-Better export options. Including exporting to DOCX with LaTeX equations.
-#+begin_src emacs-lisp
-  (use-package ox-pandoc)
-#+end_src
+   Better export options. Including exporting to DOCX with LaTeX equations.
+   #+begin_src emacs-lisp
+	 (use-package ox-pandoc)
+   #+end_src
 
 ** idle-org-agenda
-Use the =org-agenda= as my screen saver. Helps refocus after a break.
-#+begin_src emacs-lisp
-  (use-package idle-org-agenda
-    :after org-agenda
-    :custom
-    (idle-org-agenda-interval 3600)
-    :config
-    (idle-org-agenda-mode 1))
-#+end_src
+   Use the =org-agenda= as my screen saver. Helps refocus after a break.
+   #+begin_src emacs-lisp
+	 (use-package idle-org-agenda
+	   :after org-agenda
+	   :custom
+	   (idle-org-agenda-interval 3600)
+	   :config
+	   (idle-org-agenda-mode 1))
+   #+end_src
 
 ** latex
-Better LaTeX typesetting experience. Uses Skim to preview the PDF.
-#+begin_src emacs-lisp
-  (use-package tex
-    :ensure auctex
-    :custom
-    (font-latex-fontify-script nil)
-    (TeX-auto-save t)
-    (TeX-source-correlate-method 'synctex)
-    (TeX-source-correlate-mode t)
-    (TeX-source-correlate-start-server t)
-    (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
-    (TeX-view-program-selection '((output-pdf "Skim")))
-    :hook
-    (TeX-mode . visual-line-mode)
-    (TeX-mode . prettify-symbols-mode))
-#+end_src
+   Better LaTeX typesetting experience. Uses Skim to preview the PDF.
+   #+begin_src emacs-lisp
+	 (use-package tex
+	   :ensure auctex
+	   :custom
+	   (font-latex-fontify-script nil)
+	   (TeX-auto-save t)
+	   (TeX-source-correlate-method 'synctex)
+	   (TeX-source-correlate-mode t)
+	   (TeX-source-correlate-start-server t)
+	   (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
+	   (TeX-view-program-selection '((output-pdf "Skim")))
+	   :hook
+	   (TeX-mode . visual-line-mode)
+	   (TeX-mode . prettify-symbols-mode))
+   #+end_src
 
-#+begin_src emacs-lisp
-  (use-package reftex
-    :after tex
-    :custom
-    (reftex-cite-format 'bibtex)
-    (reftex-enable-partial-scans t)
-    (reftex-plug-into-AUCTeX t)
-    (reftex-save-parse-info t)
-    (reftex-use-multiple-selection-buffers t)
-    :hook
-    (TeX-mode . turn-on-reftex))
-#+end_src
+   #+begin_src emacs-lisp
+	 (use-package reftex
+	   :after tex
+	   :custom
+	   (reftex-cite-format 'bibtex)
+	   (reftex-enable-partial-scans t)
+	   (reftex-plug-into-AUCTeX t)
+	   (reftex-save-parse-info t)
+	   (reftex-use-multiple-selection-buffers t)
+	   :hook
+	   (TeX-mode . turn-on-reftex))
+   #+end_src
 
-#+begin_src emacs-lisp
-  (use-package evil-tex
-    :hook
-    (LaTeX-mode . evil-tex-mode))
-#+end_src
+   #+begin_src emacs-lisp
+	 (use-package evil-tex
+	   :hook
+	   (LaTeX-mode . evil-tex-mode))
+   #+end_src
 
 ** cdlatex
-#+begin_src emacs-lisp
-  (use-package cdlatex
-    :hook
-    ((TeX-mode . turn-on-cdlatex)
-     (org-mode . turn-on-org-cdlatex)))
-#+end_src
+   #+begin_src emacs-lisp
+	 (use-package cdlatex
+	   :hook
+	   ((TeX-mode . turn-on-cdlatex)
+		(org-mode . turn-on-org-cdlatex)))
+   #+end_src
 
 * Coding
 ** python
-Setup better code folding in =python-mode=.
-#+begin_src emacs-lisp
-  (use-package python
-    :after (outline evil general)
-    :config
-    (defun +outline-python ()
-      "Fold Python code like Org-mode headings."
-      ;; Only fold definitions and decorators (not e.g. loops and conditions).
-      (setq outline-regexp
-            (rx (or
-                 (group (group (* space)) bow (or "class" "def") eow)
-                 (group (group (* space)) "@"))))
-      ;; Org-mode-like keybindings for cycling through outline states.
-      (evil-define-key 'motion 'local (kbd "<tab>")
-        (general-predicate-dispatch nil (derived-mode-p  'prog-mode) 'outline-cycle))
-      (evil-define-key 'motion 'local (kbd "<backtab>")
-        (general-predicate-dispatch nil (derived-mode-p 'prog-mode) 'outline-cycle-buffer))
-      ;; Enable the mode.
-      (outline-minor-mode 1))
-    :hook
-    (python-mode . +outline-python))
-#+end_src
+   Setup better code folding in =python-mode=.
+   #+begin_src emacs-lisp
+	 (use-package python
+	   :after (outline evil general eglot)
+	   :config
+	   (defun +outline-python ()
+		 "Fold Python code like Org-mode headings."
+		 ;; Only fold definitions and decorators (not e.g. loops and conditions).
+		 (setq outline-regexp
+			   (rx (or
+					(group (group (* space)) bow (or "class" "def") eow)
+					(group (group (* space)) "@"))))
+		 ;; Org-mode-like keybindings for cycling through outline states.
+		 (evil-define-key 'motion 'local (kbd "<tab>")
+		   (general-predicate-dispatch nil (derived-mode-p  'prog-mode) 'outline-cycle))
+		 (evil-define-key 'motion 'local (kbd "<backtab>")
+		   (general-predicate-dispatch nil (derived-mode-p 'prog-mode) 'outline-cycle-buffer))
+		 ;; Enable the mode.
+		 (outline-minor-mode 1))
+	   :hook
+	   (python-mode . jabirali/eglot-ensure-in-project))
+	 ;; (python-mode . +outline-python))
+   #+end_src
 
+** eglot
+   #+begin_src emacs-lisp
+	 (use-package eglot
+	   :custom
+	   (eldoc-echo-area-prefer-doc-buffer t)
+	   (eldoc-echo-area-use-multiline-p nil)
+	   :config
+	   (defun jabirali/eglot-ensure-in-project ()
+		 "Run Eglot only if we're in a project."
+		 (if (project-current)
+			 (eglot-ensure))))
+   #+end_src
+** company
+   #+begin_src emacs-lisp
+	 (use-package company
+	   :after eglot
+	   :hook (eglot-managed-mode . company-mode))
+   #+end_src
+** yasnippet
+   #+begin_src emacs-lisp
+	 (use-package yasnippet
+	   :config
+	   (yas-global-mode 1))
+   #+end_src
 * Misc
 ** dired
-Sane defaults for the =dired= file manager. Note: this config
-assumes that GNU =coreutils= has been installed on macOS.
-#+begin_src emacs-lisp
-  (use-package dired
-    :ensure nil
-    :after (evil general)
-    :custom
-    (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
-    :config
-    (mmap "^" 'dired-jump))
-#+end_src
+   Sane defaults for the =dired= file manager. Note: this config
+   assumes that GNU =coreutils= has been installed on macOS.
+   #+begin_src emacs-lisp
+	 (use-package dired
+	   :ensure nil
+	   :after (evil general)
+	   :custom
+	   (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
+	   :config
+	   (mmap "^" 'dired-jump))
+   #+end_src
 
 ** diredfl
-Make =dired= a bit more colorful.
-#+begin_src emacs-lisp
-  (use-package diredfl
-    :after dired
-    :config
-    (diredfl-global-mode 1))
-#+end_src
+   Make =dired= a bit more colorful.
+   #+begin_src emacs-lisp
+	 (use-package diredfl
+	   :after dired
+	   :config
+	   (diredfl-global-mode 1))
+   #+end_src
 
 ** gnuplot
-Provides e.g. syntax highlighting of Gnuplot scripts and configs.
-#+begin_src emacs-lisp
-  (use-package gnuplot)
-#+end_src
+   Provides e.g. syntax highlighting of Gnuplot scripts and configs.
+   #+begin_src emacs-lisp
+	 (use-package gnuplot)
+   #+end_src
 
 ** hl-todo
-Automatically highlight TODOs in code files. Works well with Vim.
-#+begin_src emacs-lisp
-(use-package hl-todo
-  :hook
-  (prog-mode . hl-todo-mode))
-#+end_src
+   Automatically highlight TODOs in code files. Works well with Vim.
+   #+begin_src emacs-lisp
+	 (use-package hl-todo
+	   :hook
+	   (prog-mode . hl-todo-mode))
+   #+end_src
 
+** gptel
+   #+begin_src emacs-lisp
+	 (use-package gptel)
+   #+end_src
+  
 ** magit
-Integration with the Git version control system that "just works".
-#+begin_src emacs-lisp
-  (use-package magit
-    :bind
-    (:map magit-status-mode-map ("SPC" . nil))
-    :custom
-    (magit-diff-refine-hunk 'all)
-    :config
-    (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
-#+end_src
+   Integration with the Git version control system that "just works".
+   #+begin_src emacs-lisp
+	 (use-package magit
+	   :bind
+	   (:map magit-status-mode-map ("SPC" . nil))
+	   :custom
+	   (magit-diff-refine-hunk 'all)
+	   :config
+	   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+	   ;; Integrate with Project.el.
+	   (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
+	   (keymap-set project-prefix-map "m" #'magit-project-status))
+   #+end_src
 
 ** openwith
-Use the macOS "Quick Look" to open images. Useful when using e.g.
-Dired or Org files that contain images from a macOS terminal.
-#+begin_src emacs-lisp
-        (use-package openwith
-          :config
-          (setq openwith-associations
-                 '(("\\.\\(png\\|jpg\\|svg\\)$" "qlmanage -p" (file))
-                   ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
-          (openwith-mode 1))
-#+end_src
+   Use the macOS "Quick Look" to open images. Useful when using e.g.
+   Dired or Org files that contain images from a macOS terminal.
+   #+begin_src emacs-lisp
+	 (use-package openwith
+	   :config
+	   (setq openwith-associations
+			 '(("\\.\\(png\\|jpg\\|svg\\)$" "qlmanage -p" (file))
+			   ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
+	   (openwith-mode 1))
+   #+end_src
+
+* Speed hack
+  Minimize garbage collection until we have started Emacs.
+  #+begin_src emacs-lisp :tangle ~/.config/emacs/early-init.el
+	(setq gc-cons-threshold most-positive-fixnum)
+  #+end_src
+  #+begin_src emacs-lisp :tangle ~/.config/emacs/init.el
+	(setq gc-cons-threshold (* 1024 1024))
+  #+end_src
 
 * Tangle
-This script lets us tangle this Org file to Emacs Lisp without firing
-up a full Emacs session. Useful when setting things up from scratch.
-#+begin_src emacs-lisp :tangle ~/.config/bin/tangle
-  #!/usr/bin/env emacs --script
+  This script lets us tangle this Org file to Emacs Lisp without firing
+  up a full Emacs session. Useful when setting things up from scratch.
+  #+begin_src emacs-lisp :tangle ~/.config/bin/tangle
+	#!/usr/bin/env emacs --script
 
-  (require 'org)
-  (org-babel-tangle-file "~/.config/emacs/README.org")
-#+end_src
+	(require 'org)
+	(org-babel-tangle-file "~/.config/emacs/README.org")
+  #+end_src
 
-This autocommand makes Emacs automatically tangle this Org file on
-save. This makes it easier to interactively revise the config file.
-#+begin_src conf
-  Local Variables:
-    eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle) (load-file user-init-file)) nil t)
-  End:
-#+end_src
+  This autocommand makes Emacs automatically tangle this Org file on
+  save. This makes it easier to interactively revise the config file.
+  #+begin_src conf
+	Local Variables:
+		eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle) (load-file user-init-file)) nil t)
+	End:
+  #+end_src
