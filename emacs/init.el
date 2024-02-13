@@ -20,6 +20,8 @@
   :custom
   (default-input-method 'TeX)
   (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
+  (eldoc-echo-area-prefer-doc-buffer t)
+  (eldoc-echo-area-use-multiline-p nil)
   (frame-title-format "%b")
   (inhibit-startup-message t)
   (make-backup-files nil)
@@ -28,13 +30,13 @@
   (ring-bell-function 'ignore)
   (sentence-end-double-space nil)
   (tab-bar-close-button-show nil)
-  (tab-width 4) 
-  (truncate-lines t)
   (tab-bar-format '(tab-bar-format-tabs))
   (tab-bar-new-tab-choice "*scratch*")
   (tab-bar-separator "  ")
   (tab-bar-show 1)
   (tab-bar-tab-hints t)
+  (tab-width 4) 
+  (truncate-lines t)
   (use-short-answers t)
   (xterm-set-window-title t)
   :config
@@ -302,15 +304,28 @@
 (use-package ace-window)
 
 ;;; IDE features:
+;; LSP support that mostly just works. Even over TRAMP.
 (use-package eglot
-  :custom
-  (eldoc-echo-area-prefer-doc-buffer t)
-  (eldoc-echo-area-use-multiline-p nil)
+  :hook
+  (prog-mode . +eglot-project-ensure)
+  :bind
+  ("<f2>" . eglot-rename)
   :config
-  (defun +eglot-ensure-in-project ()
-	"Run Eglot only if we're in a project."
-	(if (project-current) (eglot-ensure))))
+  (defun +eglot-project-ensure ()
+	"Enable Eglot only for files that live in projects."
+	(if (project-current)
+		(eglot-ensure))))
 
+;; Integrate all the external autoformatters.
+(use-package format-all
+  :hook
+  (eglot-managed-mode . format-all-mode)
+  :config
+  (setq-default format-all-formatters
+				'(("Python" (isort) (ruff) (black)))))
+
+;; Poor man's multiple cursor support.
+(use-package iedit)
 (use-package magit
   :bind
   (:map magit-status-mode-map ("SPC" . nil))
@@ -410,6 +425,9 @@
   :config
   (idle-org-agenda-mode 1))
 
+(use-package markdown-mode
+  :hook
+  (markdown-mode . cdlatex-mode))
 (use-package tex
   :ensure auctex
   :custom
@@ -445,10 +463,6 @@
    (org-mode . turn-on-org-cdlatex)))
 
 ;;; Programming:
-(use-package python
-  :after eglot
-  :hook (python-mode . +eglot-ensure-in-project))
-
 (use-package flymake-ruff
   :ensure t
   :hook (eglot-managed-mode . flymake-ruff-load))
