@@ -1,9 +1,31 @@
-;;; ~/.config/emacs/init.el -*- outline-minor-mode: t; -*-
+;; ~/.config/emacs/init.el
+;;; Definitions:
+(defadvice load-theme (after run-after-load-theme-hook activate)
+  "Personal customizations of any Emacs theme that is loaded."
+  (let ((bg0 (face-attribute 'default :background))
+        (bg1 (face-attribute 'scroll-bar :background))
+        (fg1 (face-attribute 'success :foreground))
+        (fg2 (face-attribute 'mode-line :foreground)))
 
-;;; Package manager:
-;; Emacs bundles a decent package manager (package.el) and a nice
-;; interface for loading and configuring packages (use-package).
-(use-package use-package
+    ;; Make the colorization of the tab bar, mode line, and dividers more minimal.
+    (set-face-attribute 'tab-bar nil :foreground bg1 :background bg1 :box `(:line-width 6 :color ,bg1))
+    (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg1 :box `(:line-width 6 :color ,bg1))
+    (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg1 :box `(:line-width 6 :color ,bg1))
+
+    (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
+    (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
+
+    (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
+    (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1))
+
+  ;; Make the Kitty theme the current Emacs theme.
+  (shell-command
+   (let* ((emacs-theme-name (symbol-name (car custom-enabled-themes)))
+          (kitty-theme-name (capitalize (replace-regexp-in-string "-" " " emacs-theme-name))))
+     (format "kitty +kitten themes %s" kitty-theme-name))))
+
+;;; Built-in packages:
+(use-package use-package                        ; Package management.
   :custom
   (native-comp-async-report-warnings-errors nil)
   (package-native-compile t)
@@ -12,11 +34,7 @@
   :config
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
-;;; Built-in modes:
-;; Emacs comes with more than enough batteries included. But by
-;; default, many of the useful things are turned off, while many of
-;; the annoying things are turned on. Let's try to fix that first.
-(use-package emacs
+(use-package emacs                              ; Batteries included.
   :custom
   (default-input-method 'TeX)
   (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
@@ -51,33 +69,9 @@
   (tab-bar-history-mode 1)
   (xterm-mouse-mode 1))
 
-;;; Global advice:
-(defadvice load-theme (after run-after-load-theme-hook activate)
-  "Personal customizations of any Emacs theme that is loaded."
-  (let ((bg0 (face-attribute 'default :background))
-		(bg1 (face-attribute 'scroll-bar :background))
-		(fg1 (face-attribute 'success :foreground))
-		(fg2 (face-attribute 'mode-line :foreground)))
 
-	;; Make the colorization of the tab bar, mode line, and dividers more minimal.
-	(set-face-attribute 'tab-bar nil :foreground bg1 :background bg1 :box `(:line-width 6 :color ,bg1))
-	(set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg1 :box `(:line-width 6 :color ,bg1))
-	(set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg1 :box `(:line-width 6 :color ,bg1))
-
-	(set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
-	(set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
-
-	(set-face-attribute 'fringe nil :foreground bg0 :background bg0)
-	(set-face-attribute 'vertical-border nil :foreground bg1 :background bg1))
-
-  ;; Make the Kitty theme the current Emacs theme.
-  (shell-command
-   (let* ((emacs-theme-name (symbol-name (car custom-enabled-themes)))
-		  (kitty-theme-name (capitalize (replace-regexp-in-string "-" " " emacs-theme-name))))
-	 (format "kitty +kitten themes %s" kitty-theme-name))))
-
-;;; Vim keybindings:
-(use-package evil
+;;; Keybindings:
+(use-package evil                               ; Vim in Emacs.
   :custom
   (evil-want-keybinding nil)
   (evil-want-integration t)
@@ -87,245 +81,248 @@
   :config
   (evil-mode 1))
 
-(use-package evil-collection
+(use-package evil-org                           ; Vim in Org-mode.
+    :after (evil org)
+    :hook (org-mode . evil-org-mode))
+
+(use-package evil-org-agenda                    ; Vim in Org-mode.
+    :ensure nil
+    :after evil-org
+    :config (evil-org-agenda-set-keys))
+
+(use-package evil-collection                    ; Vim eveywhere.
   :after evil
   :config
   (evil-collection-init))
 
-(use-package evil-surround
-  :config
-  (global-evil-surround-mode 1))
+(use-package evil-surround                      ; Surround.vim.
+    :config
+    (global-evil-surround-mode 1))
 
-(use-package evil-org
-  :after (evil org general)
-  :hook
-  (org-mode . evil-org-mode))
+(use-package evil-terminal-cursor-changer       ; Cursor states.
+    :after evil
+    :config
+    (evil-terminal-cursor-changer-activate))
 
-(use-package evil-org-agenda
-  :ensure nil
-  :after evil-org
-  :config
-  (evil-org-agenda-set-keys))
+(use-package general                            ; Spacemacs Lite.
+    :after evil
+    :config
+    (general-evil-setup t)
+    (general-override-mode 1)
 
-(use-package which-key
-  :config
-  (which-key-mode 1))
+    ;; Make some global mappings for Evil-mode.
+    (mmap "^" 'dired-jump)
 
-(use-package general
-  :after evil
-  :config
-  (general-evil-setup t)
-  (general-override-mode 1)
+    ;; Prepare Spacemacs-like leader keymaps. Here, "gmap" and "lmap"
+    ;; refers to a global map (leader) and local map (localleader).
+    (general-create-definer gmap
+      :keymaps 'override
+      :states '(motion normal visual)
+      :prefix "SPC")
 
-  ;; Make some global mappings for Evil-mode.
-  (mmap "^" 'dired-jump)
+    (general-create-definer lmap
+      :keymaps 'override
+      :states '(motion normal visual)
+      :prefix ",")
 
-  ;; Prepare Spacemacs-like leader keymaps. Here, "gmap" and "lmap"
-  ;; refers to a global map (leader) and local map (localleader).
-  (general-create-definer gmap
-	:keymaps 'override
-	:states '(motion normal visual)
-	:prefix "SPC")
+    ;; Work around keyboard layout differences.
+    (define-key key-translation-map (kbd "§") (kbd "`"))
+    (define-key key-translation-map (kbd "±") (kbd "~"))
 
-  (general-create-definer lmap
-	:keymaps 'override
-	:states '(motion normal visual)
-	:prefix ",")
+    ;; Fix terminal keys.
+    (define-key key-translation-map (kbd "M-<return>") (kbd "M-RET"))
 
-  ;; Work around keyboard layout differences.
-  (define-key key-translation-map (kbd "§") (kbd "`"))
-  (define-key key-translation-map (kbd "±") (kbd "~"))
+    ;; Map "SPC" to my custom "space menu" leader map.
+    (gmap
+      "SPC" '(execute-extended-command :which-key "cmd")
 
-  ;; Fix terminal keys.
-  (define-key key-translation-map (kbd "M-<return>") (kbd "M-RET"))
+      "1" '(tab-bar-select-tab :which-key "1")          ; Tmux: C-b 1
+      "2" '(tab-bar-select-tab :which-key "2")          ; Tmux: C-b 2
+      "3" '(tab-bar-select-tab :which-key "3")          ; Tmux: C-b 3
+      "4" '(tab-bar-select-tab :which-key "4")          ; Tmux: C-b 4
+      "5" '(tab-bar-select-tab :which-key "5")          ; Tmux: C-b 5
+      "6" '(tab-bar-select-tab :which-key "6")          ; Tmux: C-b 6
+      "7" '(tab-bar-select-tab :which-key "7")          ; Tmux: C-b 7
+      "8" '(tab-bar-select-tab :which-key "8")          ; Tmux: C-b 8
+      "9" '(tab-bar-select-tab :which-key "9")          ; Tmux: C-b 9
 
-  ;; Map "SPC" to my custom "space menu" leader map.
-  (gmap
-	"SPC" '(execute-extended-command :which-key "cmd")
+      "a" '(org-agenda :which-key "agenda")             ; Emacs: C-c a
+      "b" '(switch-to-buffer :which-key "buffer")       ; Emacs: C-x b
+      "d" '(dired-jump :which-key "dired")              ; Emacs: C-x d
+      "f" '(find-file :which-key "file")                ; Emacs: C-x C-f
+      "g" '(magit :which-key "git")                     ; Emacs: C-x g
+      "h" `(,help-map :which-key "help")                ; Emacs: C-h
+      "i" '(imenu :which-key "imenu")                   ; Emacs: M-g i
+      "j" '(bookmark-jump :which-key "jump")
+      "k" '(kill-this-buffer :which-key "kill")         ; Emacs: C-x k
+      "n" `(,narrow-map :which-key "narrow")            ; Emacs: C-x n
+      "o" '(ace-window :which-key "other")              ; Emacs: C-x o
+      "p" `(,project-prefix-map :which-key "project")   ; Emacs: C-x p
+      "q" '(evil-window-delete :which-key "quit")       ; Vim: :q
+      "r" '(recentf :which-key "recent")                ; Emacs: C-c r
+      "s" '(save-buffer :which-key "save")              ; Emacs: C-x s
+      "t" '(tab-bar-new-tab :which-key "tab")           ; Emacs: C-x t n
+      "w" `(,evil-window-map :which-key "window")       ; Vim: C-w
+      "y" '(clone-indirect-buffer-other-window :which-key "indirect"))
 
-	"1" '(tab-bar-select-tab :which-key "1")          ; Tmux: C-b 1
-	"2" '(tab-bar-select-tab :which-key "2")          ; Tmux: C-b 2
-	"3" '(tab-bar-select-tab :which-key "3")          ; Tmux: C-b 3
-	"4" '(tab-bar-select-tab :which-key "4")          ; Tmux: C-b 4
-	"5" '(tab-bar-select-tab :which-key "5")          ; Tmux: C-b 5
-	"6" '(tab-bar-select-tab :which-key "6")          ; Tmux: C-b 6
-	"7" '(tab-bar-select-tab :which-key "7")          ; Tmux: C-b 7
-	"8" '(tab-bar-select-tab :which-key "8")          ; Tmux: C-b 8
-	"9" '(tab-bar-select-tab :which-key "9")          ; Tmux: C-b 9
+    ;; Map "C-c C-x" to ", x" for all letters "x". These are
+    ;; generally keybindings defined by the current major mode,
+    ;; and make a sensible set of default localleader bindings.
+    (lmap
+      "a" (general-key "C-c C-a")
+      "b" (general-key "C-c C-b")
+      "c" (general-key "C-c C-c")
+      "d" (general-key "C-c C-d")
+      "e" (general-key "C-c C-e")
+      "f" (general-key "C-c C-f")
+      "g" (general-key "C-c C-g")
+      "h" (general-key "C-c C-h")
+      "i" (general-key "C-c C-i")
+      "j" (general-key "C-c C-j")
+      "k" (general-key "C-c C-k")
+      "l" (general-key "C-c C-l")
+      "m" (general-key "C-c C-m")
+      "n" (general-key "C-c C-n")
+      "o" (general-key "C-c C-o")
+      "p" (general-key "C-c C-p")
+      "q" (general-key "C-c C-q")
+      "r" (general-key "C-c C-r")
+      "s" (general-key "C-c C-s")
+      "t" (general-key "C-c C-t")
+      "u" (general-key "C-c C-u")
+      "v" (general-key "C-c C-v")
+      "w" (general-key "C-c C-w")
+      "x" (general-key "C-c C-x")
+      "y" (general-key "C-c C-y")
+      "z" (general-key "C-c C-z"))
 
-	"a" '(org-agenda :which-key "agenda")             ; Emacs: C-c a
-	"b" '(switch-to-buffer :which-key "buffer")       ; Emacs: C-x b
-	"d" '(dired-jump :which-key "dired")              ; Emacs: C-x d
-	"f" '(find-file :which-key "file")                ; Emacs: C-x C-f
-	"g" '(magit :which-key "git")                     ; Emacs: C-x g
-	"h" `(,help-map :which-key "help")                ; Emacs: C-h
-	"i" '(imenu :which-key "imenu")                   ; Emacs: M-g i
-	"j" '(bookmark-jump :which-key "jump")
-	"k" '(kill-this-buffer :which-key "kill")         ; Emacs: C-x k
-	"n" `(,narrow-map :which-key "narrow")            ; Emacs: C-x n
-	"o" '(ace-window :which-key "other")              ; Emacs: C-x o
-	"p" `(,project-prefix-map :which-key "project")   ; Emacs: C-x p
-	"q" '(evil-window-delete :which-key "quit")       ; Vim: :q
-	"r" '(recentf :which-key "recent")                ; Emacs: C-c r
-	"s" '(save-buffer :which-key "save")              ; Emacs: C-x s
-	"t" '(tab-bar-new-tab :which-key "tab")           ; Emacs: C-x t n
-	"w" `(,evil-window-map :which-key "window")       ; Vim: C-w
-	"y" '(clone-indirect-buffer-other-window :which-key "indirect"))
+    ;; Map "C-c ?" to ", ?" for all symbols "?". This includes some
+    ;; major-mode keybindings and most minor-mode keybindings. One
+    ;; exception: ", ," is mapped to "C-c C-c" for simplicity.
+    (lmap
+      "!"  (general-key "C-c !" )
+      "\"" (general-key "C-c \"")
+      "#"  (general-key "C-c #" )
+      "$"  (general-key "C-c $" )
+      "%"  (general-key "C-c %" )
+      "&"  (general-key "C-c &" )
+      "'"  (general-key "C-c '" )
+      "("  (general-key "C-c (" )
+      ")"  (general-key "C-c )" )
+      "*"  (general-key "C-c *" )
+      "+"  (general-key "C-c +" )
+      ","  (general-key "C-c C-c" )
+      "-"  (general-key "C-c -" )
+      "."  (general-key "C-c ." )
+      "/"  (general-key "C-c /" )
+      ":"  (general-key "C-c :" )
+      ";"  (general-key "C-c ;" )
+      "<"  (general-key "C-c <" )
+      "="  (general-key "C-c =" )
+      ">"  (general-key "C-c >" )
+      "?"  (general-key "C-c ?" )
+      "@"  (general-key "C-c @" )
+      "["  (general-key "C-c [" )
+      "\\" (general-key "C-c \\")
+      "]"  (general-key "C-c ]" )
+      "^"  (general-key "C-c ^" )
+      "_"  (general-key "C-c _" )
+      "`"  (general-key "C-c `" )
+      "{"  (general-key "C-c {" )
+      "|"  (general-key "C-c |" )
+      "}"  (general-key "C-c }" )
+      "~"  (general-key "C-c ~" )))
 
-  ;; Map "C-c C-x" to ", x" for all letters "x". These are
-  ;; generally keybindings defined by the current major mode,
-  ;; and make a sensible set of default localleader bindings.
-  (lmap
-	"a" (general-key "C-c C-a")
-	"b" (general-key "C-c C-b")
-	"c" (general-key "C-c C-c")
-	"d" (general-key "C-c C-d")
-	"e" (general-key "C-c C-e")
-	"f" (general-key "C-c C-f")
-	"g" (general-key "C-c C-g")
-	"h" (general-key "C-c C-h")
-	"i" (general-key "C-c C-i")
-	"j" (general-key "C-c C-j")
-	"k" (general-key "C-c C-k")
-	"l" (general-key "C-c C-l")
-	"m" (general-key "C-c C-m")
-	"n" (general-key "C-c C-n")
-	"o" (general-key "C-c C-o")
-	"p" (general-key "C-c C-p")
-	"q" (general-key "C-c C-q")
-	"r" (general-key "C-c C-r")
-	"s" (general-key "C-c C-s")
-	"t" (general-key "C-c C-t")
-	"u" (general-key "C-c C-u")
-	"v" (general-key "C-c C-v")
-	"w" (general-key "C-c C-w")
-	"x" (general-key "C-c C-x")
-	"y" (general-key "C-c C-y")
-	"z" (general-key "C-c C-z"))
+(use-package kkp                                ; More keybindings.
+    :custom
+    (kkp-super-modifier 'meta)
+    :config
+    (global-kkp-mode +1))
 
-  ;; Map "C-c ?" to ", ?" for all symbols "?". This includes some
-  ;; major-mode keybindings and most minor-mode keybindings. One
-  ;; exception: ", ," is mapped to "C-c C-c" for simplicity.
-  (lmap
-	"!"  (general-key "C-c !" )
-	"\"" (general-key "C-c \"")
-	"#"  (general-key "C-c #" )
-	"$"  (general-key "C-c $" )
-	"%"  (general-key "C-c %" )
-	"&"  (general-key "C-c &" )
-	"'"  (general-key "C-c '" )
-	"("  (general-key "C-c (" )
-	")"  (general-key "C-c )" )
-	"*"  (general-key "C-c *" )
-	"+"  (general-key "C-c +" )
-	","  (general-key "C-c C-c" )
-	"-"  (general-key "C-c -" )
-	"."  (general-key "C-c ." )
-	"/"  (general-key "C-c /" )
-	":"  (general-key "C-c :" )
-	";"  (general-key "C-c ;" )
-	"<"  (general-key "C-c <" )
-	"="  (general-key "C-c =" )
-	">"  (general-key "C-c >" )
-	"?"  (general-key "C-c ?" )
-	"@"  (general-key "C-c @" )
-	"["  (general-key "C-c [" )
-	"\\" (general-key "C-c \\")
-	"]"  (general-key "C-c ]" )
-	"^"  (general-key "C-c ^" )
-	"_"  (general-key "C-c _" )
-	"`"  (general-key "C-c `" )
-	"{"  (general-key "C-c {" )
-	"|"  (general-key "C-c |" )
-	"}"  (general-key "C-c }" )
-	"~"  (general-key "C-c ~" )))
+(use-package xclip                              ; Clipboard integration.
+    :config
+    (xclip-mode 1))
 
-;;; Terminal support:
-(use-package kkp
-  :custom
-  (kkp-super-modifier 'meta)
-  :config
-  (global-kkp-mode +1))
+(use-package openwith                           ; Open files in native apps.
+    :config
+    (setq openwith-associations
+        '(("\\.\\(png\\|jpg\\|svg\\)$" "qlmanage -p" (file))
+          ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
+    (openwith-mode 1))
 
-(use-package xclip
-  :config
-  (xclip-mode 1))
+(use-package doom-modeline                      ; Prettier mode line.
+    :custom
+    (doom-modeline-bar-width 0.1)
+    (doom-modeline-buffer-encoding nil)
+    (doom-modeline-buffer-modification-icon nil)
+    (doom-modeline-icon nil)
+    (doom-modeline-modal nil)
+    (doom-modeline-position-line-format nil)
+    (doom-modeline-time nil)
+    (doom-modeline-workspace-name nil)
+    :config
+    (doom-modeline-mode 1))
 
-(use-package evil-terminal-cursor-changer
-  :after evil
-  :config
-  (evil-terminal-cursor-changer-activate))
+(use-package modus-themes                       ; High-contrast theme.
+    :custom
+    (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
+    :config
+    (load-theme 'modus-vivendi-tinted t)
+    :bind
+    ("<f12>" . modus-themes-toggle))
 
-;;; Modern interface:
-(use-package doom-modeline
-  :custom
-  (doom-modeline-bar-width 0.1)
-  (doom-modeline-buffer-encoding nil)
-  (doom-modeline-buffer-modification-icon nil)
-  (doom-modeline-icon nil)
-  (doom-modeline-modal nil)
-  (doom-modeline-position-line-format nil)
-  (doom-modeline-time nil)
-  (doom-modeline-workspace-name nil)
-  :config
-  (doom-modeline-mode 1))
+(use-package vertico                            ; Completion everywhere.
+    :config
+    (vertico-mode 1)
+    (vertico-mouse-mode 1))
 
-(use-package modus-themes
-  :custom
-  (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
-  :config
-  (load-theme 'modus-vivendi-tinted t)
-  :bind
-  ("<f12>" . modus-themes-toggle))
+(use-package vertico-directory                  ; Make C-x C-f nice again.
+    :after vertico
+    :ensure nil
+    :bind (:map vertico-map
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
+    :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
-(use-package vertico
-  :config
-  (vertico-mode 1)
-  (vertico-mouse-mode 1))
+(use-package orderless                          ; Let "foo bar" = "bar foo".
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion)))))
 
-(use-package vertico-directory
-  :after vertico
-  :ensure nil
-  :bind (:map vertico-map
-			  ("RET" . vertico-directory-enter)
-			  ("DEL" . vertico-directory-delete-char)
-			  ("M-DEL" . vertico-directory-delete-word))
-  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+(use-package swiper                             ; Better incremental search.
+    :bind
+    ("C-s" . swiper))
 
-(use-package orderless
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles basic partial-completion)))))
+(use-package ace-window                         ; Jump from window to window.
+    :bind
+    ("M-o" . ace-window))
 
-(use-package swiper
-  :bind
-  ("C-s" . swiper))
+(use-package which-key                          ; I don't remember keybindings.
+    :config
+    (which-key-mode 1))
 
-(use-package ace-window)
-
-;;; IDE features:
-;; LSP support that mostly just works. Even over TRAMP.
-(use-package eglot
-  :hook
-  (prog-mode . +eglot-project-ensure)
-  :bind
-  ("<f2>" . eglot-rename)
-  :config
-  (defun +eglot-project-ensure ()
-	"Enable Eglot only for files that live in projects."
-	(if (project-current)
-		(eglot-ensure))))
+(use-package eglot                              ; Emacs the IDE. Plug and play.
+    :hook
+    (prog-mode . +eglot-project-ensure)
+    :bind
+    ("<f2>" . eglot-rename)
+    :config
+    (defun +eglot-project-ensure ()
+    "Enable Eglot only for files that live in projects."
+    (if (project-current)
+            (eglot-ensure))))
 
 ;; Integrate all the external autoformatters.
-(use-package format-all
-  :hook
-  (eglot-managed-mode . format-all-mode)
-  :config
-  (setq-default format-all-formatters
-				'(("Python" (isort) (ruff) (black)))))
+(use-package format-all                         ; Don't indent things manually.
+    :hook
+    (eglot-managed-mode . format-all-mode)
+    :config
+    (setq-default format-all-formatters
+                '(("Python" (isort) (ruff) (black)))))
 
 ;; Poor man's multiple cursor support.
-(use-package iedit)
+(use-package iedit)                             ; Poor man's multiple cursors.
 (use-package magit
   :bind
   (:map magit-status-mode-map ("SPC" . nil))
@@ -345,7 +342,6 @@
   :config
   (yas-global-mode 1))
 
-;;; Writing:
 (use-package org
   :hook
   (org-mode . visual-line-mode)
@@ -354,7 +350,7 @@
   (initial-scratch-message "")
   (org-todo-keywords
    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-	 (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
+     (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
   (org-adapt-indentation t)
   (org-agenda-files (list org-directory))
   (org-agenda-skip-deadline-if-done t)
@@ -373,8 +369,8 @@
   (org-tags-column -65)
   :config
   (defun +url-handler-zotero (link)
-	"Open a zotero:// link in the Zotero desktop app."
-	(start-process "zotero_open" nil "open" (concat "zotero:" link)))
+    "Open a zotero:// link in the Zotero desktop app."
+    (start-process "zotero_open" nil "open" (concat "zotero:" link)))
   (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
 
 (use-package org-download
@@ -386,16 +382,16 @@
   (org-download-timestamp "%Y%m%d%H%M%S")
   :config
   (defun +org-download-file-format (filename)
-	"Purely date-based naming of attachments."
-	(concat
-	 (format-time-string org-download-timestamp)
-	 "."
-	 (file-name-extension filename)))
+    "Purely date-based naming of attachments."
+    (concat
+     (format-time-string org-download-timestamp)
+     "."
+     (file-name-extension filename)))
   (setq org-download-file-format-function #'+org-download-file-format)
   (setq org-download-annotate-function (lambda (_link) ""))
   (org-download-enable)
   :bind (:map org-mode-map
-			  ("M-S-v" . org-download-clipboard)))
+              ("M-S-v" . org-download-clipboard)))
 
 (use-package org-babel
   :after org
@@ -462,7 +458,6 @@
   ((TeX-mode . turn-on-cdlatex)
    (org-mode . turn-on-org-cdlatex)))
 
-;;; Programming:
 (use-package flymake-ruff
   :ensure t
   :hook (eglot-managed-mode . flymake-ruff-load))
@@ -471,19 +466,17 @@
 
 (use-package gnuplot)
 
-;;; Miscellaneous:
 (use-package diredfl
   :after dired
   :config
   (diredfl-global-mode 1))
 
-(use-package openwith
-  :config
-  (setq openwith-associations
-		'(("\\.\\(png\\|jpg\\|svg\\)$" "qlmanage -p" (file))
-		  ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
-  (openwith-mode 1))
-
 (use-package hl-todo
   :hook
   (prog-mode . hl-todo-mode))
+
+;; Local Variables:
+;; fill-column: 80
+;; indent-tabs-mode: nil
+;; comment-column: 48
+;; End:
