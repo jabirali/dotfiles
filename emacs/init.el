@@ -1,6 +1,6 @@
 ;;; ~/.config/emacs/init.el -*- outline-minor-mode: t; -*-
 
-;;; Package management:
+;;; Package manager:
 ;; Emacs bundles a decent package manager (package.el) and a nice
 ;; interface for loading and configuring packages (use-package).
 (use-package use-package
@@ -12,33 +12,42 @@
   :config
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
-;;; Core configuration:
+;;; Built-in modes:
+;; Emacs comes with more than enough batteries included. But by
+;; default, many of the useful things are turned off, while many of
+;; the annoying things are turned on. Let's try to fix that first.
 (use-package emacs
   :custom
   (default-input-method 'TeX)
+  (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
   (frame-title-format "%b")
   (inhibit-startup-message t)
-  (line-spacing 0.15)
   (make-backup-files nil)
-  (mouse-highlight nil)
-  (outline-blank-line t)
+  (mouse-wheel-follow-mouse t)
+  (mouse-wheel-progressive-speed nil)
   (ring-bell-function 'ignore)
   (sentence-end-double-space nil)
+  (tab-bar-close-button-show nil)
   (tab-width 4) 
   (truncate-lines t)
+  (tab-bar-format '(tab-bar-format-tabs))
+  (tab-bar-new-tab-choice "*scratch*")
+  (tab-bar-separator "  ")
+  (tab-bar-show 1)
+  (tab-bar-tab-hints t)
   (use-short-answers t)
   (xterm-set-window-title t)
   :config
   (auto-save-mode -1)
   (blink-cursor-mode -1)
   (menu-bar-mode -1)
+  (mouse-wheel-mode 1)
   (recentf-mode 1)
   (savehist-mode 1)
   (server-mode 1)
-  (when (display-graphic-p)
-	(tool-bar-mode -1)
-	(scroll-bar-mode -1)
-	(fringe-mode 16)))
+  (tab-bar-mode 1)
+  (tab-bar-history-mode 1)
+  (xterm-mouse-mode 1))
 
 ;;; Global advice:
 (defadvice load-theme (after run-after-load-theme-hook activate)
@@ -105,6 +114,9 @@
   :config
   (general-evil-setup t)
   (general-override-mode 1)
+
+  ;; Make some global mappings for Evil-mode.
+  (mmap "^" 'dired-jump)
 
   ;; Prepare Spacemacs-like leader keymaps. Here, "gmap" and "lmap"
   ;; refers to a global map (leader) and local map (localleader).
@@ -237,20 +249,6 @@
   :config
   (xclip-mode 1))
 
-(use-package xt-mouse
-  :ensure nil
-  :config
-  (xterm-mouse-mode t))
-
-(use-package mwheel
-  :ensure nil
-  :custom
-  (mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-  (mouse-wheel-progressive-speed nil)
-  (mouse-wheel-follow-mouse t)
-  :config
-  (mouse-wheel-mode t))
-
 (use-package evil-terminal-cursor-changer
   :after evil
   :config
@@ -269,18 +267,6 @@
   (doom-modeline-workspace-name nil)
   :config
   (doom-modeline-mode 1))
-
-(use-package tab-bar
-  :custom
-  (tab-bar-close-button-show nil)
-  (tab-bar-format '(tab-bar-format-tabs))
-  (tab-bar-new-tab-choice "*scratch*")
-  (tab-bar-separator "  ")
-  (tab-bar-show 1)
-  (tab-bar-tab-hints t)
-  :config
-  (tab-bar-mode 1)
-  (tab-bar-history-mode 1))
 
 (use-package modus-themes
   :custom
@@ -471,15 +457,7 @@
 
 (use-package gnuplot)
 
-;;; File management:
-(use-package dired
-  :ensure nil
-  :after (general)
-  :custom
-  (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
-  :config
-  (mmap "^" 'dired-jump))
-
+;;; Miscellaneous:
 (use-package diredfl
   :after dired
   :config
@@ -492,7 +470,6 @@
 		  ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
   (openwith-mode 1))
 
-;;; Miscellaneous:
 (use-package hl-todo
   :hook
   (prog-mode . hl-todo-mode))
