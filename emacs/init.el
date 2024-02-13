@@ -482,6 +482,10 @@
   :after eglot
   :hook (python-mode . jabirali/eglot-ensure-in-project))
 
+(use-package flymake-ruff
+  :ensure t
+  :hook (eglot-managed-mode . flymake-ruff-load))
+
 (use-package julia-mode)
 
 (use-package gnuplot)

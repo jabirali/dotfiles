@@ -676,6 +676,10 @@ terminal-first config focusing on [[org-mode]] and [[evil-mode]].
 	 (use-package python
 	   :after eglot
 	   :hook (python-mode . jabirali/eglot-ensure-in-project))
+	 
+	 (use-package flymake-ruff
+	   :ensure t
+	   :hook (eglot-managed-mode . flymake-ruff-load))
    #+end_src
 ** julia
    Syntax highlighting and Unicode input method for Julia programming.
