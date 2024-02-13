@@ -14,6 +14,13 @@ fish/fish_variables
 
 # Emacs
 *.elc
+emacs/auto-save-list
+emacs/custom.el
+emacs/elpa
+emacs/history
+emacs/projects
+emacs/recentf
+emacs/transient
 
 # Python
 ipython/*/startup/README
