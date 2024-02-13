@@ -1,6 +1,8 @@
 ;;; ~/.config/emacs/init.el -*- outline-minor-mode: t; -*-
 
 ;;; Package management:
+;; Emacs bundles a decent package manager (package.el) and a nice
+;; interface for loading and configuring packages (use-package).
 (use-package use-package
   :custom
   (native-comp-async-report-warnings-errors nil)
@@ -32,13 +34,13 @@
   (menu-bar-mode -1)
   (recentf-mode 1)
   (savehist-mode 1)
+  (server-mode 1)
   (when (display-graphic-p)
 	(tool-bar-mode -1)
 	(scroll-bar-mode -1)
-	(fringe-mode 16))
-	(server-mode 1))
+	(fringe-mode 16)))
 
-;;; Custom code:
+;;; Global advice:
 (defadvice load-theme (after run-after-load-theme-hook activate)
   "Personal customizations of any Emacs theme that is loaded."
   (let ((bg0 (face-attribute 'default :background))
@@ -63,16 +65,7 @@
 		  (kitty-theme-name (capitalize (replace-regexp-in-string "-" " " emacs-theme-name))))
 	 (format "kitty +kitten themes %s" kitty-theme-name))))
 
-(defun +insert-date ()
-  "Insert an ISO date stamp corresponding to today."
-  (interactive)
-  (insert (format-time-string "%Y-%m-%d %A")))
-
-(defun +find-projects ()
-  (interactive)
-  (project-remember-projects-under (expand-file-name "~/Sync/") t))
-
-;;; Keybindings:
+;;; Vim keybindings:
 (use-package evil
   :custom
   (evil-want-keybinding nil)
@@ -233,7 +226,7 @@
 	"}"  (general-key "C-c }" )
 	"~"  (general-key "C-c ~" )))
 
-;;; Terminal support
+;;; Terminal support:
 (use-package kkp
   :custom
   (kkp-super-modifier 'meta)
@@ -263,7 +256,7 @@
   :config
   (evil-terminal-cursor-changer-activate))
 
-;;; Modern interface
+;;; Modern interface:
 (use-package doom-modeline
   :custom
   (doom-modeline-bar-width 0.1)
@@ -322,13 +315,13 @@
 
 (use-package ace-window)
 
-;;; IDE features
+;;; IDE features:
 (use-package eglot
   :custom
   (eldoc-echo-area-prefer-doc-buffer t)
   (eldoc-echo-area-use-multiline-p nil)
   :config
-  (defun jabirali/eglot-ensure-in-project ()
+  (defun +eglot-ensure-in-project ()
 	"Run Eglot only if we're in a project."
 	(if (project-current) (eglot-ensure))))
 
@@ -351,7 +344,7 @@
   :config
   (yas-global-mode 1))
 
-;;; Writing
+;;; Writing:
 (use-package org
   :hook
   (org-mode . visual-line-mode)
@@ -465,10 +458,10 @@
   ((TeX-mode . turn-on-cdlatex)
    (org-mode . turn-on-org-cdlatex)))
 
-;;; Programming
+;;; Programming:
 (use-package python
   :after eglot
-  :hook (python-mode . jabirali/eglot-ensure-in-project))
+  :hook (python-mode . +eglot-ensure-in-project))
 
 (use-package flymake-ruff
   :ensure t
@@ -478,10 +471,10 @@
 
 (use-package gnuplot)
 
-;;; File management
+;;; File management:
 (use-package dired
   :ensure nil
-  :after (evil general)
+  :after (general)
   :custom
   (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
   :config
@@ -499,7 +492,7 @@
 		  ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
   (openwith-mode 1))
 
-;;; Miscellaneous
+;;; Miscellaneous:
 (use-package hl-todo
   :hook
   (prog-mode . hl-todo-mode))
