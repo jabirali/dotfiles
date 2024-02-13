@@ -1,34 +1,23 @@
-(require 'package)
-(setq package-user-dir "~/.cache/emacs/elpa")
-(setq package-native-compile t)
-(setq native-comp-async-report-warnings-errors nil)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
+;;; ~/.config/emacs/init.el -*- outline-minor-mode: t; -*-
 
+;;; Package management:
 (use-package use-package
   :custom
+  (native-comp-async-report-warnings-errors nil)
+  (package-native-compile t)
   (use-package-always-demand t)
-  (use-package-always-ensure t))
-
-(use-package no-littering
-  :init
-  ;; Make cache files follow the XDG specification.
-  (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
-  (setq no-littering-var-directory user-emacs-directory)
-  (setq no-littering-etc-directory user-emacs-directory)
+  (use-package-always-ensure t)
   :config
-  ;; Move backup~ and #auto-save# files out of the way.
-  (no-littering-theme-backups)
-  ;; Move host-specific customization out of 'init.el'.
-  (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
-  (load custom-file))
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
+;;; Core configuration:
 (use-package emacs
   :custom
   (default-input-method 'TeX)
   (frame-title-format "%b")
   (inhibit-startup-message t)
   (line-spacing 0.15)
+  (make-backup-files nil)
   (mouse-highlight nil)
   (outline-blank-line t)
   (ring-bell-function 'ignore)
@@ -38,23 +27,18 @@
   (use-short-answers t)
   (xterm-set-window-title t)
   :config
-  (menu-bar-mode -1)
+  (auto-save-mode -1)
   (blink-cursor-mode -1)
+  (menu-bar-mode -1)
+  (recentf-mode 1)
+  (savehist-mode 1)
   (when (display-graphic-p)
 	(tool-bar-mode -1)
 	(scroll-bar-mode -1)
 	(fringe-mode 16))
-  (recentf-mode 1)
-  (savehist-mode 1))
+	(server-mode 1))
 
-(use-package server
-  :config
-  (unless (server-running-p)
-	(server-mode 1)))
-
-(setq-default left-margin-width 1 right-margin-width 1)
-(set-window-buffer nil (current-buffer))
-
+;;; Custom code:
 (defadvice load-theme (after run-after-load-theme-hook activate)
   "Personal customizations of any Emacs theme that is loaded."
   (let ((bg0 (face-attribute 'default :background))
@@ -88,6 +72,7 @@
   (interactive)
   (project-remember-projects-under (expand-file-name "~/Sync/") t))
 
+;;; Keybindings:
 (use-package evil
   :custom
   (evil-want-keybinding nil)
@@ -104,7 +89,6 @@
   (evil-collection-init))
 
 (use-package evil-surround
-  :ensure 
   :config
   (global-evil-surround-mode 1))
 
@@ -249,6 +233,7 @@
 	"}"  (general-key "C-c }" )
 	"~"  (general-key "C-c ~" )))
 
+;;; Terminal support
 (use-package kkp
   :custom
   (kkp-super-modifier 'meta)
@@ -278,6 +263,7 @@
   :config
   (evil-terminal-cursor-changer-activate))
 
+;;; Modern interface
 (use-package doom-modeline
   :custom
   (doom-modeline-bar-width 0.1)
@@ -326,7 +312,6 @@
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
 (use-package orderless
-  :ensure t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
@@ -337,6 +322,7 @@
 
 (use-package ace-window)
 
+;;; IDE features
 (use-package eglot
   :custom
   (eldoc-echo-area-prefer-doc-buffer t)
@@ -365,6 +351,7 @@
   :config
   (yas-global-mode 1))
 
+;;; Writing
 (use-package org
   :hook
   (org-mode . visual-line-mode)
@@ -478,6 +465,7 @@
   ((TeX-mode . turn-on-cdlatex)
    (org-mode . turn-on-org-cdlatex)))
 
+;;; Programming
 (use-package python
   :after eglot
   :hook (python-mode . jabirali/eglot-ensure-in-project))
@@ -490,6 +478,7 @@
 
 (use-package gnuplot)
 
+;;; File management
 (use-package dired
   :ensure nil
   :after (evil general)
@@ -510,10 +499,7 @@
 		  ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
   (openwith-mode 1))
 
+;;; Miscellaneous
 (use-package hl-todo
   :hook
   (prog-mode . hl-todo-mode))
-
-(use-package gptel)
-
-(setq gc-cons-threshold (* 1024 1024))
