@@ -1,4 +1,5 @@
 ;; ~/.config/emacs/init.el
+
 ;;; Core:
 (use-package use-package
   :custom
@@ -26,8 +27,6 @@
   :bind
   ("C-\\" . activate-transient-input-method)
   ("<f5>" . sort-lines)
-  ("H-:" . eval-expression)
-  ("H-p" . execute-extended-command)
   :config
   ;; Don't indicate long or wrapped lines.
   (set-display-table-slot standard-display-table 'truncation ? )
@@ -36,8 +35,8 @@
   (define-key key-translation-map (kbd "§") (kbd "`"))
   (define-key key-translation-map (kbd "±") (kbd "~"))
   ;; Make some Meta keybindings more ergonomic.
-  (define-key key-translation-map (kbd "H-<return>") (kbd "M-RET"))
-  (define-key key-translation-map (kbd "H-<backspace>") (kbd "M-DEL"))
+  (define-key key-translation-map (kbd "M-<return>") (kbd "M-RET"))
+  (define-key key-translation-map (kbd "M-<backspace>") (kbd "M-DEL"))
   ;; Disable the most annoying default modes.
   (blink-cursor-mode -1)
   (menu-bar-mode -1))
@@ -154,10 +153,6 @@
   (tab-bar-separator "  ")
   (tab-bar-show 1)
   (tab-bar-tab-hints t)
-  (tab-bar-select-tab-modifiers '(hyper))
-  :bind
-  ("H-[" . tab-bar-history-back)
-  ("H-]" . tab-bar-history-forward)
   :config
   (tab-bar-mode 1)
   (tab-bar-history-mode 1))
@@ -170,7 +165,7 @@
 (use-package ace-window
   :ensure t
   :bind
-  ("H-o" . ace-window))
+  ("M-o" . ace-window))
 
 (use-package cdlatex
   :ensure t
@@ -349,7 +344,7 @@
   (setq org-download-annotate-function (lambda (_link) ""))
   (org-download-enable)
   :bind (:map org-mode-map
-              ("H-S-v" . org-download-clipboard)))
+              ("M-S-v" . org-download-clipboard)))
 
 (use-package org-super-agenda
   :ensure t
@@ -365,7 +360,7 @@
 (use-package kkp
   :ensure t
   :custom
-  (kkp-super-modifier 'hyper)
+  (kkp-super-modifier 'meta)
   :config
   (global-kkp-mode +1)
   (advice-add 'load-theme :after #'+theme-kitty))
