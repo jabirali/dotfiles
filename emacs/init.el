@@ -154,6 +154,7 @@
   (tab-bar-separator "  ")
   (tab-bar-show 1)
   (tab-bar-tab-hints t)
+  (tab-bar-select-tab-modifiers '(hyper))
   :bind
   ("H-[" . tab-bar-history-back)
   ("H-]" . tab-bar-history-forward)
