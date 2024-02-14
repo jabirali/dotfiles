@@ -27,9 +27,13 @@
   ("C-\\" . activate-transient-input-method)
   ("<f5>" . sort-lines)
   :config
+  ;; Make ISO and ANSI keyboards more similar.
   (define-key key-translation-map (kbd "§") (kbd "`"))
   (define-key key-translation-map (kbd "±") (kbd "~"))
-  (define-key key-translation-map (kbd "s-<return>") (kbd "M-RET"))
+  ;; Make some Meta keybindings more ergonomic.
+  (define-key key-translation-map (kbd "H-<return>") (kbd "M-RET"))
+  (define-key key-translation-map (kbd "H-<backspace>") (kbd "M-DEL"))
+  ;; Disable the most annoying default modes.
   (blink-cursor-mode -1)
   (menu-bar-mode -1))
 
@@ -146,8 +150,8 @@
   (tab-bar-show 1)
   (tab-bar-tab-hints t)
   :bind
-  ("s-[" . tab-bar-history-back)
-  ("s-]" . tab-bar-history-forward)
+  ("H-[" . tab-bar-history-back)
+  ("H-]" . tab-bar-history-forward)
   :config
   (tab-bar-mode 1)
   (tab-bar-history-mode 1))
@@ -160,7 +164,7 @@
 (use-package ace-window
   :ensure t
   :bind
-  ("s-o" . ace-window))
+  ("H-o" . ace-window))
 
 (use-package cdlatex
   :ensure t
@@ -339,7 +343,7 @@
   (setq org-download-annotate-function (lambda (_link) ""))
   (org-download-enable)
   :bind (:map org-mode-map
-              ("s-V" . org-download-clipboard)))
+              ("H-S-v" . org-download-clipboard)))
 
 (use-package org-super-agenda
   :ensure t
@@ -354,6 +358,8 @@
 
 (use-package kkp
   :ensure t
+  :custom
+  (kkp-super-modifier 'hyper)
   :config
   (global-kkp-mode +1)
   (advice-add 'load-theme :after #'+theme-kitty))
@@ -398,9 +404,9 @@
 (use-package vertico-directory
   :after vertico
   :bind (:map vertico-map
-              ("RET" . vertico-directory-enter)
-              ("DEL" . vertico-directory-delete-char)
-              ("s-DEL" . vertico-directory-delete-word))
+              ("RET"   . vertico-directory-enter)
+              ("DEL"   . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
 (use-package which-key
