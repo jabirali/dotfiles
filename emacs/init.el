@@ -29,7 +29,7 @@
   :config
   (define-key key-translation-map (kbd "§") (kbd "`"))
   (define-key key-translation-map (kbd "±") (kbd "~"))
-  (define-key key-translation-map (kbd "M-<return>") (kbd "M-RET"))
+  (define-key key-translation-map (kbd "s-<return>") (kbd "M-RET"))
   (blink-cursor-mode -1)
   (menu-bar-mode -1))
 
@@ -145,6 +145,9 @@
   (tab-bar-separator "  ")
   (tab-bar-show 1)
   (tab-bar-tab-hints t)
+  :bind
+  ("s-[" . tab-bar-history-back)
+  ("s-]" . tab-bar-history-forward)
   :config
   (tab-bar-mode 1)
   (tab-bar-history-mode 1))
@@ -157,7 +160,7 @@
 (use-package ace-window
   :ensure t
   :bind
-  ("M-o" . ace-window))
+  ("s-o" . ace-window))
 
 (use-package cdlatex
   :ensure t
@@ -336,7 +339,7 @@
   (setq org-download-annotate-function (lambda (_link) ""))
   (org-download-enable)
   :bind (:map org-mode-map
-              ("M-S-v" . org-download-clipboard)))
+              ("s-V" . org-download-clipboard)))
 
 (use-package org-super-agenda
   :ensure t
@@ -351,8 +354,6 @@
 
 (use-package kkp
   :ensure t
-  :custom
-  (kkp-super-modifier 'meta)
   :config
   (global-kkp-mode +1)
   (advice-add 'load-theme :after #'+theme-kitty))
@@ -399,7 +400,7 @@
   :bind (:map vertico-map
               ("RET" . vertico-directory-enter)
               ("DEL" . vertico-directory-delete-char)
-              ("M-DEL" . vertico-directory-delete-word))
+              ("s-DEL" . vertico-directory-delete-word))
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
 (use-package which-key
