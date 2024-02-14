@@ -26,7 +26,12 @@
   :bind
   ("C-\\" . activate-transient-input-method)
   ("<f5>" . sort-lines)
+  ("H-:" . eval-expression)
+  ("H-p" . execute-extended-command)
   :config
+  ;; Don't indicate long or wrapped lines.
+  (set-display-table-slot standard-display-table 'truncation ? )
+  (set-display-table-slot standard-display-table 'wrap ? )
   ;; Make ISO and ANSI keyboards more similar.
   (define-key key-translation-map (kbd "§") (kbd "`"))
   (define-key key-translation-map (kbd "±") (kbd "~"))
