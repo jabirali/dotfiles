@@ -3,14 +3,12 @@ Host *
 	CheckHostIP no
 	Compression yes
 	ControlMaster auto
+        ControlPersist 10
 	ControlPath ~/.ssh/sockets/%r@%h-%p
 	ForwardX11 yes
 
 	# Integrate `1Password` (to protect my SSH keys).
 	IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-
-	# Integrate `rmate` (for remote `subl` editing).
-	RemoteForward 52698 localhost:52698
 
 # Personal.
 Host babacalc
