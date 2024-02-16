@@ -41,6 +41,13 @@
   (blink-cursor-mode -1)
   (menu-bar-mode -1))
 
+(use-package server
+  :custom
+  (server-use-tcp t)
+  (server-port 1337)
+  :config
+  (server-mode 1))
+
 ;;; Functions:
 (defun +eglot-project-ensure ()
   "Enable Eglot iff the current buffer belongs to a project."
@@ -141,10 +148,6 @@
   :config
   (savehist-mode 1))
 
-(use-package server
-  :config
-  (server-mode 1))
-
 (use-package tab-bar
   :custom
   (tab-bar-close-button-show nil)
@@ -153,6 +156,9 @@
   (tab-bar-separator "  ")
   (tab-bar-show 1)
   (tab-bar-tab-hints t)
+  :bind
+  ("M-<left>"  . tab-bar-history-back)
+  ("M-<right>" . tab-bar-history-forward)
   :config
   (tab-bar-mode 1)
   (tab-bar-history-mode 1))
@@ -354,6 +360,11 @@
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode 1))
 
+(use-package outshine
+  :ensure t
+  :hook
+  (prog-mode . outshine-mode))
+
 (use-package ox-pandoc
   :ensure t)
 
@@ -362,8 +373,7 @@
   :custom
   (kkp-super-modifier 'meta)
   :config
-  (global-kkp-mode +1)
-  (advice-add 'load-theme :after #'+theme-kitty))
+  (global-kkp-mode +1))
 
 (use-package reftex
   :ensure t
@@ -530,6 +540,4 @@
 ;;     comment-column: 48
 ;;     fill-column: 80
 ;;     indent-tabs-mode: nil
-;;     outline-minor-mode: t
-;;     eval: (outline-hide-body)
 ;; End:
