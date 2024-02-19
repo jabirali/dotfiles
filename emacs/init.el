@@ -13,10 +13,12 @@
   :custom
   (auto-save-default nil)
   (default-input-method 'TeX)
-  (frame-title-format "%b")
+  (frame-title-format '((:eval (if (buffer-file-name) (or (file-remote-p default-directory 'host) "%b")))))
+  (fringes-outside-margins t)
   (inhibit-startup-message t)
   (initial-major-mode 'org-mode)
   (initial-scratch-message "")
+  (line-spacing 0.15)
   (make-backup-files nil)
   (ring-bell-function 'ignore)
   (sentence-end-double-space nil)
@@ -24,6 +26,8 @@
   (truncate-lines t)
   (use-short-answers t)
   (xterm-set-window-title t)
+  :custom-face
+  (default ((t (:family "JuliaMono" :height 140))))
   :bind
   ("C-\\" . activate-transient-input-method)
   ("<f5>" . sort-lines)
@@ -39,7 +43,11 @@
   (define-key key-translation-map (kbd "M-<backspace>") (kbd "M-DEL"))
   ;; Disable the most annoying default modes.
   (blink-cursor-mode -1)
-  (menu-bar-mode -1))
+  (menu-bar-mode -1)
+  (when (display-graphic-p)
+    (fringe-mode 1)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)))
 
 (use-package server
   :custom
@@ -48,17 +56,23 @@
   :config
   (server-mode 1))
 
+(use-package quelpa
+  :ensure t)
+
+(use-package quelpa-use-package
+  :ensure t)
+
 ;;; Functions:
 (defun +eglot-project-ensure ()
   "Enable Eglot iff the current buffer belongs to a project."
   (if (project-current) (eglot-ensure)))
 
-(defun +theme-kitty (&rest _)
-  "Synchronize the Kitty terminal theme and the Emacs theme."
-  (shell-command
-   (let* ((emacs-theme-name (symbol-name (car custom-enabled-themes)))
-          (kitty-theme-name (capitalize (replace-regexp-in-string "-" " " emacs-theme-name))))
-     (format "kitty +kitten themes %s" kitty-theme-name))))
+;; (defun +theme-kitty (&rest _)
+;;   "Synchronize the Kitty terminal theme and the Emacs theme."
+;;   (shell-command
+;;    (let* ((emacs-theme-name (symbol-name (car custom-enabled-themes)))
+;;           (kitty-theme-name (capitalize (replace-regexp-in-string "-" " " emacs-theme-name))))
+;;      (format "kitty +kitten themes %s" kitty-theme-name))))
 
 (defun +theme-override (&rest _)
   "Override the current theme for a consistent and minimal look."
@@ -130,6 +144,7 @@
   (org-hide-leading-stars t)
   (org-highlight-latex-and-related '(native latex script entities))
   (org-image-actual-width '(400))
+  (org-pretty-entities t)
   (org-return-follows-link t)
   (org-startup-folded 'fold)
   (org-tags-column -65)
@@ -179,10 +194,28 @@
   ((TeX-mode . turn-on-cdlatex)
    (org-mode . turn-on-org-cdlatex)))
 
-(use-package company
-  :ensure t
-  :after eglot
-  :hook (eglot-managed-mode . company-mode))
+;; (use-package company
+;;   :ensure t
+;;   :after eglot
+;;   :hook (eglot-managed-mode . company-mode))
+
+(use-package copilot
+  :custom
+  (copilot-idle-delay 1)
+  :hook
+  (prog-mode . copilot-mode)
+  :quelpa
+  (copilot :fetcher github
+           :repo "copilot-emacs/copilot.el"
+           :branch "main"
+           :files ("dist" "*.el"))
+  :config
+  (general-define-key
+   :states '(insert)
+   :keymaps 'copilot-mode-map
+   "M-RET" #'copilot-accept-completion
+   "M-n"   #'copilot-next-completion
+   "M-p"   #'copilot-previous-completion))
 
 (use-package diredfl
   :ensure t
@@ -317,6 +350,9 @@
   :hook
   (markdown-mode . cdlatex-mode))
 
+(use-package matlab
+  :ensure matlab-mode)
+
 (use-package openwith
   :ensure t
   :config
@@ -368,12 +404,12 @@
 (use-package ox-pandoc
   :ensure t)
 
-(use-package kkp
-  :ensure t
-  :custom
-  (kkp-super-modifier 'meta)
-  :config
-  (global-kkp-mode +1))
+;; (use-package kkp
+;;   :ensure t
+;;   :custom
+;;   (kkp-super-modifier 'meta)
+;;   :config
+;;   (global-kkp-mode +1))
 
 (use-package reftex
   :ensure t
