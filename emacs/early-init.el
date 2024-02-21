@@ -5,4 +5,4 @@
 (ignore-errors (load custom-file))
 
 ;; Customize how new frames and windows look by default.
-(setq-default left-margin-width 1 right-margin-width 1)
+(setq-default left-margin-width 2 right-margin-width 2)

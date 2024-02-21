@@ -62,6 +62,14 @@
 (use-package quelpa-use-package
   :ensure t)
 
+(use-package exec-path-from-shell
+  :quelpa
+  (exec-path-from-shell
+    :fetcher github
+    :repo "purcell/exec-path-from-shell")
+  :config
+  (exec-path-from-shell-initialize))
+
 ;;; Functions:
 (defun +eglot-project-ensure ()
   "Enable Eglot iff the current buffer belongs to a project."
@@ -77,16 +85,21 @@
 (defun +theme-override (&rest _)
   "Override the current theme for a consistent and minimal look."
   (let ((bg0 (face-attribute 'default :background))
-        (bg1 (face-attribute 'scroll-bar :background))
-        (fg1 (face-attribute 'success :foreground))
-        (fg2 (face-attribute 'mode-line :foreground)))
-    (set-face-attribute 'tab-bar nil :foreground bg1 :background bg1 :box `(:line-width 6 :color ,bg1))
-    (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg1 :box `(:line-width 6 :color ,bg1))
-    (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg1 :box `(:line-width 6 :color ,bg1))
+        (bg1 (face-attribute 'mode-line :background))
+        (bg2 "#000000")
+        (fg0 (face-attribute 'default :foreground))
+        (fg1 "#6AE4B9")
+        (fg2 "#E4E4E4"))
+    (set-face-attribute 'tab-bar nil :foreground bg2 :background bg2 :box `(:line-width 6 :color ,bg2))
+    (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg2 :box `(:line-width 6 :color ,bg2))
+    (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg2 :box `(:line-width 6 :color ,bg2))
     (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
     (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
     (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
+    (set-face-attribute 'scroll-bar nil :foreground bg2 :background bg2)
     (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)))
+
+(advice-add 'load-theme :after #'+theme-override)
 
 (defun +url-handler-zotero (link)
   "Open a zotero:// link in the Zotero desktop app."
@@ -108,21 +121,20 @@
   (eldoc-echo-area-prefer-doc-buffer t)
   (eldoc-echo-area-use-multiline-p nil))
 
-(use-package modus-themes
-  :custom
-  (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
-  :config
-  (advice-add 'load-theme :after #'+theme-override)
-  (load-theme 'modus-vivendi-tinted t)
-  :bind
-  ("<f12>" . modus-themes-toggle))
+;; (use-package modus-themes
+;;   :custom
+;;   (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
+;;   :config
+;;   (load-theme 'modus-vivendi-tinted t)
+;;   :bind
+;;   ("<f12>" . modus-themes-toggle))
 
-(use-package mwheel
-  :custom
-  (mouse-wheel-follow-mouse t)
-  (mouse-wheel-progressive-speed nil)
-  :config
-  (mouse-wheel-mode 1))
+;; (use-package mwheel
+;;   :custom
+;;   (mouse-wheel-follow-mouse t)
+;;   (mouse-wheel-progressive-speed nil)
+;;   :config
+;;   (mouse-wheel-mode 1))
 
 (use-package org
   :hook
@@ -163,20 +175,20 @@
   :config
   (savehist-mode 1))
 
-(use-package tab-bar
-  :custom
-  (tab-bar-close-button-show nil)
-  (tab-bar-format '(tab-bar-format-tabs))
-  (tab-bar-new-tab-choice "*scratch*")
-  (tab-bar-separator "  ")
-  (tab-bar-show 1)
-  (tab-bar-tab-hints t)
-  :bind
-  ("M-<left>"  . tab-bar-history-back)
-  ("M-<right>" . tab-bar-history-forward)
-  :config
-  (tab-bar-mode 1)
-  (tab-bar-history-mode 1))
+;; (use-package tab-bar
+;;   :custom
+;;   (tab-bar-close-button-show nil)
+;;   (tab-bar-format '(tab-bar-format-tabs))
+;;   (tab-bar-new-tab-choice "*scratch*")
+;;   (tab-bar-separator "  ")
+;;   (tab-bar-show 1)
+;;   (tab-bar-tab-hints t)
+;;   :bind
+;;   ("M-<left>"  . tab-bar-history-back)
+;;   ("M-<right>" . tab-bar-history-forward)
+;;   :config
+;;   (tab-bar-mode 1)
+;;   (tab-bar-history-mode 1))
 
 (use-package xt-mouse
   :config
@@ -204,18 +216,16 @@
   (copilot-idle-delay 1)
   :hook
   (prog-mode . copilot-mode)
+  :bind
+  (:map copilot-mode-map
+        ("M-RET" . copilot-accept-completion)
+        ("M-n"   . copilot-next-completion)
+        ("M-p"   . copilot-previous-completion))
   :quelpa
   (copilot :fetcher github
            :repo "copilot-emacs/copilot.el"
            :branch "main"
-           :files ("dist" "*.el"))
-  :config
-  (general-define-key
-   :states '(insert)
-   :keymaps 'copilot-mode-map
-   "M-RET" #'copilot-accept-completion
-   "M-n"   #'copilot-next-completion
-   "M-p"   #'copilot-previous-completion))
+           :files ("dist" "*.el")))
 
 (use-package diredfl
   :ensure t
@@ -236,6 +246,11 @@
   (doom-modeline-workspace-name nil)
   :config
   (doom-modeline-mode 1))
+
+(use-package doom-themes
+  :ensure t
+  :config
+  (load-theme 'doom-dracula t))
 
 (use-package evil
   :ensure t
@@ -353,19 +368,19 @@
 (use-package matlab
   :ensure matlab-mode)
 
-(use-package openwith
-  :ensure t
-  :config
-  (setq openwith-associations
-        '(("\\.\\(png\\|jpg\\|svg\\)$" "qlmanage -p" (file))
-          ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
-  (openwith-mode 1))
+;; (use-package openwith
+;;   :ensure t
+;;   :config
+;;   (setq openwith-associations
+;;         '(("\\.\\(png\\|jpg\\|svg\\)$" "qlmanage -p" (file))
+;;           ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
+;;   (openwith-mode 1))
 
-(use-package orderless
-  :ensure t
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles basic partial-completion)))))
+;; (use-package orderless
+;;   :ensure t
+;;   :custom
+;;   (completion-styles '(orderless basic))
+;;   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package org-download
   :ensure t
@@ -411,6 +426,9 @@
 ;;   :config
 ;;   (global-kkp-mode +1))
 
+(use-package prescient
+  :ensure t)
+
 (use-package reftex
   :ensure t
   :after tex
@@ -455,6 +473,22 @@
               ("DEL"   . vertico-directory-delete-char)
               ("M-DEL" . vertico-directory-delete-word))
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
+(use-package vertico-prescient
+  :ensure t
+  :after (vertico prescient)
+  :config
+  (vertico-prescient-mode 1))
+
+(use-package vertico-posframe
+  :ensure t
+  :after vertico
+  :custom
+  (vertico-posframe-poshandler 'posframe-poshandler-frame-top-center)
+  (vertico-posframe-width 70)
+  (vertico-posframe-border-width 2)
+  :config
+  (vertico-posframe-mode 1))
 
 (use-package which-key
   :ensure t
