@@ -10,10 +10,13 @@
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
 (use-package emacs
+  :hook
+  (prog-mode . hs-minor-mode)
+  (text-mode . visual-line-mode)
   :custom
   (auto-save-default nil)
+  (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
   (default-input-method 'TeX)
-  (frame-title-format '((:eval (if (buffer-file-name) (or (file-remote-p default-directory 'host) "%b")))))
   (fringes-outside-margins t)
   (inhibit-startup-message t)
   (initial-major-mode 'org-mode)
@@ -22,6 +25,13 @@
   (make-backup-files nil)
   (ring-bell-function 'ignore)
   (sentence-end-double-space nil)
+  (frame-title-format '("%b "
+                        (:eval (let ((project (project-current))
+                                     (remote (file-remote-p default-directory 'host)))
+                                 (if remote
+                                     (format "(on %s)" (downcase remote))
+                                   (if project
+                                       (format "(in %s)" (downcase (project-name project)))))))))
   (tab-width 4)
   (truncate-lines t)
   (use-short-answers t)
@@ -41,7 +51,9 @@
   ;; Make some Meta keybindings more ergonomic.
   (define-key key-translation-map (kbd "M-<return>") (kbd "M-RET"))
   (define-key key-translation-map (kbd "M-<backspace>") (kbd "M-DEL"))
-  ;; Disable the most annoying default modes.
+  ;; Turn on some useful default modes.
+  (global-auto-revert-mode 1)
+  ;; Disable the annoying default modes.
   (blink-cursor-mode -1)
   (menu-bar-mode -1)
   (when (display-graphic-p)
@@ -75,18 +87,11 @@
   "Enable Eglot iff the current buffer belongs to a project."
   (if (project-current) (eglot-ensure)))
 
-;; (defun +theme-kitty (&rest _)
-;;   "Synchronize the Kitty terminal theme and the Emacs theme."
-;;   (shell-command
-;;    (let* ((emacs-theme-name (symbol-name (car custom-enabled-themes)))
-;;           (kitty-theme-name (capitalize (replace-regexp-in-string "-" " " emacs-theme-name))))
-;;      (format "kitty +kitten themes %s" kitty-theme-name))))
-
 (defun +theme-override (&rest _)
   "Override the current theme for a consistent and minimal look."
   (let ((bg0 (face-attribute 'default :background))
         (bg1 (face-attribute 'mode-line :background))
-        (bg2 "#000000")
+        (bg2 (face-attribute 'mode-line :background))
         (fg0 (face-attribute 'default :foreground))
         (fg1 "#6AE4B9")
         (fg2 "#E4E4E4"))
@@ -106,28 +111,14 @@
   (start-process "zotero_open" nil "open" (concat "zotero:" link)))
 
 ;;; Internal packages:
-(use-package dired
-  :custom
-  (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso"))
-
 (use-package eglot
+  :custom
+  (eldoc-echo-area-prefer-doc-buffer t)
+  (eldoc-echo-area-use-multiline-p nil)
   :hook
   (python-mode . +eglot-project-ensure)
   :bind
   ("<f2>" . eglot-rename))
-
-(use-package eldoc
-  :custom
-  (eldoc-echo-area-prefer-doc-buffer t)
-  (eldoc-echo-area-use-multiline-p nil))
-
-;; (use-package modus-themes
-;;   :custom
-;;   (modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
-;;   :config
-;;   (load-theme 'modus-vivendi-tinted t)
-;;   :bind
-;;   ("<f12>" . modus-themes-toggle))
 
 ;; (use-package mwheel
 ;;   :custom
@@ -137,8 +128,6 @@
 ;;   (mouse-wheel-mode 1))
 
 (use-package org
-  :hook
-  (org-mode . auto-fill-mode)
   :custom
   (org-adapt-indentation t)
   (org-agenda-files (list org-directory))
@@ -153,12 +142,11 @@
   (org-ctrl-k-protect-subtree t)
   (org-directory "~/Sync/Org")
   (org-fontify-quote-and-verse-blocks t)
-  (org-hide-leading-stars t)
   (org-highlight-latex-and-related '(native latex script entities))
   (org-image-actual-width '(400))
-  (org-pretty-entities t)
   (org-return-follows-link t)
   (org-startup-folded 'fold)
+  (org-startup-indented t)
   (org-tags-column -65)
   (org-todo-keywords
    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
@@ -175,20 +163,20 @@
   :config
   (savehist-mode 1))
 
-;; (use-package tab-bar
-;;   :custom
-;;   (tab-bar-close-button-show nil)
-;;   (tab-bar-format '(tab-bar-format-tabs))
-;;   (tab-bar-new-tab-choice "*scratch*")
-;;   (tab-bar-separator "  ")
-;;   (tab-bar-show 1)
-;;   (tab-bar-tab-hints t)
-;;   :bind
-;;   ("M-<left>"  . tab-bar-history-back)
-;;   ("M-<right>" . tab-bar-history-forward)
-;;   :config
-;;   (tab-bar-mode 1)
-;;   (tab-bar-history-mode 1))
+(use-package tab-bar
+  :custom
+  (tab-bar-close-button-show nil)
+  (tab-bar-format '(tab-bar-format-tabs))
+  (tab-bar-new-tab-choice "*scratch*")
+  (tab-bar-separator "  ")
+  (tab-bar-show 1)
+  (tab-bar-tab-hints t)
+  :bind
+  ("M-<left>"  . tab-bar-history-back)
+  ("M-<right>" . tab-bar-history-forward)
+  :config
+  (tab-bar-mode 1)
+  (tab-bar-history-mode 1))
 
 (use-package xt-mouse
   :config
@@ -411,10 +399,10 @@
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode 1))
 
-(use-package outshine
-  :ensure t
-  :hook
-  (prog-mode . outshine-mode))
+;; (use-package outshine
+;;   :ensure t
+;;   :hook
+;;   (prog-mode . outshine-mode))
 
 (use-package ox-pandoc
   :ensure t)
@@ -455,10 +443,7 @@
   (TeX-source-correlate-mode t)
   (TeX-source-correlate-start-server t)
   (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
-  (TeX-view-program-selection '((output-pdf "Skim")))
-  :hook
-  (TeX-mode . visual-line-mode)
-  (TeX-mode . prettify-symbols-mode))
+  (TeX-view-program-selection '((output-pdf "Skim"))))
 
 (use-package vertico
   :ensure t
@@ -499,6 +484,12 @@
   :ensure t
   :config
   (xclip-mode 1))
+
+(use-package xenops
+  :ensure t
+  :hook
+  (org-mode . xenops-mode)
+  (LaTeX-mode . xenops-mode))
 
 (use-package yasnippet
   :ensure t
