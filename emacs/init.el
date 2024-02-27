@@ -155,6 +155,12 @@
   (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
   (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
 
+(use-package python
+  :config
+  (when (executable-find "ipython")
+    (setq python-shell-interpreter "ipython")
+    (setq python-shell-prompt-detect-failure-warning nil)))
+
 (use-package recentf
   :config
   (recentf-mode 1))
@@ -185,8 +191,20 @@
 ;;; External packages:
 (use-package ace-window
   :ensure t
+  :config
+  (defun +other-window-dwim ()
+    "Select either the minibuffer or an arbitrary visible window."
+    (interactive)
+    (if (active-minibuffer-window)
+        (select-window (active-minibuffer-window))
+      (call-interactively #'ace-window)))
   :bind
-  ("M-o" . ace-window))
+  ("M-o" . +other-window-dwim))
+
+;; (use-package adaptive-wrap
+;;   :ensure
+;;   :hook
+;;   (visual-line-mode . adaptive-wrap-prefix-mode))
 
 (use-package cdlatex
   :ensure t
@@ -286,6 +304,8 @@
   (LaTeX-mode . evil-tex-mode))
 
 (use-package expand-region
+  :bind*
+  ("C-c RET" . er/expand-region)
   :ensure t)
 
 (use-package flymake-ruff
@@ -389,7 +409,7 @@
   (setq org-download-annotate-function (lambda (_link) ""))
   (org-download-enable)
   :bind (:map org-mode-map
-              ("M-S-v" . org-download-clipboard)))
+              ("M-V" . org-download-clipboard)))
 
 (use-package org-super-agenda
   :ensure t
@@ -465,15 +485,15 @@
   :config
   (vertico-prescient-mode 1))
 
-(use-package vertico-posframe
-  :ensure t
-  :after vertico
-  :custom
-  (vertico-posframe-poshandler 'posframe-poshandler-frame-top-center)
-  (vertico-posframe-width 70)
-  (vertico-posframe-border-width 2)
-  :config
-  (vertico-posframe-mode 1))
+;; (use-package vertico-posframe
+;;   :ensure t
+;;   :after vertico
+;;   :custom
+;;   (vertico-posframe-poshandler 'posframe-poshandler-frame-top-center)
+;;   (vertico-posframe-width 70)
+;;   (vertico-posframe-border-width 2)
+;;   :config
+;;   (vertico-posframe-mode 1))
 
 (use-package which-key
   :ensure t
@@ -487,6 +507,8 @@
 
 (use-package xenops
   :ensure t
+  :custom
+  (xenops-image-width 350)
   :hook
   (org-mode . xenops-mode)
   (LaTeX-mode . xenops-mode))
