@@ -1,6 +1,6 @@
 ;; ~/.config/emacs/init.el
 
-;;; Core:
+;; Core:
 (use-package use-package
   :custom
   (native-comp-async-report-warnings-errors nil)
@@ -17,6 +17,7 @@
   (auto-save-default nil)
   (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
   (default-input-method 'TeX)
+  (mouse-highlight nil)
   (fringes-outside-margins t)
   (inhibit-startup-message t)
   (initial-major-mode 'org-mode)
@@ -29,15 +30,15 @@
                         (:eval (let ((project (project-current))
                                      (remote (file-remote-p default-directory 'host)))
                                  (if remote
-                                     (format "(on %s)" (downcase remote))
+                                     (format "(%s)" (downcase remote))
                                    (if project
-                                       (format "(in %s)" (downcase (project-name project)))))))))
+                                       (format "(%s)" (downcase (project-name project)))))))))
   (tab-width 4)
   (truncate-lines t)
   (use-short-answers t)
   (xterm-set-window-title t)
   :custom-face
-  (default ((t (:family "JuliaMono" :height 140))))
+  (default ((t (:family "JetBrains Mono NL" :height 140))))
   :bind
   ("C-\\" . activate-transient-input-method)
   ("<f5>" . sort-lines)
@@ -58,6 +59,7 @@
   (menu-bar-mode -1)
   (when (display-graphic-p)
     (fringe-mode 1)
+    (tooltip-mode -1)
     (tool-bar-mode -1)
     (scroll-bar-mode -1)))
 
@@ -82,7 +84,21 @@
   :config
   (exec-path-from-shell-initialize))
 
+;; (use-package treesit-auto
+;;   :ensure t
+;;   :custom
+;;   (treesit-auto-install 'prompt)
+;;   :config
+;;   (treesit-auto-add-to-auto-mode-alist 'all)
+;;   (global-treesit-auto-mode))
+
 ;;; Functions:
+(defun +org-find-file ()
+  "Open one of my Org files (or create a new one)."
+  (interactive)
+  (let ((default-directory org-directory))
+    (find-file (completing-read "Org: " (directory-files "." nil "\\.org$")))))
+
 (defun +eglot-project-ensure ()
   "Enable Eglot iff the current buffer belongs to a project."
   (if (project-current) (eglot-ensure)))
@@ -111,31 +127,31 @@
   (start-process "zotero_open" nil "open" (concat "zotero:" link)))
 
 ;;; Internal packages:
-(use-package eglot
-  :custom
-  (eldoc-echo-area-prefer-doc-buffer t)
-  (eldoc-echo-area-use-multiline-p nil)
-  :hook
-  (python-mode . +eglot-project-ensure)
-  :bind
-  ("<f2>" . eglot-rename))
-
-;; (use-package mwheel
+;; (use-package eglot
 ;;   :custom
-;;   (mouse-wheel-follow-mouse t)
-;;   (mouse-wheel-progressive-speed nil)
-;;   :config
-;;   (mouse-wheel-mode 1))
+;;   (eldoc-echo-area-prefer-doc-buffer t)
+;;   (eldoc-echo-area-use-multiline-p nil)
+;;   :hook
+;;   (python-mode . +eglot-project-ensure)
+;;   :bind
+;;   ("<f2>" . eglot-rename))
+
+(use-package mwheel
+  :custom
+  (mouse-wheel-follow-mouse t)
+  (mouse-wheel-progressive-speed nil)
+  :config
+  (mouse-wheel-mode 1))
 
 (use-package org
   :custom
   (org-adapt-indentation t)
   (org-agenda-files (list org-directory))
+  (org-agenda-window-setup 'only-window)
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-scheduled-if-done t)
   (org-agenda-span 'day)
   (org-agenda-start-on-weekday nil)
-  (org-agenda-window-setup 'other-tab)
   (org-archive-location "::* Archive")
   (org-babel-results-keyword "results")
   (org-confirm-babel-evaluate nil)
@@ -144,6 +160,8 @@
   (org-fontify-quote-and-verse-blocks t)
   (org-highlight-latex-and-related '(native latex script entities))
   (org-image-actual-width '(400))
+  (org-pretty-entities t)
+  (org-pretty-entities-include-sub-superscripts nil)
   (org-return-follows-link t)
   (org-startup-folded 'fold)
   (org-startup-indented t)
@@ -178,8 +196,8 @@
   (tab-bar-show 1)
   (tab-bar-tab-hints t)
   :bind
-  ("M-<left>"  . tab-bar-history-back)
-  ("M-<right>" . tab-bar-history-forward)
+  ("s-[" . tab-bar-history-back)
+  ("s-]" . tab-bar-history-forward)
   :config
   (tab-bar-mode 1)
   (tab-bar-history-mode 1))
@@ -308,17 +326,17 @@
   ("C-c RET" . er/expand-region)
   :ensure t)
 
-(use-package flymake-ruff
-  :ensure t
-  :hook (eglot-managed-mode . flymake-ruff-load))
+;; (use-package flymake-ruff
+;;   :ensure t
+;;   :hook (eglot-managed-mode . flymake-ruff-load))
 
-(use-package format-all
-  :ensure t
-  :hook
-  (eglot-managed-mode . format-all-mode)
-  :config
-  (setq-default format-all-formatters
-                '(("Python" (isort) (ruff) (black)))))
+;; (use-package format-all
+;;   :ensure t
+;;   :hook
+;;   (eglot-managed-mode . format-all-mode)
+;;   :config
+;;   (setq-default format-all-formatters
+;;                 '(("Python" (isort) (ruff) (black)))))
 
 (use-package general
   :ensure t
@@ -354,8 +372,8 @@
 (use-package iedit
   :ensure t)
 
-(use-package julia-mode
-  :ensure t)
+;; (use-package julia-mode
+;;   :ensure t)
 
 (use-package magit
   :ensure t
@@ -373,8 +391,8 @@
   :hook
   (markdown-mode . cdlatex-mode))
 
-(use-package matlab
-  :ensure matlab-mode)
+;; (use-package matlab
+;;   :ensure matlab-mode)
 
 ;; (use-package openwith
 ;;   :ensure t
@@ -505,13 +523,13 @@
   :config
   (xclip-mode 1))
 
-(use-package xenops
-  :ensure t
-  :custom
-  (xenops-image-width 350)
-  :hook
-  (org-mode . xenops-mode)
-  (LaTeX-mode . xenops-mode))
+;; (use-package xenops
+;;   :ensure t
+;;   :custom
+;;   (xenops-image-width 350)
+;;   :hook
+;;   (org-mode . xenops-mode)
+;;   (LaTeX-mode . xenops-mode))
 
 (use-package yasnippet
   :ensure t
