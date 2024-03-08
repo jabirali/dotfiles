@@ -1,6 +1,10 @@
 ;; ~/.config/emacs/init.el
+;; Requires Emacs v30+ (due to vc:)
 
-;; Core:
+;; * Tasks:
+;; ** TODO Choose between eglot, lsp-bridge, and lsp-mode
+
+;; * Core:
 (use-package use-package
   :custom
   (native-comp-async-report-warnings-errors nil)
@@ -15,15 +19,17 @@
   (text-mode . visual-line-mode)
   :custom
   (auto-save-default nil)
-  (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
   (default-input-method 'TeX)
-  (mouse-highlight nil)
+  (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
   (fringes-outside-margins t)
   (inhibit-startup-message t)
   (initial-major-mode 'org-mode)
   (initial-scratch-message "")
   (line-spacing 0.15)
+  (mac-command-modifier 'meta)
+  (mac-option-modifier 'option)
   (make-backup-files nil)
+  (mouse-highlight nil)
   (ring-bell-function 'ignore)
   (sentence-end-double-space nil)
   (frame-title-format '("%b "
@@ -54,6 +60,8 @@
   (define-key key-translation-map (kbd "M-<backspace>") (kbd "M-DEL"))
   ;; Turn on some useful default modes.
   (global-auto-revert-mode 1)
+  (when (display-graphic-p)
+    (pixel-scroll-precision-mode 1))
   ;; Disable the annoying default modes.
   (blink-cursor-mode -1)
   (menu-bar-mode -1)
@@ -70,17 +78,8 @@
   :config
   (server-mode 1))
 
-(use-package quelpa
-  :ensure t)
-
-(use-package quelpa-use-package
-  :ensure t)
-
 (use-package exec-path-from-shell
-  :quelpa
-  (exec-path-from-shell
-    :fetcher github
-    :repo "purcell/exec-path-from-shell")
+  :vc (:url "https://github.com/purcell/exec-path-from-shell" :rev "main")
   :config
   (exec-path-from-shell-initialize))
 
@@ -92,7 +91,7 @@
 ;;   (treesit-auto-add-to-auto-mode-alist 'all)
 ;;   (global-treesit-auto-mode))
 
-;;; Functions:
+;; * Functions:
 (defun +org-find-file ()
   "Open one of my Org files (or create a new one)."
   (interactive)
@@ -126,15 +125,32 @@
   "Open a zotero:// link in the Zotero desktop app."
   (start-process "zotero_open" nil "open" (concat "zotero:" link)))
 
-;;; Internal packages:
-;; (use-package eglot
-;;   :custom
-;;   (eldoc-echo-area-prefer-doc-buffer t)
-;;   (eldoc-echo-area-use-multiline-p nil)
-;;   :hook
-;;   (python-mode . +eglot-project-ensure)
-;;   :bind
-;;   ("<f2>" . eglot-rename))
+;; * Internal packages:
+(use-package eglot
+  :custom
+  (eldoc-echo-area-prefer-doc-buffer t)
+  (eldoc-echo-area-use-multiline-p nil)
+  :hook
+  (python-mode . +eglot-project-ensure)
+  :bind
+  ("<f2>" . eglot-rename))
+
+(use-package eglot-booster
+  :vc (:url "https://github.com/jdtsmith/eglot-booster.git" :rev "main")
+  :after eglot
+  :config (eglot-booster-mode))
+
+(use-package flyspell
+  :custom
+  (ispell-personal-dictionary (concat user-emacs-directory "ispell"))
+  :hook
+  ((text-mode . flyspell-mode)
+   (prog-mode . flyspell-prog-mode)))
+
+(use-package flyspell-correct
+  :ensure t
+  :after flyspell
+  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
 
 (use-package mwheel
   :custom
@@ -206,7 +222,12 @@
   :config
   (xterm-mouse-mode 1))
 
-;;; External packages:
+;; * External packages:
+(use-package persistent-scratch
+  :ensure t
+  :config
+  (persistent-scratch-autosave-mode 1))
+
 (use-package ace-window
   :ensure t
   :config
@@ -217,7 +238,7 @@
         (select-window (active-minibuffer-window))
       (call-interactively #'ace-window)))
   :bind
-  ("M-o" . +other-window-dwim))
+  ("s-o" . +other-window-dwim))
 
 ;; (use-package adaptive-wrap
 ;;   :ensure
@@ -236,6 +257,7 @@
 ;;   :hook (eglot-managed-mode . company-mode))
 
 (use-package copilot
+  :vc (:url "https://github.com/copilot-emacs/copilot.el" :rev "main")
   :custom
   (copilot-idle-delay 1)
   :hook
@@ -244,12 +266,7 @@
   (:map copilot-mode-map
         ("M-RET" . copilot-accept-completion)
         ("M-n"   . copilot-next-completion)
-        ("M-p"   . copilot-previous-completion))
-  :quelpa
-  (copilot :fetcher github
-           :repo "copilot-emacs/copilot.el"
-           :branch "main"
-           :files ("dist" "*.el")))
+        ("M-p"   . copilot-previous-completion)))
 
 (use-package diredfl
   :ensure t
@@ -372,7 +389,25 @@
 (use-package iedit
   :ensure t)
 
-;; (use-package julia-mode
+(use-package julia-mode
+  :ensure t)
+
+;; (use-package lsp-mode
+;;   :ensure t
+;;   :custom
+;;   (lsp-keymap-prefix "s-l")
+;;   :hook
+;;   ((python-mode . lsp)
+;;    (julia-mode . lsp)
+;;    (lsp-mode . lsp-enable-which-key-integration)))
+
+;; (use-package lsp-pyright
+;;   :ensure t
+;;   :hook (python-mode . (lambda ()
+;;                          (require 'lsp-pyright)
+;;                          (lsp))))
+
+;; (use-package lsp-ui
 ;;   :ensure t)
 
 (use-package magit
@@ -437,10 +472,10 @@
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode 1))
 
-;; (use-package outshine
-;;   :ensure t
-;;   :hook
-;;   (prog-mode . outshine-mode))
+(use-package outshine
+  :ensure t
+  :hook
+  (prog-mode . outshine-mode))
 
 (use-package ox-pandoc
   :ensure t)
@@ -636,7 +671,7 @@
   "}"  (general-key "C-c }" )
   "~"  (general-key "C-c ~" ))
 
-;;; Metadata:
+;; * Metadata:
 ;; Local Variables:
 ;;     comment-column: 48
 ;;     fill-column: 80
