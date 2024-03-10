@@ -162,7 +162,9 @@ Improve performance.
     (start-process "zotero_open" nil "open" (concat "zotero:" link)))
 #+end_src
 
-* Internal packages
+* Coding
+** LSP
+Eglot has been built into Emacs since v29. I've tried the alternatives Lsp-mode and Lsp-bridge, but so far Eglot is the solution that has been most "plug and play" and least buggy. It also seems to just work over Tramp connections if you install LSP servers remotely.
 #+begin_src emacs-lisp
   (use-package eglot
     :custom
@@ -174,6 +176,7 @@ Improve performance.
     ("<f2>" . eglot-rename))
 #+end_src
 
+Eglot-Booster can help speed up Eglot by using an intermediary process between Eglot and each LSP server. The cost is that it doesn't work well over Tramp, and that it requires installation of an extra binary tool locally. But if Eglot is slow, this really helps.
 #+begin_src emacs-lisp
   ;; (use-package eglot-booster
   ;;   :vc (:url "https://github.com/jdtsmith/eglot-booster.git" :rev "main")
@@ -181,6 +184,22 @@ Improve performance.
   ;;   :config (eglot-booster-mode))
 #+end_src
 
+** Python
+TODO: We should get this to work also with Tramp. Currently, it tries to use IPython remotely if it finds it locally. In practice, that means setting a buffer-local variable in a python-mode hook.
+#+begin_src emacs-lisp
+  (use-package python
+    :config
+    (when (executable-find "ipython")
+      (setq python-shell-interpreter "ipython")
+      (setq python-shell-prompt-detect-failure-warning nil)))
+#+end_src
+
+* Writing
+** Org documents
+** LaTeX documents
+** MarkDown documents
+** Spell checking
+Flyspell is a built-in spellchecker in Emacs. By default, it uses Hunspell on MacOS (i.e. the same backend as Firefox and LibreOffice), and searches for dictionaries in =~/Library/Spelling/=. Remember to download the dictionaries you need to that folder...
 #+begin_src emacs-lisp
   (use-package flyspell
     :custom
@@ -190,6 +209,7 @@ Improve performance.
      (prog-mode . flyspell-prog-mode)))
 #+end_src
 
+The default Flyspell interface and keybinding =C-c $= is not very ergonomic to use. Especially if you often have to add your own words to the personal dictionary. I'd rather use something based on =completing-read=, such that I can use e.g. Vertico for the correction interface.
 #+begin_src emacs-lisp
   (use-package flyspell-correct
     :ensure t
@@ -197,6 +217,7 @@ Improve performance.
     :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
 #+end_src
 
+* Internal packages
 #+begin_src emacs-lisp
   (use-package mwheel
     :custom
@@ -236,14 +257,6 @@ Improve performance.
     :config
     (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
     (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package python
-    :config
-    (when (executable-find "ipython")
-      (setq python-shell-interpreter "ipython")
-      (setq python-shell-prompt-detect-failure-warning nil)))
 #+end_src
 
 #+begin_src emacs-lisp
