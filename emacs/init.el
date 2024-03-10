@@ -1,7 +1,3 @@
-;; ~/.config/emacs/init.el
-;; Requires Emacs v30+ (due to vc:)
-
-;; * Core:
 (use-package use-package
   :custom
   (native-comp-async-report-warnings-errors nil)
@@ -88,7 +84,66 @@
 ;;   (treesit-auto-add-to-auto-mode-alist 'all)
 ;;   (global-treesit-auto-mode))
 
-;; * Functions:
+(use-package evil
+  :ensure t
+  :custom
+  (evil-undo-system 'undo-redo)
+  (evil-want-C-i-jump nil)
+  (evil-want-C-u-scroll t)
+  (evil-want-integration t)
+  (evil-want-keybinding nil)
+  :config
+  (evil-mode 1)
+  (define-key evil-motion-state-map (kbd "SPC") nil)
+  (define-key evil-motion-state-map (kbd "RET") nil)
+  (define-key evil-motion-state-map (kbd "TAB") nil))
+
+(use-package evil-collection
+  :ensure t
+  :after evil
+  :config
+  (evil-collection-init))
+
+(use-package evil-org
+  :ensure t
+  :after (evil org)
+  :hook (org-mode . evil-org-mode))
+
+(use-package evil-org-agenda
+  :after evil-org
+  :config (evil-org-agenda-set-keys))
+
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
+
+(use-package evil-terminal-cursor-changer
+  :ensure t
+  :after evil
+  :config
+  (evil-terminal-cursor-changer-activate))
+
+(use-package evil-tex
+  :ensure t
+  :hook
+  (LaTeX-mode . evil-tex-mode))
+
+(use-package general
+  :ensure t
+  :after evil
+  :config
+  (general-evil-setup t)
+  (general-override-mode 1)
+  (general-create-definer gmap
+    :keymaps 'override
+    :states '(motion normal visual)
+    :prefix "SPC")
+  (general-create-definer lmap
+    :keymaps 'override
+    :states '(motion normal visual)
+    :prefix ","))
+
 (defun +org-find-file ()
   "Open one of my Org files (or create a new one)."
   (interactive)
@@ -122,7 +177,6 @@
   "Open a zotero:// link in the Zotero desktop app."
   (start-process "zotero_open" nil "open" (concat "zotero:" link)))
 
-;; * Internal packages:
 (use-package eglot
   :custom
   (eldoc-echo-area-prefer-doc-buffer t)
@@ -137,24 +191,11 @@
 ;;   :after eglot
 ;;   :config (eglot-booster-mode))
 
-(use-package flyspell
-  :custom
-  (ispell-personal-dictionary (concat user-emacs-directory "ispell"))
-  :hook
-  ((text-mode . flyspell-mode)
-   (prog-mode . flyspell-prog-mode)))
-
-(use-package flyspell-correct
-  :ensure t
-  :after flyspell
-  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
-
-(use-package mwheel
-  :custom
-  (mouse-wheel-follow-mouse t)
-  (mouse-wheel-progressive-speed nil)
+(use-package python
   :config
-  (mouse-wheel-mode 1))
+  (when (executable-find "ipython")
+    (setq-local python-shell-interpreter "ipython")
+    (setq-local python-shell-prompt-detect-failure-warning nil)))
 
 (use-package org
   :custom
@@ -186,11 +227,95 @@
   (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
   (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
 
-(use-package python
+(use-package org-download
+  :ensure t
+  :after org
+  :custom
+  (org-download-method 'directory)
+  (org-download-image-dir "assets")
+  (org-download-heading-lvl nil)
+  (org-download-timestamp "%Y%m%d%H%M%S")
   :config
-  (when (executable-find "ipython")
-    (setq python-shell-interpreter "ipython")
-    (setq python-shell-prompt-detect-failure-warning nil)))
+  (defun +org-download-file-format (filename)
+    "Purely date-based naming of attachments."
+    (concat
+     (format-time-string org-download-timestamp)
+     "."
+     (file-name-extension filename)))
+  (setq org-download-file-format-function #'+org-download-file-format)
+  (setq org-download-annotate-function (lambda (_link) ""))
+  (org-download-enable)
+  :bind (:map org-mode-map
+              ("M-V" . org-download-clipboard)))
+
+(use-package org-super-agenda
+  :ensure t
+  :custom
+  (org-super-agenda-groups '((:auto-parent t)))
+  :config
+  (setq org-super-agenda-header-map (make-sparse-keymap))
+  (org-super-agenda-mode 1))
+
+(use-package idle-org-agenda
+  :ensure t
+  :after org-agenda
+  :custom
+  (idle-org-agenda-interval 3600)
+  :config
+  (idle-org-agenda-mode 1))
+
+(use-package tex
+  :ensure auctex
+  :custom
+  (font-latex-fontify-script nil)
+  (TeX-auto-save t)
+  (TeX-source-correlate-method 'synctex)
+  (TeX-source-correlate-mode t)
+  (TeX-source-correlate-start-server t)
+  (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
+  (TeX-view-program-selection '((output-pdf "Skim"))))
+
+(use-package cdlatex
+  :ensure t
+  :hook
+  ((TeX-mode . turn-on-cdlatex)
+   (org-mode . turn-on-org-cdlatex)))
+
+(use-package reftex
+  :ensure t
+  :after tex
+  :custom
+  (reftex-cite-format 'bibtex)
+  (reftex-enable-partial-scans t)
+  (reftex-plug-into-AUCTeX t)
+  (reftex-save-parse-info t)
+  (reftex-use-multiple-selection-buffers t)
+  :hook
+  (TeX-mode . turn-on-reftex))
+
+(use-package markdown-mode
+  :ensure t
+  :hook
+  (markdown-mode . cdlatex-mode))
+
+(use-package flyspell
+  :custom
+  (ispell-personal-dictionary (concat user-emacs-directory "ispell"))
+  :hook
+  ((text-mode . flyspell-mode)
+   (prog-mode . flyspell-prog-mode)))
+
+(use-package flyspell-correct
+  :ensure t
+  :after flyspell
+  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+
+(use-package mwheel
+  :custom
+  (mouse-wheel-follow-mouse t)
+  (mouse-wheel-progressive-speed nil)
+  :config
+  (mouse-wheel-mode 1))
 
 (use-package recentf
   :config
@@ -219,7 +344,6 @@
   :config
   (xterm-mouse-mode 1))
 
-;; * External packages:
 (use-package persistent-scratch
   :after (org evil)
   :ensure t
@@ -238,16 +362,10 @@
   :bind
   ("M-o" . +other-window-dwim))
 
-;; (use-package adaptive-wrap
-;;   :ensure
-;;   :hook
-;;   (visual-line-mode . adaptive-wrap-prefix-mode))
-
-(use-package cdlatex
-  :ensure t
+(use-package adaptive-wrap
+  :ensure
   :hook
-  ((TeX-mode . turn-on-cdlatex)
-   (org-mode . turn-on-org-cdlatex)))
+  (LaTeX-mode . adaptive-wrap-prefix-mode))
 
 ;; (use-package company
 ;;   :ensure t
@@ -298,51 +416,6 @@
 ;;   :config
 ;;   (load-theme 'spacemacs-light t))
 
-(use-package evil
-  :ensure t
-  :custom
-  (evil-undo-system 'undo-redo)
-  (evil-want-C-i-jump nil)
-  (evil-want-C-u-scroll t)
-  (evil-want-integration t)
-  (evil-want-keybinding nil)
-  :config
-  (evil-mode 1)
-  (define-key evil-motion-state-map (kbd "SPC") nil)
-  (define-key evil-motion-state-map (kbd "RET") nil)
-  (define-key evil-motion-state-map (kbd "TAB") nil))
-
-(use-package evil-collection
-  :ensure t
-  :after evil
-  :config
-  (evil-collection-init))
-
-(use-package evil-org
-  :ensure t
-  :after (evil org)
-  :hook (org-mode . evil-org-mode))
-
-(use-package evil-org-agenda
-  :after evil-org
-  :config (evil-org-agenda-set-keys))
-
-(use-package evil-surround
-  :ensure t
-  :config
-  (global-evil-surround-mode 1))
-
-(use-package evil-terminal-cursor-changer
-  :ensure t
-  :after evil
-  :config
-  (evil-terminal-cursor-changer-activate))
-
-(use-package evil-tex
-  :ensure t
-  :hook
-  (LaTeX-mode . evil-tex-mode))
-
 (use-package expand-region
   :bind*
   ("C-c RET" . er/expand-region)
@@ -360,21 +433,6 @@
   (setq-default format-all-formatters
                 '(("Python" (isort) (ruff) (black)))))
 
-(use-package general
-  :ensure t
-  :after evil
-  :config
-  (general-evil-setup t)
-  (general-override-mode 1)
-  (general-create-definer gmap
-    :keymaps 'override
-    :states '(motion normal visual)
-    :prefix "SPC")
-  (general-create-definer lmap
-    :keymaps 'override
-    :states '(motion normal visual)
-    :prefix ","))
-
 (use-package gnuplot
   :ensure t)
 
@@ -382,14 +440,6 @@
   :ensure t
   :hook
   (prog-mode . hl-todo-mode))
-
-(use-package idle-org-agenda
-  :ensure t
-  :after org-agenda
-  :custom
-  (idle-org-agenda-interval 3600)
-  :config
-  (idle-org-agenda-mode 1))
 
 (use-package iedit
   :ensure t)
@@ -408,11 +458,6 @@
   (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
   (keymap-set project-prefix-map "m" #'magit-project-status))
 
-(use-package markdown-mode
-  :ensure t
-  :hook
-  (markdown-mode . cdlatex-mode))
-
 ;; (use-package matlab
 ;;   :ensure matlab-mode)
 
@@ -429,35 +474,6 @@
 ;;   :custom
 ;;   (completion-styles '(orderless basic))
 ;;   (completion-category-overrides '((file (styles basic partial-completion)))))
-
-(use-package org-download
-  :ensure t
-  :after org
-  :custom
-  (org-download-method 'directory)
-  (org-download-image-dir "assets")
-  (org-download-heading-lvl nil)
-  (org-download-timestamp "%Y%m%d%H%M%S")
-  :config
-  (defun +org-download-file-format (filename)
-    "Purely date-based naming of attachments."
-    (concat
-     (format-time-string org-download-timestamp)
-     "."
-     (file-name-extension filename)))
-  (setq org-download-file-format-function #'+org-download-file-format)
-  (setq org-download-annotate-function (lambda (_link) ""))
-  (org-download-enable)
-  :bind (:map org-mode-map
-              ("M-V" . org-download-clipboard)))
-
-(use-package org-super-agenda
-  :ensure t
-  :custom
-  (org-super-agenda-groups '((:auto-parent t)))
-  :config
-  (setq org-super-agenda-header-map (make-sparse-keymap))
-  (org-super-agenda-mode 1))
 
 (use-package outshine
   :ensure t
@@ -477,33 +493,10 @@
 (use-package prescient
   :ensure t)
 
-(use-package reftex
-  :ensure t
-  :after tex
-  :custom
-  (reftex-cite-format 'bibtex)
-  (reftex-enable-partial-scans t)
-  (reftex-plug-into-AUCTeX t)
-  (reftex-save-parse-info t)
-  (reftex-use-multiple-selection-buffers t)
-  :hook
-  (TeX-mode . turn-on-reftex))
-
 (use-package swiper
   :ensure t
   :bind
   ("C-s" . swiper))
-
-(use-package tex
-  :ensure auctex
-  :custom
-  (font-latex-fontify-script nil)
-  (TeX-auto-save t)
-  (TeX-source-correlate-method 'synctex)
-  (TeX-source-correlate-mode t)
-  (TeX-source-correlate-start-server t)
-  (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
-  (TeX-view-program-selection '((output-pdf "Skim"))))
 
 (use-package vertico
   :ensure t
@@ -558,7 +551,6 @@
   :config
   (yas-global-mode 1))
 
-;;; Keybindings:
 (mmap                                           ; Motion map
   "^" 'dired-jump)
 
@@ -657,10 +649,3 @@
   "|"  (general-key "C-c |" )
   "}"  (general-key "C-c }" )
   "~"  (general-key "C-c ~" ))
-
-;; * Metadata:
-;; Local Variables:
-;;     comment-column: 48
-;;     fill-column: 80
-;;     indent-tabs-mode: nil
-;; End:
