@@ -1,9 +1,6 @@
 ;; ~/.config/emacs/init.el
 ;; Requires Emacs v30+ (due to vc:)
 
-;; * Tasks:
-;; ** TODO Choose between eglot, lsp-bridge, and lsp-mode
-
 ;; * Core:
 (use-package use-package
   :custom
@@ -108,8 +105,8 @@
         (bg1 (face-attribute 'mode-line :background))
         (bg2 (face-attribute 'mode-line :background))
         (fg0 (face-attribute 'default :foreground))
-        (fg1 "#6AE4B9")
-        (fg2 "#E4E4E4"))
+        (fg1 (face-attribute 'mode-line :foreground))
+        (fg2 (face-attribute 'mode-line-inactive :foreground)))
     (set-face-attribute 'tab-bar nil :foreground bg2 :background bg2 :box `(:line-width 6 :color ,bg2))
     (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg2 :box `(:line-width 6 :color ,bg2))
     (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg2 :box `(:line-width 6 :color ,bg2))
@@ -135,10 +132,10 @@
   :bind
   ("<f2>" . eglot-rename))
 
-(use-package eglot-booster
-  :vc (:url "https://github.com/jdtsmith/eglot-booster.git" :rev "main")
-  :after eglot
-  :config (eglot-booster-mode))
+;; (use-package eglot-booster
+;;   :vc (:url "https://github.com/jdtsmith/eglot-booster.git" :rev "main")
+;;   :after eglot
+;;   :config (eglot-booster-mode))
 
 (use-package flyspell
   :custom
@@ -224,6 +221,7 @@
 
 ;; * External packages:
 (use-package persistent-scratch
+  :after (org evil)
   :ensure t
   :config
   (persistent-scratch-autosave-mode 1))
@@ -238,7 +236,7 @@
         (select-window (active-minibuffer-window))
       (call-interactively #'ace-window)))
   :bind
-  ("s-o" . +other-window-dwim))
+  ("M-o" . +other-window-dwim))
 
 ;; (use-package adaptive-wrap
 ;;   :ensure
@@ -291,7 +289,14 @@
 (use-package doom-themes
   :ensure t
   :config
-  (load-theme 'doom-dracula t))
+  (load-theme 'doom-molokai t))
+
+;; (use-package spacemacs-theme
+;;   :ensure t
+;;   :custom
+;;   (spacemacs-theme-org-height nil)
+;;   :config
+;;   (load-theme 'spacemacs-light t))
 
 (use-package evil
   :ensure t
@@ -343,17 +348,17 @@
   ("C-c RET" . er/expand-region)
   :ensure t)
 
-;; (use-package flymake-ruff
-;;   :ensure t
-;;   :hook (eglot-managed-mode . flymake-ruff-load))
+(use-package flymake-ruff
+  :ensure t
+  :hook (eglot-managed-mode . flymake-ruff-load))
 
-;; (use-package format-all
-;;   :ensure t
-;;   :hook
-;;   (eglot-managed-mode . format-all-mode)
-;;   :config
-;;   (setq-default format-all-formatters
-;;                 '(("Python" (isort) (ruff) (black)))))
+(use-package format-all
+  :ensure t
+  :hook
+  (eglot-managed-mode . format-all-mode)
+  :config
+  (setq-default format-all-formatters
+                '(("Python" (isort) (ruff) (black)))))
 
 (use-package general
   :ensure t
@@ -391,24 +396,6 @@
 
 (use-package julia-mode
   :ensure t)
-
-;; (use-package lsp-mode
-;;   :ensure t
-;;   :custom
-;;   (lsp-keymap-prefix "s-l")
-;;   :hook
-;;   ((python-mode . lsp)
-;;    (julia-mode . lsp)
-;;    (lsp-mode . lsp-enable-which-key-integration)))
-
-;; (use-package lsp-pyright
-;;   :ensure t
-;;   :hook (python-mode . (lambda ()
-;;                          (require 'lsp-pyright)
-;;                          (lsp))))
-
-;; (use-package lsp-ui
-;;   :ensure t)
 
 (use-package magit
   :ensure t
