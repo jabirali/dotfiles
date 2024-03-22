@@ -1,4 +1,6 @@
 " vim: fdm=marker shiftwidth=2
+"
+set rtp+=/opt/homebrew/opt/fzf
 
 " Settings {{{
   set mouse=a
@@ -112,6 +114,17 @@
   let mapleader=" "
   let maplocalleader=","
 
+  " Tabs
+  nnoremap <leader>1 1gt
+  nnoremap <leader>2 2gt
+  nnoremap <leader>3 3gt
+  nnoremap <leader>4 4gt
+  nnoremap <leader>5 5gt
+  nnoremap <leader>6 6gt
+  nnoremap <leader>7 7gt
+  nnoremap <leader>8 8gt
+  nnoremap <leader>9 9gt
+
   " Fuzzy finder
   nnoremap <leader>b  :Buffers<cr>
   nnoremap <leader>f  :Files<cr>
@@ -167,3 +180,6 @@
   colorscheme dracula
   highlight! link Folded Comment
 " }}}
+
+
+
