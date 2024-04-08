@@ -361,9 +361,9 @@
   :config
   (setopt ispell-program-name "hunspell")
   (setopt ispell-personal-dictionary (concat user-emacs-directory "ispell"))
-  (setopt ispell-dictionary "en_US,nb_NO")
+  (setopt ispell-dictionary "acamedic,bokmål")
   (ispell-set-spellchecker-params)
-  (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
+  (ispell-hunspell-add-multi-dic "acamedic,bokmål"))
 
 (use-package flyspell
   :hook

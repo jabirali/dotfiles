@@ -504,14 +504,15 @@ The Lingua Franca of modern mark-up languages.
 Flyspell is a built-in spellchecker in Emacs. By default, it uses Hunspell on MacOS (i.e. the same backend as Firefox and LibreOffice), and searches for dictionaries in =~/Library/Spelling/=. Remember to download the dictionaries you need to that folder...
 
 Make Emacs use Hunspell even if Aspell or Ispell is accidentally installed. Moreover, combine a Norwegian and US English dictionary, since I tend to mix the two quite liberally in my notes and lectures.
+The English dictionary is the [[https://github.com/emareg/acamedic][Acamedic]] dictionary of Academic American English. The Norwegian dictionary is the [[https://github.com/wooorm/dictionaries][Wooorm repository]] dictionary for Norwegian Bokmål.
 #+begin_src emacs-lisp
   (use-package ispell
     :config
     (setopt ispell-program-name "hunspell")
     (setopt ispell-personal-dictionary (concat user-emacs-directory "ispell"))
-    (setopt ispell-dictionary "en_US,nb_NO")
+    (setopt ispell-dictionary "acamedic,bokmål")
     (ispell-set-spellchecker-params)
-    (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
+    (ispell-hunspell-add-multi-dic "acamedic,bokmål"))
 #+end_src
 
 #+begin_src emacs-lisp
