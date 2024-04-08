@@ -6,23 +6,52 @@
   :config
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
+(recentf-mode 1)
+
+(savehist-mode 1)
+
+(setopt mac-command-modifier 'meta)
+(setopt mac-option-modifier 'option)
+
+(define-key key-translation-map (kbd "§") (kbd "`"))
+(define-key key-translation-map (kbd "±") (kbd "~"))
+
+(define-key key-translation-map (kbd "M-<return>") (kbd "M-RET"))
+(define-key key-translation-map (kbd "M-<backspace>") (kbd "M-DEL"))
+
+(setq default-input-method 'TeX)
+(setq default-transient-input-method 'TeX)
+
+(use-package kkp
+  :ensure t
+  :custom
+  (kkp-super-modifier 'meta)
+  :config
+  (global-kkp-mode +1))
+
+(pixel-scroll-precision-mode 1)
+
+(setopt mouse-wheel-follow-mouse t)
+(setopt mouse-wheel-progressive-speed nil)
+(mouse-wheel-mode 1)
+(xterm-mouse-mode 1)
+
+(setopt mouse-highlight nil)
+
+(set-frame-parameter nil 'internal-border-width 8)
+
 (use-package emacs
   :hook
   (prog-mode . hs-minor-mode)
-  (text-mode . visual-line-mode)
   :custom
   (auto-save-default nil)
-  (default-input-method 'TeX)
   (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
   (fringes-outside-margins t)
   (inhibit-startup-message t)
   (initial-major-mode 'org-mode)
   (initial-scratch-message "")
   (line-spacing 0.15)
-  (mac-command-modifier 'meta)
-  (mac-option-modifier 'option)
   (make-backup-files nil)
-  (mouse-highlight nil)
   (ring-bell-function 'ignore)
   (sentence-end-double-space nil)
   (frame-title-format '("%b "
@@ -45,16 +74,8 @@
   ;; Don't indicate long or wrapped lines.
   (set-display-table-slot standard-display-table 'truncation ? )
   (set-display-table-slot standard-display-table 'wrap ? )
-  ;; Make ISO and ANSI keyboards more similar.
-  (define-key key-translation-map (kbd "§") (kbd "`"))
-  (define-key key-translation-map (kbd "±") (kbd "~"))
-  ;; Make some Meta keybindings more ergonomic.
-  (define-key key-translation-map (kbd "M-<return>") (kbd "M-RET"))
-  (define-key key-translation-map (kbd "M-<backspace>") (kbd "M-DEL"))
   ;; Turn on some useful default modes.
   (global-auto-revert-mode 1)
-  (when (display-graphic-p)
-    (pixel-scroll-precision-mode 1))
   ;; Disable the annoying default modes.
   (blink-cursor-mode -1)
   (menu-bar-mode -1)
@@ -97,6 +118,8 @@
   (define-key evil-motion-state-map (kbd "SPC") nil)
   (define-key evil-motion-state-map (kbd "RET") nil)
   (define-key evil-motion-state-map (kbd "TAB") nil))
+
+(evil-define-key* 'motion 'global ":" #'execute-extended-command)
 
 (use-package evil-collection
   :ensure t
@@ -144,6 +167,16 @@
     :states '(motion normal visual)
     :prefix ","))
 
+(defun jabirali/science-definition-lookup ()
+  "Look up a scientific definition using a ChatGPT wrapper."
+  (interactive)
+  (let* ((query (buffer-substring (region-beginning) (region-end)))
+         (encoded-query (url-encode-url query))
+         (search-url "https://chat.openai.com/g/g-Kihf3Sccx-science-definitions?q="))
+    (browse-url (concat search-url encoded-query))))
+
+(bind-key "<f12>" #'jabirali/science-definition-lookup)
+
 (defun +org-find-file ()
   "Open one of my Org files (or create a new one)."
   (interactive)
@@ -157,21 +190,26 @@
 (defun +theme-override (&rest _)
   "Override the current theme for a consistent and minimal look."
   (let ((bg0 (face-attribute 'default :background))
-        (bg1 (face-attribute 'mode-line :background))
-        (bg2 (face-attribute 'mode-line :background))
-        (fg0 (face-attribute 'default :foreground))
-        (fg1 (face-attribute 'mode-line :foreground))
-        (fg2 (face-attribute 'mode-line-inactive :foreground)))
-    (set-face-attribute 'tab-bar nil :foreground bg2 :background bg2 :box `(:line-width 6 :color ,bg2))
-    (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg2 :box `(:line-width 6 :color ,bg2))
-    (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg2 :box `(:line-width 6 :color ,bg2))
-    (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
-    (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
-    (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
-    (set-face-attribute 'scroll-bar nil :foreground bg2 :background bg2)
-    (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)))
+		(bg1 (face-attribute 'mode-line :background))
+		(bg2 (face-attribute 'mode-line :background))
+		(fg0 (face-attribute 'default :foreground))
+		(fg1 (face-attribute 'mode-line :foreground))
+		(fg2 (face-attribute 'mode-line-inactive :foreground)))
+	(set-face-attribute 'tab-bar nil :foreground bg2 :background bg2 :box `(:line-width 6 :color ,bg2))
+	(set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg2 :box `(:line-width 6 :color ,bg2))
+	(set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg2 :box `(:line-width 6 :color ,bg2))
+	(set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
+	(set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
+	(set-face-attribute 'fringe nil :foreground bg0 :background bg0)
+	(set-face-attribute 'scroll-bar nil :foreground bg2 :background bg2)
+	(set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)))
 
 (advice-add 'load-theme :after #'+theme-override)
+
+;; (use-package spacious-padding
+;;   :ensure t
+;;   :config
+;;   (spacious-padding-mode 1))
 
 (defun +url-handler-zotero (link)
   "Open a zotero:// link in the Zotero desktop app."
@@ -191,15 +229,27 @@
 ;;   :after eglot
 ;;   :config (eglot-booster-mode))
 
+(use-package format-all
+  :ensure t
+  :hook
+  (eglot-managed-mode . format-all-mode)
+  :config
+  (setq-default format-all-formatters
+                '(("Python" (isort) (ruff) (black)))))
+
 (use-package python
   :config
   (when (executable-find "ipython")
     (setq-local python-shell-interpreter "ipython")
     (setq-local python-shell-prompt-detect-failure-warning nil)))
 
+(use-package flymake-ruff
+  :ensure t
+  :hook (eglot-managed-mode . flymake-ruff-load))
+
 (use-package org
   :custom
-  (org-adapt-indentation t)
+  (org-adapt-indentation nil)
   (org-agenda-files (list org-directory))
   (org-agenda-window-setup 'only-window)
   (org-agenda-skip-deadline-if-done t)
@@ -224,6 +274,15 @@
    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
      (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
   :config
+  (setopt org-latex-src-block-backend 'engraved)
+  (setopt org-latex-engraved-theme 'ef-melissa-light)
+  (setopt org-latex-packages-alist
+          '(("" "microtype" t)
+            ("" "newpxtext" t)
+            ("" "newpxmath" t)))
+  (setopt org-latex-hyperref-template "
+\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},
+ pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true}\n")
   (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
   (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
 
@@ -263,6 +322,9 @@
   (idle-org-agenda-interval 3600)
   :config
   (idle-org-agenda-mode 1))
+
+(use-package ox-pandoc
+  :ensure t)
 
 (use-package tex
   :ensure auctex
@@ -310,20 +372,12 @@
   :after flyspell
   :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
 
-(use-package mwheel
-  :custom
-  (mouse-wheel-follow-mouse t)
-  (mouse-wheel-progressive-speed nil)
-  :config
-  (mouse-wheel-mode 1))
-
-(use-package recentf
-  :config
-  (recentf-mode 1))
-
-(use-package savehist
-  :config
-  (savehist-mode 1))
+(use-package adaptive-wrap
+  :ensure t
+  :hook
+  (text-mode . visual-line-mode)
+  (markdown-mode . adaptive-wrap-prefix-mode)
+  (latex-mode . adaptive-wrap-prefix-mode))
 
 (use-package tab-bar
   :custom
@@ -339,10 +393,6 @@
   :config
   (tab-bar-mode 1)
   (tab-bar-history-mode 1))
-
-(use-package xt-mouse
-  :config
-  (xterm-mouse-mode 1))
 
 (use-package persistent-scratch
   :after (org evil)
@@ -362,15 +412,23 @@
   :bind
   ("M-o" . +other-window-dwim))
 
-(use-package adaptive-wrap
-  :ensure
-  :hook
-  (LaTeX-mode . adaptive-wrap-prefix-mode))
-
 ;; (use-package company
 ;;   :ensure t
 ;;   :after eglot
 ;;   :hook (eglot-managed-mode . company-mode))
+
+;; (use-package corfu
+;;   :ensure t
+;;   :hook (prog-mode . corfu-mode)
+;;   ;; :custom
+;;   ;; (corfu-cycle t)
+;;   ;; (corfu-auto t)
+;;   ;; (corfu-auto-delay 0.1)
+;;   ;; (corfu-quit-at-boundary t)
+;;   ;; (corfu-quit-no-match t)
+;;   :config
+;;   (define-key corfu-map (kbd "C-n") 'corfu-next)
+;;   (define-key corfu-map (kbd "C-p") 'corfu-previous))
 
 (use-package copilot
   :vc (:url "https://github.com/copilot-emacs/copilot.el" :rev "main")
@@ -404,10 +462,20 @@
   :config
   (doom-modeline-mode 1))
 
-(use-package doom-themes
+;; (use-package doom-themes				;
+;;   :ensure t
+;;   :config
+;;   (load-theme 'doom-molokai t))
+
+(use-package ef-themes
   :ensure t
   :config
-  (load-theme 'doom-molokai t))
+  (load-theme 'ef-melissa-light t))
+
+;; (use-package kaolin-themes
+;;   :ensure t
+;;   :config
+;;   (load-theme 'kaolin-light t))
 
 ;; (use-package spacemacs-theme
 ;;   :ensure t
@@ -420,18 +488,6 @@
   :bind*
   ("C-c RET" . er/expand-region)
   :ensure t)
-
-(use-package flymake-ruff
-  :ensure t
-  :hook (eglot-managed-mode . flymake-ruff-load))
-
-(use-package format-all
-  :ensure t
-  :hook
-  (eglot-managed-mode . format-all-mode)
-  :config
-  (setq-default format-all-formatters
-                '(("Python" (isort) (ruff) (black)))))
 
 (use-package gnuplot
   :ensure t)
@@ -479,16 +535,6 @@
   :ensure t
   :hook
   (prog-mode . outshine-mode))
-
-(use-package ox-pandoc
-  :ensure t)
-
-;; (use-package kkp
-;;   :ensure t
-;;   :custom
-;;   (kkp-super-modifier 'meta)
-;;   :config
-;;   (global-kkp-mode +1))
 
 (use-package prescient
   :ensure t)

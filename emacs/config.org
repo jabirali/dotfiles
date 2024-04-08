@@ -4,7 +4,8 @@
 
 This is my personal configuration file for Emacs. This configuration assumes that I'm using Emacs v30+ on MacOS. It is formatted as an Org-mode "literate configuration file", which means that each Emacs Lisp block below is autoexported to an =init.el= file when the file is saved.
 
-* Core
+* Basics
+** Package management
 #+begin_src emacs-lisp
   (use-package use-package
     :custom
@@ -14,25 +15,92 @@ This is my personal configuration file for Emacs. This configuration assumes tha
     :config
     (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 #+end_src
+  
+** Recent history
+Emacs should remember where I've been.
+#+begin_src emacs-lisp
+  (recentf-mode 1)
+#+end_src
 
+Emacs should remember what I've done.
+#+begin_src emacs-lisp
+  (savehist-mode 1)
+#+end_src
+
+** Keyboard support
+I mostly use Emacs on MacOS. I don't really need the Super key as an Evil user, but I do need an easily accessible Meta key (for e.g. =M-RET= in Org-mode) and I do need the Option key (to type in Norwegian).
+#+begin_src emacs-lisp
+  (setopt mac-command-modifier 'meta)
+  (setopt mac-option-modifier 'option)
+#+end_src
+
+I regularly switch between ISO and ANSI style keyboards, which can be quite annoying since the backtick and tilde symbols move around (and I use both a lot). Let's fix that.
+#+begin_src emacs-lisp
+  (define-key key-translation-map (kbd "§") (kbd "`"))
+  (define-key key-translation-map (kbd "±") (kbd "~"))
+#+end_src
+
+Some Meta keybindings don't work by default in the terminal (in e.g. Org-mode). Let's fix that as well.
+#+begin_src emacs-lisp
+  (define-key key-translation-map (kbd "M-<return>") (kbd "M-RET"))
+  (define-key key-translation-map (kbd "M-<backspace>") (kbd "M-DEL"))
+#+end_src
+
+Sometimes, I need to type literal UTF-8 characters. We can do this using the =C-\= keybinding, but it's nice to not be re-prompted for the input method every time we restart Emacs and re-invoke this feature.
+#+begin_src emacs-lisp
+  (setq default-input-method 'TeX)
+  (setq default-transient-input-method 'TeX)
+#+end_src
+
+Finally, this package is specifically meant for the Kitty terminal. It ensures that e.g. super keybindings "just work" in the terminal, which evens the score a bit between the GUI and TUI versions of Emacs.
+#+begin_src emacs-lisp
+  (use-package kkp
+    :ensure t
+    :custom
+    (kkp-super-modifier 'meta)
+    :config
+    (global-kkp-mode +1))
+#+end_src
+
+** Mouse support
+Most things related to mouse support "just works" when Emacs is running as a GUI. The main thing I miss is smooth scrolling, especially when reading code using a Touchpad or Apple Mouse. This fixes that.
+#+begin_src emacs-lisp
+  (pixel-scroll-precision-mode 1)
+#+end_src
+
+Some more work is needed to get the mouse working nicely in a terminal.
+#+begin_src emacs-lisp
+  (setopt mouse-wheel-follow-mouse t)
+  (setopt mouse-wheel-progressive-speed nil)
+  (mouse-wheel-mode 1)
+  (xterm-mouse-mode 1)
+#+end_src  
+  
+Finally, both in the GUI and in the terminal, it can be quite annoying when the mouse randomly highlights things. Usually this happens by accident since I use the keyboard more. Let's disable that.
+#+begin_src emacs-lisp
+  (setopt mouse-highlight nil)
+#+end_src
+
+** Frame parameters
+#+begin_src emacs-lisp
+  (set-frame-parameter nil 'internal-border-width 8)
+#+end_src
+
+** Sane defaults
+Let's now configure some core Emacs features.
 #+begin_src emacs-lisp
   (use-package emacs
     :hook
     (prog-mode . hs-minor-mode)
-    (text-mode . visual-line-mode)
     :custom
     (auto-save-default nil)
-    (default-input-method 'TeX)
     (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
     (fringes-outside-margins t)
     (inhibit-startup-message t)
     (initial-major-mode 'org-mode)
     (initial-scratch-message "")
     (line-spacing 0.15)
-    (mac-command-modifier 'meta)
-    (mac-option-modifier 'option)
     (make-backup-files nil)
-    (mouse-highlight nil)
     (ring-bell-function 'ignore)
     (sentence-end-double-space nil)
     (frame-title-format '("%b "
@@ -55,16 +123,8 @@ This is my personal configuration file for Emacs. This configuration assumes tha
     ;; Don't indicate long or wrapped lines.
     (set-display-table-slot standard-display-table 'truncation ? )
     (set-display-table-slot standard-display-table 'wrap ? )
-    ;; Make ISO and ANSI keyboards more similar.
-    (define-key key-translation-map (kbd "§") (kbd "`"))
-    (define-key key-translation-map (kbd "±") (kbd "~"))
-    ;; Make some Meta keybindings more ergonomic.
-    (define-key key-translation-map (kbd "M-<return>") (kbd "M-RET"))
-    (define-key key-translation-map (kbd "M-<backspace>") (kbd "M-DEL"))
     ;; Turn on some useful default modes.
     (global-auto-revert-mode 1)
-    (when (display-graphic-p)
-      (pixel-scroll-precision-mode 1))
     ;; Disable the annoying default modes.
     (blink-cursor-mode -1)
     (menu-bar-mode -1)
@@ -75,6 +135,7 @@ This is my personal configuration file for Emacs. This configuration assumes tha
       (scroll-bar-mode -1)))
 #+end_src
 
+Run Emacs as a server. I chose to run it over TCP, because this lets me SSH forward the server to remote hosts. When I'm in a remote shell, I can then easily phone home via =emacsclient= to spawn new Tramp connections.
 #+begin_src emacs-lisp
   (use-package server
     :custom
@@ -84,6 +145,7 @@ This is my personal configuration file for Emacs. This configuration assumes tha
     (server-mode 1))
 #+end_src
 
+On macOS, there are often issues related to =$PATH= when starting Emacs as a GUI program. This package helps us alleviate that.
 #+begin_src emacs-lisp
   (use-package exec-path-from-shell
     :vc (:url "https://github.com/purcell/exec-path-from-shell" :rev "main")
@@ -119,13 +181,18 @@ First of all, let's enable the "Evil mode". As someone with a Vim background, th
     (define-key evil-motion-state-map (kbd "TAB") nil))
 #+end_src
 
+Note that Ex mode can be a bit dangerous in Emacs. I've burned myself several times by running commands like e.g. ":e!" and getting a different behavior from Vim, which in some cases can destroy data. Anyway, Ex mode in Emacs is not as powerful as in Vim, whereas the natural Emacs analogue would be M-x instead. Let's therefore remap colon to M-x.
+#+begin_src emacs-lisp
+  (evil-define-key* 'motion 'global ":" #'execute-extended-command)
+#+end_src
+
 Evil Collection is exactly what is sounds like: It makes Evil work in nearly every corner of Emacs.
 #+begin_src emacs-lisp
-  (use-package evil-collection
-    :ensure t
-    :after evil
-    :config
-    (evil-collection-init))
+    (use-package evil-collection
+      :ensure t
+      :after evil
+      :config
+      (evil-collection-init))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -182,11 +249,23 @@ Evil Collection is exactly what is sounds like: It makes Evil work in nearly eve
 
 * Functions
 #+begin_src emacs-lisp
-  (defun +org-find-file ()
-    "Open one of my Org files (or create a new one)."
+  (defun jabirali/science-definition-lookup ()
+    "Look up a scientific definition using a ChatGPT wrapper."
     (interactive)
-    (let ((default-directory org-directory))
-      (find-file (completing-read "Org: " (directory-files "." nil "\\.org$")))))
+    (let* ((query (buffer-substring (region-beginning) (region-end)))
+           (encoded-query (url-encode-url query))
+           (search-url "https://chat.openai.com/g/g-Kihf3Sccx-science-definitions?q="))
+      (browse-url (concat search-url encoded-query))))
+
+  (bind-key "<f12>" #'jabirali/science-definition-lookup)
+#+end_src
+
+#+begin_src emacs-lisp
+    (defun +org-find-file ()
+      "Open one of my Org files (or create a new one)."
+      (interactive)
+      (let ((default-directory org-directory))
+        (find-file (completing-read "Org: " (directory-files "." nil "\\.org$")))))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -197,23 +276,30 @@ Evil Collection is exactly what is sounds like: It makes Evil work in nearly eve
 
 #+begin_src emacs-lisp
   (defun +theme-override (&rest _)
-    "Override the current theme for a consistent and minimal look."
-    (let ((bg0 (face-attribute 'default :background))
-          (bg1 (face-attribute 'mode-line :background))
-          (bg2 (face-attribute 'mode-line :background))
-          (fg0 (face-attribute 'default :foreground))
-          (fg1 (face-attribute 'mode-line :foreground))
-          (fg2 (face-attribute 'mode-line-inactive :foreground)))
-      (set-face-attribute 'tab-bar nil :foreground bg2 :background bg2 :box `(:line-width 6 :color ,bg2))
-      (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg2 :box `(:line-width 6 :color ,bg2))
-      (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg2 :box `(:line-width 6 :color ,bg2))
-      (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
-      (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
-      (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
-      (set-face-attribute 'scroll-bar nil :foreground bg2 :background bg2)
-      (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)))
+	"Override the current theme for a consistent and minimal look."
+	(let ((bg0 (face-attribute 'default :background))
+		  (bg1 (face-attribute 'mode-line :background))
+		  (bg2 (face-attribute 'mode-line :background))
+		  (fg0 (face-attribute 'default :foreground))
+		  (fg1 (face-attribute 'mode-line :foreground))
+		  (fg2 (face-attribute 'mode-line-inactive :foreground)))
+	  (set-face-attribute 'tab-bar nil :foreground bg2 :background bg2 :box `(:line-width 6 :color ,bg2))
+	  (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg2 :box `(:line-width 6 :color ,bg2))
+	  (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg2 :box `(:line-width 6 :color ,bg2))
+	  (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
+	  (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
+	  (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
+	  (set-face-attribute 'scroll-bar nil :foreground bg2 :background bg2)
+	  (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)))
 
   (advice-add 'load-theme :after #'+theme-override)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; (use-package spacious-padding
+  ;;   :ensure t
+  ;;   :config
+  ;;   (spacious-padding-mode 1))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -224,7 +310,7 @@ Evil Collection is exactly what is sounds like: It makes Evil work in nearly eve
 
 * Interface
 * Coding
-** LSP
+** Language servers
 Eglot has been built into Emacs since v29. I've tried the alternatives Lsp-mode and Lsp-bridge, but so far Eglot is the solution that has been most "plug and play" and least buggy. It also seems to just work over Tramp connections if you install LSP servers remotely.
 #+begin_src emacs-lisp
   (use-package eglot
@@ -244,8 +330,19 @@ Eglot-Booster can help speed up Eglot by using an intermediary process between E
   ;;   :after eglot
   ;;   :config (eglot-booster-mode))
 #+end_src
+   
+** Formatters
+#+begin_src emacs-lisp
+  (use-package format-all
+    :ensure t
+    :hook
+    (eglot-managed-mode . format-all-mode)
+    :config
+    (setq-default format-all-formatters
+                  '(("Python" (isort) (ruff) (black)))))
+#+end_src
 
-** Python
+** Python code
 Note: This doesn't currently play well with Tramp. If you have IPython installed locally, and try to run =C-c C-p= while editing a remote Python buffer, it might fail to start IPython remotely.
 #+begin_src emacs-lisp
   (use-package python
@@ -255,13 +352,20 @@ Note: This doesn't currently play well with Tramp. If you have IPython installed
       (setq-local python-shell-prompt-detect-failure-warning nil)))
 #+end_src
 
+Ruff is a nice Python linter. Let's integrate it into Flymake.
+#+begin_src emacs-lisp
+  (use-package flymake-ruff
+    :ensure t
+    :hook (eglot-managed-mode . flymake-ruff-load))
+#+end_src
+
 * Writing
 ** Org documents
 One of the main reasons I'm using Emacs at all. If it wasn't for Org, I'd probably still be using Vim as my main editor.
 #+begin_src emacs-lisp
   (use-package org
     :custom
-    (org-adapt-indentation t)
+    (org-adapt-indentation nil)
     (org-agenda-files (list org-directory))
     (org-agenda-window-setup 'only-window)
     (org-agenda-skip-deadline-if-done t)
@@ -286,10 +390,20 @@ One of the main reasons I'm using Emacs at all. If it wasn't for Org, I'd probab
      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
        (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
     :config
+    (setopt org-latex-src-block-backend 'engraved)
+    (setopt org-latex-engraved-theme 'ef-melissa-light)
+    (setopt org-latex-packages-alist
+            '(("" "microtype" t)
+              ("" "newpxtext" t)
+              ("" "newpxmath" t)))
+    (setopt org-latex-hyperref-template "
+  \\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},
+   pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true}\n")
     (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
     (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
 #+end_src
 
+Let's me drag-and-drop images into Org-mode.
 #+begin_src emacs-lisp
   (use-package org-download
     :ensure t
@@ -313,7 +427,7 @@ One of the main reasons I'm using Emacs at all. If it wasn't for Org, I'd probab
                 ("M-V" . org-download-clipboard))) 
 #+end_src
 
-
+Org Agenda needs some sectioning when it gets too long.
 #+begin_src emacs-lisp
   (use-package org-super-agenda
     :ensure t
@@ -324,6 +438,7 @@ One of the main reasons I'm using Emacs at all. If it wasn't for Org, I'd probab
     (org-super-agenda-mode 1)) 
 #+end_src
 
+Use your Org Agenda as your screensaver. Because I can't remember to actively look at it when I'm busy, but that's when I really should.
 #+begin_src emacs-lisp
   (use-package idle-org-agenda
     :ensure t
@@ -332,6 +447,12 @@ One of the main reasons I'm using Emacs at all. If it wasn't for Org, I'd probab
     (idle-org-agenda-interval 3600)
     :config
     (idle-org-agenda-mode 1))
+#+end_src
+
+Org Export to every format via Pandoc. I especially appreciate that I can generate DOCX files with LaTeX-based equations.
+#+begin_src emacs-lisp
+  (use-package ox-pandoc
+    :ensure t) 
 #+end_src
 
 ** LaTeX documents
@@ -384,6 +505,8 @@ The Lingua Franca of modern mark-up languages.
 
 ** Spell checking
 Flyspell is a built-in spellchecker in Emacs. By default, it uses Hunspell on MacOS (i.e. the same backend as Firefox and LibreOffice), and searches for dictionaries in =~/Library/Spelling/=. Remember to download the dictionaries you need to that folder...
+
+TODO: Make Emacs use Hunspell even if Aspell or Ispell is accidentally installed.
 #+begin_src emacs-lisp
   (use-package flyspell
     :custom
@@ -401,28 +524,18 @@ The default Flyspell interface and keybinding =C-c $= is not very ergonomic to u
     :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
 #+end_src
 
+** Text wrapping
+I don't like the behavior 
+#+begin_src emacs-lisp
+  (use-package adaptive-wrap
+    :ensure t
+    :hook
+    (text-mode . visual-line-mode)
+    (markdown-mode . adaptive-wrap-prefix-mode)
+    (latex-mode . adaptive-wrap-prefix-mode))
+#+end_src
+
 * Internal packages
-#+begin_src emacs-lisp
-  (use-package mwheel
-    :custom
-    (mouse-wheel-follow-mouse t)
-    (mouse-wheel-progressive-speed nil)
-    :config
-    (mouse-wheel-mode 1))
-#+end_src  
-
-#+begin_src emacs-lisp
-  (use-package recentf
-    :config
-    (recentf-mode 1))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package savehist
-    :config
-    (savehist-mode 1))
-#+end_src
-
 #+begin_src emacs-lisp
   (use-package tab-bar
     :custom
@@ -438,12 +551,6 @@ The default Flyspell interface and keybinding =C-c $= is not very ergonomic to u
     :config
     (tab-bar-mode 1)
     (tab-bar-history-mode 1))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package xt-mouse
-    :config
-    (xterm-mouse-mode 1))
 #+end_src
 
 * External packages
@@ -470,17 +577,25 @@ The default Flyspell interface and keybinding =C-c $= is not very ergonomic to u
 #+end_src
 
 #+begin_src emacs-lisp
-  (use-package adaptive-wrap
-    :ensure
-    :hook
-    (LaTeX-mode . adaptive-wrap-prefix-mode))
-#+end_src
-
-#+begin_src emacs-lisp
   ;; (use-package company
   ;;   :ensure t
   ;;   :after eglot
   ;;   :hook (eglot-managed-mode . company-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; (use-package corfu
+  ;;   :ensure t
+  ;;   :hook (prog-mode . corfu-mode)
+  ;;   ;; :custom
+  ;;   ;; (corfu-cycle t)
+  ;;   ;; (corfu-auto t)
+  ;;   ;; (corfu-auto-delay 0.1)
+  ;;   ;; (corfu-quit-at-boundary t)
+  ;;   ;; (corfu-quit-no-match t)
+  ;;   :config
+  ;;   (define-key corfu-map (kbd "C-n") 'corfu-next)
+  ;;   (define-key corfu-map (kbd "C-p") 'corfu-previous))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -522,10 +637,24 @@ The default Flyspell interface and keybinding =C-c $= is not very ergonomic to u
 #+end_src
 
 #+begin_src emacs-lisp
-  (use-package doom-themes
+  ;; (use-package doom-themes				;
+  ;;   :ensure t
+  ;;   :config
+  ;;   (load-theme 'doom-molokai t))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package ef-themes
     :ensure t
     :config
-    (load-theme 'doom-molokai t))
+    (load-theme 'ef-melissa-light t))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; (use-package kaolin-themes
+  ;;   :ensure t
+  ;;   :config
+  ;;   (load-theme 'kaolin-light t))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -544,22 +673,6 @@ The default Flyspell interface and keybinding =C-c $= is not very ergonomic to u
     :ensure t)
 #+end_src
 
-
-#+begin_src emacs-lisp
-  (use-package flymake-ruff
-    :ensure t
-    :hook (eglot-managed-mode . flymake-ruff-load))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package format-all
-    :ensure t
-    :hook
-    (eglot-managed-mode . format-all-mode)
-    :config
-    (setq-default format-all-formatters
-                  '(("Python" (isort) (ruff) (black)))))
-#+end_src
 
 #+begin_src emacs-lisp
   (use-package gnuplot
@@ -634,20 +747,7 @@ The default Flyspell interface and keybinding =C-c $= is not very ergonomic to u
 #+end_src
 
 
-#+begin_src emacs-lisp
-  (use-package ox-pandoc
-    :ensure t) 
-#+end_src
 
-
-#+begin_src emacs-lisp
-  ;; (use-package kkp
-  ;;   :ensure t
-  ;;   :custom
-  ;;   (kkp-super-modifier 'meta)
-  ;;   :config
-  ;;   (global-kkp-mode +1)) 
-#+end_src
 
 
 #+begin_src emacs-lisp
@@ -859,12 +959,12 @@ The default Flyspell interface and keybinding =C-c $= is not very ergonomic to u
 By default, Emacs litters my =init.el= with its =customize= cache. That's annoying for several reasons:
 1. If I'm writing my =init.el= by hand, having autogenerated code appended makes it messy;
 2. If I'm autogenerating my =init.el= from an Org file, I'll continuously lose that cache;
-3. When =init.el= is in a Git repo, it's easy to accidentally sync host-specific settings.
-Luckily, this part is not so difficult to fix:
-#+begin_src emacs-lisp :tangle "early-init.el"
-  (setq custom-file (concat user-emacs-directory "custom.el"))
-  (ignore-errors (load custom-file))
-#+end_src
+                                                                               3. When =init.el= is in a Git repo, it's easy to accidentally sync host-specific settings.
+                                                                               Luckily, this part is not so difficult to fix:
+                                                                               #+begin_src emacs-lisp :tangle "early-init.el"
+                                                                                 (setq custom-file (concat user-emacs-directory "custom.el"))
+                                                                                 (ignore-errors (load custom-file))
+                                                                               #+end_src
 
 ** Frame settings
 Let's give our windows a bit of breathing room. Looks less stressful.
@@ -882,6 +982,7 @@ These settings seem to make Emacs a bit snappier. But I haven't really benchmark
 * Tangle
 #+begin_src conf
   Local Variables:
-  eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle) (load-file user-init-file) nil t))
+  eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle)))
   End:
 #+end_src
+  
