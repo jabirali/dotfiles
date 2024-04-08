@@ -125,10 +125,14 @@ set rtp+=/opt/homebrew/opt/fzf
   nnoremap <leader>8 8gt
   nnoremap <leader>9 9gt
 
+  nnoremap <leader>q <cmd>close<cr>
+  nnoremap <leader>t <cmd>tabnew<cr>
+  nnoremap <leader>w <cmd>write<cr>
+
   " Fuzzy finder
   nnoremap <leader>b  :Buffers<cr>
   nnoremap <leader>f  :Files<cr>
-  nnoremap <leader>s  :Snippets<cr>
+  " nnoremap <leader>s  :Snippets<cr>
   nnoremap <leader>h  :Helptags<cr>
   nnoremap <leader>'  :Marks<cr>
   nnoremap <leader>/  :RG<cr>
@@ -138,9 +142,9 @@ set rtp+=/opt/homebrew/opt/fzf
   nnoremap <leader>p :source<bar>PlugInstall<cr>
 
   " Personal wiki (todo/note/journal)
-  nnoremap <leader>t :WikiIndex<cr>
-  nnoremap <leader>n :WikiPages<cr>
-  nnoremap <leader>j :WikiJournal<cr>
+  "nnoremap <leader>t :WikiIndex<cr>
+  "nnoremap <leader>n :WikiPages<cr>
+  "nnoremap <leader>j :WikiJournal<cr>
 
   " Surround
   nmap s ys

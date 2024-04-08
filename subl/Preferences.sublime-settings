@@ -1,7 +1,7 @@
 {
 	// Aesthetics.
-	"theme": "DAneo Origin.sublime-theme",
-	"color_scheme": "ayu-mirage.sublime-color-scheme",
+	"theme": "DAneo Elegant.sublime-theme",
+	"color_scheme": "Rosé Pine Moon.sublime-color-scheme",
 	"font_face": "JetBrains Mono NL",
 	"font_size": 14,
 	"font_options": [
@@ -34,6 +34,7 @@
 	"file_tab_size": "small",
 	// Miscellaneous.
 	"ignored_packages": [
+		"python-black",
 		"Vintage",
 	],
 	"index_files": true,

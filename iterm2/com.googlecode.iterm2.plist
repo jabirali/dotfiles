@@ -1959,9 +1959,9 @@
 	<key>HotkeyMigratedFromSingleToMulti</key>
 	<true/>
 	<key>LeftCommand</key>
-	<integer>2</integer>
-	<key>LeftOption</key>
 	<integer>7</integer>
+	<key>LeftOption</key>
+	<integer>2</integer>
 	<key>NeverWarnAboutShortLivedSessions_D4403CEC-8A61-4CF1-B659-C9254EBE6EAB</key>
 	<true/>
 	<key>NeverWarnAboutShortLivedSessions_D4403CEC-8A61-4CF1-B659-C9254EBE6EAB_selection</key>
@@ -2127,12 +2127,16 @@
 			<true/>
 			<key>Background Color</key>
 			<dict>
+				<key>Alpha Component</key>
+				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.15977837145328522</real>
+				<real>0.14901960784313725</real>
+				<key>Color Space</key>
+				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.12215272337198257</real>
+				<real>0.10588235294117647</real>
 				<key>Red Component</key>
-				<real>0.11765811592340469</real>
+				<real>0.10196078431372549</real>
 			</dict>
 			<key>Background Image Location</key>
 			<string></string>
@@ -2303,11 +2307,11 @@
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Option Key Sends</key>
-			<integer>1</integer>
+			<integer>2</integer>
 			<key>Prompt Before Closing 2</key>
 			<false/>
 			<key>Right Option Key Sends</key>
-			<integer>1</integer>
+			<integer>2</integer>
 			<key>Rows</key>
 			<integer>25</integer>
 			<key>Screen</key>
@@ -2825,9 +2829,9 @@
 	<key>Print In Black And White</key>
 	<true/>
 	<key>RightCommand</key>
-	<integer>3</integer>
-	<key>RightOption</key>
 	<integer>8</integer>
+	<key>RightOption</key>
+	<integer>3</integer>
 	<key>SeparateStatusBarsPerPane</key>
 	<false/>
 	<key>ShowNewOutputIndicator</key>

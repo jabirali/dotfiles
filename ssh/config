@@ -2,10 +2,10 @@ Host *
 	# More efficient.
 	CheckHostIP no
 	Compression yes
-	ControlMaster auto
-	ControlPersist 10
-	ControlPath ~/.ssh/sockets/%r@%h-%p
-	ForwardX11 yes
+        # ControlMaster auto
+	# ControlPersist 10
+	# ControlPath ~/.ssh/sockets/%r@%h-%p
+	# ForwardX11 yes
 
 	# Emacsclient over TCP.
 	RemoteForward 1337 localhost:1337
@@ -17,6 +17,12 @@ Host *
 Host babacalc
 	HostName babacalc.ddns.net
 	User jo
+
+# Work.
+host boost
+    # HostName "jaboua/boost@lon1.tmate.io"
+    HostName 158.37.44.64
+    User jabirali
 
 # HPC clusters.
 Host saga
