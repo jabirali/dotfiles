@@ -392,10 +392,7 @@ One of the main reasons I'm using Emacs at all. If it wasn't for Org, I'd probab
     :config
     (setopt org-latex-src-block-backend 'engraved)
     (setopt org-latex-engraved-theme 'ef-melissa-light)
-    (setopt org-latex-packages-alist
-            '(("" "microtype" t)
-              ("" "newpxtext" t)
-              ("" "newpxmath" t)))
+    (setopt org-latex-packages-alist '(("" "microtype" t)))
     (setopt org-latex-hyperref-template "
   \\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},
    pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true}\n")
@@ -506,11 +503,19 @@ The Lingua Franca of modern mark-up languages.
 ** Spell checking
 Flyspell is a built-in spellchecker in Emacs. By default, it uses Hunspell on MacOS (i.e. the same backend as Firefox and LibreOffice), and searches for dictionaries in =~/Library/Spelling/=. Remember to download the dictionaries you need to that folder...
 
-TODO: Make Emacs use Hunspell even if Aspell or Ispell is accidentally installed.
+Make Emacs use Hunspell even if Aspell or Ispell is accidentally installed. Moreover, combine a Norwegian and US English dictionary, since I tend to mix the two quite liberally in my notes and lectures.
+#+begin_src emacs-lisp
+  (use-package ispell
+    :config
+    (setopt ispell-program-name "hunspell")
+    (setopt ispell-personal-dictionary (concat user-emacs-directory "ispell"))
+    (setopt ispell-dictionary "en_US,nb_NO")
+    (ispell-set-spellchecker-params)
+    (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
+#+end_src
+
 #+begin_src emacs-lisp
   (use-package flyspell
-    :custom
-    (ispell-personal-dictionary (concat user-emacs-directory "ispell"))
     :hook
     ((text-mode . flyspell-mode)
      (prog-mode . flyspell-prog-mode)))

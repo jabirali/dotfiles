@@ -276,10 +276,7 @@
   :config
   (setopt org-latex-src-block-backend 'engraved)
   (setopt org-latex-engraved-theme 'ef-melissa-light)
-  (setopt org-latex-packages-alist
-          '(("" "microtype" t)
-            ("" "newpxtext" t)
-            ("" "newpxmath" t)))
+  (setopt org-latex-packages-alist '(("" "microtype" t)))
   (setopt org-latex-hyperref-template "
 \\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},
  pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true}\n")
@@ -360,9 +357,15 @@
   :hook
   (markdown-mode . cdlatex-mode))
 
+(use-package ispell
+  :config
+  (setopt ispell-program-name "hunspell")
+  (setopt ispell-personal-dictionary (concat user-emacs-directory "ispell"))
+  (setopt ispell-dictionary "en_US,nb_NO")
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
+
 (use-package flyspell
-  :custom
-  (ispell-personal-dictionary (concat user-emacs-directory "ispell"))
   :hook
   ((text-mode . flyspell-mode)
    (prog-mode . flyspell-prog-mode)))
