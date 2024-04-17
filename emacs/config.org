@@ -388,7 +388,7 @@ One of the main reasons I'm using Emacs at all. If it wasn't for Org, I'd probab
     (org-tags-column -65)
     (org-todo-keywords
      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-       (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
+       (sequence "WAIT(w)" "HOLD(h)" "READ(r)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
     :config
     (setopt org-latex-src-block-backend 'engraved)
     (setopt org-latex-engraved-theme 'ef-melissa-light)
@@ -496,6 +496,10 @@ The Lingua Franca of modern mark-up languages.
 #+begin_src emacs-lisp
   (use-package markdown-mode
     :ensure t
+    :config
+    (setopt markdown-fontify-code-blocks-natively t)
+    (setopt markdown-enable-wiki-links t)
+    (setopt markdown-enable-math t)
     :hook
     (markdown-mode . cdlatex-mode)) 
 #+end_src
@@ -583,10 +587,10 @@ I don't like the behavior
 #+end_src
 
 #+begin_src emacs-lisp
-  ;; (use-package company
-  ;;   :ensure t
-  ;;   :after eglot
-  ;;   :hook (eglot-managed-mode . company-mode))
+  (use-package company
+    :ensure t
+    :after eglot
+    :hook (eglot-managed-mode . company-mode))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -988,7 +992,7 @@ These settings seem to make Emacs a bit snappier. But I haven't really benchmark
 * Tangle
 #+begin_src conf
   Local Variables:
-  eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle)))
+  eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle)) nil t)
   End:
 #+end_src
   

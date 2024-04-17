@@ -1,9 +1,0 @@
-<snippet>
-<content><![CDATA[
-for i in $1:
-    $0
-]]></content>
-<tabTrigger>for</tabTrigger>
-<description>for loop</description>
-<scope>source.python</scope>
-</snippet>

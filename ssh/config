@@ -1,46 +1,30 @@
 Host *
-	# More efficient.
-	CheckHostIP no
-	Compression yes
-        # ControlMaster auto
-	# ControlPersist 10
-	# ControlPath ~/.ssh/sockets/%r@%h-%p
-	# ForwardX11 yes
-
-	# Emacsclient over TCP.
-	RemoteForward 1337 localhost:1337
-
-	# Integrate `1Password` (to protect my SSH keys).
-	IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-
-# Personal.
-Host babacalc
-	HostName babacalc.ddns.net
-	User jo
-
-# Work.
-host boost
-    # HostName "jaboua/boost@lon1.tmate.io"
-    HostName 158.37.44.64
+    # General.
+    CheckHostIP no
+    Compression yes
+    ForwardX11 no
     User jabirali
 
-# HPC clusters.
-Host saga
-	HostName login-3.saga.sigma2.no
-	User jabirali
+    # Trade robustness for efficiency.
+    # ControlMaster auto
+    # ControlPersist 10
+    # ControlPath ~/.ssh/sockets/%r@%h-%p
+
+    # Enable Emacsclient over TCP.
+    RemoteForward 1337 localhost:1337
+
+    # Integrate `1Password` (to protect my SSH keys).
+    IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+host boost
+    HostName 158.37.44.64
 
 Host ex3
-	HostName dnat.simula.no
-	User jabirali
-	Port 60441
+    HostName dnat.simula.no
+    Port 60441
 
-# Shell accounts.
+Host saga
+    HostName login-3.saga.sigma2.no
+
 Host pvv
-	HostName login.pvv.org
-	User jabirali
-
-Host ntnu
-	HostName login.stud.ntnu.no
-	User jabirali
-
-Host *
+    HostName login.pvv.org

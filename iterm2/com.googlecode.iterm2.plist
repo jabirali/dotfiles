@@ -2303,7 +2303,7 @@
 			<key>Non-ASCII Ligatures</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>JetBrainsMonoNL-Regular 14</string>
+			<string>JetBrainsMonoNLNFM-Regular 14</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Option Key Sends</key>
@@ -2367,7 +2367,7 @@
 			<key>Use Italic Font</key>
 			<true/>
 			<key>Use Non-ASCII Font</key>
-			<true/>
+			<false/>
 			<key>Use libtickit protocol</key>
 			<false/>
 			<key>Vertical Spacing</key>
@@ -2676,7 +2676,7 @@
 			<key>Idle Code</key>
 			<integer>0</integer>
 			<key>Initial Text</key>
-			<string>emacs -nw</string>
+			<string>nvim +VimwikiMakeDiaryNote</string>
 			<key>Initial Use Transparency</key>
 			<true/>
 			<key>Jobs to Ignore</key>
@@ -2706,7 +2706,7 @@
 			<key>Mouse Reporting</key>
 			<true/>
 			<key>Name</key>
-			<string>Emacs</string>
+			<string>Vimwiki</string>
 			<key>Non Ascii Font</key>
 			<string>JuliaMono-Regular 14</string>
 			<key>Non-ASCII Anti Aliased</key>

@@ -272,7 +272,7 @@
   (org-tags-column -65)
   (org-todo-keywords
    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-     (sequence "WAIT(w)" "HOLD(h)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
+     (sequence "WAIT(w)" "HOLD(h)" "READ(r)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
   :config
   (setopt org-latex-src-block-backend 'engraved)
   (setopt org-latex-engraved-theme 'ef-melissa-light)
@@ -354,6 +354,10 @@
 
 (use-package markdown-mode
   :ensure t
+  :config
+  (setopt markdown-fontify-code-blocks-natively t)
+  (setopt markdown-enable-wiki-links t)
+  (setopt markdown-enable-math t)
   :hook
   (markdown-mode . cdlatex-mode))
 
@@ -415,10 +419,10 @@
   :bind
   ("M-o" . +other-window-dwim))
 
-;; (use-package company
-;;   :ensure t
-;;   :after eglot
-;;   :hook (eglot-managed-mode . company-mode))
+(use-package company
+  :ensure t
+  :after eglot
+  :hook (eglot-managed-mode . company-mode))
 
 ;; (use-package corfu
 ;;   :ensure t

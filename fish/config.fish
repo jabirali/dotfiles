@@ -48,6 +48,11 @@ if type -q direnv
 	__direnv_export_eval
 end
 
+# FZF integration.
+if type -q fzf
+    fzf --fish | source
+end
+
 # Conda integration.
 if type -q conda
 	conda shell.fish hook | source
