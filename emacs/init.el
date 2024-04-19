@@ -38,7 +38,7 @@
 
 (setopt mouse-highlight nil)
 
-(set-frame-parameter nil 'internal-border-width 8)
+(set-frame-parameter nil 'internal-border-width 0)
 
 (use-package emacs
   :hook
@@ -54,36 +54,37 @@
   (make-backup-files nil)
   (ring-bell-function 'ignore)
   (sentence-end-double-space nil)
-  (frame-title-format '("%b "
-                        (:eval (let ((project (project-current))
-                                     (remote (file-remote-p default-directory 'host)))
-                                 (if remote
-                                     (format "(%s)" (downcase remote))
-                                   (if project
-                                       (format "(%s)" (downcase (project-name project)))))))))
-  (tab-width 4)
-  (truncate-lines t)
-  (use-short-answers t)
-  (xterm-set-window-title t)
-  :custom-face
-  (default ((t (:family "JetBrains Mono NL" :height 140))))
-  :bind
-  ("C-\\" . activate-transient-input-method)
-  ("<f5>" . sort-lines)
-  :config
-  ;; Don't indicate long or wrapped lines.
-  (set-display-table-slot standard-display-table 'truncation ? )
-  (set-display-table-slot standard-display-table 'wrap ? )
-  ;; Turn on some useful default modes.
-  (global-auto-revert-mode 1)
-  ;; Disable the annoying default modes.
-  (blink-cursor-mode -1)
-  (menu-bar-mode -1)
-  (when (display-graphic-p)
-    (fringe-mode 1)
-    (tooltip-mode -1)
-    (tool-bar-mode -1)
-    (scroll-bar-mode -1)))
+  (frame-title-format '((:eval (if-let
+                                   (remote (file-remote-p default-directory 'host))
+                                   (format "%s: " (downcase remote))))
+                        (:eval (if-let
+                                   ((project (project-current)))
+                                   (format "%s/" (downcase (project-name project)))))
+
+                        "%b"))
+(tab-width 4)
+(truncate-lines t)
+(use-short-answers t)
+(xterm-set-window-title t)
+:custom-face
+(default ((t (:family "JetBrains Mono NL" :height 150))))
+:bind
+("C-\\" . activate-transient-input-method)
+("<f5>" . sort-lines)
+:config
+;; Don't indicate long or wrapped lines.
+(set-display-table-slot standard-display-table 'truncation ? )
+(set-display-table-slot standard-display-table 'wrap ? )
+;; Turn on some useful default modes.
+(global-auto-revert-mode 1)
+;; Disable the annoying default modes.
+(blink-cursor-mode -1)
+(menu-bar-mode -1)
+(when (display-graphic-p)
+  (fringe-mode 1)
+  (tooltip-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)))
 
 (use-package server
   :custom
@@ -92,10 +93,17 @@
   :config
   (server-mode 1))
 
+(defun contextual-menubar (&optional frame)
+  "Display the menubar in FRAME (default: selected frame) if on a
+    graphical display, but hide it if in terminal."
+  (interactive)
+  (set-frame-parameter frame 'menu-bar-lines (if (display-graphic-p frame) 1 0)))
+
+(add-hook 'after-make-frame-functions 'contextual-menubar)
+
 (use-package exec-path-from-shell
   :vc (:url "https://github.com/purcell/exec-path-from-shell" :rev "main")
-  :config
-  (exec-path-from-shell-initialize))
+  :config (exec-path-from-shell-initialize))
 
 ;; (use-package treesit-auto
 ;;   :ensure t
@@ -190,19 +198,20 @@
 (defun +theme-override (&rest _)
   "Override the current theme for a consistent and minimal look."
   (let ((bg0 (face-attribute 'default :background))
-		(bg1 (face-attribute 'mode-line :background))
-		(bg2 (face-attribute 'mode-line :background))
-		(fg0 (face-attribute 'default :foreground))
-		(fg1 (face-attribute 'mode-line :foreground))
-		(fg2 (face-attribute 'mode-line-inactive :foreground)))
-	(set-face-attribute 'tab-bar nil :foreground bg2 :background bg2 :box `(:line-width 6 :color ,bg2))
-	(set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg2 :box `(:line-width 6 :color ,bg2))
-	(set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg2 :box `(:line-width 6 :color ,bg2))
-	(set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
-	(set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
-	(set-face-attribute 'fringe nil :foreground bg0 :background bg0)
-	(set-face-attribute 'scroll-bar nil :foreground bg2 :background bg2)
-	(set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)))
+        (bg1 (face-attribute 'mode-line :background))
+        (bg2 (face-attribute 'mode-line :background))
+        (fg0 (face-attribute 'default :foreground))
+        (fg1 (face-attribute 'mode-line :foreground))
+        (fg2 (face-attribute 'mode-line-inactive :foreground)))
+    (set-face-attribute 'tab-bar nil :foreground bg2 :background bg2 :box `(:line-width 6 :color ,bg2))
+    (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg2 :box `(:line-width 6 :color ,bg2))
+    (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg2 :box `(:line-width 6 :color ,bg2))
+    (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
+    (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
+    (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
+    (set-face-attribute 'scroll-bar nil :foreground bg2 :background bg2)
+    (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)
+    (set-face-italic-p 'font-lock-comment-face nil)))
 
 (advice-add 'load-theme :after #'+theme-override)
 
@@ -245,7 +254,7 @@
 
 (use-package flymake-ruff
   :ensure t
-  :hook (eglot-managed-mode . flymake-ruff-load))
+  :hook (python-mode . flymake-ruff-load))
 
 (use-package org
   :custom
@@ -392,7 +401,7 @@
   (tab-bar-format '(tab-bar-format-tabs))
   (tab-bar-new-tab-choice "*scratch*")
   (tab-bar-separator "  ")
-  (tab-bar-show 1)
+  (tab-bar-show t)
   (tab-bar-tab-hints t)
   :bind
   ("s-[" . tab-bar-history-back)
@@ -422,6 +431,7 @@
 (use-package company
   :ensure t
   :after eglot
+  :bind (:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
   :hook (eglot-managed-mode . company-mode))
 
 ;; (use-package corfu
@@ -441,8 +451,8 @@
   :vc (:url "https://github.com/copilot-emacs/copilot.el" :rev "main")
   :custom
   (copilot-idle-delay 1)
-  :hook
-  (prog-mode . copilot-mode)
+  ;; :hook
+  ;; (prog-mode . copilot-mode)
   :bind
   (:map copilot-mode-map
         ("M-RET" . copilot-accept-completion)
@@ -461,6 +471,7 @@
   (doom-modeline-bar-width 0.1)
   (doom-modeline-buffer-encoding nil)
   (doom-modeline-buffer-modification-icon nil)
+  (doom-modeline-env-enable-python nil)
   (doom-modeline-icon nil)
   (doom-modeline-modal nil)
   (doom-modeline-position-line-format nil)
