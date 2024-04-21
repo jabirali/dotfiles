@@ -47,8 +47,60 @@ Let's also prevent Emacs from littering my =init.el= config file with the cache 
   (ignore-errors (load custom-file))
 #+end_src
 
-* System settings
-** General
+* Basic settings
+** Sane defaults
+Here's a hodgepodge of built-in Emacs settings. Many of them just try to get rid of anachronisms.
+#+begin_src emacs-lisp
+  (use-package emacs
+    :custom
+    (auto-save-default nil)
+    (default-input-method 'TeX)
+    (default-transient-input-method 'TeX)
+    (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
+    (frame-title-format "GNU Emacs")
+    (fringes-outside-margins t)
+    (inhibit-startup-message t)
+    (initial-major-mode 'org-mode)
+    (initial-scratch-message "")
+    (line-spacing 0.15)
+    (make-backup-files nil)
+    (message-truncate-lines t)
+    (ring-bell-function 'ignore)
+    (sentence-end-double-space nil)
+    (tab-width 4)
+    (truncate-lines t)
+    (use-short-answers t)
+    (xterm-set-window-title t)
+    :custom-face
+    (default ((t (:family "JetBrains Mono NL" :height 140))))
+    :bind
+    ("C-\\" . activate-transient-input-method)
+    ("<f5>" . sort-lines)
+    :config
+    ;; Don't indicate long or wrapped lines.
+    (set-display-table-slot standard-display-table 'truncation ? )
+    (set-display-table-slot standard-display-table 'wrap ? )
+    ;; Turn on some useful default modes.
+    (global-auto-revert-mode 1)
+    (recentf-mode 1)
+    (savehist-mode 1)
+    ;; Disable the annoying default modes.
+    (blink-cursor-mode -1)
+    (menu-bar-mode -1)
+    (when (display-graphic-p)
+      (fringe-mode 1)
+      (tooltip-mode -1)
+      (tool-bar-mode -1)
+      (scroll-bar-mode -1)))
+#+end_src
+
+Let's also increase the garbage collection threshold a bit. This makes Emacs stutter a bit less and speeds up the start-up process.
+#+begin_src emacs-lisp :tangle "early-init.el"
+  (setq gc-cons-threshold (* 128 1024 1024)
+        read-process-output-max (* 1024 1024))
+#+end_src
+
+** Environment variables
 This package corrects =$PATH= when Emacs is started from the GUI. This is needed to detect programs installed via HomeBrew.
 #+begin_src emacs-lisp
   (use-package exec-path-from-shell
@@ -59,12 +111,6 @@ This package corrects =$PATH= when Emacs is started from the GUI. This is needed
 To install it on Emacs v29 (replace with =:vc= in Emacs v30):
 #+begin_src
   (package-vc-install "https://github.com/purcell/exec-path-from-shell")
-#+end_src
-
-Let's also increase the garbage collection threshold a bit. This makes Emacs stutter a bit less and speeds up the start-up process.
-#+begin_src emacs-lisp :tangle "early-init.el"
-  (setq gc-cons-threshold (* 128 1024 1024)
-        read-process-output-max (* 1024 1024))
 #+end_src
 
 ** Graphical interface
@@ -111,6 +157,15 @@ This package lets Emacs interact with the system clipboard also when running in 
   ;;   (xclip-mode 1)) 
 #+end_src
 
+This package makes Evil-mode look a bit nicer when running in a terminal.
+#+begin_src emacs-lisp
+  ;; (use-package evil-terminal-cursor-changer
+  ;;   :ensure t
+  ;;   :after evil
+  ;;   :config
+  ;;   (evil-terminal-cursor-changer-activate))
+#+end_src
+
 ** Mouse and trackpad
 Enable actual smooth scrolling for high-precision trackpads and mice. Note that this package requires the Emacs Mac port; for the NS port, the best option is =pixel-scroll-precision-mode=.
 #+begin_src emacs-lisp
@@ -147,47 +202,76 @@ I regularly switch between ISO and ANSI style keyboards, which can be quite anno
   (define-key key-translation-map (kbd "±") (kbd "~"))
 #+end_src
 
-* Writing prose
-** Spell checking
-Ispell is the traditional spell checker for Emacs. It supports many backends, but we here use the Hunspell backend since it (i) supports multi-language dictionary combinations, (ii) is supposed to be more accurate for many non-English languages, (iii) has become the de facto standard among other open-source apps (it is e.g. now the default spell checker in Firefox, LibreOffice, etc.). Note that on MacOS, you need to [[https://github.com/wooorm/dictionaries][download]] the appropriate dictionaries and extract them into =~/Library/Spelling=.
+** Emacs server
+Run Emacs as a server. I chose to run it over TCP, because this lets me SSH forward the server to remote hosts. When I'm in a remote shell, I can then easily phone home via =emacsclient= to spawn new Tramp connections.
 #+begin_src emacs-lisp
-  (use-package ispell
+  (use-package server
+    :custom
+    (server-use-tcp t)
+    (server-port 1337)
     :config
-    (setq ispell-program-name "hunspell")
-    (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
-    (setq ispell-dictionary "en_US,nb_NO")
-    (ispell-set-spellchecker-params)
-    (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
+    (server-mode 1))
 #+end_src
 
-Flyspell is a built-in Emacs package that provides incremental as-you-write spell checking. Let's turn it on.
+* Vim keybindings
+First of all, let's enable the "Evil mode". As someone with a Vim background, this is more ergonomic for both my brain and my hands.
 #+begin_src emacs-lisp
-  (use-package flyspell
-    :hook
-    ((text-mode . flyspell-mode)
-     (prog-mode . flyspell-prog-mode)))
-#+end_src
-
-The default Flyspell interface and keybinding =C-c $= is not very ergonomic. Especially if you often have to add your own words to the personal dictionary. I'd rather use something based on =completing-read=, such that I can use e.g. Vertico for the correction interface.
-#+begin_src emacs-lisp
-  (use-package flyspell-correct
+  (use-package evil
     :ensure t
-    :after flyspell
-    :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+    :custom
+    (evil-respect-visual-line-mode t)
+    (evil-undo-system 'undo-redo)
+    (evil-want-C-i-jump nil)
+    (evil-want-C-u-scroll t)
+    (evil-want-integration t)
+    (evil-want-keybinding nil)
+    :config
+    (evil-mode 1)
+    (define-key evil-motion-state-map (kbd "SPC") nil)
+    (define-key evil-motion-state-map (kbd "RET") nil)
+    (define-key evil-motion-state-map (kbd "TAB") nil))
 #+end_src
 
-** Line wrapping
-Visual-line-mode is pretty useful for the average document, but it looks very ugly without "adaptive wrap" turned on. The only reason I don't turn it on in Text-mode directly is that it would then end up in Org-mode as well, and it conflicts with =org-indent-mode=.
+Evil Collection is exactly what is sounds like: It makes Evil work in nearly every corner of Emacs.
 #+begin_src emacs-lisp
-  (use-package adaptive-wrap
+    (use-package evil-collection
+      :ensure t
+      :after evil
+      :config
+      (evil-collection-init))
+#+end_src
+
+Let's improve some modes where Evil Collection is inadequate.
+#+begin_src emacs-lisp
+  (use-package evil-org
+    :ensure t
+    :after (evil org)
+    :hook (org-mode . evil-org-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package evil-org-agenda
+    :after evil-org
+    :config (evil-org-agenda-set-keys))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package evil-tex
     :ensure t
     :hook
-    (text-mode . visual-line-mode)
-    (markdown-mode . adaptive-wrap-prefix-mode)
-    (latex-mode . adaptive-wrap-prefix-mode))
+    (LaTeX-mode . evil-tex-mode))
 #+end_src
 
-** Org documents
+Emacs ports of some useful Vim plugins.
+#+begin_src emacs-lisp
+  (use-package evil-surround
+    :ensure t
+    :config
+    (global-evil-surround-mode 1))
+#+end_src
+
+* Writing prose
+** Org-mode notes
 Org-mode is my favorite task and knowledge management system.  It's no understatement that Org-mode is the main reason I'm using Emacs at all (otherwise I'd probably be using Vim).
 #+begin_src emacs-lisp
   (use-package org
@@ -279,7 +363,7 @@ Export to every format via Pandoc. I especially appreciate that I can generate D
     :ensure t) 
 #+end_src
 
-** MarkDown documents
+** MarkDown notes
 MarkDown is the lingua franca of mark-up languages, and its Emacs mode is best-in-class with the right switches toggled.
 #+begin_src emacs-lisp
   (use-package markdown-mode
@@ -340,6 +424,45 @@ Xenops-mode compiles TeX equations into SVG images for an in-buffer preview. Can
   ;;   :hook
   ;;   (org-mode . xenops-mode)
   ;;   (LaTeX-mode . xenops-mode)) 
+#+end_src
+
+** Spell checking
+Ispell is the traditional spell checker for Emacs. It supports many backends, but we here use the Hunspell backend since it (i) supports multi-language dictionary combinations, (ii) is supposed to be more accurate for many non-English languages, (iii) has become the de facto standard among other open-source apps (it is e.g. now the default spell checker in Firefox, LibreOffice, etc.). Note that on MacOS, you need to [[https://github.com/wooorm/dictionaries][download]] the appropriate dictionaries and extract them into =~/Library/Spelling=.
+#+begin_src emacs-lisp
+  (use-package ispell
+    :config
+    (setq ispell-program-name "hunspell")
+    (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
+    (setq ispell-dictionary "en_US,nb_NO")
+    (ispell-set-spellchecker-params)
+    (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
+#+end_src
+
+Flyspell is a built-in Emacs package that provides incremental as-you-write spell checking. Let's turn it on.
+#+begin_src emacs-lisp
+  (use-package flyspell
+    :hook
+    ((text-mode . flyspell-mode)
+     (prog-mode . flyspell-prog-mode)))
+#+end_src
+
+The default Flyspell interface and keybinding =C-c $= is not very ergonomic. Especially if you often have to add your own words to the personal dictionary. I'd rather use something based on =completing-read=, such that I can use e.g. Vertico for the correction interface.
+#+begin_src emacs-lisp
+  (use-package flyspell-correct
+    :ensure t
+    :after flyspell
+    :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+#+end_src
+
+** Line wrapping
+Visual-line-mode is pretty useful for the average document, but it looks very ugly without "adaptive wrap" turned on. The only reason I don't turn it on in Text-mode directly is that it would then end up in Org-mode as well, and it conflicts with =org-indent-mode=.
+#+begin_src emacs-lisp
+  (use-package adaptive-wrap
+    :ensure t
+    :hook
+    (text-mode . visual-line-mode)
+    (markdown-mode . adaptive-wrap-prefix-mode)
+    (latex-mode . adaptive-wrap-prefix-mode))
 #+end_src
 
 * Programming
@@ -425,7 +548,6 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
     (python-mode . flymake-ruff-load))
 #+end_src
 
-
 ** Julia
 #+begin_src emacs-lisp
   (use-package julia-mode
@@ -439,157 +561,6 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 #+end_src
 
 * TODO Refactor in progress
-** Sane defaults
-#+begin_src emacs-lisp
-  (use-package emacs
-    :custom
-    (auto-save-default nil)
-    (default-input-method 'TeX)
-    (default-transient-input-method 'TeX)
-    (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
-    (frame-title-format "GNU Emacs")
-    (fringes-outside-margins t)
-    (inhibit-startup-message t)
-    (initial-major-mode 'org-mode)
-    (initial-scratch-message "")
-    (line-spacing 0.15)
-    (make-backup-files nil)
-    (message-truncate-lines t)
-    (ring-bell-function 'ignore)
-    (sentence-end-double-space nil)
-    (tab-width 4)
-    (truncate-lines t)
-    (use-short-answers t)
-    (xterm-set-window-title t)
-    :custom-face
-    (default ((t (:family "JetBrains Mono NL" :height 140))))
-    :bind
-    ("C-\\" . activate-transient-input-method)
-    ("<f5>" . sort-lines)
-    :config
-    ;; Don't indicate long or wrapped lines.
-    (set-display-table-slot standard-display-table 'truncation ? )
-    (set-display-table-slot standard-display-table 'wrap ? )
-    ;; Turn on some useful default modes.
-    (global-auto-revert-mode 1)
-    (recentf-mode 1)
-    (savehist-mode 1)
-    ;; Disable the annoying default modes.
-    (blink-cursor-mode -1)
-    (menu-bar-mode -1)
-    (when (display-graphic-p)
-      (fringe-mode 1)
-      (tooltip-mode -1)
-      (tool-bar-mode -1)
-      (scroll-bar-mode -1)))
-#+end_src
-
-Run Emacs as a server. I chose to run it over TCP, because this lets me SSH forward the server to remote hosts. When I'm in a remote shell, I can then easily phone home via =emacsclient= to spawn new Tramp connections.
-#+begin_src emacs-lisp
-  (use-package server
-    :custom
-    (server-use-tcp t)
-    (server-port 1337)
-    :config
-    (server-mode 1))
-#+end_src
-
-Consider fixing menu bar...
-#+begin_src emacs-lisp
-  (defun contextual-menubar (&optional frame)
-    "Display the menubar in FRAME (default: selected frame) if on a
-      graphical display, but hide it if in terminal."
-    (interactive)
-    (set-frame-parameter frame 'menu-bar-lines (if (display-graphic-p frame) 1 0)))
-
-  (add-hook 'after-make-frame-functions 'contextual-menubar)
-#+end_src
-
-** Vim keybindings
-First of all, let's enable the "Evil mode". As someone with a Vim background, this is more ergonomic for both my brain and my hands.
-#+begin_src emacs-lisp
-  (use-package evil
-    :ensure t
-    :custom
-    (evil-respect-visual-line-mode t)
-    (evil-undo-system 'undo-redo)
-    (evil-want-C-i-jump nil)
-    (evil-want-C-u-scroll t)
-    (evil-want-integration t)
-    (evil-want-keybinding nil)
-    :config
-    (evil-mode 1)
-    (define-key evil-motion-state-map (kbd "SPC") nil)
-    (define-key evil-motion-state-map (kbd "RET") nil)
-    (define-key evil-motion-state-map (kbd "TAB") nil))
-#+end_src
-
-Note that Ex mode can be a bit dangerous in Emacs. I've burned myself several times by running commands like e.g. ":e!" and getting a different behavior from Vim, which in some cases can destroy data. Anyway, Ex mode in Emacs is not as powerful as in Vim, whereas the natural Emacs analogue would be M-x instead. Let's therefore remap colon to M-x.
-#+begin_src emacs-lisp
-  ;;(evil-define-key* 'motion 'global ":" #'execute-extended-command)
-#+end_src
-
-Evil Collection is exactly what is sounds like: It makes Evil work in nearly every corner of Emacs.
-#+begin_src emacs-lisp
-    (use-package evil-collection
-      :ensure t
-      :after evil
-      :config
-      (evil-collection-init))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package evil-org
-    :ensure t
-    :after (evil org)
-    :hook (org-mode . evil-org-mode))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package evil-org-agenda
-    :after evil-org
-    :config (evil-org-agenda-set-keys))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package evil-surround
-    :ensure t
-    :config
-    (global-evil-surround-mode 1))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package evil-terminal-cursor-changer
-    :ensure t
-    :after evil
-    :config
-    (evil-terminal-cursor-changer-activate))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package evil-tex
-    :ensure t
-    :hook
-    (LaTeX-mode . evil-tex-mode))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package general
-    :ensure t
-    :after evil
-    :config
-    (general-evil-setup t)
-    (general-override-mode 1)
-    (general-create-definer gmap
-      :keymaps 'override
-      :states '(motion normal visual)
-      :prefix "SPC")
-    (general-create-definer lmap
-      :keymaps 'override
-      :states '(motion normal visual)
-      :prefix ","))
-#+end_src
-
 ** Functions
 #+begin_src emacs-lisp
   (defun jabirali/science-definition-lookup ()
@@ -849,16 +820,31 @@ Evil Collection is exactly what is sounds like: It makes Evil work in nearly eve
 
 ** Global keybindings
 #+begin_src emacs-lisp
+  (use-package general
+    :ensure t
+    :after evil
+    :config
+    (general-evil-setup t)
+    (general-override-mode 1)
+    (general-create-definer gmap
+      :keymaps 'override
+      :states '(motion normal visual)
+      :prefix "SPC")
+    (general-create-definer lmap
+      :keymaps 'override
+      :states '(motion normal visual)
+      :prefix ","))
+#+end_src
+
+#+begin_src emacs-lisp
   (mmap                                           ; Motion map
     "^" 'dired-jump) 
 #+end_src
-
 
 #+begin_src emacs-lisp
   (vmap                                           ; Visual map
     "ii" 'er/expand-region) 
 #+end_src
-
 
 #+begin_src emacs-lisp
   (gmap                                           ; Space menu

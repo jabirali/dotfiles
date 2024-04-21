@@ -6,6 +6,48 @@
   :config
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
+(use-package emacs
+  :custom
+  (auto-save-default nil)
+  (default-input-method 'TeX)
+  (default-transient-input-method 'TeX)
+  (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
+  (frame-title-format "GNU Emacs")
+  (fringes-outside-margins t)
+  (inhibit-startup-message t)
+  (initial-major-mode 'org-mode)
+  (initial-scratch-message "")
+  (line-spacing 0.15)
+  (make-backup-files nil)
+  (message-truncate-lines t)
+  (ring-bell-function 'ignore)
+  (sentence-end-double-space nil)
+  (tab-width 4)
+  (truncate-lines t)
+  (use-short-answers t)
+  (xterm-set-window-title t)
+  :custom-face
+  (default ((t (:family "JetBrains Mono NL" :height 140))))
+  :bind
+  ("C-\\" . activate-transient-input-method)
+  ("<f5>" . sort-lines)
+  :config
+  ;; Don't indicate long or wrapped lines.
+  (set-display-table-slot standard-display-table 'truncation ? )
+  (set-display-table-slot standard-display-table 'wrap ? )
+  ;; Turn on some useful default modes.
+  (global-auto-revert-mode 1)
+  (recentf-mode 1)
+  (savehist-mode 1)
+  ;; Disable the annoying default modes.
+  (blink-cursor-mode -1)
+  (menu-bar-mode -1)
+  (when (display-graphic-p)
+    (fringe-mode 1)
+    (tooltip-mode -1)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)))
+
 (use-package exec-path-from-shell
   :config
   (exec-path-from-shell-initialize))
@@ -29,6 +71,12 @@
 ;;   :config
 ;;   (xclip-mode 1))
 
+;; (use-package evil-terminal-cursor-changer
+;;   :ensure t
+;;   :after evil
+;;   :config
+;;   (evil-terminal-cursor-changer-activate))
+
 (use-package ultra-scroll-mac
   :ensure t
   :if (eq window-system 'mac)
@@ -46,30 +94,52 @@
 (define-key key-translation-map (kbd "§") (kbd "`"))
 (define-key key-translation-map (kbd "±") (kbd "~"))
 
-(use-package ispell
+(use-package server
+  :custom
+  (server-use-tcp t)
+  (server-port 1337)
   :config
-  (setq ispell-program-name "hunspell")
-  (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
-  (setq ispell-dictionary "en_US,nb_NO")
-  (ispell-set-spellchecker-params)
-  (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
+  (server-mode 1))
 
-(use-package flyspell
-  :hook
-  ((text-mode . flyspell-mode)
-   (prog-mode . flyspell-prog-mode)))
-
-(use-package flyspell-correct
+(use-package evil
   :ensure t
-  :after flyspell
-  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+  :custom
+  (evil-respect-visual-line-mode t)
+  (evil-undo-system 'undo-redo)
+  (evil-want-C-i-jump nil)
+  (evil-want-C-u-scroll t)
+  (evil-want-integration t)
+  (evil-want-keybinding nil)
+  :config
+  (evil-mode 1)
+  (define-key evil-motion-state-map (kbd "SPC") nil)
+  (define-key evil-motion-state-map (kbd "RET") nil)
+  (define-key evil-motion-state-map (kbd "TAB") nil))
 
-(use-package adaptive-wrap
+(use-package evil-collection
+  :ensure t
+  :after evil
+  :config
+  (evil-collection-init))
+
+(use-package evil-org
+  :ensure t
+  :after (evil org)
+  :hook (org-mode . evil-org-mode))
+
+(use-package evil-org-agenda
+  :after evil-org
+  :config (evil-org-agenda-set-keys))
+
+(use-package evil-tex
   :ensure t
   :hook
-  (text-mode . visual-line-mode)
-  (markdown-mode . adaptive-wrap-prefix-mode)
-  (latex-mode . adaptive-wrap-prefix-mode))
+  (LaTeX-mode . evil-tex-mode))
+
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
 
 (use-package org
   :custom
@@ -193,6 +263,31 @@
 ;;   (org-mode . xenops-mode)
 ;;   (LaTeX-mode . xenops-mode))
 
+(use-package ispell
+  :config
+  (setq ispell-program-name "hunspell")
+  (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
+  (setq ispell-dictionary "en_US,nb_NO")
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
+
+(use-package flyspell
+  :hook
+  ((text-mode . flyspell-mode)
+   (prog-mode . flyspell-prog-mode)))
+
+(use-package flyspell-correct
+  :ensure t
+  :after flyspell
+  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+
+(use-package adaptive-wrap
+  :ensure t
+  :hook
+  (text-mode . visual-line-mode)
+  (markdown-mode . adaptive-wrap-prefix-mode)
+  (latex-mode . adaptive-wrap-prefix-mode))
+
 (use-package eglot
   :custom
   (eldoc-echo-area-prefer-doc-buffer t)
@@ -257,126 +352,6 @@
 
 (use-package matlab
   :ensure matlab-mode)
-
-(use-package emacs
-  :custom
-  (auto-save-default nil)
-  (default-input-method 'TeX)
-  (default-transient-input-method 'TeX)
-  (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
-  (frame-title-format "GNU Emacs")
-  (fringes-outside-margins t)
-  (inhibit-startup-message t)
-  (initial-major-mode 'org-mode)
-  (initial-scratch-message "")
-  (line-spacing 0.15)
-  (make-backup-files nil)
-  (message-truncate-lines t)
-  (ring-bell-function 'ignore)
-  (sentence-end-double-space nil)
-  (tab-width 4)
-  (truncate-lines t)
-  (use-short-answers t)
-  (xterm-set-window-title t)
-  :custom-face
-  (default ((t (:family "JetBrains Mono NL" :height 140))))
-  :bind
-  ("C-\\" . activate-transient-input-method)
-  ("<f5>" . sort-lines)
-  :config
-  ;; Don't indicate long or wrapped lines.
-  (set-display-table-slot standard-display-table 'truncation ? )
-  (set-display-table-slot standard-display-table 'wrap ? )
-  ;; Turn on some useful default modes.
-  (global-auto-revert-mode 1)
-  (recentf-mode 1)
-  (savehist-mode 1)
-  ;; Disable the annoying default modes.
-  (blink-cursor-mode -1)
-  (menu-bar-mode -1)
-  (when (display-graphic-p)
-    (fringe-mode 1)
-    (tooltip-mode -1)
-    (tool-bar-mode -1)
-    (scroll-bar-mode -1)))
-
-(use-package server
-  :custom
-  (server-use-tcp t)
-  (server-port 1337)
-  :config
-  (server-mode 1))
-
-(defun contextual-menubar (&optional frame)
-  "Display the menubar in FRAME (default: selected frame) if on a
-    graphical display, but hide it if in terminal."
-  (interactive)
-  (set-frame-parameter frame 'menu-bar-lines (if (display-graphic-p frame) 1 0)))
-
-(add-hook 'after-make-frame-functions 'contextual-menubar)
-
-(use-package evil
-  :ensure t
-  :custom
-  (evil-respect-visual-line-mode t)
-  (evil-undo-system 'undo-redo)
-  (evil-want-C-i-jump nil)
-  (evil-want-C-u-scroll t)
-  (evil-want-integration t)
-  (evil-want-keybinding nil)
-  :config
-  (evil-mode 1)
-  (define-key evil-motion-state-map (kbd "SPC") nil)
-  (define-key evil-motion-state-map (kbd "RET") nil)
-  (define-key evil-motion-state-map (kbd "TAB") nil))
-
-;;(evil-define-key* 'motion 'global ":" #'execute-extended-command)
-
-(use-package evil-collection
-  :ensure t
-  :after evil
-  :config
-  (evil-collection-init))
-
-(use-package evil-org
-  :ensure t
-  :after (evil org)
-  :hook (org-mode . evil-org-mode))
-
-(use-package evil-org-agenda
-  :after evil-org
-  :config (evil-org-agenda-set-keys))
-
-(use-package evil-surround
-  :ensure t
-  :config
-  (global-evil-surround-mode 1))
-
-(use-package evil-terminal-cursor-changer
-  :ensure t
-  :after evil
-  :config
-  (evil-terminal-cursor-changer-activate))
-
-(use-package evil-tex
-  :ensure t
-  :hook
-  (LaTeX-mode . evil-tex-mode))
-
-(use-package general
-  :ensure t
-  :after evil
-  :config
-  (general-evil-setup t)
-  (general-override-mode 1)
-  (general-create-definer gmap
-    :keymaps 'override
-    :states '(motion normal visual)
-    :prefix "SPC")
-  (general-create-definer lmap
-    :keymaps 'override
-    :states '(motion normal visual)
-    :prefix ","))
 
 (defun jabirali/science-definition-lookup ()
   "Look up a scientific definition using a ChatGPT wrapper."
@@ -574,6 +549,21 @@
   :ensure t
   :config
   (yas-global-mode 1))
+
+(use-package general
+  :ensure t
+  :after evil
+  :config
+  (general-evil-setup t)
+  (general-override-mode 1)
+  (general-create-definer gmap
+    :keymaps 'override
+    :states '(motion normal visual)
+    :prefix "SPC")
+  (general-create-definer lmap
+    :keymaps 'override
+    :states '(motion normal visual)
+    :prefix ","))
 
 (mmap                                           ; Motion map
   "^" 'dired-jump)
