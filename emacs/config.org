@@ -4,6 +4,9 @@
 
 This is my literate configuration file for Emacs. Most of my configuration assumes that I'm using Emacs v29+ on MacOS.
 
+* Why?
+I find m
+
 * Install
 ** Mac port
 The "Mac port" provides the best integration with the MacOS platform, including full Retina (hiDPI) support and better trackpad integration.
@@ -30,7 +33,7 @@ The "NextStep port" is the official GNU Emacs release. I prefer the patched "Ema
 On older versions of MacOS (Intel MacBooks), the best option is to fetch [[https://emacsformacosx.com/][the prebuilt version from emacsformacosx.com]].
 
 ** Packages
-The =package.el= package manager and =use-package= configuration macro both come with Emacs. We just need to flip some switches to get native compilation and community repos working as expected.
+Before we install anything, let's enable the community repositories and turn on native compilation of packages.
 #+begin_src emacs-lisp
   (use-package use-package
     :custom
@@ -40,8 +43,8 @@ The =package.el= package manager and =use-package= configuration macro both come
     :config
     (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 #+end_src
+
 * Basics
-  
 ** Recent history
 Emacs should remember where I've been.
 #+begin_src emacs-lisp
@@ -207,6 +210,35 @@ TODO: Update this after v30.
   ;;   (global-treesit-auto-mode))
 #+end_src
 
+
+* Programming
+** Python
+#+begin_src emacs-lisp
+  (use-package python
+    :custom
+    (python-indent-guess-indent-offset t)  
+    (python-indent-guess-indent-offset-verbose nil))
+#+end_src
+
+Jupyter-mode replaces the "Inferior Python" functionality in the Emacs Python-mode (=C-c C-p=). Notably, Jupyter-mode captures Matplotlib plots and displays them in Emacs buffers, which prevents MacOS windows from popping up all over the place. With my setup, pressing =C-c C-c= once in a Python buffer starts the right Jupyter kernel, and pressing =C-c C-c= again afterwards evaluates the current line or region (this keybinding is provided by Jupyter-mode itself and shadows my binding).
+#+begin_src emacs-lisp
+  (use-package jupyter
+    :ensure t
+    :config
+    (defun jabirali/jupyter-python ()
+      (interactive)
+      (jupyter-run-repl "python3" "py" t))
+    :bind
+    (:map python-mode-map
+          ("C-c C-c" . jabirali/jupyter-python)))
+#+end_src
+
+Ruff is a nice Python linter. Let's integrate it into Flymake.
+#+begin_src emacs-lisp
+  (use-package flymake-ruff
+    :ensure t
+    :hook (python-mode . flymake-ruff-load))
+#+end_src
 
 * To clean
 ** System integration
@@ -409,22 +441,6 @@ Eglot-Booster can help speed up Eglot by using an intermediary process between E
                   '(("Python" (isort) (ruff) (black)))))
 #+end_src
 
-*** Python code
-Note: This doesn't currently play well with Tramp. If you have IPython installed locally, and try to run =C-c C-p= while editing a remote Python buffer, it might fail to start IPython remotely.
-#+begin_src emacs-lisp
-  (use-package python
-    :config
-    (when (executable-find "ipython")
-      (setq-local python-shell-interpreter "ipython")
-      (setq-local python-shell-prompt-detect-failure-warning nil)))
-#+end_src
-
-Ruff is a nice Python linter. Let's integrate it into Flymake.
-#+begin_src emacs-lisp
-  (use-package flymake-ruff
-    :ensure t
-    :hook (python-mode . flymake-ruff-load))
-#+end_src
 
 ** Writing
 *** Org documents

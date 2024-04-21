@@ -115,6 +115,25 @@
 ;;   (treesit-auto-add-to-auto-mode-alist 'all)
 ;;   (global-treesit-auto-mode))
 
+(use-package python
+  :custom
+  (python-indent-guess-indent-offset t)  
+  (python-indent-guess-indent-offset-verbose nil))
+
+(use-package jupyter
+  :ensure t
+  :config
+  (defun jabirali/jupyter-python ()
+    (interactive)
+    (jupyter-run-repl "python3" "py" t))
+  :bind
+  (:map python-mode-map
+        ("C-c C-c" . jabirali/jupyter-python)))
+
+(use-package flymake-ruff
+  :ensure t
+  :hook (python-mode . flymake-ruff-load))
+
 (use-package ultra-scroll-mac
   :ensure t
   :if (eq window-system 'mac)
@@ -257,16 +276,6 @@
   :config
   (setq-default format-all-formatters
                 '(("Python" (isort) (ruff) (black)))))
-
-(use-package python
-  :config
-  (when (executable-find "ipython")
-    (setq-local python-shell-interpreter "ipython")
-    (setq-local python-shell-prompt-detect-failure-warning nil)))
-
-(use-package flymake-ruff
-  :ensure t
-  :hook (python-mode . flymake-ruff-load))
 
 (use-package org
   :custom
