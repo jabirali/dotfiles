@@ -2,7 +2,32 @@
 #+author: Jabir Ali Ouassou
 #+PROPERTY: header-args:emacs-lisp :tangle "init.el"
 
-This is my personal configuration file for Emacs. This configuration assumes that I'm using Emacs v30+ on MacOS. It is formatted as an Org-mode "literate configuration file", which means that each Emacs Lisp block below is autoexported to an =init.el= file when the file is saved.
+This is my literate configuration file for Emacs. Most of my configuration assumes that I'm using Emacs v29+ on MacOS.
+
+* Install
+** Mac port
+The "Mac port" provides the best integration with the MacOS platform, including full Retina (hiDPI) support and better trackpad integration.
+
+To build it from source (to get native compilation and a nicer icon):
+#+begin_src sh
+  brew tap railwaycat/emacsmacport
+  brew install emacs-mac --with-native-compilation --with-emacs-big-sur-icon --with-natural-title-bar
+#+end_src
+
+To install the pre-built version (less chance of failure and bugs):
+#+begin_src sh
+  brew tap railwaycat/emacsmacport
+  brew install --cask emacs-mac
+#+end_src
+
+** NS port
+The "NextStep port" is the official GNU Emacs release. I prefer the patched "Emacs Plus" version, which can be fetched via HomeBrew:
+#+begin_src sh
+  brew tap d12frosted/emacs-plus
+  brew install emacs-plus@30 --with-native-comp --with-nobu417-big-sur-icon 
+#+end_src
+
+On older versions of MacOS (Intel MacBooks), the best option is to fetch [[https://emacsformacosx.com/][the prebuilt version from emacsformacosx.com]].
 
 * Basics
 ** Package management
@@ -54,18 +79,18 @@ Sometimes, I need to type literal UTF-8 characters. We can do this using the =C-
 
 Finally, this package is specifically meant for the Kitty terminal. It ensures that e.g. super keybindings "just work" in the terminal, which evens the score a bit between the GUI and TUI versions of Emacs.
 #+begin_src emacs-lisp
-  (use-package kkp
-    :ensure t
-    :custom
-    (kkp-super-modifier 'meta)
-    :config
-    (global-kkp-mode +1))
+  ;;(use-package kkp
+  ;;  :ensure t
+  ;;  :custom
+  ;;  (kkp-super-modifier 'meta)
+  ;;  :config
+  ;;  (global-kkp-mode +1))
 #+end_src
 
 ** Mouse support
 Most things related to mouse support "just works" when Emacs is running as a GUI. The main thing I miss is smooth scrolling, especially when reading code using a Touchpad or Apple Mouse. This fixes that.
 #+begin_src emacs-lisp
-  (pixel-scroll-precision-mode 1)
+  ; (pixel-scroll-precision-mode 1)
 #+end_src
 
 Some more work is needed to get the mouse working nicely in a terminal.
@@ -84,6 +109,7 @@ Finally, both in the GUI and in the terminal, it can be quite annoying when the 
 ** Frame parameters
 #+begin_src emacs-lisp
   (set-frame-parameter nil 'internal-border-width 0)
+  (setopt frame-resize-pixelwise t)
 #+end_src
 
 ** Sane defaults
@@ -101,22 +127,23 @@ Let's now configure some core Emacs features.
     (initial-scratch-message "")
     (line-spacing 0.15)
     (make-backup-files nil)
+    (message-truncate-lines t)
     (ring-bell-function 'ignore)
     (sentence-end-double-space nil)
-    (frame-title-format '((:eval (if-let
-                                     (remote (file-remote-p default-directory 'host))
-                                     (format "%s: " (downcase remote))))
-                          (:eval (if-let
-                                     ((project (project-current)))
-                                     (format "%s/" (downcase (project-name project)))))
+    ;; (frame-title-format '((:eval (if-let
+    ;;                                  (remote (file-remote-p default-directory 'host))
+    ;;                                  (format "%s: " (downcase remote))))
+    ;;                       (:eval (if-let
+    ;;                                  ((project (project-current)))
+    ;;                                  (format "%s/" (downcase (project-name project)))))
 
-                          "%b"))
+    ;;                       "%b"))
   (tab-width 4)
   (truncate-lines t)
   (use-short-answers t)
   (xterm-set-window-title t)
   :custom-face
-  (default ((t (:family "JetBrains Mono NL" :height 150))))
+  (default ((t (:family "JetBrains Mono NL" :height 140))))
   :bind
   ("C-\\" . activate-transient-input-method)
   ("<f5>" . sort-lines)
@@ -158,10 +185,15 @@ Consider fixing menu bar...
 #+end_src
 
 On macOS, there are often issues related to =$PATH= when starting Emacs as a GUI program. This package helps us alleviate that.
+
+TODO: Update this after v30.
+#+begin_src
+  (package-vc-install "https://github.com/purcell/exec-path-from-shell")
+#+end_src
 #+begin_src emacs-lisp
   (use-package exec-path-from-shell
-    :vc (:url "https://github.com/purcell/exec-path-from-shell" :rev "main")
-    :config (exec-path-from-shell-initialize))
+    :config
+    (exec-path-from-shell-initialize))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -174,12 +206,34 @@ On macOS, there are often issues related to =$PATH= when starting Emacs as a GUI
   ;;   (global-treesit-auto-mode))
 #+end_src
 
-* Vim keybindings
+
+* To clean
+** System integration
+*** Trackpad support
+This code provides true smooth scrolling using a trackpad or high-precision mouse on the Emacs Mac port.
+
+Install it (on Emacs v29, until =:vc= keyword in Emacs v30):
+#+begin_src
+ (package-vc-install "https://github.com/jdtsmith/ultra-scroll-mac.git")
+#+end_src
+#+begin_src emacs-lisp
+  (use-package ultra-scroll-mac
+    :ensure t
+    :if (eq window-system 'mac)
+    :init
+    (setq scroll-conservatively 101)
+    (setq scroll-margin 0) 
+    :config
+    (ultra-scroll-mac-mode 1))
+#+end_src
+
+** Vim keybindings
 First of all, let's enable the "Evil mode". As someone with a Vim background, this is more ergonomic for both my brain and my hands.
 #+begin_src emacs-lisp
   (use-package evil
     :ensure t
     :custom
+    (evil-respect-visual-line-mode t)
     (evil-undo-system 'undo-redo)
     (evil-want-C-i-jump nil)
     (evil-want-C-u-scroll t)
@@ -194,7 +248,7 @@ First of all, let's enable the "Evil mode". As someone with a Vim background, th
 
 Note that Ex mode can be a bit dangerous in Emacs. I've burned myself several times by running commands like e.g. ":e!" and getting a different behavior from Vim, which in some cases can destroy data. Anyway, Ex mode in Emacs is not as powerful as in Vim, whereas the natural Emacs analogue would be M-x instead. Let's therefore remap colon to M-x.
 #+begin_src emacs-lisp
-  (evil-define-key* 'motion 'global ":" #'execute-extended-command)
+  ;;(evil-define-key* 'motion 'global ":" #'execute-extended-command)
 #+end_src
 
 Evil Collection is exactly what is sounds like: It makes Evil work in nearly every corner of Emacs.
@@ -258,7 +312,7 @@ Evil Collection is exactly what is sounds like: It makes Evil work in nearly eve
       :prefix ","))
 #+end_src
 
-* Functions
+** Functions
 #+begin_src emacs-lisp
   (defun jabirali/science-definition-lookup ()
     "Look up a scientific definition using a ChatGPT wrapper."
@@ -320,9 +374,9 @@ Evil Collection is exactly what is sounds like: It makes Evil work in nearly eve
     (start-process "zotero_open" nil "open" (concat "zotero:" link)))
 #+end_src
 
-* Interface
-* Coding
-** Language servers
+** Interface
+** Coding
+*** Language servers
 Eglot has been built into Emacs since v29. I've tried the alternatives Lsp-mode and Lsp-bridge, but so far Eglot is the solution that has been most "plug and play" and least buggy. It also seems to just work over Tramp connections if you install LSP servers remotely.
 #+begin_src emacs-lisp
   (use-package eglot
@@ -343,7 +397,7 @@ Eglot-Booster can help speed up Eglot by using an intermediary process between E
   ;;   :config (eglot-booster-mode))
 #+end_src
    
-** Formatters
+*** Formatters
 #+begin_src emacs-lisp
   (use-package format-all
     :ensure t
@@ -354,7 +408,7 @@ Eglot-Booster can help speed up Eglot by using an intermediary process between E
                   '(("Python" (isort) (ruff) (black)))))
 #+end_src
 
-** Python code
+*** Python code
 Note: This doesn't currently play well with Tramp. If you have IPython installed locally, and try to run =C-c C-p= while editing a remote Python buffer, it might fail to start IPython remotely.
 #+begin_src emacs-lisp
   (use-package python
@@ -371,8 +425,8 @@ Ruff is a nice Python linter. Let's integrate it into Flymake.
     :hook (python-mode . flymake-ruff-load))
 #+end_src
 
-* Writing
-** Org documents
+** Writing
+*** Org documents
 One of the main reasons I'm using Emacs at all. If it wasn't for Org, I'd probably still be using Vim as my main editor.
 #+begin_src emacs-lisp
   (use-package org
@@ -464,7 +518,7 @@ Org Export to every format via Pandoc. I especially appreciate that I can genera
     :ensure t) 
 #+end_src
 
-** LaTeX documents
+*** LaTeX documents
 First, let's install AUCTeX and set it up to sync with Skim.
 #+begin_src emacs-lisp
   (use-package tex
@@ -503,7 +557,7 @@ I'll eventually learn how to use this properly. Let's keep it around for now.
     (TeX-mode . turn-on-reftex)) 
 #+end_src
 
-** MarkDown documents
+*** MarkDown documents
 The Lingua Franca of modern mark-up languages.
 #+begin_src emacs-lisp
   (use-package markdown-mode
@@ -516,7 +570,7 @@ The Lingua Franca of modern mark-up languages.
     (markdown-mode . cdlatex-mode)) 
 #+end_src
 
-** Spell checking
+*** Spell checking
 Flyspell is a built-in spellchecker in Emacs. By default, it uses Hunspell on MacOS (i.e. the same backend as Firefox and LibreOffice), and searches for dictionaries in =~/Library/Spelling/=. Remember to download the dictionaries you need to that folder...
 
 Make Emacs use Hunspell even if Aspell or Ispell is accidentally installed. Moreover, combine a Norwegian and US English dictionary, since I tend to mix the two quite liberally in my notes and lectures.
@@ -524,11 +578,11 @@ The English dictionary is the [[https://github.com/emareg/acamedic][Acamedic]] d
 #+begin_src emacs-lisp
   (use-package ispell
     :config
-    (setopt ispell-program-name "hunspell")
-    (setopt ispell-personal-dictionary (concat user-emacs-directory "ispell"))
-    (setopt ispell-dictionary "acamedic,bokmål")
+    (setq ispell-program-name "hunspell")
+    (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
+    (setq ispell-dictionary "acamedic,bokmaal")
     (ispell-set-spellchecker-params)
-    (ispell-hunspell-add-multi-dic "acamedic,bokmål"))
+    (ispell-hunspell-add-multi-dic "acamedic,bokmaal"))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -546,7 +600,7 @@ The default Flyspell interface and keybinding =C-c $= is not very ergonomic to u
     :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
 #+end_src
 
-** Text wrapping
+*** Text wrapping
 I don't like the behavior 
 #+begin_src emacs-lisp
   (use-package adaptive-wrap
@@ -557,7 +611,7 @@ I don't like the behavior
     (latex-mode . adaptive-wrap-prefix-mode))
 #+end_src
 
-* Internal packages
+** Internal packages
 #+begin_src emacs-lisp
   (use-package tab-bar
     :custom
@@ -575,7 +629,7 @@ I don't like the behavior
     (tab-bar-history-mode 1))
 #+end_src
 
-* External packages
+** External packages
 #+begin_src emacs-lisp
   (use-package persistent-scratch
     :after (org evil)
@@ -622,17 +676,17 @@ I don't like the behavior
 #+end_src
 
 #+begin_src emacs-lisp
-  (use-package copilot
-    :vc (:url "https://github.com/copilot-emacs/copilot.el" :rev "main")
-    :custom
-    (copilot-idle-delay 1)
-    ;; :hook
-    ;; (prog-mode . copilot-mode)
-    :bind
-    (:map copilot-mode-map
-          ("M-RET" . copilot-accept-completion)
-          ("M-n"   . copilot-next-completion)
-          ("M-p"   . copilot-previous-completion)))
+  ;; (use-package copilot
+  ;;   :vc (:url "https://github.com/copilot-emacs/copilot.el" :rev "main")
+  ;;   :custom
+  ;;   (copilot-idle-delay 1)
+  ;;   ;; :hook
+  ;;   ;; (prog-mode . copilot-mode)
+  ;;   :bind
+  ;;   (:map copilot-mode-map
+  ;;         ("M-RET" . copilot-accept-completion)
+  ;;         ("M-n"   . copilot-next-completion)
+  ;;         ("M-p"   . copilot-previous-completion)))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -865,7 +919,7 @@ I don't like the behavior
     (yas-global-mode 1)) 
 #+end_src
 
-* Global keybindings
+** Global keybindings
 #+begin_src emacs-lisp
   (mmap                                           ; Motion map
     "^" 'dired-jump) 
@@ -978,8 +1032,8 @@ I don't like the behavior
     "~"  (general-key "C-c ~" ))
 #+end_src
 
-* Early init
-** Custom file
+** Early init
+*** Custom file
 By default, Emacs litters my =init.el= with its =customize= cache. That's annoying for several reasons:
 1. If I'm writing my =init.el= by hand, having autogenerated code appended makes it messy;
 2. If I'm autogenerating my =init.el= from an Org file, I'll continuously lose that cache;
@@ -991,7 +1045,7 @@ Luckily, this part is not so difficult to fix:
   (ignore-errors (load custom-file))
 #+end_src
 
-** Frame settings
+*** Frame settings
 Let's give our windows a bit of breathing room. Looks less stressful.
 #+begin_src emacs-lisp :tangle "early-init.el"
   (setq-default left-margin-width 2 right-margin-width 2)
@@ -999,16 +1053,22 @@ Let's give our windows a bit of breathing room. Looks less stressful.
 
 Natural title bar.
 #+begin_src emacs-lisp :tangle "early-init.el"
-  (setopt default-frame-alist '((undecorated . t)))
+  ;; (add-to-list 'default-frame-alist '(undecorated-round . t))
   ;; (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
   ;; (add-to-list 'default-frame-alist '(ns-appearance . light))
 #+end_src
 
-** Performance boost
+*** Performance boost
 These settings seem to make Emacs a bit snappier. But I haven't really benchmarked them, so it could be placebo.
 #+begin_src emacs-lisp :tangle "early-init.el"
   (setq gc-cons-threshold (* 128 1024 1024)
         read-process-output-max (* 1024 1024))
+#+end_src
+
+** Inbox
+Disable italics.
+#+begin_src emacs-lisp
+  (set-face-italic-p 'italic nil)
 #+end_src
 
 * Tangle

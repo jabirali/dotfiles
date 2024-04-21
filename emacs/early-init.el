@@ -3,7 +3,7 @@
 
 (setq-default left-margin-width 2 right-margin-width 2)
 
-(setopt default-frame-alist '((undecorated . t)))
+;; (add-to-list 'default-frame-alist '(undecorated-round . t))
 ;; (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 ;; (add-to-list 'default-frame-alist '(ns-appearance . light))
 

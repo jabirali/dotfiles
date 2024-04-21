@@ -22,14 +22,14 @@
 (setq default-input-method 'TeX)
 (setq default-transient-input-method 'TeX)
 
-(use-package kkp
-  :ensure t
-  :custom
-  (kkp-super-modifier 'meta)
-  :config
-  (global-kkp-mode +1))
+;;(use-package kkp
+;;  :ensure t
+;;  :custom
+;;  (kkp-super-modifier 'meta)
+;;  :config
+;;  (global-kkp-mode +1))
 
-(pixel-scroll-precision-mode 1)
+; (pixel-scroll-precision-mode 1)
 
 (setopt mouse-wheel-follow-mouse t)
 (setopt mouse-wheel-progressive-speed nil)
@@ -39,6 +39,7 @@
 (setopt mouse-highlight nil)
 
 (set-frame-parameter nil 'internal-border-width 0)
+(setopt frame-resize-pixelwise t)
 
 (use-package emacs
   :hook
@@ -52,22 +53,23 @@
   (initial-scratch-message "")
   (line-spacing 0.15)
   (make-backup-files nil)
+  (message-truncate-lines t)
   (ring-bell-function 'ignore)
   (sentence-end-double-space nil)
-  (frame-title-format '((:eval (if-let
-                                   (remote (file-remote-p default-directory 'host))
-                                   (format "%s: " (downcase remote))))
-                        (:eval (if-let
-                                   ((project (project-current)))
-                                   (format "%s/" (downcase (project-name project)))))
+  ;; (frame-title-format '((:eval (if-let
+  ;;                                  (remote (file-remote-p default-directory 'host))
+  ;;                                  (format "%s: " (downcase remote))))
+  ;;                       (:eval (if-let
+  ;;                                  ((project (project-current)))
+  ;;                                  (format "%s/" (downcase (project-name project)))))
 
-                        "%b"))
+  ;;                       "%b"))
 (tab-width 4)
 (truncate-lines t)
 (use-short-answers t)
 (xterm-set-window-title t)
 :custom-face
-(default ((t (:family "JetBrains Mono NL" :height 150))))
+(default ((t (:family "JetBrains Mono NL" :height 140))))
 :bind
 ("C-\\" . activate-transient-input-method)
 ("<f5>" . sort-lines)
@@ -102,8 +104,8 @@
 (add-hook 'after-make-frame-functions 'contextual-menubar)
 
 (use-package exec-path-from-shell
-  :vc (:url "https://github.com/purcell/exec-path-from-shell" :rev "main")
-  :config (exec-path-from-shell-initialize))
+  :config
+  (exec-path-from-shell-initialize))
 
 ;; (use-package treesit-auto
 ;;   :ensure t
@@ -113,9 +115,19 @@
 ;;   (treesit-auto-add-to-auto-mode-alist 'all)
 ;;   (global-treesit-auto-mode))
 
+(use-package ultra-scroll-mac
+  :ensure t
+  :if (eq window-system 'mac)
+  :init
+  (setq scroll-conservatively 101)
+  (setq scroll-margin 0) 
+  :config
+  (ultra-scroll-mac-mode 1))
+
 (use-package evil
   :ensure t
   :custom
+  (evil-respect-visual-line-mode t)
   (evil-undo-system 'undo-redo)
   (evil-want-C-i-jump nil)
   (evil-want-C-u-scroll t)
@@ -127,7 +139,7 @@
   (define-key evil-motion-state-map (kbd "RET") nil)
   (define-key evil-motion-state-map (kbd "TAB") nil))
 
-(evil-define-key* 'motion 'global ":" #'execute-extended-command)
+;;(evil-define-key* 'motion 'global ":" #'execute-extended-command)
 
 (use-package evil-collection
   :ensure t
@@ -372,11 +384,11 @@
 
 (use-package ispell
   :config
-  (setopt ispell-program-name "hunspell")
-  (setopt ispell-personal-dictionary (concat user-emacs-directory "ispell"))
-  (setopt ispell-dictionary "acamedic,bokmål")
+  (setq ispell-program-name "hunspell")
+  (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
+  (setq ispell-dictionary "acamedic,bokmaal")
   (ispell-set-spellchecker-params)
-  (ispell-hunspell-add-multi-dic "acamedic,bokmål"))
+  (ispell-hunspell-add-multi-dic "acamedic,bokmaal"))
 
 (use-package flyspell
   :hook
@@ -447,17 +459,17 @@
 ;;   (define-key corfu-map (kbd "C-n") 'corfu-next)
 ;;   (define-key corfu-map (kbd "C-p") 'corfu-previous))
 
-(use-package copilot
-  :vc (:url "https://github.com/copilot-emacs/copilot.el" :rev "main")
-  :custom
-  (copilot-idle-delay 1)
-  ;; :hook
-  ;; (prog-mode . copilot-mode)
-  :bind
-  (:map copilot-mode-map
-        ("M-RET" . copilot-accept-completion)
-        ("M-n"   . copilot-next-completion)
-        ("M-p"   . copilot-previous-completion)))
+;; (use-package copilot
+;;   :vc (:url "https://github.com/copilot-emacs/copilot.el" :rev "main")
+;;   :custom
+;;   (copilot-idle-delay 1)
+;;   ;; :hook
+;;   ;; (prog-mode . copilot-mode)
+;;   :bind
+;;   (:map copilot-mode-map
+;;         ("M-RET" . copilot-accept-completion)
+;;         ("M-n"   . copilot-next-completion)
+;;         ("M-p"   . copilot-previous-completion)))
 
 (use-package diredfl
   :ensure t
@@ -713,3 +725,5 @@
   "|"  (general-key "C-c |" )
   "}"  (general-key "C-c }" )
   "~"  (general-key "C-c ~" ))
+
+(set-face-italic-p 'italic nil)
