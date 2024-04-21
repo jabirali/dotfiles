@@ -141,6 +141,30 @@ I regularly switch between ISO and ANSI style keyboards, which can be quite anno
 
 * Writing prose
 * Programming
+** General
+Eglot has been built into Emacs since v29. I've tried the alternatives Lsp-mode and Lsp-bridge, but so far Eglot is the solution that has been most "plug and play" and least buggy. It also seems to just work over Tramp connections if you install LSP servers remotely.
+#+begin_src emacs-lisp
+  (use-package eglot
+    :custom
+    (eldoc-echo-area-prefer-doc-buffer t)
+    (eldoc-echo-area-use-multiline-p nil)
+    :hook
+    (python-mode . +eglot-project-ensure)
+    :bind
+    ("<f2>" . eglot-rename))
+#+end_src
+
+Format-all is a decent package for automatically reformatting code on save. Emacs equivalent to part of Vim's ALE features.
+#+begin_src emacs-lisp
+  (use-package format-all
+    :ensure t
+    :hook
+    (python-mode . format-all-mode)
+    :config
+    (setq-default format-all-formatters
+                  '(("Python" (isort) (ruff) (black)))))
+#+end_src
+
 ** Python
 First, let's load the built-in Python-mode.
 #+begin_src emacs-lisp
@@ -164,7 +188,7 @@ Jupyter-mode replaces the "Inferior Python" feature (=C-c C-p=). Notably, Jupyte
             ("C-c C-c" . jabirali/jupyter-python)))
 #+end_src
 
-Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continous 
+Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continuous feedback.
 #+begin_src emacs-lisp
   (use-package flymake-ruff
     :ensure t
@@ -172,6 +196,8 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for contino
     (python-mode . flymake-mode)
     (python-mode . flymake-ruff-load))
 #+end_src
+
+
 
 * TODO Refactor in progress
 ** Basics
@@ -418,42 +444,9 @@ Evil Collection is exactly what is sounds like: It makes Evil work in nearly eve
     (start-process "zotero_open" nil "open" (concat "zotero:" link)))
 #+end_src
 
-** Coding
-*** Language servers
-Eglot has been built into Emacs since v29. I've tried the alternatives Lsp-mode and Lsp-bridge, but so far Eglot is the solution that has been most "plug and play" and least buggy. It also seems to just work over Tramp connections if you install LSP servers remotely.
-#+begin_src emacs-lisp
-  (use-package eglot
-    :custom
-    (eldoc-echo-area-prefer-doc-buffer t)
-    (eldoc-echo-area-use-multiline-p nil)
-    :hook
-    (python-mode . +eglot-project-ensure)
-    :bind
-    ("<f2>" . eglot-rename))
-#+end_src
-
-Eglot-Booster can help speed up Eglot by using an intermediary process between Eglot and each LSP server. The cost is that it doesn't work well over Tramp, and that it requires installation of an extra binary tool locally. But if Eglot is slow, this really helps.
-#+begin_src emacs-lisp
-  ;; (use-package eglot-booster
-  ;;   :vc (:url "https://github.com/jdtsmith/eglot-booster.git" :rev "main")
-  ;;   :after eglot
-  ;;   :config (eglot-booster-mode))
-#+end_src
-   
-*** Formatters
-#+begin_src emacs-lisp
-  (use-package format-all
-    :ensure t
-    :hook
-    (eglot-managed-mode . format-all-mode)
-    :config
-    (setq-default format-all-formatters
-                  '(("Python" (isort) (ruff) (black)))))
-#+end_src
-
 ** Writing
 *** Org documents
-One of the main reasons I'm using Emacs at all. If it wasn't for Org, I'd probably still be using Vim as my main editor.
+Org-mode is one of the best task and knowledge management systems out there. It's the main reason I'm using Emacs at all.
 #+begin_src emacs-lisp
   (use-package org
     :custom
@@ -668,6 +661,7 @@ I don't like the behavior
   (use-package ace-window
     :ensure t
     :config
+    (set-face-attribute 'aw-leading-char-face nil :height 1)
     (defun +other-window-dwim ()
       "Select either the minibuffer or an arbitrary visible window."
       (interactive)
@@ -684,21 +678,6 @@ I don't like the behavior
     :after eglot
     :bind (:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
     :hook (eglot-managed-mode . company-mode))
-#+end_src
-
-#+begin_src emacs-lisp
-  ;; (use-package corfu
-  ;;   :ensure t
-  ;;   :hook (prog-mode . corfu-mode)
-  ;;   ;; :custom
-  ;;   ;; (corfu-cycle t)
-  ;;   ;; (corfu-auto t)
-  ;;   ;; (corfu-auto-delay 0.1)
-  ;;   ;; (corfu-quit-at-boundary t)
-  ;;   ;; (corfu-quit-no-match t)
-  ;;   :config
-  ;;   (define-key corfu-map (kbd "C-n") 'corfu-next)
-  ;;   (define-key corfu-map (kbd "C-p") 'corfu-previous))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -741,33 +720,10 @@ I don't like the behavior
 #+end_src
 
 #+begin_src emacs-lisp
-  ;; (use-package doom-themes				;
-  ;;   :ensure t
-  ;;   :config
-  ;;   (load-theme 'doom-molokai t))
-#+end_src
-
-#+begin_src emacs-lisp
   (use-package ef-themes
     :ensure t
     :config
     (load-theme 'ef-melissa-light t))
-#+end_src
-
-#+begin_src emacs-lisp
-  ;; (use-package kaolin-themes
-  ;;   :ensure t
-  ;;   :config
-  ;;   (load-theme 'kaolin-light t))
-#+end_src
-
-#+begin_src emacs-lisp
-  ;; (use-package spacemacs-theme
-  ;;   :ensure t
-  ;;   :custom
-  ;;   (spacemacs-theme-org-height nil)
-  ;;   :config
-  ;;   (load-theme 'spacemacs-light t))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -1057,7 +1013,6 @@ I don't like the behavior
     "}"  (general-key "C-c }" )
     "~"  (general-key "C-c ~" ))
 #+end_src
-
 
 * Tangle
 #+begin_src conf

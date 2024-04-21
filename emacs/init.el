@@ -41,6 +41,23 @@
 (define-key key-translation-map (kbd "§") (kbd "`"))
 (define-key key-translation-map (kbd "±") (kbd "~"))
 
+(use-package eglot
+  :custom
+  (eldoc-echo-area-prefer-doc-buffer t)
+  (eldoc-echo-area-use-multiline-p nil)
+  :hook
+  (python-mode . +eglot-project-ensure)
+  :bind
+  ("<f2>" . eglot-rename))
+
+(use-package format-all
+  :ensure t
+  :hook
+  (python-mode . format-all-mode)
+  :config
+  (setq-default format-all-formatters
+                '(("Python" (isort) (ruff) (black)))))
+
 (use-package python
   :custom
   (python-indent-guess-indent-offset t)  
@@ -245,28 +262,6 @@
   "Open a zotero:// link in the Zotero desktop app."
   (start-process "zotero_open" nil "open" (concat "zotero:" link)))
 
-(use-package eglot
-  :custom
-  (eldoc-echo-area-prefer-doc-buffer t)
-  (eldoc-echo-area-use-multiline-p nil)
-  :hook
-  (python-mode . +eglot-project-ensure)
-  :bind
-  ("<f2>" . eglot-rename))
-
-;; (use-package eglot-booster
-;;   :vc (:url "https://github.com/jdtsmith/eglot-booster.git" :rev "main")
-;;   :after eglot
-;;   :config (eglot-booster-mode))
-
-(use-package format-all
-  :ensure t
-  :hook
-  (eglot-managed-mode . format-all-mode)
-  :config
-  (setq-default format-all-formatters
-                '(("Python" (isort) (ruff) (black)))))
-
 (use-package org
   :custom
   (org-adapt-indentation nil)
@@ -430,6 +425,7 @@
 (use-package ace-window
   :ensure t
   :config
+  (set-face-attribute 'aw-leading-char-face nil :height 1)
   (defun +other-window-dwim ()
     "Select either the minibuffer or an arbitrary visible window."
     (interactive)
@@ -444,19 +440,6 @@
   :after eglot
   :bind (:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
   :hook (eglot-managed-mode . company-mode))
-
-;; (use-package corfu
-;;   :ensure t
-;;   :hook (prog-mode . corfu-mode)
-;;   ;; :custom
-;;   ;; (corfu-cycle t)
-;;   ;; (corfu-auto t)
-;;   ;; (corfu-auto-delay 0.1)
-;;   ;; (corfu-quit-at-boundary t)
-;;   ;; (corfu-quit-no-match t)
-;;   :config
-;;   (define-key corfu-map (kbd "C-n") 'corfu-next)
-;;   (define-key corfu-map (kbd "C-p") 'corfu-previous))
 
 ;; (use-package copilot
 ;;   :vc (:url "https://github.com/copilot-emacs/copilot.el" :rev "main")
@@ -491,27 +474,10 @@
   :config
   (doom-modeline-mode 1))
 
-;; (use-package doom-themes				;
-;;   :ensure t
-;;   :config
-;;   (load-theme 'doom-molokai t))
-
 (use-package ef-themes
   :ensure t
   :config
   (load-theme 'ef-melissa-light t))
-
-;; (use-package kaolin-themes
-;;   :ensure t
-;;   :config
-;;   (load-theme 'kaolin-light t))
-
-;; (use-package spacemacs-theme
-;;   :ensure t
-;;   :custom
-;;   (spacemacs-theme-org-height nil)
-;;   :config
-;;   (load-theme 'spacemacs-light t))
 
 (use-package expand-region
   :bind*
