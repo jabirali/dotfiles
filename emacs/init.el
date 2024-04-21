@@ -56,37 +56,30 @@
   (message-truncate-lines t)
   (ring-bell-function 'ignore)
   (sentence-end-double-space nil)
-  ;; (frame-title-format '((:eval (if-let
-  ;;                                  (remote (file-remote-p default-directory 'host))
-  ;;                                  (format "%s: " (downcase remote))))
-  ;;                       (:eval (if-let
-  ;;                                  ((project (project-current)))
-  ;;                                  (format "%s/" (downcase (project-name project)))))
-
-  ;;                       "%b"))
-(tab-width 4)
-(truncate-lines t)
-(use-short-answers t)
-(xterm-set-window-title t)
-:custom-face
-(default ((t (:family "JetBrains Mono NL" :height 140))))
-:bind
-("C-\\" . activate-transient-input-method)
-("<f5>" . sort-lines)
-:config
-;; Don't indicate long or wrapped lines.
-(set-display-table-slot standard-display-table 'truncation ? )
-(set-display-table-slot standard-display-table 'wrap ? )
-;; Turn on some useful default modes.
-(global-auto-revert-mode 1)
-;; Disable the annoying default modes.
-(blink-cursor-mode -1)
-(menu-bar-mode -1)
-(when (display-graphic-p)
-  (fringe-mode 1)
-  (tooltip-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)))
+  (frame-title-format "GNU Emacs")
+  (tab-width 4)
+  (truncate-lines t)
+  (use-short-answers t)
+  (xterm-set-window-title t)
+  :custom-face
+  (default ((t (:family "JetBrains Mono NL" :height 140))))
+  :bind
+  ("C-\\" . activate-transient-input-method)
+  ("<f5>" . sort-lines)
+  :config
+  ;; Don't indicate long or wrapped lines.
+  (set-display-table-slot standard-display-table 'truncation ? )
+  (set-display-table-slot standard-display-table 'wrap ? )
+  ;; Turn on some useful default modes.
+  (global-auto-revert-mode 1)
+  ;; Disable the annoying default modes.
+  (blink-cursor-mode -1)
+  (menu-bar-mode -1)
+  (when (display-graphic-p)
+    (fringe-mode 1)
+    (tooltip-mode -1)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)))
 
 (use-package server
   :custom
