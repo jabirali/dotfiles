@@ -8,7 +8,7 @@ osascript<<END
 tell application "iTerm"
     tell current window
         tell current session
-            write text "[200~$(</dev/stdin)[201~"
+            write text "[200~$(</dev/stdin)[201~"
         end tell
     end tell
 end tell

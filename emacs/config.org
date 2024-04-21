@@ -29,8 +29,8 @@ The "NextStep port" is the official GNU Emacs release. I prefer the patched "Ema
 
 On older versions of MacOS (Intel MacBooks), the best option is to fetch [[https://emacsformacosx.com/][the prebuilt version from emacsformacosx.com]].
 
-* Basics
-** Package management
+** Packages
+The =package.el= package manager and =use-package= configuration macro both come with Emacs. We just need to flip some switches to get native compilation and community repos working as expected.
 #+begin_src emacs-lisp
   (use-package use-package
     :custom
@@ -40,6 +40,7 @@ On older versions of MacOS (Intel MacBooks), the best option is to fetch [[https
     :config
     (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 #+end_src
+* Basics
   
 ** Recent history
 Emacs should remember where I've been.

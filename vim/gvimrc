@@ -6,4 +6,4 @@ set guicursor+=a:blinkon0
 set guifont=JetBrains\ Mono:h13
 
 " GUI windows open the todo list.
-WikiIndex
+" WikiIndex
