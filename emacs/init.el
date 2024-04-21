@@ -6,9 +6,34 @@
   :config
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
-(recentf-mode 1)
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
 
-(savehist-mode 1)
+(set-face-italic-p 'italic nil)
+
+;; (use-package kkp
+;;  :ensure t
+;;  :custom
+;;  (kkp-super-modifier 'meta)
+;;  :config
+;;  (global-kkp-mode +1))
+
+;; (setopt mouse-wheel-follow-mouse t)
+;; (setopt mouse-wheel-progressive-speed nil)
+;; (mouse-wheel-mode 1)
+;; (xterm-mouse-mode 1)
+
+(use-package ultra-scroll-mac
+  :ensure t
+  :if (eq window-system 'mac)
+  :init
+  (setq scroll-conservatively 101)
+  (setq scroll-margin 0) 
+  :config
+  (ultra-scroll-mac-mode 1))
+
+(setopt mouse-highlight nil)
 
 (setopt mac-command-modifier 'meta)
 (setopt mac-option-modifier 'option)
@@ -16,30 +41,34 @@
 (define-key key-translation-map (kbd "§") (kbd "`"))
 (define-key key-translation-map (kbd "±") (kbd "~"))
 
-(define-key key-translation-map (kbd "M-<return>") (kbd "M-RET"))
-(define-key key-translation-map (kbd "M-<backspace>") (kbd "M-DEL"))
+(use-package python
+  :custom
+  (python-indent-guess-indent-offset t)  
+  (python-indent-guess-indent-offset-verbose nil))
+
+(use-package jupyter
+  :ensure t
+  :config
+  (defun jabirali/jupyter-python ()
+    (interactive)
+    (jupyter-run-repl "python3" "py" t)
+    (message "Jupyter kernel started!"))
+  :bind
+  (:map python-mode-map
+        ("C-c C-c" . jabirali/jupyter-python)))
+
+(use-package flymake-ruff
+  :ensure t
+  :hook
+  (python-mode . flymake-mode)
+  (python-mode . flymake-ruff-load))
+
+(recentf-mode 1)
+
+(savehist-mode 1)
 
 (setq default-input-method 'TeX)
 (setq default-transient-input-method 'TeX)
-
-;;(use-package kkp
-;;  :ensure t
-;;  :custom
-;;  (kkp-super-modifier 'meta)
-;;  :config
-;;  (global-kkp-mode +1))
-
-; (pixel-scroll-precision-mode 1)
-
-(setopt mouse-wheel-follow-mouse t)
-(setopt mouse-wheel-progressive-speed nil)
-(mouse-wheel-mode 1)
-(xterm-mouse-mode 1)
-
-(setopt mouse-highlight nil)
-
-(set-frame-parameter nil 'internal-border-width 0)
-(setopt frame-resize-pixelwise t)
 
 (use-package emacs
   :hook
@@ -96,10 +125,6 @@
 
 (add-hook 'after-make-frame-functions 'contextual-menubar)
 
-(use-package exec-path-from-shell
-  :config
-  (exec-path-from-shell-initialize))
-
 ;; (use-package treesit-auto
 ;;   :ensure t
 ;;   :custom
@@ -107,34 +132,6 @@
 ;;   :config
 ;;   (treesit-auto-add-to-auto-mode-alist 'all)
 ;;   (global-treesit-auto-mode))
-
-(use-package python
-  :custom
-  (python-indent-guess-indent-offset t)  
-  (python-indent-guess-indent-offset-verbose nil))
-
-(use-package jupyter
-  :ensure t
-  :config
-  (defun jabirali/jupyter-python ()
-    (interactive)
-    (jupyter-run-repl "python3" "py" t))
-  :bind
-  (:map python-mode-map
-        ("C-c C-c" . jabirali/jupyter-python)))
-
-(use-package flymake-ruff
-  :ensure t
-  :hook (python-mode . flymake-ruff-load))
-
-(use-package ultra-scroll-mac
-  :ensure t
-  :if (eq window-system 'mac)
-  :init
-  (setq scroll-conservatively 101)
-  (setq scroll-margin 0) 
-  :config
-  (ultra-scroll-mac-mode 1))
 
 (use-package evil
   :ensure t
@@ -727,5 +724,3 @@
   "|"  (general-key "C-c |" )
   "}"  (general-key "C-c }" )
   "~"  (general-key "C-c ~" ))
-
-(set-face-italic-p 'italic nil)
