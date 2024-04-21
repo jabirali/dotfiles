@@ -48,7 +48,7 @@ Let's also prevent Emacs from littering my =init.el= config file with the cache 
 #+end_src
 
 * System settings
-** General settings
+** General
 This package corrects =$PATH= when Emacs is started from the GUI. This is needed to detect programs installed via HomeBrew.
 #+begin_src emacs-lisp
   (use-package exec-path-from-shell
@@ -103,6 +103,14 @@ These settings enable terminal mouse support and scrolling.
   ;; (xterm-mouse-mode 1)
 #+end_src  
 
+This package lets Emacs interact with the system clipboard also when running in a terminal.
+#+begin_src emacs-lisp
+  ;; (use-package xclip
+  ;;   :ensure t
+  ;;   :config
+  ;;   (xclip-mode 1)) 
+#+end_src
+
 ** Mouse and trackpad
 Enable actual smooth scrolling for high-precision trackpads and mice. Note that this package requires the Emacs Mac port; for the NS port, the best option is =pixel-scroll-precision-mode=.
 #+begin_src emacs-lisp
@@ -140,6 +148,200 @@ I regularly switch between ISO and ANSI style keyboards, which can be quite anno
 #+end_src
 
 * Writing prose
+** Spell checking
+Ispell is the traditional spell checker for Emacs. It supports many backends, but we here use the Hunspell backend since it (i) supports multi-language dictionary combinations, (ii) is supposed to be more accurate for many non-English languages, (iii) has become the de facto standard among other open-source apps (it is e.g. now the default spell checker in Firefox, LibreOffice, etc.). Note that on MacOS, you need to [[https://github.com/wooorm/dictionaries][download]] the appropriate dictionaries and extract them into =~/Library/Spelling=.
+#+begin_src emacs-lisp
+  (use-package ispell
+    :config
+    (setq ispell-program-name "hunspell")
+    (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
+    (setq ispell-dictionary "en_US,nb_NO")
+    (ispell-set-spellchecker-params)
+    (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
+#+end_src
+
+Flyspell is a built-in Emacs package that provides incremental as-you-write spell checking. Let's turn it on.
+#+begin_src emacs-lisp
+  (use-package flyspell
+    :hook
+    ((text-mode . flyspell-mode)
+     (prog-mode . flyspell-prog-mode)))
+#+end_src
+
+The default Flyspell interface and keybinding =C-c $= is not very ergonomic. Especially if you often have to add your own words to the personal dictionary. I'd rather use something based on =completing-read=, such that I can use e.g. Vertico for the correction interface.
+#+begin_src emacs-lisp
+  (use-package flyspell-correct
+    :ensure t
+    :after flyspell
+    :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+#+end_src
+
+** Line wrapping
+Visual-line-mode is pretty useful for the average document, but it looks very ugly without "adaptive wrap" turned on. The only reason I don't turn it on in Text-mode directly is that it would then end up in Org-mode as well, and it conflicts with =org-indent-mode=.
+#+begin_src emacs-lisp
+  (use-package adaptive-wrap
+    :ensure t
+    :hook
+    (text-mode . visual-line-mode)
+    (markdown-mode . adaptive-wrap-prefix-mode)
+    (latex-mode . adaptive-wrap-prefix-mode))
+#+end_src
+
+** Org documents
+Org-mode is my favorite task and knowledge management system.  It's no understatement that Org-mode is the main reason I'm using Emacs at all (otherwise I'd probably be using Vim).
+#+begin_src emacs-lisp
+  (use-package org
+    :custom
+    (org-adapt-indentation nil)
+    (org-agenda-files (list org-directory))
+    (org-agenda-window-setup 'only-window)
+    (org-agenda-skip-deadline-if-done t)
+    (org-agenda-skip-scheduled-if-done t)
+    (org-agenda-span 'day)
+    (org-agenda-start-on-weekday nil)
+    (org-archive-location "::* Archive")
+    (org-babel-results-keyword "results")
+    (org-confirm-babel-evaluate nil)
+    (org-ctrl-k-protect-subtree t)
+    (org-directory "~/Sync/Org")
+    (org-fontify-quote-and-verse-blocks t)
+    (org-highlight-latex-and-related '(native latex script entities))
+    (org-image-actual-width '(400))
+    (org-pretty-entities t)
+    (org-pretty-entities-include-sub-superscripts nil)
+    (org-return-follows-link t)
+    (org-startup-folded 'fold)
+    (org-startup-indented t)
+    (org-tags-column -65)
+    (org-todo-keywords
+     '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+       (sequence "WAIT(w)" "HOLD(h)" "READ(r)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
+    :config
+    (setopt org-latex-src-block-backend 'engraved)
+    (setopt org-latex-engraved-theme 'ef-melissa-light)
+    (setopt org-latex-packages-alist '(("" "microtype" t)))
+    (setopt org-latex-hyperref-template "
+  \\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},
+   pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true}\n")
+    (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
+    (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
+#+end_src
+
+Enable drag-and-drop of images and documents into Org-mode.
+#+begin_src emacs-lisp
+  (use-package org-download
+    :ensure t
+    :after org
+    :custom
+    (org-download-method 'directory)
+    (org-download-image-dir "assets")
+    (org-download-heading-lvl nil)
+    (org-download-timestamp "%Y%m%d%H%M%S")
+    :config
+    (defun +org-download-file-format (filename)
+      "Purely date-based naming of attachments."
+      (concat
+       (format-time-string org-download-timestamp)
+       "."
+       (file-name-extension filename)))
+    (setq org-download-file-format-function #'+org-download-file-format)
+    (setq org-download-annotate-function (lambda (_link) ""))
+    (org-download-enable)
+    :bind (:map org-mode-map
+                ("M-V" . org-download-clipboard))) 
+#+end_src
+
+Org Agenda needs some sectioning when it gets too long.
+#+begin_src emacs-lisp
+  (use-package org-super-agenda
+    :ensure t
+    :custom
+    (org-super-agenda-groups '((:auto-parent t)))
+    :config
+    (setq org-super-agenda-header-map (make-sparse-keymap))
+    (org-super-agenda-mode 1)) 
+#+end_src
+
+Org Agenda as a screensaver. Because I don't remember to check it when I'm busy, but that's exactly when I need to check it.
+#+begin_src emacs-lisp
+  (use-package idle-org-agenda
+    :ensure t
+    :after org-agenda
+    :custom
+    (idle-org-agenda-interval 3600)
+    :config
+    (idle-org-agenda-mode 1))
+#+end_src
+
+Export to every format via Pandoc. I especially appreciate that I can generate DOCX files with LaTeX-based equations.
+#+begin_src emacs-lisp
+  (use-package ox-pandoc
+    :ensure t) 
+#+end_src
+
+** MarkDown documents
+MarkDown is the lingua franca of mark-up languages, and its Emacs mode is best-in-class with the right switches toggled.
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+    :ensure t
+    :config
+    (setopt markdown-fontify-code-blocks-natively t)
+    (setopt markdown-enable-wiki-links t)
+    (setopt markdown-enable-math t)
+    :hook
+    (markdown-mode . cdlatex-mode)) 
+#+end_src
+
+** LaTeX documents
+First, let's install AUCTeX and set it up to sync with Skim. This is the de facto default LaTeX-mode for Emacs.
+#+begin_src emacs-lisp
+  (use-package tex
+    :ensure auctex
+    :custom
+    (font-latex-fontify-script nil)
+    (TeX-auto-save t)
+    (TeX-source-correlate-method 'synctex)
+    (TeX-source-correlate-mode t)
+    (TeX-source-correlate-start-server t)
+    (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
+    (TeX-view-program-selection '((output-pdf "Skim")))) 
+#+end_src
+
+CDLaTeX is one of the main reasons I love writing LaTeX in Emacs. It's very ergonomic and intuitive after you get used to it, and it works very well in both Org-mode and TeX-mode.
+#+begin_src emacs-lisp
+  (use-package cdlatex
+    :ensure t
+    :hook
+    ((TeX-mode . turn-on-cdlatex)
+     (org-mode . turn-on-org-cdlatex)))
+#+end_src
+
+I should eventually learn how to use RefTeX properly. For now, it's nearly a placeholder, but let's just keep it around.
+#+begin_src emacs-lisp
+  (use-package reftex
+    :ensure t
+    :after tex
+    :custom
+    (reftex-cite-format 'bibtex)
+    (reftex-enable-partial-scans t)
+    (reftex-plug-into-AUCTeX t)
+    (reftex-save-parse-info t)
+    (reftex-use-multiple-selection-buffers t)
+    :hook
+    (TeX-mode . turn-on-reftex)) 
+#+end_src
+
+Xenops-mode compiles TeX equations into SVG images for an in-buffer preview. Can be useful, perhaps more so in Org-mode than in LaTeX-mode.
+#+begin_src emacs-lisp
+  ;; (use-package xenops
+  ;;   :ensure t
+  ;;   :custom
+  ;;   (xenops-image-width 350)
+  ;;   :hook
+  ;;   (org-mode . xenops-mode)
+  ;;   (LaTeX-mode . xenops-mode)) 
+#+end_src
+
 * Programming
 ** General
 Eglot has been built into Emacs since v29. I've tried the alternatives Lsp-mode and Lsp-bridge, but so far Eglot is the solution that has been most "plug and play" and least buggy. It also seems to just work over Tramp connections if you install LSP servers remotely.
@@ -163,6 +365,32 @@ Format-all is a decent package for automatically reformatting code on save. Emac
     :config
     (setq-default format-all-formatters
                   '(("Python" (isort) (ruff) (black)))))
+#+end_src
+
+Treesitter provides, among other things, better and faster syntax highlighting and more structural editing possibilities.
+#+begin_src emacs-lisp
+  ;; (use-package treesit-auto
+  ;;   :ensure t
+  ;;   :custom
+  ;;   (treesit-auto-install 'prompt)
+  ;;   :config
+  ;;   (treesit-auto-add-to-auto-mode-alist 'all)
+  ;;   (global-treesit-auto-mode))
+#+end_src
+
+Github Copilot support for Emacs.
+#+begin_src emacs-lisp
+  ;; (use-package copilot
+  ;;   :vc (:url "https://github.com/copilot-emacs/copilot.el" :rev "main")
+  ;;   :custom
+  ;;   (copilot-idle-delay 1)
+  ;;   ;; :hook
+  ;;   ;; (prog-mode . copilot-mode)
+  ;;   :bind
+  ;;   (:map copilot-mode-map
+  ;;         ("M-RET" . copilot-accept-completion)
+  ;;         ("M-n"   . copilot-next-completion)
+  ;;         ("M-p"   . copilot-previous-completion)))
 #+end_src
 
 ** Python
@@ -198,38 +426,28 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 #+end_src
 
 
+** Julia
+#+begin_src emacs-lisp
+  (use-package julia-mode
+    :ensure t) 
+#+end_src
+
+** Matlab
+#+begin_src emacs-lisp
+  (use-package matlab
+    :ensure matlab-mode) 
+#+end_src
 
 * TODO Refactor in progress
-** Basics
-*** Recent history
-Emacs should remember where I've been.
-#+begin_src emacs-lisp
-  (recentf-mode 1)
-#+end_src
-
-Emacs should remember what I've done.
-#+begin_src emacs-lisp
-  (savehist-mode 1)
-#+end_src
-
-*** Keyboard support
-Sometimes, I need to type literal UTF-8 characters. We can do this using the =C-\= keybinding, but it's nice to not be re-prompted for the input method every time we restart Emacs and re-invoke this feature.
-#+begin_src emacs-lisp
-  (setq default-input-method 'TeX)
-  (setq default-transient-input-method 'TeX)
-#+end_src
-
-
-
-*** Sane defaults
-Let's now configure some core Emacs features.
+** Sane defaults
 #+begin_src emacs-lisp
   (use-package emacs
-    :hook
-    (prog-mode . hs-minor-mode)
     :custom
     (auto-save-default nil)
+    (default-input-method 'TeX)
+    (default-transient-input-method 'TeX)
     (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
+    (frame-title-format "GNU Emacs")
     (fringes-outside-margins t)
     (inhibit-startup-message t)
     (initial-major-mode 'org-mode)
@@ -239,7 +457,6 @@ Let's now configure some core Emacs features.
     (message-truncate-lines t)
     (ring-bell-function 'ignore)
     (sentence-end-double-space nil)
-    (frame-title-format "GNU Emacs")
     (tab-width 4)
     (truncate-lines t)
     (use-short-answers t)
@@ -255,6 +472,8 @@ Let's now configure some core Emacs features.
     (set-display-table-slot standard-display-table 'wrap ? )
     ;; Turn on some useful default modes.
     (global-auto-revert-mode 1)
+    (recentf-mode 1)
+    (savehist-mode 1)
     ;; Disable the annoying default modes.
     (blink-cursor-mode -1)
     (menu-bar-mode -1)
@@ -284,17 +503,6 @@ Consider fixing menu bar...
     (set-frame-parameter frame 'menu-bar-lines (if (display-graphic-p frame) 1 0)))
 
   (add-hook 'after-make-frame-functions 'contextual-menubar)
-#+end_src
-
-
-#+begin_src emacs-lisp
-  ;; (use-package treesit-auto
-  ;;   :ensure t
-  ;;   :custom
-  ;;   (treesit-auto-install 'prompt)
-  ;;   :config
-  ;;   (treesit-auto-add-to-auto-mode-alist 'all)
-  ;;   (global-treesit-auto-mode))
 #+end_src
 
 ** Vim keybindings
@@ -444,192 +652,6 @@ Evil Collection is exactly what is sounds like: It makes Evil work in nearly eve
     (start-process "zotero_open" nil "open" (concat "zotero:" link)))
 #+end_src
 
-** Writing
-*** Org documents
-Org-mode is one of the best task and knowledge management systems out there. It's the main reason I'm using Emacs at all.
-#+begin_src emacs-lisp
-  (use-package org
-    :custom
-    (org-adapt-indentation nil)
-    (org-agenda-files (list org-directory))
-    (org-agenda-window-setup 'only-window)
-    (org-agenda-skip-deadline-if-done t)
-    (org-agenda-skip-scheduled-if-done t)
-    (org-agenda-span 'day)
-    (org-agenda-start-on-weekday nil)
-    (org-archive-location "::* Archive")
-    (org-babel-results-keyword "results")
-    (org-confirm-babel-evaluate nil)
-    (org-ctrl-k-protect-subtree t)
-    (org-directory "~/Sync/Org")
-    (org-fontify-quote-and-verse-blocks t)
-    (org-highlight-latex-and-related '(native latex script entities))
-    (org-image-actual-width '(400))
-    (org-pretty-entities t)
-    (org-pretty-entities-include-sub-superscripts nil)
-    (org-return-follows-link t)
-    (org-startup-folded 'fold)
-    (org-startup-indented t)
-    (org-tags-column -65)
-    (org-todo-keywords
-     '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-       (sequence "WAIT(w)" "HOLD(h)" "READ(r)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
-    :config
-    (setopt org-latex-src-block-backend 'engraved)
-    (setopt org-latex-engraved-theme 'ef-melissa-light)
-    (setopt org-latex-packages-alist '(("" "microtype" t)))
-    (setopt org-latex-hyperref-template "
-  \\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},
-   pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true}\n")
-    (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
-    (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
-#+end_src
-
-Let's me drag-and-drop images into Org-mode.
-#+begin_src emacs-lisp
-  (use-package org-download
-    :ensure t
-    :after org
-    :custom
-    (org-download-method 'directory)
-    (org-download-image-dir "assets")
-    (org-download-heading-lvl nil)
-    (org-download-timestamp "%Y%m%d%H%M%S")
-    :config
-    (defun +org-download-file-format (filename)
-      "Purely date-based naming of attachments."
-      (concat
-       (format-time-string org-download-timestamp)
-       "."
-       (file-name-extension filename)))
-    (setq org-download-file-format-function #'+org-download-file-format)
-    (setq org-download-annotate-function (lambda (_link) ""))
-    (org-download-enable)
-    :bind (:map org-mode-map
-                ("M-V" . org-download-clipboard))) 
-#+end_src
-
-Org Agenda needs some sectioning when it gets too long.
-#+begin_src emacs-lisp
-  (use-package org-super-agenda
-    :ensure t
-    :custom
-    (org-super-agenda-groups '((:auto-parent t)))
-    :config
-    (setq org-super-agenda-header-map (make-sparse-keymap))
-    (org-super-agenda-mode 1)) 
-#+end_src
-
-Use your Org Agenda as your screensaver. Because I can't remember to actively look at it when I'm busy, but that's when I really should.
-#+begin_src emacs-lisp
-  (use-package idle-org-agenda
-    :ensure t
-    :after org-agenda
-    :custom
-    (idle-org-agenda-interval 3600)
-    :config
-    (idle-org-agenda-mode 1))
-#+end_src
-
-Org Export to every format via Pandoc. I especially appreciate that I can generate DOCX files with LaTeX-based equations.
-#+begin_src emacs-lisp
-  (use-package ox-pandoc
-    :ensure t) 
-#+end_src
-
-*** LaTeX documents
-First, let's install AUCTeX and set it up to sync with Skim.
-#+begin_src emacs-lisp
-  (use-package tex
-    :ensure auctex
-    :custom
-    (font-latex-fontify-script nil)
-    (TeX-auto-save t)
-    (TeX-source-correlate-method 'synctex)
-    (TeX-source-correlate-mode t)
-    (TeX-source-correlate-start-server t)
-    (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
-    (TeX-view-program-selection '((output-pdf "Skim")))) 
-#+end_src
-
-This is one of the main reasons I love writing LaTeX in Emacs. It's very ergonomic and intuitive after you get used to it, and it works very well in both Org-mode and TeX-mode.
-#+begin_src emacs-lisp
-  (use-package cdlatex
-    :ensure t
-    :hook
-    ((TeX-mode . turn-on-cdlatex)
-     (org-mode . turn-on-org-cdlatex)))
-#+end_src
-
-I'll eventually learn how to use this properly. Let's keep it around for now.
-#+begin_src emacs-lisp
-  (use-package reftex
-    :ensure t
-    :after tex
-    :custom
-    (reftex-cite-format 'bibtex)
-    (reftex-enable-partial-scans t)
-    (reftex-plug-into-AUCTeX t)
-    (reftex-save-parse-info t)
-    (reftex-use-multiple-selection-buffers t)
-    :hook
-    (TeX-mode . turn-on-reftex)) 
-#+end_src
-
-*** MarkDown documents
-The Lingua Franca of modern mark-up languages.
-#+begin_src emacs-lisp
-  (use-package markdown-mode
-    :ensure t
-    :config
-    (setopt markdown-fontify-code-blocks-natively t)
-    (setopt markdown-enable-wiki-links t)
-    (setopt markdown-enable-math t)
-    :hook
-    (markdown-mode . cdlatex-mode)) 
-#+end_src
-
-*** Spell checking
-Flyspell is a built-in spellchecker in Emacs. By default, it uses Hunspell on MacOS (i.e. the same backend as Firefox and LibreOffice), and searches for dictionaries in =~/Library/Spelling/=. Remember to download the dictionaries you need to that folder...
-
-Make Emacs use Hunspell even if Aspell or Ispell is accidentally installed. Moreover, combine a Norwegian and US English dictionary, since I tend to mix the two quite liberally in my notes and lectures.
-The English dictionary is the [[https://github.com/emareg/acamedic][Acamedic]] dictionary of Academic American English. The Norwegian dictionary is the [[https://github.com/wooorm/dictionaries][Wooorm repository]] dictionary for Norwegian Bokmål.
-#+begin_src emacs-lisp
-  (use-package ispell
-    :config
-    (setq ispell-program-name "hunspell")
-    (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
-    (setq ispell-dictionary "acamedic,bokmaal")
-    (ispell-set-spellchecker-params)
-    (ispell-hunspell-add-multi-dic "acamedic,bokmaal"))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package flyspell
-    :hook
-    ((text-mode . flyspell-mode)
-     (prog-mode . flyspell-prog-mode)))
-#+end_src
-
-The default Flyspell interface and keybinding =C-c $= is not very ergonomic to use. Especially if you often have to add your own words to the personal dictionary. I'd rather use something based on =completing-read=, such that I can use e.g. Vertico for the correction interface.
-#+begin_src emacs-lisp
-  (use-package flyspell-correct
-    :ensure t
-    :after flyspell
-    :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
-#+end_src
-
-*** Text wrapping
-I don't like the behavior 
-#+begin_src emacs-lisp
-  (use-package adaptive-wrap
-    :ensure t
-    :hook
-    (text-mode . visual-line-mode)
-    (markdown-mode . adaptive-wrap-prefix-mode)
-    (latex-mode . adaptive-wrap-prefix-mode))
-#+end_src
-
 ** Internal packages
 #+begin_src emacs-lisp
   (use-package tab-bar
@@ -640,10 +662,16 @@ I don't like the behavior
     (tab-bar-separator "  ")
     (tab-bar-show t)
     (tab-bar-tab-hints t)
-    :bind
-    ("s-[" . tab-bar-history-back)
-    ("s-]" . tab-bar-history-forward)
+    :bind*
+    ("C-c [" . tab-bar-history-back)
+    ("C-c ]" . tab-bar-history-forward)
     :config
+    ;; Rename new tabs interactively.
+    (defun jabirali/rename-tab (&rest _)
+      (call-interactively #'tab-bar-rename-tab))
+    (add-hook 'tab-bar-tab-post-open-functions #'jabirali/rename-tab)
+
+    ;; Enable the mode globally.
     (tab-bar-mode 1)
     (tab-bar-history-mode 1))
 #+end_src
@@ -680,19 +708,6 @@ I don't like the behavior
     :hook (eglot-managed-mode . company-mode))
 #+end_src
 
-#+begin_src emacs-lisp
-  ;; (use-package copilot
-  ;;   :vc (:url "https://github.com/copilot-emacs/copilot.el" :rev "main")
-  ;;   :custom
-  ;;   (copilot-idle-delay 1)
-  ;;   ;; :hook
-  ;;   ;; (prog-mode . copilot-mode)
-  ;;   :bind
-  ;;   (:map copilot-mode-map
-  ;;         ("M-RET" . copilot-accept-completion)
-  ;;         ("M-n"   . copilot-next-completion)
-  ;;         ("M-p"   . copilot-previous-completion)))
-#+end_src
 
 #+begin_src emacs-lisp
   (use-package diredfl
@@ -751,13 +766,6 @@ I don't like the behavior
     :ensure t) 
 #+end_src
 
-
-#+begin_src emacs-lisp
-  (use-package julia-mode
-    :ensure t) 
-#+end_src
-
-
 #+begin_src emacs-lisp
   (use-package magit
     :ensure t
@@ -771,24 +779,6 @@ I don't like the behavior
     (keymap-set project-prefix-map "m" #'magit-project-status)) 
 #+end_src
 
-
-#+begin_src emacs-lisp
-  ;; (use-package matlab
-  ;;   :ensure matlab-mode) 
-#+end_src
-
-
-#+begin_src emacs-lisp
-  ;; (use-package openwith
-  ;;   :ensure t
-  ;;   :config
-  ;;   (setq openwith-associations
-  ;;         '(("\\.\\(png\\|jpg\\|svg\\)$" "qlmanage -p" (file))
-  ;;           ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
-  ;;   (openwith-mode 1)) 
-#+end_src
-
-
 #+begin_src emacs-lisp
   ;; (use-package orderless
   ;;   :ensure t
@@ -797,25 +787,17 @@ I don't like the behavior
   ;;   (completion-category-overrides '((file (styles basic partial-completion))))) 
 #+end_src
 
-
-
 #+begin_src emacs-lisp
-  (use-package outshine
-    :ensure t
-    :hook
-    (prog-mode . outshine-mode)) 
+  ;; (use-package outshine
+  ;;   :ensure t
+  ;;   :hook
+  ;;   (prog-mode . outshine-mode)) 
 #+end_src
-
-
-
-
 
 #+begin_src emacs-lisp
   (use-package prescient
     :ensure t) 
 #+end_src
-
-
 
 #+begin_src emacs-lisp
   (use-package swiper
@@ -833,7 +815,6 @@ I don't like the behavior
     (vertico-mouse-mode 1)) 
 #+end_src
 
-
 #+begin_src emacs-lisp
   (use-package vertico-directory
     :after vertico
@@ -844,7 +825,6 @@ I don't like the behavior
     :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)) 
 #+end_src
 
-
 #+begin_src emacs-lisp
   (use-package vertico-prescient
     :ensure t
@@ -853,46 +833,12 @@ I don't like the behavior
     (vertico-prescient-mode 1)) 
 #+end_src
 
-
-#+begin_src emacs-lisp
-  ;; (use-package vertico-posframe
-  ;;   :ensure t
-  ;;   :after vertico
-  ;;   :custom
-  ;;   (vertico-posframe-poshandler 'posframe-poshandler-frame-top-center)
-  ;;   (vertico-posframe-width 70)
-  ;;   (vertico-posframe-border-width 2)
-  ;;   :config
-  ;;   (vertico-posframe-mode 1)) 
-#+end_src
-
-
 #+begin_src emacs-lisp
   (use-package which-key
     :ensure t
     :config
     (which-key-mode 1)) 
 #+end_src
-
-
-#+begin_src emacs-lisp
-  (use-package xclip
-    :ensure t
-    :config
-    (xclip-mode 1)) 
-#+end_src
-
-
-#+begin_src emacs-lisp
-  ;; (use-package xenops
-  ;;   :ensure t
-  ;;   :custom
-  ;;   (xenops-image-width 350)
-  ;;   :hook
-  ;;   (org-mode . xenops-mode)
-  ;;   (LaTeX-mode . xenops-mode)) 
-#+end_src
-
 
 #+begin_src emacs-lisp
   (use-package yasnippet

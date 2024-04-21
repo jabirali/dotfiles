@@ -24,6 +24,11 @@
 ;; (mouse-wheel-mode 1)
 ;; (xterm-mouse-mode 1)
 
+;; (use-package xclip
+;;   :ensure t
+;;   :config
+;;   (xclip-mode 1))
+
 (use-package ultra-scroll-mac
   :ensure t
   :if (eq window-system 'mac)
@@ -41,6 +46,153 @@
 (define-key key-translation-map (kbd "§") (kbd "`"))
 (define-key key-translation-map (kbd "±") (kbd "~"))
 
+(use-package ispell
+  :config
+  (setq ispell-program-name "hunspell")
+  (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
+  (setq ispell-dictionary "en_US,nb_NO")
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
+
+(use-package flyspell
+  :hook
+  ((text-mode . flyspell-mode)
+   (prog-mode . flyspell-prog-mode)))
+
+(use-package flyspell-correct
+  :ensure t
+  :after flyspell
+  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+
+(use-package adaptive-wrap
+  :ensure t
+  :hook
+  (text-mode . visual-line-mode)
+  (markdown-mode . adaptive-wrap-prefix-mode)
+  (latex-mode . adaptive-wrap-prefix-mode))
+
+(use-package org
+  :custom
+  (org-adapt-indentation nil)
+  (org-agenda-files (list org-directory))
+  (org-agenda-window-setup 'only-window)
+  (org-agenda-skip-deadline-if-done t)
+  (org-agenda-skip-scheduled-if-done t)
+  (org-agenda-span 'day)
+  (org-agenda-start-on-weekday nil)
+  (org-archive-location "::* Archive")
+  (org-babel-results-keyword "results")
+  (org-confirm-babel-evaluate nil)
+  (org-ctrl-k-protect-subtree t)
+  (org-directory "~/Sync/Org")
+  (org-fontify-quote-and-verse-blocks t)
+  (org-highlight-latex-and-related '(native latex script entities))
+  (org-image-actual-width '(400))
+  (org-pretty-entities t)
+  (org-pretty-entities-include-sub-superscripts nil)
+  (org-return-follows-link t)
+  (org-startup-folded 'fold)
+  (org-startup-indented t)
+  (org-tags-column -65)
+  (org-todo-keywords
+   '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+     (sequence "WAIT(w)" "HOLD(h)" "READ(r)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
+  :config
+  (setopt org-latex-src-block-backend 'engraved)
+  (setopt org-latex-engraved-theme 'ef-melissa-light)
+  (setopt org-latex-packages-alist '(("" "microtype" t)))
+  (setopt org-latex-hyperref-template "
+\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},
+ pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true}\n")
+  (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
+  (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
+
+(use-package org-download
+  :ensure t
+  :after org
+  :custom
+  (org-download-method 'directory)
+  (org-download-image-dir "assets")
+  (org-download-heading-lvl nil)
+  (org-download-timestamp "%Y%m%d%H%M%S")
+  :config
+  (defun +org-download-file-format (filename)
+    "Purely date-based naming of attachments."
+    (concat
+     (format-time-string org-download-timestamp)
+     "."
+     (file-name-extension filename)))
+  (setq org-download-file-format-function #'+org-download-file-format)
+  (setq org-download-annotate-function (lambda (_link) ""))
+  (org-download-enable)
+  :bind (:map org-mode-map
+              ("M-V" . org-download-clipboard)))
+
+(use-package org-super-agenda
+  :ensure t
+  :custom
+  (org-super-agenda-groups '((:auto-parent t)))
+  :config
+  (setq org-super-agenda-header-map (make-sparse-keymap))
+  (org-super-agenda-mode 1))
+
+(use-package idle-org-agenda
+  :ensure t
+  :after org-agenda
+  :custom
+  (idle-org-agenda-interval 3600)
+  :config
+  (idle-org-agenda-mode 1))
+
+(use-package ox-pandoc
+  :ensure t)
+
+(use-package markdown-mode
+  :ensure t
+  :config
+  (setopt markdown-fontify-code-blocks-natively t)
+  (setopt markdown-enable-wiki-links t)
+  (setopt markdown-enable-math t)
+  :hook
+  (markdown-mode . cdlatex-mode))
+
+(use-package tex
+  :ensure auctex
+  :custom
+  (font-latex-fontify-script nil)
+  (TeX-auto-save t)
+  (TeX-source-correlate-method 'synctex)
+  (TeX-source-correlate-mode t)
+  (TeX-source-correlate-start-server t)
+  (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
+  (TeX-view-program-selection '((output-pdf "Skim"))))
+
+(use-package cdlatex
+  :ensure t
+  :hook
+  ((TeX-mode . turn-on-cdlatex)
+   (org-mode . turn-on-org-cdlatex)))
+
+(use-package reftex
+  :ensure t
+  :after tex
+  :custom
+  (reftex-cite-format 'bibtex)
+  (reftex-enable-partial-scans t)
+  (reftex-plug-into-AUCTeX t)
+  (reftex-save-parse-info t)
+  (reftex-use-multiple-selection-buffers t)
+  :hook
+  (TeX-mode . turn-on-reftex))
+
+;; (use-package xenops
+;;   :ensure t
+;;   :custom
+;;   (xenops-image-width 350)
+;;   :hook
+;;   (org-mode . xenops-mode)
+;;   (LaTeX-mode . xenops-mode))
+
 (use-package eglot
   :custom
   (eldoc-echo-area-prefer-doc-buffer t)
@@ -57,6 +209,26 @@
   :config
   (setq-default format-all-formatters
                 '(("Python" (isort) (ruff) (black)))))
+
+;; (use-package treesit-auto
+;;   :ensure t
+;;   :custom
+;;   (treesit-auto-install 'prompt)
+;;   :config
+;;   (treesit-auto-add-to-auto-mode-alist 'all)
+;;   (global-treesit-auto-mode))
+
+;; (use-package copilot
+;;   :vc (:url "https://github.com/copilot-emacs/copilot.el" :rev "main")
+;;   :custom
+;;   (copilot-idle-delay 1)
+;;   ;; :hook
+;;   ;; (prog-mode . copilot-mode)
+;;   :bind
+;;   (:map copilot-mode-map
+;;         ("M-RET" . copilot-accept-completion)
+;;         ("M-n"   . copilot-next-completion)
+;;         ("M-p"   . copilot-previous-completion)))
 
 (use-package python
   :custom
@@ -80,19 +252,19 @@
   (python-mode . flymake-mode)
   (python-mode . flymake-ruff-load))
 
-(recentf-mode 1)
+(use-package julia-mode
+  :ensure t)
 
-(savehist-mode 1)
-
-(setq default-input-method 'TeX)
-(setq default-transient-input-method 'TeX)
+(use-package matlab
+  :ensure matlab-mode)
 
 (use-package emacs
-  :hook
-  (prog-mode . hs-minor-mode)
   :custom
   (auto-save-default nil)
+  (default-input-method 'TeX)
+  (default-transient-input-method 'TeX)
   (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
+  (frame-title-format "GNU Emacs")
   (fringes-outside-margins t)
   (inhibit-startup-message t)
   (initial-major-mode 'org-mode)
@@ -102,7 +274,6 @@
   (message-truncate-lines t)
   (ring-bell-function 'ignore)
   (sentence-end-double-space nil)
-  (frame-title-format "GNU Emacs")
   (tab-width 4)
   (truncate-lines t)
   (use-short-answers t)
@@ -118,6 +289,8 @@
   (set-display-table-slot standard-display-table 'wrap ? )
   ;; Turn on some useful default modes.
   (global-auto-revert-mode 1)
+  (recentf-mode 1)
+  (savehist-mode 1)
   ;; Disable the annoying default modes.
   (blink-cursor-mode -1)
   (menu-bar-mode -1)
@@ -141,14 +314,6 @@
   (set-frame-parameter frame 'menu-bar-lines (if (display-graphic-p frame) 1 0)))
 
 (add-hook 'after-make-frame-functions 'contextual-menubar)
-
-;; (use-package treesit-auto
-;;   :ensure t
-;;   :custom
-;;   (treesit-auto-install 'prompt)
-;;   :config
-;;   (treesit-auto-add-to-auto-mode-alist 'all)
-;;   (global-treesit-auto-mode))
 
 (use-package evil
   :ensure t
@@ -262,145 +427,6 @@
   "Open a zotero:// link in the Zotero desktop app."
   (start-process "zotero_open" nil "open" (concat "zotero:" link)))
 
-(use-package org
-  :custom
-  (org-adapt-indentation nil)
-  (org-agenda-files (list org-directory))
-  (org-agenda-window-setup 'only-window)
-  (org-agenda-skip-deadline-if-done t)
-  (org-agenda-skip-scheduled-if-done t)
-  (org-agenda-span 'day)
-  (org-agenda-start-on-weekday nil)
-  (org-archive-location "::* Archive")
-  (org-babel-results-keyword "results")
-  (org-confirm-babel-evaluate nil)
-  (org-ctrl-k-protect-subtree t)
-  (org-directory "~/Sync/Org")
-  (org-fontify-quote-and-verse-blocks t)
-  (org-highlight-latex-and-related '(native latex script entities))
-  (org-image-actual-width '(400))
-  (org-pretty-entities t)
-  (org-pretty-entities-include-sub-superscripts nil)
-  (org-return-follows-link t)
-  (org-startup-folded 'fold)
-  (org-startup-indented t)
-  (org-tags-column -65)
-  (org-todo-keywords
-   '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-     (sequence "WAIT(w)" "HOLD(h)" "READ(r)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
-  :config
-  (setopt org-latex-src-block-backend 'engraved)
-  (setopt org-latex-engraved-theme 'ef-melissa-light)
-  (setopt org-latex-packages-alist '(("" "microtype" t)))
-  (setopt org-latex-hyperref-template "
-\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},
- pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true}\n")
-  (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
-  (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
-
-(use-package org-download
-  :ensure t
-  :after org
-  :custom
-  (org-download-method 'directory)
-  (org-download-image-dir "assets")
-  (org-download-heading-lvl nil)
-  (org-download-timestamp "%Y%m%d%H%M%S")
-  :config
-  (defun +org-download-file-format (filename)
-    "Purely date-based naming of attachments."
-    (concat
-     (format-time-string org-download-timestamp)
-     "."
-     (file-name-extension filename)))
-  (setq org-download-file-format-function #'+org-download-file-format)
-  (setq org-download-annotate-function (lambda (_link) ""))
-  (org-download-enable)
-  :bind (:map org-mode-map
-              ("M-V" . org-download-clipboard)))
-
-(use-package org-super-agenda
-  :ensure t
-  :custom
-  (org-super-agenda-groups '((:auto-parent t)))
-  :config
-  (setq org-super-agenda-header-map (make-sparse-keymap))
-  (org-super-agenda-mode 1))
-
-(use-package idle-org-agenda
-  :ensure t
-  :after org-agenda
-  :custom
-  (idle-org-agenda-interval 3600)
-  :config
-  (idle-org-agenda-mode 1))
-
-(use-package ox-pandoc
-  :ensure t)
-
-(use-package tex
-  :ensure auctex
-  :custom
-  (font-latex-fontify-script nil)
-  (TeX-auto-save t)
-  (TeX-source-correlate-method 'synctex)
-  (TeX-source-correlate-mode t)
-  (TeX-source-correlate-start-server t)
-  (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
-  (TeX-view-program-selection '((output-pdf "Skim"))))
-
-(use-package cdlatex
-  :ensure t
-  :hook
-  ((TeX-mode . turn-on-cdlatex)
-   (org-mode . turn-on-org-cdlatex)))
-
-(use-package reftex
-  :ensure t
-  :after tex
-  :custom
-  (reftex-cite-format 'bibtex)
-  (reftex-enable-partial-scans t)
-  (reftex-plug-into-AUCTeX t)
-  (reftex-save-parse-info t)
-  (reftex-use-multiple-selection-buffers t)
-  :hook
-  (TeX-mode . turn-on-reftex))
-
-(use-package markdown-mode
-  :ensure t
-  :config
-  (setopt markdown-fontify-code-blocks-natively t)
-  (setopt markdown-enable-wiki-links t)
-  (setopt markdown-enable-math t)
-  :hook
-  (markdown-mode . cdlatex-mode))
-
-(use-package ispell
-  :config
-  (setq ispell-program-name "hunspell")
-  (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
-  (setq ispell-dictionary "acamedic,bokmaal")
-  (ispell-set-spellchecker-params)
-  (ispell-hunspell-add-multi-dic "acamedic,bokmaal"))
-
-(use-package flyspell
-  :hook
-  ((text-mode . flyspell-mode)
-   (prog-mode . flyspell-prog-mode)))
-
-(use-package flyspell-correct
-  :ensure t
-  :after flyspell
-  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
-
-(use-package adaptive-wrap
-  :ensure t
-  :hook
-  (text-mode . visual-line-mode)
-  (markdown-mode . adaptive-wrap-prefix-mode)
-  (latex-mode . adaptive-wrap-prefix-mode))
-
 (use-package tab-bar
   :custom
   (tab-bar-close-button-show nil)
@@ -409,10 +435,16 @@
   (tab-bar-separator "  ")
   (tab-bar-show t)
   (tab-bar-tab-hints t)
-  :bind
-  ("s-[" . tab-bar-history-back)
-  ("s-]" . tab-bar-history-forward)
+  :bind*
+  ("C-c [" . tab-bar-history-back)
+  ("C-c ]" . tab-bar-history-forward)
   :config
+  ;; Rename new tabs interactively.
+  (defun jabirali/rename-tab (&rest _)
+    (call-interactively #'tab-bar-rename-tab))
+  (add-hook 'tab-bar-tab-post-open-functions #'jabirali/rename-tab)
+
+  ;; Enable the mode globally.
   (tab-bar-mode 1)
   (tab-bar-history-mode 1))
 
@@ -440,18 +472,6 @@
   :after eglot
   :bind (:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
   :hook (eglot-managed-mode . company-mode))
-
-;; (use-package copilot
-;;   :vc (:url "https://github.com/copilot-emacs/copilot.el" :rev "main")
-;;   :custom
-;;   (copilot-idle-delay 1)
-;;   ;; :hook
-;;   ;; (prog-mode . copilot-mode)
-;;   :bind
-;;   (:map copilot-mode-map
-;;         ("M-RET" . copilot-accept-completion)
-;;         ("M-n"   . copilot-next-completion)
-;;         ("M-p"   . copilot-previous-completion)))
 
 (use-package diredfl
   :ensure t
@@ -495,9 +515,6 @@
 (use-package iedit
   :ensure t)
 
-(use-package julia-mode
-  :ensure t)
-
 (use-package magit
   :ensure t
   :bind
@@ -509,27 +526,16 @@
   (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
   (keymap-set project-prefix-map "m" #'magit-project-status))
 
-;; (use-package matlab
-;;   :ensure matlab-mode)
-
-;; (use-package openwith
-;;   :ensure t
-;;   :config
-;;   (setq openwith-associations
-;;         '(("\\.\\(png\\|jpg\\|svg\\)$" "qlmanage -p" (file))
-;;           ("\\.\\(pdf\\|docx\\|xlsx\\|pptx\\)$" "open" (file))))
-;;   (openwith-mode 1))
-
 ;; (use-package orderless
 ;;   :ensure t
 ;;   :custom
 ;;   (completion-styles '(orderless basic))
 ;;   (completion-category-overrides '((file (styles basic partial-completion)))))
 
-(use-package outshine
-  :ensure t
-  :hook
-  (prog-mode . outshine-mode))
+;; (use-package outshine
+;;   :ensure t
+;;   :hook
+;;   (prog-mode . outshine-mode))
 
 (use-package prescient
   :ensure t)
@@ -559,33 +565,10 @@
   :config
   (vertico-prescient-mode 1))
 
-;; (use-package vertico-posframe
-;;   :ensure t
-;;   :after vertico
-;;   :custom
-;;   (vertico-posframe-poshandler 'posframe-poshandler-frame-top-center)
-;;   (vertico-posframe-width 70)
-;;   (vertico-posframe-border-width 2)
-;;   :config
-;;   (vertico-posframe-mode 1))
-
 (use-package which-key
   :ensure t
   :config
   (which-key-mode 1))
-
-(use-package xclip
-  :ensure t
-  :config
-  (xclip-mode 1))
-
-;; (use-package xenops
-;;   :ensure t
-;;   :custom
-;;   (xenops-image-width 350)
-;;   :hook
-;;   (org-mode . xenops-mode)
-;;   (LaTeX-mode . xenops-mode))
 
 (use-package yasnippet
   :ensure t
