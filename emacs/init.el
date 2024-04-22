@@ -38,7 +38,7 @@
   ;; Switch to the selected font.
   (set-frame-font FONT :frames t)
   ;; Use my customizations when loading themes.
-  (advice-add 'load-theme :after #'jabirali/theme-override)
+  (advice-add 'load-theme :after #'+theme-override)
   ;; Don't indicate long or wrapped lines.
   (set-display-table-slot standard-display-table 'truncation ? )
   (set-display-table-slot standard-display-table 'wrap ? )
@@ -78,22 +78,22 @@
 ;; This section is for custom function definitions. They are referred
 ;; to throughout the configuration sections below, and therefore need
 ;; to be defined quite early in the `init.el' file.
-(defun jabirali/eglot-project-ensure ()
+(defun +eglot-project-ensure ()
   "Enable Eglot iff the current buffer belongs to a project."
   (if (project-current) (eglot-ensure)))
-(defun jabirali/org-find-file ()
+(defun +org-find-file ()
   "Open one of my Org files (or create a new one)."
   (interactive)
   (let ((default-directory org-directory))
     (find-file (completing-read "Org: " (directory-files "." nil "\\.org$")))))
-(defun jabirali/science-definition-lookup ()
+(defun +science-definition-lookup ()
   "Look up a scientific definition using a ChatGPT wrapper."
   (interactive)
   (let* ((query (buffer-substring (region-beginning) (region-end)))
          (encoded-query (url-encode-url query))
          (search-url "https://chat.openai.com/g/g-Kihf3Sccx-science-definitions?q="))
     (browse-url (concat search-url encoded-query))))
-(defun jabirali/theme-override (&rest _)
+(defun +theme-override (&rest _)
   "Override the current theme for a consistent and minimal look."
   (let ((bg0 (face-attribute 'default :background))
         (bg1 (face-attribute 'mode-line :background))
@@ -110,7 +110,7 @@
     (set-face-attribute 'scroll-bar nil :foreground bg2 :background bg2)
     (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)
     (set-face-italic-p 'font-lock-comment-face nil)))
-(defun jabirali/url-handler-zotero (link)
+(defun +url-handler-zotero (link)
   "Open a zotero:// link in the Zotero desktop app."
   (start-process "zotero_open" nil "open" (concat "zotero:" link)))
 
@@ -119,14 +119,14 @@
   :ensure t
   :config
   (set-face-attribute 'aw-leading-char-face nil :height 1)
-  (defun jabirali/other-window-dwim ()
+  (defun +other-window-dwim ()
     "Select either the minibuffer or an arbitrary visible window."
     (interactive)
     (if (active-minibuffer-window)
         (select-window (active-minibuffer-window))
       (call-interactively #'ace-window)))
   :bind
-  ("M-o" . jabirali/other-window-dwim))
+  ("M-o" . +other-window-dwim))
 (use-package adaptive-wrap
   :ensure t
   :hook
@@ -171,7 +171,7 @@
   (eldoc-echo-area-prefer-doc-buffer t)
   (eldoc-echo-area-use-multiline-p nil)
   :hook
-  (python-mode . jabirali/eglot-project-ensure)
+  (python-mode . +eglot-project-ensure)
   :bind
   ("<f2>" . eglot-rename))
 (use-package evil
@@ -280,13 +280,14 @@
   :ensure t
   :after python
   :config
-  (defun jabirali/jupyter-python ()
+  (defun +jupyter-python ()
+	"Start Jupyter with a Python3 kernel."
     (interactive)
     (jupyter-run-repl "python3" "py" t)
     (message "Jupyter kernel started!"))
   :bind
   (:map python-mode-map
-        ("C-c C-c" . jabirali/jupyter-python)))
+        ("C-c C-c" . +jupyter-python)))
 (use-package magit
   :ensure t
   :bind
@@ -307,10 +308,6 @@
   (markdown-mode . cdlatex-mode))
 (use-package matlab
   :ensure matlab-mode)
-;; (use-package outshine
-;;   :ensure t
-;;   :hook
-;;   (prog-mode . outshine-mode))
 (use-package org
   :custom
   (org-adapt-indentation nil)
@@ -343,7 +340,7 @@
      (sequence "WAIT(w)" "HOLD(h)" "READ(r)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
   :config
   (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
-  (org-link-set-parameters "zotero" :follow #'jabirali/url-handler-zotero))
+  (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
 (use-package org-download
   :ensure t
   :after org
@@ -353,13 +350,13 @@
   (org-download-heading-lvl nil)
   (org-download-timestamp "%Y%m%d%H%M%S")
   :config
-  (defun jabirali/org-download-file-format (filename)
+  (defun +org-download-file-format (filename)
     "Purely date-based naming of attachments."
     (concat
      (format-time-string org-download-timestamp)
      "."
      (file-name-extension filename)))
-  (setq org-download-file-format-function #'jabirali/org-download-file-format)
+  (setq org-download-file-format-function #'+org-download-file-format)
   (setq org-download-annotate-function (lambda (_link) ""))
   (org-download-enable)
   :bind (:map org-mode-map
@@ -462,7 +459,7 @@
 
 ;;; Keybindings:
 (bind-key "<f5>" #'sort-lines)
-(bind-key "<f12>" #'jabirali/science-definition-lookup)
+(bind-key "<f12>" #'+science-definition-lookup)
 
 (mmap                                           ; Motion map
   "^" 'dired-jump)
