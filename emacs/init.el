@@ -1,3 +1,4 @@
+;;; Core
 (use-package use-package
   :custom
   (native-comp-async-report-warnings-errors nil)
@@ -5,7 +6,6 @@
   (use-package-always-demand t)
   :config
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
-
 (use-package emacs
   :custom
   (auto-save-default nil)
@@ -28,13 +28,13 @@
   (xterm-set-window-title t)
   :custom-face
   (default ((t (:family "JetBrains Mono NL" :height 140))))
-  :bind
-  ("C-\\" . activate-transient-input-method)
-  ("<f5>" . sort-lines)
   :config
   ;; Don't indicate long or wrapped lines.
   (set-display-table-slot standard-display-table 'truncation ? )
   (set-display-table-slot standard-display-table 'wrap ? )
+  ;; Make ANSI and ISO keyboards more similar.
+  (define-key key-translation-map (kbd "§") (kbd "`"))
+  (define-key key-translation-map (kbd "±") (kbd "~"))
   ;; Turn on some useful default modes.
   (global-auto-revert-mode 1)
   (recentf-mode 1)
@@ -46,54 +46,13 @@
     (fringe-mode 1)
     (tooltip-mode -1)
     (tool-bar-mode -1)
-    (scroll-bar-mode -1)))
-
+    (scroll-bar-mode -1))
+  ;; Disable italics globally.
+  (set-face-italic-p 'italic nil))
 (use-package exec-path-from-shell
+  ;; Install: (package-vc-install "https://github.com/purcell/exec-path-from-shell")
   :config
   (exec-path-from-shell-initialize))
-
-(set-face-italic-p 'italic nil)
-
-;; (use-package kkp
-;;  :ensure t
-;;  :custom
-;;  (kkp-super-modifier 'meta)
-;;  :config
-;;  (global-kkp-mode +1))
-
-;; (setopt mouse-wheel-follow-mouse t)
-;; (setopt mouse-wheel-progressive-speed nil)
-;; (mouse-wheel-mode 1)
-;; (xterm-mouse-mode 1)
-
-;; (use-package xclip
-;;   :ensure t
-;;   :config
-;;   (xclip-mode 1))
-
-;; (use-package evil-terminal-cursor-changer
-;;   :ensure t
-;;   :after evil
-;;   :config
-;;   (evil-terminal-cursor-changer-activate))
-
-(use-package ultra-scroll-mac
-  :ensure t
-  :if (eq window-system 'mac)
-  :init
-  (setq scroll-conservatively 101)
-  (setq scroll-margin 0) 
-  :config
-  (ultra-scroll-mac-mode 1))
-
-(setopt mouse-highlight nil)
-
-(setopt mac-command-modifier 'meta)
-(setopt mac-option-modifier 'option)
-
-(define-key key-translation-map (kbd "§") (kbd "`"))
-(define-key key-translation-map (kbd "±") (kbd "~"))
-
 (use-package server
   :custom
   (server-use-tcp t)
@@ -101,6 +60,106 @@
   :config
   (server-mode 1))
 
+;;; Functions
+(defun jabirali/science-definition-lookup ()
+  "Look up a scientific definition using a ChatGPT wrapper."
+  (interactive)
+  (let* ((query (buffer-substring (region-beginning) (region-end)))
+         (encoded-query (url-encode-url query))
+         (search-url "https://chat.openai.com/g/g-Kihf3Sccx-science-definitions?q="))
+    (browse-url (concat search-url encoded-query))))
+(defun jabirali/org-find-file ()
+  "Open one of my Org files (or create a new one)."
+  (interactive)
+  (let ((default-directory org-directory))
+    (find-file (completing-read "Org: " (directory-files "." nil "\\.org$")))))
+(defun jabirali/eglot-project-ensure ()
+  "Enable Eglot iff the current buffer belongs to a project."
+  (if (project-current) (eglot-ensure)))
+(defun jabirali/theme-override (&rest _)
+  "Override the current theme for a consistent and minimal look."
+  (let ((bg0 (face-attribute 'default :background))
+        (bg1 (face-attribute 'mode-line :background))
+        (bg2 (face-attribute 'mode-line :background))
+        (fg0 (face-attribute 'default :foreground))
+        (fg1 (face-attribute 'mode-line :foreground))
+        (fg2 (face-attribute 'mode-line-inactive :foreground)))
+    (set-face-attribute 'tab-bar nil :foreground bg2 :background bg2 :box `(:line-width 6 :color ,bg2))
+    (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg2 :box `(:line-width 6 :color ,bg2))
+    (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg2 :box `(:line-width 6 :color ,bg2))
+    (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
+    (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
+    (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
+    (set-face-attribute 'scroll-bar nil :foreground bg2 :background bg2)
+    (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)
+    (set-face-italic-p 'font-lock-comment-face nil)))
+(defun jabirali/url-handler-zotero (link)
+  "Open a zotero:// link in the Zotero desktop app."
+  (start-process "zotero_open" nil "open" (concat "zotero:" link)))
+
+;;; Advice
+(advice-add 'load-theme :after #'jabirali/theme-override)
+
+;;; Packages
+(use-package ace-window
+  :ensure t
+  :config
+  (set-face-attribute 'aw-leading-char-face nil :height 1)
+  (defun jabirali/other-window-dwim ()
+    "Select either the minibuffer or an arbitrary visible window."
+    (interactive)
+    (if (active-minibuffer-window)
+        (select-window (active-minibuffer-window))
+      (call-interactively #'ace-window)))
+  :bind
+  ("M-o" . jabirali/other-window-dwim))
+(use-package adaptive-wrap
+  :ensure t
+  :hook
+  (text-mode . visual-line-mode)
+  (markdown-mode . adaptive-wrap-prefix-mode)
+  (latex-mode . adaptive-wrap-prefix-mode))
+(use-package cdlatex
+  :ensure t
+  :hook
+  ((TeX-mode . turn-on-cdlatex)
+   (org-mode . turn-on-org-cdlatex)))
+(use-package company
+  :ensure t
+  :after eglot
+  ;;:bind (:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
+  :hook (eglot-managed-mode . company-mode))
+(use-package diredfl
+  :ensure t
+  :after dired
+  :config
+  (diredfl-global-mode 1))
+(use-package doom-modeline
+  :ensure t
+  :custom
+  (doom-modeline-bar-width 0.1)
+  (doom-modeline-buffer-encoding nil)
+  (doom-modeline-buffer-modification-icon nil)
+  (doom-modeline-env-enable-python nil)
+  (doom-modeline-icon nil)
+  (doom-modeline-modal nil)
+  (doom-modeline-position-line-format nil)
+  (doom-modeline-time nil)
+  (doom-modeline-workspace-name nil)
+  :config
+  (doom-modeline-mode 1))
+(use-package ef-themes
+  :ensure t
+  :config
+  (load-theme 'ef-melissa-light t))
+(use-package eglot
+  :custom
+  (eldoc-echo-area-prefer-doc-buffer t)
+  (eldoc-echo-area-use-multiline-p nil)
+  :hook
+  (python-mode . jabirali/eglot-project-ensure)
+  :bind
+  ("<f2>" . eglot-rename))
 (use-package evil
   :ensure t
   :custom
@@ -115,32 +174,127 @@
   (define-key evil-motion-state-map (kbd "SPC") nil)
   (define-key evil-motion-state-map (kbd "RET") nil)
   (define-key evil-motion-state-map (kbd "TAB") nil))
-
 (use-package evil-collection
   :ensure t
   :after evil
   :config
   (evil-collection-init))
-
 (use-package evil-org
   :ensure t
   :after (evil org)
   :hook (org-mode . evil-org-mode))
-
 (use-package evil-org-agenda
   :after evil-org
   :config (evil-org-agenda-set-keys))
-
-(use-package evil-tex
-  :ensure t
-  :hook
-  (LaTeX-mode . evil-tex-mode))
-
 (use-package evil-surround
   :ensure t
   :config
   (global-evil-surround-mode 1))
-
+(use-package evil-tex
+  :ensure t
+  :hook
+  (LaTeX-mode . evil-tex-mode))
+(use-package expand-region
+  :bind*
+  ("C-c RET" . er/expand-region)
+  :ensure t)
+(use-package flymake-ruff
+  :ensure t
+  :hook
+  (python-mode . flymake-mode)
+  (python-mode . flymake-ruff-load))
+(use-package flyspell
+  :after ispell
+  :hook
+  ((text-mode . flyspell-mode)
+   (prog-mode . flyspell-prog-mode)))
+(use-package flyspell-correct
+  :ensure t
+  :after flyspell
+  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+(use-package format-all
+  :ensure t
+  :hook
+  (python-mode . format-all-mode)
+  :config
+  (setq-default format-all-formatters
+                '(("Python" (isort) (ruff) (black)))))
+(use-package general
+  :ensure t
+  :after evil
+  :config
+  (general-evil-setup t)
+  (general-override-mode 1)
+  (general-create-definer gmap
+    :keymaps 'override
+    :states '(motion normal visual)
+    :prefix "SPC")
+  (general-create-definer lmap
+    :keymaps 'override
+    :states '(motion normal visual)
+    :prefix ","))
+(use-package gnuplot
+  :ensure t)
+(use-package hl-todo
+  :ensure t
+  :hook
+  (prog-mode . hl-todo-mode))
+(use-package hideshow
+  :hook
+  (prog-mode . hs-minor-mode))
+(use-package idle-org-agenda
+  :ensure t
+  :after org-agenda
+  :custom
+  (idle-org-agenda-interval 3600)
+  :config
+  (idle-org-agenda-mode 1))
+(use-package iedit
+  :ensure t)
+(use-package ispell
+  :config
+  (setq ispell-program-name "hunspell")
+  (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
+  (setq ispell-dictionary "en_US,nb_NO")
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
+(use-package julia-mode
+  :ensure t)
+(use-package jupyter
+  :ensure t
+  :after python
+  :config
+  (defun jabirali/jupyter-python ()
+    (interactive)
+    (jupyter-run-repl "python3" "py" t)
+    (message "Jupyter kernel started!"))
+  :bind
+  (:map python-mode-map
+        ("C-c C-c" . jabirali/jupyter-python)))
+(use-package magit
+  :ensure t
+  :bind
+  (:map magit-status-mode-map ("SPC" . nil))
+  :custom
+  (magit-diff-refine-hunk 'all)
+  :config
+  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+  (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
+  (keymap-set project-prefix-map "m" #'magit-project-status))
+(use-package markdown-mode
+  :ensure t
+  :config
+  (setopt markdown-fontify-code-blocks-natively t)
+  (setopt markdown-enable-wiki-links t)
+  (setopt markdown-enable-math t)
+  :hook
+  (markdown-mode . cdlatex-mode))
+(use-package matlab
+  :ensure matlab-mode)
+(use-package outshine
+  :ensure t
+  :hook
+  (prog-mode . outshine-mode))
 (use-package org
   :custom
   (org-adapt-indentation nil)
@@ -175,8 +329,7 @@
 \\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},
  pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true}\n")
   (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
-  (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
-
+  (org-link-set-parameters "zotero" :follow #'jabirali/url-handler-zotero))
 (use-package org-download
   :ensure t
   :after org
@@ -186,18 +339,17 @@
   (org-download-heading-lvl nil)
   (org-download-timestamp "%Y%m%d%H%M%S")
   :config
-  (defun +org-download-file-format (filename)
+  (defun jabirali/org-download-file-format (filename)
     "Purely date-based naming of attachments."
     (concat
      (format-time-string org-download-timestamp)
      "."
      (file-name-extension filename)))
-  (setq org-download-file-format-function #'+org-download-file-format)
+  (setq org-download-file-format-function #'jabirali/org-download-file-format)
   (setq org-download-annotate-function (lambda (_link) ""))
   (org-download-enable)
   :bind (:map org-mode-map
               ("M-V" . org-download-clipboard)))
-
 (use-package org-super-agenda
   :ensure t
   :custom
@@ -205,44 +357,19 @@
   :config
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode 1))
-
-(use-package idle-org-agenda
-  :ensure t
-  :after org-agenda
-  :custom
-  (idle-org-agenda-interval 3600)
-  :config
-  (idle-org-agenda-mode 1))
-
 (use-package ox-pandoc
   :ensure t)
-
-(use-package markdown-mode
+(use-package persistent-scratch
+  :after (org evil)
   :ensure t
   :config
-  (setopt markdown-fontify-code-blocks-natively t)
-  (setopt markdown-enable-wiki-links t)
-  (setopt markdown-enable-math t)
-  :hook
-  (markdown-mode . cdlatex-mode))
-
-(use-package tex
-  :ensure auctex
+  (persistent-scratch-autosave-mode 1))
+(use-package prescient
+  :ensure t)
+(use-package python
   :custom
-  (font-latex-fontify-script nil)
-  (TeX-auto-save t)
-  (TeX-source-correlate-method 'synctex)
-  (TeX-source-correlate-mode t)
-  (TeX-source-correlate-start-server t)
-  (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
-  (TeX-view-program-selection '((output-pdf "Skim"))))
-
-(use-package cdlatex
-  :ensure t
-  :hook
-  ((TeX-mode . turn-on-cdlatex)
-   (org-mode . turn-on-org-cdlatex)))
-
+  (python-indent-guess-indent-offset t)  
+  (python-indent-guess-indent-offset-verbose nil))
 (use-package reftex
   :ensure t
   :after tex
@@ -254,154 +381,10 @@
   (reftex-use-multiple-selection-buffers t)
   :hook
   (TeX-mode . turn-on-reftex))
-
-;; (use-package xenops
-;;   :ensure t
-;;   :custom
-;;   (xenops-image-width 350)
-;;   :hook
-;;   (org-mode . xenops-mode)
-;;   (LaTeX-mode . xenops-mode))
-
-(use-package ispell
-  :config
-  (setq ispell-program-name "hunspell")
-  (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
-  (setq ispell-dictionary "en_US,nb_NO")
-  (ispell-set-spellchecker-params)
-  (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
-
-(use-package flyspell
-  :hook
-  ((text-mode . flyspell-mode)
-   (prog-mode . flyspell-prog-mode)))
-
-(use-package flyspell-correct
+(use-package swiper
   :ensure t
-  :after flyspell
-  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
-
-(use-package adaptive-wrap
-  :ensure t
-  :hook
-  (text-mode . visual-line-mode)
-  (markdown-mode . adaptive-wrap-prefix-mode)
-  (latex-mode . adaptive-wrap-prefix-mode))
-
-(use-package eglot
-  :custom
-  (eldoc-echo-area-prefer-doc-buffer t)
-  (eldoc-echo-area-use-multiline-p nil)
-  :hook
-  (python-mode . +eglot-project-ensure)
   :bind
-  ("<f2>" . eglot-rename))
-
-(use-package format-all
-  :ensure t
-  :hook
-  (python-mode . format-all-mode)
-  :config
-  (setq-default format-all-formatters
-                '(("Python" (isort) (ruff) (black)))))
-
-;; (use-package treesit-auto
-;;   :ensure t
-;;   :custom
-;;   (treesit-auto-install 'prompt)
-;;   :config
-;;   (treesit-auto-add-to-auto-mode-alist 'all)
-;;   (global-treesit-auto-mode))
-
-;; (use-package copilot
-;;   :vc (:url "https://github.com/copilot-emacs/copilot.el" :rev "main")
-;;   :custom
-;;   (copilot-idle-delay 1)
-;;   ;; :hook
-;;   ;; (prog-mode . copilot-mode)
-;;   :bind
-;;   (:map copilot-mode-map
-;;         ("M-RET" . copilot-accept-completion)
-;;         ("M-n"   . copilot-next-completion)
-;;         ("M-p"   . copilot-previous-completion)))
-
-(use-package python
-  :custom
-  (python-indent-guess-indent-offset t)  
-  (python-indent-guess-indent-offset-verbose nil))
-
-(use-package jupyter
-  :ensure t
-  :config
-  (defun jabirali/jupyter-python ()
-    (interactive)
-    (jupyter-run-repl "python3" "py" t)
-    (message "Jupyter kernel started!"))
-  :bind
-  (:map python-mode-map
-        ("C-c C-c" . jabirali/jupyter-python)))
-
-(use-package flymake-ruff
-  :ensure t
-  :hook
-  (python-mode . flymake-mode)
-  (python-mode . flymake-ruff-load))
-
-(use-package julia-mode
-  :ensure t)
-
-(use-package matlab
-  :ensure matlab-mode)
-
-(defun jabirali/science-definition-lookup ()
-  "Look up a scientific definition using a ChatGPT wrapper."
-  (interactive)
-  (let* ((query (buffer-substring (region-beginning) (region-end)))
-         (encoded-query (url-encode-url query))
-         (search-url "https://chat.openai.com/g/g-Kihf3Sccx-science-definitions?q="))
-    (browse-url (concat search-url encoded-query))))
-
-(bind-key "<f12>" #'jabirali/science-definition-lookup)
-
-(defun +org-find-file ()
-  "Open one of my Org files (or create a new one)."
-  (interactive)
-  (let ((default-directory org-directory))
-    (find-file (completing-read "Org: " (directory-files "." nil "\\.org$")))))
-
-(defun +eglot-project-ensure ()
-  "Enable Eglot iff the current buffer belongs to a project."
-  (if (project-current) (eglot-ensure)))
-
-(defun +theme-override (&rest _)
-  "Override the current theme for a consistent and minimal look."
-  (let ((bg0 (face-attribute 'default :background))
-        (bg1 (face-attribute 'mode-line :background))
-        (bg2 (face-attribute 'mode-line :background))
-        (fg0 (face-attribute 'default :foreground))
-        (fg1 (face-attribute 'mode-line :foreground))
-        (fg2 (face-attribute 'mode-line-inactive :foreground)))
-    (set-face-attribute 'tab-bar nil :foreground bg2 :background bg2 :box `(:line-width 6 :color ,bg2))
-    (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg2 :box `(:line-width 6 :color ,bg2))
-    (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg2 :box `(:line-width 6 :color ,bg2))
-    (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
-    (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
-    (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
-    (set-face-attribute 'scroll-bar nil :foreground bg2 :background bg2)
-    (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)
-    (set-face-italic-p 'font-lock-comment-face nil)))
-
-(advice-add 'load-theme :after #'+theme-override)
-
-;; (use-package spacious-padding
-;;   :ensure t
-;;   :config
-;;   (spacious-padding-mode 1))
-
-(defun +url-handler-zotero (link)
-  "Open a zotero:// link in the Zotero desktop app."
-  (start-process "zotero_open" nil "open" (concat "zotero:" link)))
-
+  ("C-s" . swiper))
 (use-package tab-bar
   :custom
   (tab-bar-close-button-show nil)
@@ -422,110 +405,31 @@
   ;; Enable the mode globally.
   (tab-bar-mode 1)
   (tab-bar-history-mode 1))
-
-(use-package persistent-scratch
-  :after (org evil)
-  :ensure t
-  :config
-  (persistent-scratch-autosave-mode 1))
-
-(use-package ace-window
-  :ensure t
-  :config
-  (set-face-attribute 'aw-leading-char-face nil :height 1)
-  (defun +other-window-dwim ()
-    "Select either the minibuffer or an arbitrary visible window."
-    (interactive)
-    (if (active-minibuffer-window)
-        (select-window (active-minibuffer-window))
-      (call-interactively #'ace-window)))
-  :bind
-  ("M-o" . +other-window-dwim))
-
-(use-package company
-  :ensure t
-  :after eglot
-  :bind (:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
-  :hook (eglot-managed-mode . company-mode))
-
-(use-package diredfl
-  :ensure t
-  :after dired
-  :config
-  (diredfl-global-mode 1))
-
-(use-package doom-modeline
-  :ensure t
+(use-package tex
+  :ensure auctex
   :custom
-  (doom-modeline-bar-width 0.1)
-  (doom-modeline-buffer-encoding nil)
-  (doom-modeline-buffer-modification-icon nil)
-  (doom-modeline-env-enable-python nil)
-  (doom-modeline-icon nil)
-  (doom-modeline-modal nil)
-  (doom-modeline-position-line-format nil)
-  (doom-modeline-time nil)
-  (doom-modeline-workspace-name nil)
+  (font-latex-fontify-script nil)
+  (TeX-auto-save t)
+  (TeX-source-correlate-method 'synctex)
+  (TeX-source-correlate-mode t)
+  (TeX-source-correlate-start-server t)
+  (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
+  (TeX-view-program-selection '((output-pdf "Skim"))))
+(use-package ultra-scroll-mac
+  ;; Installation:
+  ;; (package-vc-install "https://github.com/jdtsmith/ultra-scroll-mac.git")
+  :ensure t
+  :if (eq window-system 'mac)
+  :init
+  (setq scroll-conservatively 101)
+  (setq scroll-margin 0) 
   :config
-  (doom-modeline-mode 1))
-
-(use-package ef-themes
-  :ensure t
-  :config
-  (load-theme 'ef-melissa-light t))
-
-(use-package expand-region
-  :bind*
-  ("C-c RET" . er/expand-region)
-  :ensure t)
-
-(use-package gnuplot
-  :ensure t)
-
-(use-package hl-todo
-  :ensure t
-  :hook
-  (prog-mode . hl-todo-mode))
-
-(use-package iedit
-  :ensure t)
-
-(use-package magit
-  :ensure t
-  :bind
-  (:map magit-status-mode-map ("SPC" . nil))
-  :custom
-  (magit-diff-refine-hunk 'all)
-  :config
-  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
-  (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
-  (keymap-set project-prefix-map "m" #'magit-project-status))
-
-;; (use-package orderless
-;;   :ensure t
-;;   :custom
-;;   (completion-styles '(orderless basic))
-;;   (completion-category-overrides '((file (styles basic partial-completion)))))
-
-;; (use-package outshine
-;;   :ensure t
-;;   :hook
-;;   (prog-mode . outshine-mode))
-
-(use-package prescient
-  :ensure t)
-
-(use-package swiper
-  :ensure t
-  :bind
-  ("C-s" . swiper))
-
+  (ultra-scroll-mac-mode 1))
 (use-package vertico
   :ensure t
   :config
   (vertico-mode 1)
   (vertico-mouse-mode 1))
-
 (use-package vertico-directory
   :after vertico
   :bind (:map vertico-map
@@ -533,44 +437,28 @@
               ("DEL"   . vertico-directory-delete-char)
               ("M-DEL" . vertico-directory-delete-word))
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
-
 (use-package vertico-prescient
   :ensure t
   :after (vertico prescient)
   :config
   (vertico-prescient-mode 1))
-
 (use-package which-key
   :ensure t
   :config
   (which-key-mode 1))
-
 (use-package yasnippet
   :ensure t
   :config
   (yas-global-mode 1))
 
-(use-package general
-  :ensure t
-  :after evil
-  :config
-  (general-evil-setup t)
-  (general-override-mode 1)
-  (general-create-definer gmap
-    :keymaps 'override
-    :states '(motion normal visual)
-    :prefix "SPC")
-  (general-create-definer lmap
-    :keymaps 'override
-    :states '(motion normal visual)
-    :prefix ","))
+;;; Keybindings
+(bind-key "<f5>" #'sort-lines)
+(bind-key "<f12>" #'jabirali/science-definition-lookup)
 
 (mmap                                           ; Motion map
   "^" 'dired-jump)
-
 (vmap                                           ; Visual map
   "ii" 'er/expand-region)
-
 (gmap                                           ; Space menu
   "SPC" '(execute-extended-command :which-key "cmd")
   "1" '(tab-bar-select-tab :which-key "1")
@@ -601,7 +489,6 @@
   "t" '(tab-bar-new-tab :which-key "tab")
   "w" `(,evil-window-map :which-key "window")
   "y" '(clone-indirect-buffer-other-window :which-key "indirect"))
-
 (lmap                                           ; Major modes
   "," (general-key "C-c C-c")
   "a" (general-key "C-c C-a")
@@ -630,7 +517,6 @@
   "x" (general-key "C-c C-x")
   "y" (general-key "C-c C-y")
   "z" (general-key "C-c C-z"))
-
 (lmap                                           ; Minor modes
   "!"  (general-key "C-c !" )
   "\"" (general-key "C-c \"")

@@ -1,4 +1,0 @@
-#!/usr/bin/env emacs --script
-
-(require 'org)
-(org-babel-tangle-file "~/.config/emacs/config.org")
