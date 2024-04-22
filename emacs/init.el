@@ -1,4 +1,4 @@
-;;; Core
+;;; Core:
 (use-package use-package
   :custom
   (native-comp-async-report-warnings-errors nil)
@@ -49,6 +49,10 @@
     (scroll-bar-mode -1))
   ;; Disable italics globally.
   (set-face-italic-p 'italic nil))
+(use-package gcmh
+  :ensure t
+  :config
+  (gcmh-mode 1))
 (use-package exec-path-from-shell
   ;; Install: (package-vc-install "https://github.com/purcell/exec-path-from-shell")
   :config
@@ -60,7 +64,15 @@
   :config
   (server-mode 1))
 
-;;; Functions
+;;; Functions:
+(defun jabirali/eglot-project-ensure ()
+  "Enable Eglot iff the current buffer belongs to a project."
+  (if (project-current) (eglot-ensure)))
+(defun jabirali/org-find-file ()
+  "Open one of my Org files (or create a new one)."
+  (interactive)
+  (let ((default-directory org-directory))
+    (find-file (completing-read "Org: " (directory-files "." nil "\\.org$")))))
 (defun jabirali/science-definition-lookup ()
   "Look up a scientific definition using a ChatGPT wrapper."
   (interactive)
@@ -68,14 +80,6 @@
          (encoded-query (url-encode-url query))
          (search-url "https://chat.openai.com/g/g-Kihf3Sccx-science-definitions?q="))
     (browse-url (concat search-url encoded-query))))
-(defun jabirali/org-find-file ()
-  "Open one of my Org files (or create a new one)."
-  (interactive)
-  (let ((default-directory org-directory))
-    (find-file (completing-read "Org: " (directory-files "." nil "\\.org$")))))
-(defun jabirali/eglot-project-ensure ()
-  "Enable Eglot iff the current buffer belongs to a project."
-  (if (project-current) (eglot-ensure)))
 (defun jabirali/theme-override (&rest _)
   "Override the current theme for a consistent and minimal look."
   (let ((bg0 (face-attribute 'default :background))
@@ -97,10 +101,10 @@
   "Open a zotero:// link in the Zotero desktop app."
   (start-process "zotero_open" nil "open" (concat "zotero:" link)))
 
-;;; Advice
+;;; Advice:
 (advice-add 'load-theme :after #'jabirali/theme-override)
 
-;;; Packages
+;;; Packages:
 (use-package ace-window
   :ensure t
   :config
@@ -244,7 +248,7 @@
   (prog-mode . hs-minor-mode))
 (use-package idle-org-agenda
   :ensure t
-  :after org-agenda
+  :after org
   :custom
   (idle-org-agenda-interval 3600)
   :config
@@ -252,6 +256,8 @@
 (use-package iedit
   :ensure t)
 (use-package ispell
+  ;; Remember to install Hunspell dictionaries into ~/Library/Spelling.
+  ;; Download dictionaries from: https://github.com/wooorm/dictionaries
   :config
   (setq ispell-program-name "hunspell")
   (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
@@ -283,10 +289,10 @@
   (keymap-set project-prefix-map "m" #'magit-project-status))
 (use-package markdown-mode
   :ensure t
-  :config
-  (setopt markdown-fontify-code-blocks-natively t)
-  (setopt markdown-enable-wiki-links t)
-  (setopt markdown-enable-math t)
+  :custom
+  (markdown-fontify-code-blocks-natively t)
+  (markdown-enable-wiki-links t)
+  (markdown-enable-math t)
   :hook
   (markdown-mode . cdlatex-mode))
 (use-package matlab
@@ -299,11 +305,11 @@
   :custom
   (org-adapt-indentation nil)
   (org-agenda-files (list org-directory))
-  (org-agenda-window-setup 'only-window)
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-scheduled-if-done t)
   (org-agenda-span 'day)
   (org-agenda-start-on-weekday nil)
+  (org-agenda-window-setup 'only-window)
   (org-archive-location "::* Archive")
   (org-babel-results-keyword "results")
   (org-confirm-babel-evaluate nil)
@@ -312,6 +318,10 @@
   (org-fontify-quote-and-verse-blocks t)
   (org-highlight-latex-and-related '(native latex script entities))
   (org-image-actual-width '(400))
+  (org-latex-engraved-theme 'ef-melissa-light)
+  (org-latex-hyperref-template "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true}\n")
+  (org-latex-packages-alist '(("" "microtype" t)))
+  (org-latex-src-block-backend 'engraved)
   (org-pretty-entities t)
   (org-pretty-entities-include-sub-superscripts nil)
   (org-return-follows-link t)
@@ -322,12 +332,6 @@
    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
      (sequence "WAIT(w)" "HOLD(h)" "READ(r)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
   :config
-  (setopt org-latex-src-block-backend 'engraved)
-  (setopt org-latex-engraved-theme 'ef-melissa-light)
-  (setopt org-latex-packages-alist '(("" "microtype" t)))
-  (setopt org-latex-hyperref-template "
-\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},
- pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true}\n")
   (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
   (org-link-set-parameters "zotero" :follow #'jabirali/url-handler-zotero))
 (use-package org-download
@@ -352,6 +356,7 @@
               ("M-V" . org-download-clipboard)))
 (use-package org-super-agenda
   :ensure t
+  :after org
   :custom
   (org-super-agenda-groups '((:auto-parent t)))
   :config
@@ -397,12 +402,6 @@
   ("C-c [" . tab-bar-history-back)
   ("C-c ]" . tab-bar-history-forward)
   :config
-  ;; Rename new tabs interactively.
-  (defun jabirali/rename-tab (&rest _)
-    (call-interactively #'tab-bar-rename-tab))
-  (add-hook 'tab-bar-tab-post-open-functions #'jabirali/rename-tab)
-
-  ;; Enable the mode globally.
   (tab-bar-mode 1)
   (tab-bar-history-mode 1))
 (use-package tex
@@ -451,7 +450,7 @@
   :config
   (yas-global-mode 1))
 
-;;; Keybindings
+;;; Keybindings:
 (bind-key "<f5>" #'sort-lines)
 (bind-key "<f12>" #'jabirali/science-definition-lookup)
 
