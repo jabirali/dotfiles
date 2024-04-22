@@ -1,4 +1,14 @@
-;;; Core:
+;;; Constants:
+;; This section defines things used throughout the configuration
+;; below, and centralizes them in one place for easy revision.
+(setq
+ FONT "JetBrains Mono NL:size=14"
+ NOTES "~/Sync/Org"
+ THEME 'ef-melissa-light)
+
+;;; Settings:
+;; This is used to setup the base Emacs configuration, including
+;; the package manager, environment, and various built-in modes.
 (use-package use-package
   :custom
   (native-comp-async-report-warnings-errors nil)
@@ -15,8 +25,6 @@
   (frame-title-format "GNU Emacs")
   (fringes-outside-margins t)
   (inhibit-startup-message t)
-  (initial-major-mode 'org-mode)
-  (initial-scratch-message "")
   (line-spacing 0.15)
   (make-backup-files nil)
   (message-truncate-lines t)
@@ -26,9 +34,11 @@
   (truncate-lines t)
   (use-short-answers t)
   (xterm-set-window-title t)
-  :custom-face
-  (default ((t (:family "JetBrains Mono NL" :height 140))))
   :config
+  ;; Switch to the selected font.
+  (set-frame-font FONT :frames t)
+  ;; Use my customizations when loading themes.
+  (advice-add 'load-theme :after #'jabirali/theme-override)
   ;; Don't indicate long or wrapped lines.
   (set-display-table-slot standard-display-table 'truncation ? )
   (set-display-table-slot standard-display-table 'wrap ? )
@@ -65,6 +75,9 @@
   (server-mode 1))
 
 ;;; Functions:
+;; This section is for custom function definitions. They are referred
+;; to throughout the configuration sections below, and therefore need
+;; to be defined quite early in the `init.el' file.
 (defun jabirali/eglot-project-ensure ()
   "Enable Eglot iff the current buffer belongs to a project."
   (if (project-current) (eglot-ensure)))
@@ -100,9 +113,6 @@
 (defun jabirali/url-handler-zotero (link)
   "Open a zotero:// link in the Zotero desktop app."
   (start-process "zotero_open" nil "open" (concat "zotero:" link)))
-
-;;; Advice:
-(advice-add 'load-theme :after #'jabirali/theme-override)
 
 ;;; Packages:
 (use-package ace-window
@@ -155,7 +165,7 @@
 (use-package ef-themes
   :ensure t
   :config
-  (load-theme 'ef-melissa-light t))
+  (load-theme THEME t))
 (use-package eglot
   :custom
   (eldoc-echo-area-prefer-doc-buffer t)
@@ -297,14 +307,14 @@
   (markdown-mode . cdlatex-mode))
 (use-package matlab
   :ensure matlab-mode)
-(use-package outshine
-  :ensure t
-  :hook
-  (prog-mode . outshine-mode))
+;; (use-package outshine
+;;   :ensure t
+;;   :hook
+;;   (prog-mode . outshine-mode))
 (use-package org
   :custom
   (org-adapt-indentation nil)
-  (org-agenda-files (list org-directory))
+  (org-agenda-files (list NOTES))
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-scheduled-if-done t)
   (org-agenda-span 'day)
@@ -314,7 +324,7 @@
   (org-babel-results-keyword "results")
   (org-confirm-babel-evaluate nil)
   (org-ctrl-k-protect-subtree t)
-  (org-directory "~/Sync/Org")
+  (org-directory NOTES)
   (org-fontify-quote-and-verse-blocks t)
   (org-highlight-latex-and-related '(native latex script entities))
   (org-image-actual-width '(400))

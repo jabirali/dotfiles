@@ -10,3 +10,7 @@
 ;; Add some margins.
 (setq-default left-margin-width 2
               right-margin-width 2)
+
+;; Use Org for the scratch buffer.
+(setq initial-major-mode 'org-mode
+	  initial-scratch-message "")
