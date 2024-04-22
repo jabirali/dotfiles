@@ -1,28 +1,21 @@
 ;;; Constants:
 ;; This section defines things used throughout the configuration
 ;; below, and centralizes them in one place for easy revision.
-(setq
- FONT "JetBrains Mono NL:size=14"
- NOTES "~/Sync/Org"
- THEME 'ef-melissa-light)
+(setq FONT "JetBrains Mono NL:size=14")
+(setq NOTES "~/Sync/Org")
+(setq THEME-LIGHT 'modus-operandi)
+(setq THEME-DARK 'modus-vivendi)
 
 ;;; Settings:
 ;; This is used to setup the base Emacs configuration, including
 ;; the package manager, environment, and various built-in modes.
-(use-package use-package
-  :custom
-  (native-comp-async-report-warnings-errors nil)
-  (package-native-compile t)
-  (use-package-always-demand t)
-  :config
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 (use-package emacs
   :custom
   (auto-save-default nil)
   (default-input-method 'TeX)
   (default-transient-input-method 'TeX)
   (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
-  (frame-title-format "GNU Emacs")
+  (frame-title-format nil)
   (fringes-outside-margins t)
   (inhibit-startup-message t)
   (line-spacing 0.15)
@@ -59,15 +52,25 @@
     (scroll-bar-mode -1))
   ;; Disable italics globally.
   (set-face-italic-p 'italic nil))
+(use-package use-package
+  :custom
+  (native-comp-async-report-warnings-errors nil)
+  (package-native-compile t)
+  (use-package-always-demand t)
+  :config
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 (use-package gcmh
+  ;; Garbage Collection Magic Hack
   :ensure t
   :config
   (gcmh-mode 1))
 (use-package exec-path-from-shell
+  ;; Fix $PATH in MacOS GUI frames
   ;; Install: (package-vc-install "https://github.com/purcell/exec-path-from-shell")
   :config
   (exec-path-from-shell-initialize))
 (use-package server
+  ;; Provide Emacs as a service
   :custom
   (server-use-tcp t)
   (server-port 1337)
@@ -133,16 +136,32 @@
   (text-mode . visual-line-mode)
   (markdown-mode . adaptive-wrap-prefix-mode)
   (latex-mode . adaptive-wrap-prefix-mode))
+(use-package auto-dark
+  :ensure t
+  :custom
+  (auto-dark-dark-theme THEME-DARK)
+  (auto-dark-light-theme THEME-LIGHT)
+  :config
+  (auto-dark-mode 1))
 (use-package cdlatex
   :ensure t
   :hook
   ((TeX-mode . turn-on-cdlatex)
    (org-mode . turn-on-org-cdlatex)))
+(use-package comint-mime
+  ;; Embed Matplotlib plots into in "Inferior Python" buffers.
+  :ensure t
+  :hook
+  (inferior-python-mode . comint-mime-setup))
 (use-package company
   :ensure t
   :after eglot
   ;;:bind (:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
   :hook (eglot-managed-mode . company-mode))
+(use-package consult
+  :ensure t
+  :bind
+  ("C-c t t" . consult-theme))
 (use-package diredfl
   :ensure t
   :after dired
@@ -163,9 +182,7 @@
   :config
   (doom-modeline-mode 1))
 (use-package ef-themes
-  :ensure t
-  :config
-  (load-theme THEME t))
+  :ensure t)
 (use-package eglot
   :custom
   (eldoc-echo-area-prefer-doc-buffer t)
@@ -276,18 +293,6 @@
   (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
 (use-package julia-mode
   :ensure t)
-(use-package jupyter
-  :ensure t
-  :after python
-  :config
-  (defun +jupyter-python ()
-	"Start Jupyter with a Python3 kernel."
-    (interactive)
-    (jupyter-run-repl "python3" "py" t)
-    (message "Jupyter kernel started!"))
-  :bind
-  (:map python-mode-map
-        ("C-c C-c" . +jupyter-python)))
 (use-package magit
   :ensure t
   :bind
@@ -380,8 +385,10 @@
   :ensure t)
 (use-package python
   :custom
-  (python-indent-guess-indent-offset t)  
-  (python-indent-guess-indent-offset-verbose nil))
+  (python-indent-guess-indent-offset t)
+  (python-indent-guess-indent-offset-verbose nil)
+  (python-shell-interpreter "ipython3")
+  (python-shell-interpreter-args "--simple-prompt --classic"))
 (use-package reftex
   :ensure t
   :after tex
