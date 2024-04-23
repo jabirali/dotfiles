@@ -8,7 +8,8 @@
       read-process-output-max (* 1024 1024))
 
 ;; Add some margins.
-(setq-default left-margin-width 2
+(setq-default fringes-outside-margins t
+			  left-margin-width 2
               right-margin-width 2)
 
 ;; Use Org for the scratch buffer.

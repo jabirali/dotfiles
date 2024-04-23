@@ -16,7 +16,6 @@
   (default-transient-input-method 'TeX)
   (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
   (frame-title-format "GNU Emacs")
-  (fringes-outside-margins t)
   (inhibit-startup-message t)
   (line-spacing 0.15)
   (make-backup-files nil)
@@ -51,6 +50,9 @@
     (tooltip-mode -1)
     (tool-bar-mode -1)
     (scroll-bar-mode -1))
+  ;; Work around a fringe bug...
+  (kill-buffer "*scratch*")
+  (scratch-buffer)
   ;; Disable italics globally.
   (set-face-italic-p 'italic nil))
 (use-package use-package
@@ -112,9 +114,9 @@
     (set-face-attribute 'mode-line-inactive nil :background bg2 :box `(:line-width 1 :color ,bg1))
     (set-face-attribute 'fringe nil :foreground bg1 :background bg1)
     (set-face-attribute 'scroll-bar nil :foreground bg2 :background bg1)
-    (set-face-attribute 'window-divider nil :foreground bg1 :background bg1)
-    (set-face-attribute 'window-divider-first-pixel nil :foreground bg1 :background bg1)
-    (set-face-attribute 'window-divider-last-pixel nil :foreground bg1 :background bg1)
+    ;; (set-face-attribute 'window-divider nil :foreground bg1 :background bg1)
+    ;; (set-face-attribute 'window-divider-first-pixel nil :foreground bg1 :background bg1)
+    ;; (set-face-attribute 'window-divider-last-pixel nil :foreground bg1 :background bg1)
     (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)
 	(set-face-attribute 'aw-leading-char-face nil :height 1)
 	(set-face-italic-p 'font-lock-comment-face nil)))
@@ -389,11 +391,11 @@
   (org-super-agenda-mode 1))
 (use-package ox-pandoc
   :ensure t)
-(use-package persistent-scratch
-  :after (org evil)
-  :ensure t
-  :config
-  (persistent-scratch-autosave-mode 1))
+;; (use-package persistent-scratch
+;;   :after (org evil)
+;;   :ensure t
+;;   :config
+;;   (persistent-scratch-autosave-mode 1))
 (use-package prescient
   :ensure t)
 (use-package python
