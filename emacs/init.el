@@ -163,6 +163,11 @@
   :hook
   ((TeX-mode . turn-on-cdlatex)
    (org-mode . turn-on-org-cdlatex)))
+(use-package comint
+  :custom
+  (comint-prompt-read-only t)
+  :bind (:map comint-mode-map
+			  ("C-c C-l" . comint-clear-buffer)))
 (use-package comint-mime
   ;; Embed Matplotlib plots into in "Inferior Python" buffers.
   :ensure t
