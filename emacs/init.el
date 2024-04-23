@@ -3,6 +3,7 @@
 ;; below, and centralizes them in one place for easy revision.
 (setq FONT "JetBrains Mono NL:size=14")
 (setq NOTES "~/Sync/Org")
+(setq CODE "~/Sync/Code")
 (setq THEME-LIGHT 'modus-operandi)
 (setq THEME-DARK 'modus-vivendi)
 
@@ -46,10 +47,10 @@
   (blink-cursor-mode -1)
   (menu-bar-mode -1)
   (when (display-graphic-p)
-    (fringe-mode 1)
-    (tooltip-mode -1)
-    (tool-bar-mode -1)
-    (scroll-bar-mode -1))
+	(fringe-mode 1)
+	(tooltip-mode -1)
+	(tool-bar-mode -1)
+	(scroll-bar-mode -1))
   ;; Work around a fringe bug...
   (kill-buffer "*scratch*")
   (scratch-buffer)
@@ -91,33 +92,33 @@
   "Open one of my Org files (or create a new one)."
   (interactive)
   (let ((default-directory org-directory))
-    (find-file (completing-read "Org: " (directory-files "." nil "\\.org$")))))
+	(find-file (completing-read "Org: " (directory-files "." nil "\\.org$")))))
 (defun +science-definition-lookup ()
   "Look up a scientific definition using a ChatGPT wrapper."
   (interactive)
   (let* ((query (buffer-substring (region-beginning) (region-end)))
-         (encoded-query (url-encode-url query))
-         (search-url "https://chat.openai.com/g/g-Kihf3Sccx-science-definitions?q="))
-    (browse-url (concat search-url encoded-query))))
+		 (encoded-query (url-encode-url query))
+		 (search-url "https://chat.openai.com/g/g-Kihf3Sccx-science-definitions?q="))
+	(browse-url (concat search-url encoded-query))))
 (defun +theme-override (&rest _)
   "Override the current theme for a consistent and minimal look."
   (let ((bg0 (face-attribute 'default :background))
-        (bg1 (face-attribute 'mode-line :background))
-        (bg2 (face-attribute 'mode-line-inactive :background))
-        (fg0 (face-attribute 'default :foreground))
-        (fg1 (face-attribute 'mode-line :foreground))
-        (fg2 (face-attribute 'mode-line-inactive :foreground)))
-    (set-face-attribute 'tab-bar nil :foreground bg1 :background bg1 :box `(:line-width 6 :color ,bg1))
-    (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg1 :box `(:line-width 6 :color ,bg1))
-    (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg1 :box `(:line-width 6 :color ,bg1))
-    (set-face-attribute 'mode-line nil :background bg2 :box `(:line-width 1 :color ,bg1))
-    (set-face-attribute 'mode-line-inactive nil :background bg2 :box `(:line-width 1 :color ,bg1))
-    (set-face-attribute 'fringe nil :foreground bg1 :background bg1)
-    (set-face-attribute 'scroll-bar nil :foreground bg2 :background bg1)
-    ;; (set-face-attribute 'window-divider nil :foreground bg1 :background bg1)
-    ;; (set-face-attribute 'window-divider-first-pixel nil :foreground bg1 :background bg1)
-    ;; (set-face-attribute 'window-divider-last-pixel nil :foreground bg1 :background bg1)
-    (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)
+		(bg1 (face-attribute 'mode-line :background))
+		(bg2 (face-attribute 'mode-line-inactive :background))
+		(fg0 (face-attribute 'default :foreground))
+		(fg1 (face-attribute 'mode-line :foreground))
+		(fg2 (face-attribute 'mode-line-inactive :foreground)))
+	(set-face-attribute 'tab-bar nil :foreground bg1 :background bg1 :box `(:line-width 6 :color ,bg1))
+	(set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg1 :box `(:line-width 6 :color ,bg1))
+	(set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg1 :box `(:line-width 6 :color ,bg1))
+	(set-face-attribute 'mode-line nil :background bg2 :box `(:line-width 1 :color ,bg1))
+	(set-face-attribute 'mode-line-inactive nil :background bg2 :box `(:line-width 1 :color ,bg1))
+	(set-face-attribute 'fringe nil :foreground bg1 :background bg1)
+	(set-face-attribute 'scroll-bar nil :foreground bg2 :background bg1)
+	;; (set-face-attribute 'window-divider nil :foreground bg1 :background bg1)
+	;; (set-face-attribute 'window-divider-first-pixel nil :foreground bg1 :background bg1)
+	;; (set-face-attribute 'window-divider-last-pixel nil :foreground bg1 :background bg1)
+	(set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)
 	(set-face-attribute 'aw-leading-char-face nil :height 1)
 	(set-face-italic-p 'font-lock-comment-face nil)))
 (defun +url-handler-zotero (link)
@@ -129,11 +130,11 @@
   :ensure t
   :config
   (defun +other-window-dwim ()
-    "Select either the minibuffer or an arbitrary visible window."
-    (interactive)
-    (if (active-minibuffer-window)
-        (select-window (active-minibuffer-window))
-      (call-interactively #'ace-window)))
+	"Select either the minibuffer or an arbitrary visible window."
+	(interactive)
+	(if (active-minibuffer-window)
+		(select-window (active-minibuffer-window))
+	  (call-interactively #'ace-window)))
   :bind
   ("M-o" . +other-window-dwim))
 (use-package adaptive-wrap
@@ -145,6 +146,7 @@
 (use-package auto-dark
   ;; Switch theme based on the OS "dark mode" setting.
   :ensure t
+  :after modus-themes
   :custom
   (auto-dark-dark-theme THEME-DARK)
   (auto-dark-light-theme THEME-LIGHT)
@@ -215,6 +217,7 @@
   (python-mode . +eglot-project-ensure)
   :bind
   ("<f2>" . eglot-rename))
+;; (use-package eldoc-box)
 (use-package evil
   :ensure t
   :custom
@@ -270,10 +273,12 @@
 (use-package format-all
   :ensure t
   :hook
-  (python-mode . format-all-mode)
+  (prog-mode . format-all-mode)
+  (markdown-mode . format-all-mode)
+  (format-all-mode . format-all-ensure-formatter)
   :config
   (setq-default format-all-formatters
-                '(("Python" (isort) (ruff) (black)))))
+				'(("Python" (isort) (ruff) (black)))))
 (use-package general
   :ensure t
   :after evil
@@ -281,13 +286,13 @@
   (general-evil-setup t)
   (general-override-mode 1)
   (general-create-definer gmap
-    :keymaps 'override
-    :states '(motion normal visual)
-    :prefix "SPC")
+	:keymaps 'override
+	:states '(motion normal visual)
+	:prefix "SPC")
   (general-create-definer lmap
-    :keymaps 'override
-    :states '(motion normal visual)
-    :prefix ","))
+	:keymaps 'override
+	:states '(motion normal visual)
+	:prefix ","))
 (use-package gnuplot
   :ensure t)
 (use-package hl-todo
@@ -337,6 +342,10 @@
   (markdown-mode . cdlatex-mode))
 (use-package matlab
   :ensure matlab-mode)
+(use-package modus-themes
+  ;; :custom
+  ;; (modus-operandi-palette-overrides '((bg-main "#fbf9f5")))
+  :ensure t)
 (use-package org
   :custom
   (org-adapt-indentation nil)
@@ -366,7 +375,7 @@
   (org-tags-column -65)
   (org-todo-keywords
    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-     (sequence "WAIT(w)" "HOLD(h)" "READ(r)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
+	 (sequence "WAIT(w)" "HOLD(h)" "READ(r)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
   :config
   (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
   (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
@@ -380,16 +389,16 @@
   (org-download-timestamp "%Y%m%d%H%M%S")
   :config
   (defun +org-download-file-format (filename)
-    "Purely date-based naming of attachments."
-    (concat
-     (format-time-string org-download-timestamp)
-     "."
-     (file-name-extension filename)))
+	"Purely date-based naming of attachments."
+	(concat
+	 (format-time-string org-download-timestamp)
+	 "."
+	 (file-name-extension filename)))
   (setq org-download-file-format-function #'+org-download-file-format)
   (setq org-download-annotate-function (lambda (_link) ""))
   (org-download-enable)
   :bind (:map org-mode-map
-              ("M-V" . org-download-clipboard)))
+			  ("M-V" . org-download-clipboard)))
 (use-package org-super-agenda
   :ensure t
   :after org
@@ -400,13 +409,11 @@
   (org-super-agenda-mode 1))
 (use-package ox-pandoc
   :ensure t)
-;; (use-package persistent-scratch
-;;   :after (org evil)
-;;   :ensure t
-;;   :config
-;;   (persistent-scratch-autosave-mode 1))
 (use-package prescient
   :ensure t)
+(use-package project
+  :config
+  (project-remember-projects-under CODE))
 (use-package python
   :custom
   (python-indent-guess-indent-offset t)
@@ -459,7 +466,7 @@
   :if (eq window-system 'mac)
   :init
   (setq scroll-conservatively 101)
-  (setq scroll-margin 0) 
+  (setq scroll-margin 0)
   :config
   (ultra-scroll-mac-mode 1))
 (use-package vertico
@@ -470,9 +477,9 @@
 (use-package vertico-directory
   :after vertico
   :bind (:map vertico-map
-              ("RET"   . vertico-directory-enter)
-              ("DEL"   . vertico-directory-delete-char)
-              ("M-DEL" . vertico-directory-delete-word))
+			  ("RET"   . vertico-directory-enter)
+			  ("DEL"   . vertico-directory-delete-char)
+			  ("M-DEL" . vertico-directory-delete-word))
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 (use-package vertico-prescient
   :ensure t
@@ -484,9 +491,9 @@
   :config
   (which-key-mode 1))
 ;; (use-package yasnippet
-  :ensure t
-  :config
-  (yas-global-mode 1))
+;;   :ensure t
+;;   :config
+;;   (yas-global-mode 1))
 
 ;;; Keybindings:
 (bind-key "<f5>" #'sort-lines)

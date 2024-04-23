@@ -51,7 +51,10 @@ def _dark_mode():
     return bool(p.communicate()[0])
 
 
+# Set default colors based on dark mode. Note the transparent background, which
+# is used when embedding the plot window into Emacs.
 mpl.rcParams.update(mpl.rcParamsDefault)
 mpl.style.use("bmh")
 if _dark_mode():
     mpl.style.use("dark_background")
+mpl.rcParams["figure.facecolor"] = (0, 0, 0, 0)
