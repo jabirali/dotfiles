@@ -15,12 +15,13 @@
   (default-input-method 'TeX)
   (default-transient-input-method 'TeX)
   (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
-  (frame-title-format nil)
+  (frame-title-format "GNU Emacs")
   (fringes-outside-margins t)
   (inhibit-startup-message t)
   (line-spacing 0.15)
   (make-backup-files nil)
   (message-truncate-lines t)
+  (modus-themes-mode-line '(borderless))
   (ring-bell-function 'ignore)
   (sentence-end-double-space nil)
   (tab-width 4)
@@ -100,19 +101,23 @@
   "Override the current theme for a consistent and minimal look."
   (let ((bg0 (face-attribute 'default :background))
         (bg1 (face-attribute 'mode-line :background))
-        (bg2 (face-attribute 'mode-line :background))
+        (bg2 (face-attribute 'mode-line-inactive :background))
         (fg0 (face-attribute 'default :foreground))
         (fg1 (face-attribute 'mode-line :foreground))
         (fg2 (face-attribute 'mode-line-inactive :foreground)))
-    (set-face-attribute 'tab-bar nil :foreground bg2 :background bg2 :box `(:line-width 6 :color ,bg2))
-    (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg2 :box `(:line-width 6 :color ,bg2))
-    (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg2 :box `(:line-width 6 :color ,bg2))
-    (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
-    (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
-    (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
-    (set-face-attribute 'scroll-bar nil :foreground bg2 :background bg2)
+    (set-face-attribute 'tab-bar nil :foreground bg1 :background bg1 :box `(:line-width 6 :color ,bg1))
+    (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg1 :box `(:line-width 6 :color ,bg1))
+    (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg1 :box `(:line-width 6 :color ,bg1))
+    (set-face-attribute 'mode-line nil :background bg2 :box `(:line-width 1 :color ,bg1))
+    (set-face-attribute 'mode-line-inactive nil :background bg2 :box `(:line-width 1 :color ,bg1))
+    (set-face-attribute 'fringe nil :foreground bg1 :background bg1)
+    (set-face-attribute 'scroll-bar nil :foreground bg2 :background bg1)
+    (set-face-attribute 'window-divider nil :foreground bg1 :background bg1)
+    (set-face-attribute 'window-divider-first-pixel nil :foreground bg1 :background bg1)
+    (set-face-attribute 'window-divider-last-pixel nil :foreground bg1 :background bg1)
     (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)
-    (set-face-italic-p 'font-lock-comment-face nil)))
+	(set-face-attribute 'aw-leading-char-face nil :height 1)
+	(set-face-italic-p 'font-lock-comment-face nil)))
 (defun +url-handler-zotero (link)
   "Open a zotero:// link in the Zotero desktop app."
   (start-process "zotero_open" nil "open" (concat "zotero:" link)))
@@ -121,7 +126,6 @@
 (use-package ace-window
   :ensure t
   :config
-  (set-face-attribute 'aw-leading-char-face nil :height 1)
   (defun +other-window-dwim ()
     "Select either the minibuffer or an arbitrary visible window."
     (interactive)
@@ -137,11 +141,20 @@
   (markdown-mode . adaptive-wrap-prefix-mode)
   (latex-mode . adaptive-wrap-prefix-mode))
 (use-package auto-dark
+  ;; Switch theme based on the OS "dark mode" setting.
   :ensure t
   :custom
   (auto-dark-dark-theme THEME-DARK)
   (auto-dark-light-theme THEME-LIGHT)
   :config
+  ;; Workaround for Mac port limitation (?).
+  (add-hook 'auto-dark-dark-mode-hook
+			(lambda ()
+			  (setopt frame-title-format nil)))
+  (add-hook 'auto-dark-light-mode-hook
+			(lambda ()
+			  (setopt frame-title-format "GNU Emacs")))
+  ;; Enable the mode.
   (auto-dark-mode 1))
 (use-package cdlatex
   :ensure t
