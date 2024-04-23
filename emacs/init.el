@@ -175,9 +175,13 @@
   (inferior-python-mode . comint-mime-setup))
 (use-package company
   :ensure t
-  :after eglot
-  ;;:bind (:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
-  :hook (eglot-managed-mode . company-mode))
+  :custom
+  (company-idle-delay nil)
+  :bind
+  (:map company-mode-map
+		("TAB" . company-indent-or-complete-common))
+  :hook
+  (after-init . global-company-mode))
 (use-package consult
   :ensure t
   :bind
@@ -479,7 +483,7 @@
   :ensure t
   :config
   (which-key-mode 1))
-(use-package yasnippet
+;; (use-package yasnippet
   :ensure t
   :config
   (yas-global-mode 1))
