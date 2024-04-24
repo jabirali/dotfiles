@@ -53,9 +53,7 @@
 	(scroll-bar-mode -1))
   ;; Work around a fringe bug...
   (kill-buffer "*scratch*")
-  (scratch-buffer)
-  ;; Disable italics globally.
-  (set-face-italic-p 'italic nil))
+  (scratch-buffer))
 (use-package use-package
   :custom
   (native-comp-async-report-warnings-errors nil)
@@ -120,7 +118,8 @@
 	;; (set-face-attribute 'window-divider-last-pixel nil :foreground bg1 :background bg1)
 	(set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)
 	(set-face-attribute 'aw-leading-char-face nil :height 1)
-	(set-face-italic-p 'font-lock-comment-face nil)))
+	;; Disable italics globally.
+	(set-face-italic-p 'italic nil)))
 (defun +url-handler-zotero (link)
   "Open a zotero:// link in the Zotero desktop app."
   (start-process "zotero_open" nil "open" (concat "zotero:" link)))
@@ -160,17 +159,27 @@
 			  (setopt frame-title-format "GNU Emacs")))
   ;; Enable the mode.
   (auto-dark-mode 1))
-(use-package cdlatex
+(use-package cdlatex					; Type LaTeX equations
   :ensure t
   :hook
   ((TeX-mode . turn-on-cdlatex)
    (org-mode . turn-on-org-cdlatex)))
-(use-package comint
+(use-package code-cells					; Send "# %%" cells to REPL
+  :ensure t
+  :after python
+  :bind* (:map code-cells-mode-map
+			   ("M-p" . code-cells-backward-cell)
+			   ("M-n" . code-cells-forward-cell)
+			   ("M-RET" . code-cells-eval))
+  :hook (python-mode . code-cells-mode)
+  :config
+  (set-face-attribute 'code-cells-header-line nil :overline nil :underline nil))
+(use-package comint						; Mother of all Emacs REPLs
   :custom
   (comint-prompt-read-only t)
   :bind (:map comint-mode-map
 			  ("C-c C-l" . comint-clear-buffer)))
-(use-package comint-mime
+(use-package comint-mime				; Inline plotting in REPLs
   ;; Embed Matplotlib plots into in "Inferior Python" buffers.
   :ensure t
   :hook
@@ -207,8 +216,8 @@
   (doom-modeline-workspace-name nil)
   :config
   (doom-modeline-mode 1))
-(use-package ef-themes
-  :ensure t)
+;; (use-package ef-themes
+;;   :ensure t)
 (use-package eglot
   :custom
   (eldoc-echo-area-prefer-doc-buffer t)
@@ -252,10 +261,10 @@
   :ensure t
   :hook
   (LaTeX-mode . evil-tex-mode))
-(use-package expand-region
-  :bind*
-  ("C-c RET" . er/expand-region)
-  :ensure t)
+;; (use-package expand-region
+;;   :bind*
+;;   ("C-c RET" . er/expand-region)
+;;   :ensure t)
 (use-package flymake-ruff
   :ensure t
   :hook
@@ -264,21 +273,20 @@
 (use-package flyspell
   :after ispell
   :hook
-  ((text-mode . flyspell-mode)
-   (prog-mode . flyspell-prog-mode)))
+  (text-mode . flyspell-mode))
 (use-package flyspell-correct
   :ensure t
   :after flyspell
   :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
-(use-package format-all
-  :ensure t
-  :hook
-  (prog-mode . format-all-mode)
-  (markdown-mode . format-all-mode)
-  (format-all-mode . format-all-ensure-formatter)
-  :config
-  (setq-default format-all-formatters
-				'(("Python" (isort) (ruff) (black)))))
+;; (use-package format-all
+;;   :ensure t
+;;   :hook
+;;   (prog-mode . format-all-mode)
+;;   (markdown-mode . format-all-mode)
+;;   (format-all-mode . format-all-ensure-formatter)
+;;   :config
+;;   (setq-default format-all-formatters
+;; 				'(("Python" (isort) (ruff) (black)))))
 (use-package general
   :ensure t
   :after evil
@@ -299,7 +307,7 @@
   :ensure t
   :hook
   (prog-mode . hl-todo-mode))
-(use-package hideshow
+(use-package hideshow					; Folding of code files
   :hook
   (prog-mode . hs-minor-mode))
 (use-package idle-org-agenda
@@ -309,8 +317,8 @@
   (idle-org-agenda-interval 3600)
   :config
   (idle-org-agenda-mode 1))
-(use-package iedit
-  :ensure t)
+;; (use-package iedit
+;;   :ensure t)
 (use-package ispell
   ;; Remember to install Hunspell dictionaries into ~/Library/Spelling.
   ;; Download dictionaries from: https://github.com/wooorm/dictionaries
@@ -320,8 +328,8 @@
   (setq ispell-dictionary "en_US,nb_NO")
   (ispell-set-spellchecker-params)
   (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
-(use-package julia-mode
-  :ensure t)
+;; (use-package julia-mode
+;;   :ensure t)
 (use-package magit
   :ensure t
   :bind
@@ -346,7 +354,7 @@
   ;; :custom
   ;; (modus-operandi-palette-overrides '((bg-main "#fbf9f5")))
   :ensure t)
-(use-package org
+(use-package org						; Note-taking on steroids
   :custom
   (org-adapt-indentation nil)
   (org-agenda-files (list NOTES))
@@ -379,7 +387,7 @@
   :config
   (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
   (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
-(use-package org-download
+(use-package org-download				; Drag-and-drop into notes
   :ensure t
   :after org
   :custom
@@ -399,7 +407,7 @@
   (org-download-enable)
   :bind (:map org-mode-map
 			  ("M-V" . org-download-clipboard)))
-(use-package org-super-agenda
+(use-package org-super-agenda			; Sort the agenda by project
   :ensure t
   :after org
   :custom
@@ -407,7 +415,7 @@
   :config
   (setq org-super-agenda-header-map (make-sparse-keymap))
   (org-super-agenda-mode 1))
-(use-package ox-pandoc
+(use-package ox-pandoc					; Org-export to anything
   :ensure t)
 (use-package prescient
   :ensure t)
@@ -420,17 +428,17 @@
   (python-indent-guess-indent-offset-verbose nil)
   (python-shell-interpreter "ipython3")
   (python-shell-interpreter-args "--simple-prompt --classic"))
-(use-package reftex
-  :ensure t
-  :after tex
-  :custom
-  (reftex-cite-format 'bibtex)
-  (reftex-enable-partial-scans t)
-  (reftex-plug-into-AUCTeX t)
-  (reftex-save-parse-info t)
-  (reftex-use-multiple-selection-buffers t)
-  :hook
-  (TeX-mode . turn-on-reftex))
+;; (use-package reftex
+;;   :ensure t
+;;   :after tex
+;;   :custom
+;;   (reftex-cite-format 'bibtex)
+;;   (reftex-enable-partial-scans t)
+;;   (reftex-plug-into-AUCTeX t)
+;;   (reftex-save-parse-info t)
+;;   (reftex-use-multiple-selection-buffers t)
+;;   :hook
+;;   (TeX-mode . turn-on-reftex))
 (use-package swiper
   :ensure t
   :bind
@@ -459,7 +467,7 @@
   (TeX-source-correlate-start-server t)
   (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
   (TeX-view-program-selection '((output-pdf "Skim"))))
-(use-package ultra-scroll-mac
+(use-package ultra-scroll-mac			; Smooth scrolling on Mac
   ;; Installation:
   ;; (package-vc-install "https://github.com/jdtsmith/ultra-scroll-mac.git")
   :ensure t
@@ -490,10 +498,10 @@
   :ensure t
   :config
   (which-key-mode 1))
-;; (use-package yasnippet
-;;   :ensure t
-;;   :config
-;;   (yas-global-mode 1))
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode 1))
 
 ;;; Keybindings:
 (bind-key "<f5>" #'sort-lines)
