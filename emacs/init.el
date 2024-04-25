@@ -50,10 +50,7 @@
 	(fringe-mode 1)
 	(tooltip-mode -1)
 	(tool-bar-mode -1)
-	(scroll-bar-mode -1))
-  ;; Work around a fringe bug...
-  (kill-buffer "*scratch*")
-  (scratch-buffer))
+	(scroll-bar-mode -1)))
 (use-package use-package
   :custom
   (native-comp-async-report-warnings-errors nil)
@@ -181,7 +178,9 @@
 			  ("C-c C-l" . comint-clear-buffer)))
 (use-package comint-mime				; Inline plotting in REPLs
   ;; Embed Matplotlib plots into in "Inferior Python" buffers.
-  :ensure t
+  ;; :ensure t
+  :config
+  (setopt comint-mime-image-scalable t)
   :hook
   (inferior-python-mode . comint-mime-setup))
 (use-package company
@@ -342,12 +341,16 @@
   (keymap-set project-prefix-map "m" #'magit-project-status))
 (use-package markdown-mode
   :ensure t
+  :after adaptive-wrap
   :custom
   (markdown-fontify-code-blocks-natively t)
   (markdown-enable-wiki-links t)
   (markdown-enable-math t)
-  :hook
-  (markdown-mode . cdlatex-mode))
+  (initial-major-mode 'markdown-mode)
+  (initial-scratch-message "")
+  :config
+  (kill-buffer "*scratch*")
+  (scratch-buffer))
 (use-package matlab
   :ensure matlab-mode)
 (use-package modus-themes
