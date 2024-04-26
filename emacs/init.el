@@ -122,7 +122,7 @@
   (start-process "zotero_open" nil "open" (concat "zotero:" link)))
 
 ;;; Packages:
-(use-package ace-window
+(use-package ace-window					; Window switcher
   :ensure t
   :config
   (defun +other-window-dwim ()
@@ -133,14 +133,13 @@
 	  (call-interactively #'ace-window)))
   :bind
   ("M-o" . +other-window-dwim))
-(use-package adaptive-wrap
+(use-package adaptive-wrap				; Vim-like line wrapping
   :ensure t
   :hook
   (text-mode . visual-line-mode)
   (markdown-mode . adaptive-wrap-prefix-mode)
   (latex-mode . adaptive-wrap-prefix-mode))
-(use-package auto-dark
-  ;; Switch theme based on the OS "dark mode" setting.
+(use-package auto-dark					; Follow the OS dark mode
   :ensure t
   :after modus-themes
   :custom
@@ -156,12 +155,12 @@
 			  (setopt frame-title-format "GNU Emacs")))
   ;; Enable the mode.
   (auto-dark-mode 1))
-(use-package cdlatex					; Type LaTeX equations
+(use-package cdlatex					; Speedrunning LaTeX
   :ensure t
   :hook
   ((TeX-mode . turn-on-cdlatex)
    (org-mode . turn-on-org-cdlatex)))
-(use-package code-cells					; Send "# %%" cells to REPL
+(use-package code-cells					; Jupyter code cells and notebooks
   :ensure t
   :after python
   :bind* (:map code-cells-mode-map
@@ -183,7 +182,7 @@
   (setopt comint-mime-image-scalable t)
   :hook
   (inferior-python-mode . comint-mime-setup))
-(use-package company
+(use-package company					; COMPlete ANYthing
   :ensure t
   :custom
   (company-idle-delay nil)
@@ -192,16 +191,16 @@
 		("TAB" . company-indent-or-complete-common))
   :hook
   (after-init . global-company-mode))
-(use-package consult
+(use-package consult					; Improves misc commands
   :ensure t
   :bind
   ("C-c t t" . consult-theme))
-(use-package diredfl
+(use-package diredfl					; File management with style
   :ensure t
   :after dired
   :config
   (diredfl-global-mode 1))
-(use-package doom-modeline
+(use-package doom-modeline				; Nice-looking mode line
   :ensure t
   :custom
   (doom-modeline-bar-width 0.1)
@@ -217,7 +216,8 @@
   (doom-modeline-mode 1))
 ;; (use-package ef-themes
 ;;   :ensure t)
-(use-package eglot
+(use-package eglot					 	; The built-in LSP client
+  :after project
   :custom
   (eldoc-echo-area-prefer-doc-buffer t)
   (eldoc-echo-area-use-multiline-p nil)
@@ -226,7 +226,7 @@
   :bind
   ("<f2>" . eglot-rename))
 ;; (use-package eldoc-box)
-(use-package evil
+(use-package evil						; Vim for the Emacs OS
   :ensure t
   :custom
   (evil-respect-visual-line-mode t)
