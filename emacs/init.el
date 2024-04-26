@@ -2,8 +2,8 @@
 ;; This section defines things used throughout the configuration
 ;; below, and centralizes them in one place for easy revision.
 (setq FONT "JetBrains Mono NL:size=14")
-(setq NOTES "~/Sync/Org")
-(setq CODE "~/Sync/Code")
+(setq NOTES "~/Notes")
+(setq CODE "~/Code")
 (setq THEME-LIGHT 'modus-operandi)
 (setq THEME-DARK 'modus-vivendi)
 
@@ -256,10 +256,10 @@
   :ensure t
   :config
   (global-evil-surround-mode 1))
-(use-package evil-tex
-  :ensure t
-  :hook
-  (LaTeX-mode . evil-tex-mode))
+;; (use-package evil-tex
+;;   :ensure t
+;;   :hook
+;;   (LaTeX-mode . evil-tex-mode))
 ;; (use-package expand-region
 ;;   :bind*
 ;;   ("C-c RET" . er/expand-region)
@@ -422,9 +422,7 @@
   :ensure t)
 (use-package prescient
   :ensure t)
-(use-package project
-  :config
-  (project-remember-projects-under CODE))
+(use-package project)
 (use-package python
   :custom
   (python-indent-guess-indent-offset t)

@@ -27,6 +27,7 @@ end
 
 # Extra places to look for binaries.
 fish_add_path ~/.config/bin
+fish_add_path ~/.luarocks/bin
 fish_add_path /usr/local/bin
 fish_add_path /opt/homebrew/bin
 fish_add_path /opt/homebrew/Caskroom/miniconda/base/bin/
