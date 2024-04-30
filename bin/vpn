@@ -1,3 +1,0 @@
-#!/bin/sh
-
-sudo openconnect --protocol=anyconnect --user=jaao vpn.hvl.no/Ansatt

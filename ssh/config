@@ -3,7 +3,6 @@ Host *
     CheckHostIP no
     Compression yes
     ForwardX11 no
-    User jabirali
 
     # Trade robustness for efficiency.
     # ControlMaster auto
@@ -16,15 +15,25 @@ Host *
     # Integrate `1Password` (to protect my SSH keys).
     IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
-host boost
-    HostName 158.37.44.64
-
 Host ex3
     HostName dnat.simula.no
+    User jabirali
     Port 60441
 
 Host saga
     HostName login-3.saga.sigma2.no
+    User jabirali
 
 Host pvv
-    HostName login.pvv.org
+    HostName hildring.pvv.org
+    User jabirali
+
+Host boost
+    HostName localhost
+    User jabirali
+    Port 43210
+    ProxyJump pvv
+
+host boost!
+    HostName 158.37.44.64
+    User jabirali
