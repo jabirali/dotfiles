@@ -15,8 +15,6 @@ export BAT_STYLE="plain"
 export BAT_THEME="ansi"
 export COLORTERM="truecolor"
 
-fish_add_path /opt/homebrew/opt/coreutils/libexec/gnubin
-
 # Bootstrap the package manager.
 if not functions -q fisher
 	curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
@@ -34,6 +32,7 @@ fish_add_path /opt/homebrew/Caskroom/miniconda/base/bin/
 fish_add_path /opt/conda/bin
 fish_add_path /Library/TeX/texbin
 fish_add_path /Applications/Matlab.app/bin
+fish_add_path /opt/homebrew/opt/coreutils/libexec/gnubin
 
 # Default command-line arguments.
 alias exa 'exa --group-directories-first --time-style=long-iso'

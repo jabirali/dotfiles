@@ -1972,7 +1972,7 @@
 			<key>ASCII Anti Aliased</key>
 			<true/>
 			<key>ASCII Ligatures</key>
-			<true/>
+			<false/>
 			<key>Allow Title Setting</key>
 			<true/>
 			<key>Allow modifyOtherKeys</key>
@@ -2130,13 +2130,13 @@
 				<key>Alpha Component</key>
 				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.14901960784313725</real>
+				<real>0.0</real>
 				<key>Color Space</key>
 				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.10588235294117647</real>
+				<real>0.0</real>
 				<key>Red Component</key>
-				<real>0.10196078431372549</real>
+				<real>0.0</real>
 			</dict>
 			<key>Background Image Location</key>
 			<string></string>
@@ -2303,7 +2303,7 @@
 			<key>Non-ASCII Ligatures</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>JetBrainsMonoNLNFM-Regular 14</string>
+			<string>JetBrainsMonoNFM-Light 14</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Option Key Sends</key>
@@ -2367,7 +2367,7 @@
 			<key>Use Custom Tab Title</key>
 			<false/>
 			<key>Use Italic Font</key>
-			<true/>
+			<false/>
 			<key>Use Non-ASCII Font</key>
 			<false/>
 			<key>Use libtickit protocol</key>
@@ -2418,9 +2418,9 @@
 	<key>Print In Black And White</key>
 	<true/>
 	<key>RightCommand</key>
-	<integer>8</integer>
-	<key>RightOption</key>
 	<integer>3</integer>
+	<key>RightOption</key>
+	<integer>1</integer>
 	<key>SeparateStatusBarsPerPane</key>
 	<false/>
 	<key>ShowNewOutputIndicator</key>
