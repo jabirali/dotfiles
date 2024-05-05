@@ -1,3 +1,7 @@
+# Modules
+autoload -Uz compinit && compinit
+autoload -U colors && colors
+
 # Zsh config
 HISTFILE=~/.cache/zsh/history
 HISTSIZE=1000000
@@ -15,9 +19,6 @@ setopt nomatch
 # Keybindings
 bindkey -e
 
-# Modules
-autoload -Uz compinit && compinit
-autoload -U colors && colors
 
 # Environment
 export PATH=~/.config/bin:~/.emacs.d/bin:/opt/homebrew/Caskroom/miniconda/base/bin:/opt/homebrew/opt/gnupg@2.2/bin:/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/grep/libexec/gnubin:~/.luarocks/bin:/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/Caskroom/miniconda/base/bin/:/opt/conda/bin:/Library/TeX/texbin:/Applications/Matlab.app/bin:$PATH
