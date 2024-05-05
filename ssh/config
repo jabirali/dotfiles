@@ -9,8 +9,8 @@ Host *
     # ControlPersist 10
     # ControlPath ~/.ssh/sockets/%r@%h-%p
 
-    # Enable Emacsclient over TCP.
-    RemoteForward 1337 localhost:1337
+    # Enable `rmate` integration.
+    RemoteForward 52698 localhost:52698
 
     # Integrate `1Password` (to protect my SSH keys).
     IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
