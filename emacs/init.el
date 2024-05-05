@@ -1,7 +1,8 @@
 ;;; Constants:
 ;; This section defines things used throughout the configuration
 ;; below, and centralizes them in one place for easy revision.
-(setq FONT "JetBrains Mono NL:size=14")
+;;(setq FONT "JetBrains Mono NL:size=13:weight=light")
+(setq FONT "JetBrains Mono NL:size=13")
 (setq NOTES "~/Notes")
 (setq CODE "~/Code")
 (setq THEME-LIGHT 'modus-operandi)
@@ -15,6 +16,7 @@
   (auto-save-default nil)
   (default-input-method 'TeX)
   (default-transient-input-method 'TeX)
+  (doc-view-mupdf-use-svg t)
   (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
   (frame-title-format "GNU Emacs")
   (inhibit-startup-message t)
@@ -26,13 +28,14 @@
   (sentence-end-double-space nil)
   (tab-width 4)
   (truncate-lines t)
+  (tramp-remote-path '(tramp-own-remote-path tramp-default-remote-path))
   (use-short-answers t)
   (xterm-set-window-title t)
   :config
   ;; Switch to the selected font.
   (set-frame-font FONT :frames t)
   ;; Use my customizations when loading themes.
-  (advice-add 'load-theme :after #'+theme-override)
+  ;; (advice-add 'load-theme :after #'+theme-override)
   ;; Don't indicate long or wrapped lines.
   (set-display-table-slot standard-display-table 'truncation ? )
   (set-display-table-slot standard-display-table 'wrap ? )
@@ -122,17 +125,17 @@
   (start-process "zotero_open" nil "open" (concat "zotero:" link)))
 
 ;;; Packages:
-(use-package ace-window					; Window switcher
-  :ensure t
-  :config
-  (defun +other-window-dwim ()
-	"Select either the minibuffer or an arbitrary visible window."
-	(interactive)
-	(if (active-minibuffer-window)
-		(select-window (active-minibuffer-window))
-	  (call-interactively #'ace-window)))
-  :bind
-  ("M-o" . +other-window-dwim))
+;; (use-package ace-window					; Window switcher
+;;   :ensure t
+;;   :config
+;;   (defun +other-window-dwim ()
+;; 	"Select either the minibuffer or an arbitrary visible window."
+;; 	(interactive)
+;; 	(if (active-minibuffer-window)
+;; 		(select-window (active-minibuffer-window))
+;; 	  (call-interactively #'ace-window)))
+;;   :bind
+;;   ("M-o" . +other-window-dwim))
 (use-package adaptive-wrap				; Vim-like line wrapping
   :ensure t
   :hook
@@ -179,7 +182,7 @@
   ;; Embed Matplotlib plots into in "Inferior Python" buffers.
   ;; :ensure t
   :config
-  (setopt comint-mime-image-scalable t)
+  (setopt comint-mime-prefer-svg t)
   :hook
   (inferior-python-mode . comint-mime-setup))
 (use-package company					; COMPlete ANYthing
@@ -424,11 +427,14 @@
   :ensure t)
 (use-package project)
 (use-package python
+  :config
+  (defun +run-ipython ()
+	"Run IPython in a way that is TRAMP-compatible."
+	(interactive)
+	(run-python (format "%s --simple-prompt --classic" (executable-find "ipython" t)) :show t))
   :custom
   (python-indent-guess-indent-offset t)
-  (python-indent-guess-indent-offset-verbose nil)
-  (python-shell-interpreter "ipython3")
-  (python-shell-interpreter-args "--simple-prompt --classic"))
+  (python-indent-guess-indent-offset-verbose nil))
 ;; (use-package reftex
 ;;   :ensure t
 ;;   :after tex
@@ -440,6 +446,10 @@
 ;;   (reftex-use-multiple-selection-buffers t)
 ;;   :hook
 ;;   (TeX-mode . turn-on-reftex))
+(use-package spacious-padding
+  :ensure t
+  :config
+  (spacious-padding-mode 1))
 (use-package swiper
   :ensure t
   :bind
@@ -450,7 +460,7 @@
   (tab-bar-format '(tab-bar-format-tabs))
   (tab-bar-new-tab-choice "*scratch*")
   (tab-bar-separator "  ")
-  (tab-bar-show t)
+  (tab-bar-show nil)
   (tab-bar-tab-hints t)
   :bind*
   ("C-c [" . tab-bar-history-back)
@@ -458,6 +468,11 @@
   :config
   (tab-bar-mode 1)
   (tab-bar-history-mode 1))
+(use-package tab-bar-echo-area
+  :config
+  (setopt tab-bar-echo-area-display-tab-names-format-string "%s")
+  (evil-define-key 'normal 'global (kbd "<escape>") 'tab-bar-echo-area-print-tab-names)
+  (tab-bar-echo-area-mode 1))
 (use-package tex
   :ensure auctex
   :custom
@@ -507,6 +522,7 @@
 ;;; Keybindings:
 (bind-key "<f5>" #'sort-lines)
 (bind-key "<f12>" #'+science-definition-lookup)
+(bind-key "M-o" #'other-window)
 
 (mmap                                           ; Motion map
   "^" 'dired-jump)
@@ -514,6 +530,7 @@
   "ii" 'er/expand-region)
 (gmap                                           ; Space menu
   "SPC" '(execute-extended-command :which-key "cmd")
+  "TAB" '(tab-bar-echo-area-display-tab-names :wk "tabs")
   "1" '(tab-bar-select-tab :which-key "1")
   "2" '(tab-bar-select-tab :which-key "2")
   "3" '(tab-bar-select-tab :which-key "3")
@@ -524,7 +541,7 @@
   "8" '(tab-bar-select-tab :which-key "8")
   "9" '(tab-bar-select-tab :which-key "9")
   "a" '(org-agenda :which-key "agenda")
-  "b" '(switch-to-buffer :which-key "buffer")
+  "b" '(consult-buffer :which-key "buffer")
   "d" '(dired-jump :which-key "dired")
   "f" '(find-file :which-key "file")
   "g" '(magit :which-key "git")
