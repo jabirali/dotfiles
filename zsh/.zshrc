@@ -6,7 +6,6 @@ autoload -U colors && colors
 HISTFILE=~/.cache/zsh/history
 HISTSIZE=1000000
 SAVEHIST=10000
-PROMPT="%{$fg[blue]%}%~ $ %{$reset_color%}"
 
 setopt hist_ignore_dups
 setopt hist_ignore_space
@@ -30,17 +29,17 @@ path+=/opt/homebrew/Caskroom/miniconda/base/bin
 path+=/Library/TeX/texbin
 path+=/Applications/Matlab.app/bin
 
-# Editor choice
+# Environment variables
 if [ -z "$SSH_CLIENT" ]; then
-	# Sublime Text locally
-	export EDITOR="subl -nw"
+	EDITOR="subl -nw"
+	PROMPT="%{$fg[purple]%}%~ $ %{$reset_color%}"
 else
-	# Sublime Text over SSH
-	export EDITOR="rmate -w"
+	EDITOR="rmate -w"
+	PROMPT="%{$fg[cyan]%}%~ $ %{$reset_color%}"
 fi
-alias e="${=EDITOR}"
 
 # Aliases
+alias e="${=EDITOR}"
 alias ls="ls --color"
 alias grep="grep --color"
 
