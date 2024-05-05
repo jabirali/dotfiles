@@ -19,17 +19,22 @@ setopt nomatch
 # Keybindings
 bindkey -e
 
-
 # Environment
 export PATH=~/.config/bin:~/.emacs.d/bin:/opt/homebrew/Caskroom/miniconda/base/bin:/opt/homebrew/opt/gnupg@2.2/bin:/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/grep/libexec/gnubin:~/.luarocks/bin:/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/Caskroom/miniconda/base/bin/:/opt/conda/bin:/Library/TeX/texbin:/Applications/Matlab.app/bin:$PATH
-export EDITOR="subl -nw"
+
+if [ -z "$SSH_CLIENT" ]; then
+	export EDITOR="subl -nw"
+else
+	export EDITOR="rmate -w"
+fi
+alias e="${=EDITOR}"
 
 # Aliases
 alias ls="ls --color"
 alias grep="grep --color"
 
 # Integrations
-eval "$(fzf --zsh)"
+eval "$(fzf --zsh 2>/dev/null)"
 eval "$(conda shell.zsh hook 2>/dev/null)"
 
 # Message of the day
