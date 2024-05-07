@@ -9,3 +9,5 @@ import numpy as np
 import pandas as pd
 
 mpl.style.use("bmh")
+
+os.system("clear")
