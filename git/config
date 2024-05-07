@@ -4,20 +4,11 @@
 [user]
 	email = jabir.ali.ouassou@hvl.no
 	name = Jabir Ali Ouassou
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBX5BMEWHoj1JpL2XK0oeoiQYrjnxTSF2kj/whMywQwb
 
 # Define my own commands.
 [alias]
 	graph = log --branches --remotes --tags --graph --oneline --decorate
 	change = remote set-url origin
-
-# Sign commits using my SSH key via 1Password.
-[commit]
-	gpgsign = true
-[gpg]
-	format = ssh
-[gpg "ssh"]
-	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 
 # Miscellaneous settings.
 [init]
