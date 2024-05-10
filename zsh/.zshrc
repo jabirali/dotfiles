@@ -1,8 +1,10 @@
 # ~/.zshrc: Configuration for interactive shells.
 
 # Load plugins.
-source /opt/homebrew/opt/antidote/share/antidote/antidote.zsh
+source $ANTIDOTE_HOME/antidote/antidote.zsh
 antidote load
+
+# Prompt settings
 prompt belak
 
 # Set custom options
@@ -21,6 +23,10 @@ alias exa='exa --group-directories-first --time-style=long-iso'
 alias ipython='TERM=linux ipython'  # ANSI colors
 alias matlab='matlab -nosplash -nodesktop'  # CLI mode
 alias wget='wget -e robots=off'  # Web scraping
+
+# Intuitive commands
+alias jobs="squeue -u jabirali"
+alias hours="cost -d"
 
 # Command abbreviations
 alias e="${=EDITOR}"
@@ -51,8 +57,3 @@ alias gp="git pull"
 alias gP="git push"
 alias gs="git status"
 alias gr="git reset"
-
-# Message of the day
-if [ -e ~/.motd ]; then
-    cat ~/.motd
-fi

@@ -24,11 +24,15 @@ path=(
 
 # Editor choice
 if [ -z "$SSH_CLIENT" ]; then
-	# Local session
 	export EDITOR="subl -nw"
 else
-	# Remote session
 	export EDITOR="rmate -w"
+fi
+
+# Plugin manager
+export ANTIDOTE_HOME=~/.cache/zsh/plugins
+if [[ ! -d $ANTIDOTE_HOME/antidote ]]; then
+    git clone https://github.com/mattmc3/antidote $ANTIDOTE_HOME/antidote
 fi
 
 # Application settings
@@ -37,3 +41,8 @@ export BAT_THEME="ansi"
 export COLORTERM="truecolor"
 export DIRENV_LOG_FORMAT=
 export MPLBACKEND="module://itermplot"
+
+# Message of the day
+if [ -e ~/.motd ]; then
+    cat ~/.motd
+fi
