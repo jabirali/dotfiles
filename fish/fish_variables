@@ -39,7 +39,7 @@ SETUVAR fish_pager_color_description:yellow\x1e\x2di
 SETUVAR fish_pager_color_prefix:normal\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
 SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
 SETUVAR fish_pager_color_selected_background:\x2dr
-SETUVAR fish_user_paths:/usr/local/bin\x1e/home/jabirali/\x2econfig/bin
+SETUVAR fish_user_paths:/opt/homebrew/opt/coreutils/libexec/gnubin\x1e/Applications/Matlab\x2eapp/bin\x1e/Library/TeX/texbin\x1e/opt/conda/bin\x1e/opt/homebrew/Caskroom/miniconda/base/bin\x1e/opt/homebrew/bin\x1e/Users/jabirali/\x2eluarocks/bin\x1e/Users/jabirali/\x2econfig/bin\x1e/usr/local/bin\x1e/home/jabirali/\x2econfig/bin
 SETUVAR tide_aws_bg_color:black
 SETUVAR tide_aws_color:yellow
 SETUVAR tide_aws_icon:\uf270
