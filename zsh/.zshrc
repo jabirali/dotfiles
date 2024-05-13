@@ -11,9 +11,17 @@ prompt belak
 setopt autocd
 zstyle ':completion:*' menu select
 
-# Integrations
-eval "$(fzf --zsh 2>/dev/null)"
-eval "$(conda shell.zsh hook 2>/dev/null)"
+# Shell integrations
+hook() {
+	# Integrate external executables into Zsh when available.
+	if [ -x "$(command -v $1)" ]; then
+		eval "$( $@ )"
+	fi
+}
+
+hook fzf --zsh
+hook conda shell.zsh hook
+hook direnv hook zsh
 
 # Default arguments
 alias ls="ls --color --human-readable --dereference --group-directories-first --time-style=long-iso --hyperlink=auto"
