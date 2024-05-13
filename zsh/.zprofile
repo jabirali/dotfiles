@@ -2,7 +2,7 @@
 
 # Command path
 path=(
-	# Personal scripts
+	# Personal
 	~/.config/bin
 
 	# Python environments
@@ -11,6 +11,8 @@ path=(
 
 	# HomeBrew commands
 	/opt/homebrew/bin
+
+	# GNU environment
 	/opt/homebrew/opt/coreutils/libexec/gnubin
 	/opt/homebrew/opt/grep/libexec/gnubin
 
@@ -22,19 +24,6 @@ path=(
 	$path
 )
 
-# Editor choice
-if [ -z "$SSH_CLIENT" ]; then
-	export EDITOR="subl -nw"
-else
-	export EDITOR="rmate -w"
-fi
-
-# Plugin manager
-export ANTIDOTE_HOME=~/.cache/zsh/plugins
-if [[ ! -d $ANTIDOTE_HOME/antidote ]]; then
-    git clone https://github.com/mattmc3/antidote $ANTIDOTE_HOME/antidote
-fi
-
 # Application settings
 export BAT_STYLE="plain"
 export BAT_THEME="ansi"
@@ -42,7 +31,20 @@ export COLORTERM="truecolor"
 export DIRENV_LOG_FORMAT=
 export MPLBACKEND="module://itermplot"
 
+# Editor choice
+if [ -z "$SSH_CLIENT" ]; then
+	export EDITOR="subl -nw"
+else
+	export EDITOR="rmate -w"
+fi
+
 # Message of the day
 if [ -e ~/.motd ]; then
-    cat ~/.motd
+	cat ~/.motd
+fi
+
+# Install plugin manager
+export ANTIDOTE_HOME=~/.cache/zsh/plugins
+if [[ ! -d $ANTIDOTE_HOME/antidote ]]; then
+	git clone https://github.com/mattmc3/antidote $ANTIDOTE_HOME/antidote
 fi

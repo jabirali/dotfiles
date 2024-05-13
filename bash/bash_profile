@@ -1,11 +1,11 @@
 # ~/.bash_profile: Minimal configuration for remote use.
 
-# Default configuration.
+# Load the interactive configuration.
 if [ -f "$HOME/.bashrc" ]; then
 	source ~/.bashrc
 fi
 
-# Change shell if possible.
-if [ -x "$(command -v fish)" ]; then
-	exec fish -l
+# Change shell without `chsh` rights.
+if [ -x "$(command -v zsh)" ]; then
+	exec zsh -l
 fi

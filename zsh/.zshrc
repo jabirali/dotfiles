@@ -33,6 +33,7 @@ alias e="${=EDITOR}"
 alias o="open"
 alias p="qlmanage -p"
 
+alias l="ls"
 alias ll='ls -l'
 alias la="ls -la"
 
