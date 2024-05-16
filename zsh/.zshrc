@@ -14,15 +14,40 @@ zstyle ':completion:*' menu select
 function precmd {
     # Whitespace after command output.
     print;
+
+    # Reset the PROMPT.
+    PROMPT=''
+    RPROMPT=''
+
+    # Are we in an SSH session?
+    if [ -n "$SSH_CLIENT" ]; then
+        PROMPT+='%F{green}%n@%m%f '
+    fi
+
+    # Which folder are we in?
+    PROMPT+='%F{blue}%~%f '
+
+    # Are we in Git?
+    if git rev-parse --is-inside-work-tree &>/dev/null; then
+        RPROMPT+='%F{red}git %f'
+    fi
+
+    # Is Direnv active?
+    if [ -n "$DIRENV_DIR" ]; then
+        RPROMPT+='%F{red}env %f'
+    fi
+
+    # Two-line prompt.
+    PROMPT+=$'\n'
+
+    # Prompt character.
+    PROMPT+="❯ "
 }
 
 function preexec {
     # Whitespace before command output.
     print;
 }
-
-PROMPT='%F{green}%n@%m%f %F{blue}%~%f
-%# '
 
 # Shell integrations
 function hook {
