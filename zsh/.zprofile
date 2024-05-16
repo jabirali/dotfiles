@@ -24,19 +24,17 @@ path=(
 	$path
 )
 
+# System settings
+export COLORTERM="truecolor"
+export EDITOR="vim"
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+
 # Application settings
 export BAT_STYLE="plain"
 export BAT_THEME="ansi"
-export COLORTERM="truecolor"
 export DIRENV_LOG_FORMAT=
 export MPLBACKEND="module://itermplot"
-
-# Editor choice
-if [ -z "$SSH_CLIENT" ]; then
-	export EDITOR="subl -nw"
-else
-	export EDITOR="rmate -w"
-fi
 
 # Message of the day
 if [ -e ~/.motd ]; then
