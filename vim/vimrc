@@ -1,23 +1,34 @@
-" vim: fdm=marker shiftwidth=2
-"
-set rtp+=/opt/homebrew/opt/fzf
+" ~/.vim/vimrc: Vim configuration file.
+" NOTE: Moving to ~/.config/vim/vimrc in Vim 9.1.x.
+vim9script
+source $VIMRUNTIME/defaults.vim
 
-" Settings {{{
-  set mouse=a
+# Settings {{{
+  g:mapleader = " "
+  g:maplocalleader = ","
+
   set termguicolors
   set clipboard=unnamed
+  set encoding=utf-8
+  set mouse=a
+  set smoothscroll
+  set display=lastline
 
   set noshowcmd
   set noshowmode
-  set signcolumn=no
+  set noruler
+  set number
+  set signcolumn=number
 
   set nowrap
   set linebreak
   set breakindent
+  set nofoldenable
 
   set smarttab
   set expandtab
   set shiftwidth=4
+  set tabstop=4
 
   set splitright
   set splitbelow
@@ -31,30 +42,34 @@ set rtp+=/opt/homebrew/opt/fzf
   set spelllang=en_US,nb_NO
 
   packadd! matchit
-" }}}
+# }}}
 
-" Package config {{{
-  let g:ale_floating_preview = 1
-  let g:ale_floating_window_border = ['│', '─', '┌', '┐', '┘', '└', '│', '─']
+# Package config {{{
+  g:ale_floating_preview = 1
+  g:ale_floating_window_border = ['│', '─', '┌', '┐', '┘', '└', '│', '─']
+  g:ale_virtualtext_cursor = 0
 
-  let g:FoldText_info = 0
+  g:FoldText_info = 0
 
-  let g:netrw_banner = 0
+  g:netrw_banner = 0
 
-  let g:UltiSnipsExpandTrigger = "<tab>"
-  let g:UltiSnipsJumpForwardTrigger = "<tab>"
-  let g:UltiSnipsJumpBackwardTrigger = "<S-tab>"
+  g:UltiSnipsExpandTrigger = "<tab>"
+  g:UltiSnipsJumpForwardTrigger = "<tab>"
+  g:UltiSnipsJumpBackwardTrigger = "<S-tab>"
 
-  let g:wiki_root = '/Users/jabirali/iCloud/Notes'
-  let g:wiki_zotero_root = '/Users/jabirali/Zotero'
-  let g:wiki_filetypes = ['md']
-  let g:wiki_link_extension = '.md'
-  let g:wiki_mappings_local_journal = 
+  g:vimtex_imaps_leader = ";"
+  g:vimtex_mappings_prefix = "<localleader>"
+
+  g:wiki_root = '/Users/jabirali/iCloud/Notes'
+  g:wiki_zotero_root = '/Users/jabirali/Zotero'
+  g:wiki_filetypes = ['md']
+  g:wiki_link_extension = '.md'
+  g:wiki_mappings_local_journal = 
   \ {
   \  '<plug>(wiki-journal-prev)': '[f',
   \  '<plug>(wiki-journal-next)': ']f',
   \ }
-  let g:wiki_journal = 
+  g:wiki_journal = 
   \ {
   \   'root': '',
   \   'name': 'journal',
@@ -64,12 +79,13 @@ set rtp+=/opt/homebrew/opt/fzf
   \     'weekly': '%Y-W%W',
   \   },
   \ }
-" }}}
+# }}}
 
-" Package management {{{
-  call plug#begin('~/.cache/vim/plug.vim')
+# Package management {{{
+  plug#begin('~/.cache/vim/plug.vim')
+  Plug 'rose-pine/vim'
 
-  " Keybindings
+  # Keybindings
   Plug 'tpope/vim-rsi'
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-commentary'
@@ -85,109 +101,106 @@ set rtp+=/opt/homebrew/opt/fzf
   Plug 'rhysd/clever-f.vim'
   Plug 'bronson/vim-visual-star-search'
 
-  " IDE features
+  # IDE features
   Plug 'dense-analysis/ale'
   Plug 'junegunn/fzf'
   Plug 'junegunn/fzf.vim'
   Plug 'sirver/ultisnips'
 
-  " Language support
+  # Language support
   Plug 'kalekundert/vim-coiled-snake'
   Plug 'vim-pandoc/vim-pandoc'
   Plug 'vim-pandoc/vim-pandoc-syntax'
   Plug 'lervag/vimtex'
 
-  " Aesthetics
+  # Aesthetics
   Plug 'jeffkreeftmeijer/vim-dim'
   Plug 'jrudess/vim-foldtext'
   Plug 'vim/colorschemes'
   Plug 'dracula/vim'
 
-  " Miscellaneous
-  " Plug 'lervag/wiki.vim'
+  # Miscellaneous
+  # Plug 'lervag/wiki.vim'
   Plug 'vimwiki/vimwiki'
   Plug 'tools-life/taskwiki'
   Plug 'sunaku/tmux-navigate'
 
-  call plug#end()
-" }}}
+  plug#end()
+# }}}
 
-" Keybindings {{{
-  " Leader key
+# Keybindings {{{
+  # Leader key
   nnoremap <space> <nop>
-  let mapleader=" "
-  let maplocalleader=","
 
-  " Tabs
-  nnoremap <leader>1 1gt
-  nnoremap <leader>2 2gt
-  nnoremap <leader>3 3gt
-  nnoremap <leader>4 4gt
-  nnoremap <leader>5 5gt
-  nnoremap <leader>6 6gt
-  nnoremap <leader>7 7gt
-  nnoremap <leader>8 8gt
-  nnoremap <leader>9 9gt
+  # Tabs
+  nnoremap <space>1 1gt
+  nnoremap <space>2 2gt
+  nnoremap <space>3 3gt
+  nnoremap <space>4 4gt
+  nnoremap <space>5 5gt
+  nnoremap <space>6 6gt
+  nnoremap <space>7 7gt
+  nnoremap <space>8 8gt
+  nnoremap <space>9 9gt
 
-  nnoremap <leader>q <cmd>close<cr>
-  nnoremap <leader>t <cmd>tabnew<cr>
-  nnoremap <leader>w <cmd>write<cr>
+  nnoremap <space>q <cmd>close<cr>
+  nnoremap <space>t <cmd>tabnew<cr>
+  nnoremap <space>w <cmd>write<cr>
 
-  " Fuzzy finder
-  nnoremap <leader>b  :Buffers<cr>
-  nnoremap <leader>f  :Files<cr>
-  " nnoremap <leader>s  :Snippets<cr>
-  nnoremap <leader>h  :Helptags<cr>
-  nnoremap <leader>'  :Marks<cr>
-  nnoremap <leader>/  :RG<cr>
+  # Fuzzy finder
+  nnoremap <space>b  :Buffers<cr>
+  nnoremap <space>f  :Files<cr>
+  # nnoremap <space>s  :Snippets<cr>
+  nnoremap <space>h  :Helptags<cr>
+  nnoremap <space>'  :Marks<cr>
+  nnoremap <space>/  :RG<cr>
 
-  " Package management
-  nnoremap <leader>e :edit ~/.vim/<cr>
-  nnoremap <leader>p :source<bar>PlugInstall<cr>
+  # Package management
+  nnoremap <space>e :edit ~/.vim/<cr>
+  nnoremap <space>p :source<bar>PlugInstall<cr>
 
-  " Personal wiki (todo/note/journal)
-  "nnoremap <leader>t :WikiIndex<cr>
-  "nnoremap <leader>n :WikiPages<cr>
-  "nnoremap <leader>j :WikiJournal<cr>
+  # Personal wiki (todo/note/journal)
+  #nnoremap <space>t :WikiIndex<cr>
+  #nnoremap <space>n :WikiPages<cr>
+  #nnoremap <space>j :WikiJournal<cr>
 
-  " Surround
+  # Surround
   nmap s ys
   vmap s S
 
-  " Digraphs
-  inoremap ;   <c-k>
-  inoremap ;;  <c-k>*
+  # Digraphs
+  # inoremap ;   <c-k>
+  # inoremap ;;  <c-k>*
 
-  inoremap ;<space> ;<space>
-  inoremap ;<cr>    ;<cr>
-" }}}
+  # inoremap ;<space> ;<space>
+  # inoremap ;<cr>    ;<cr>
+# }}}
 
-" Digraphs {{{
-  " Norwegian
-  digraphs Ae 198 " Æ
-  digraphs Oo 216 " Ø
-  digraphs Aa 197 " Å
-  digraphs ae 230 " æ
-  digraphs oo 248 " ø
-  digraphs aa 229 " å
+# Digraphs {{{
+# Norwegian
+#  digraphs Ae 198 " Æ
+#  digraphs Oo 216 " Ø
+#  digraphs Aa 197 " Å
+#  digraphs ae 230 " æ
+#  digraphs oo 248 " ø
+#  digraphs aa 229 " å
+#
+#  # Math
+#  digraphs *A 8704  " ∀
+#  digraphs *E 8707  " ∃
+#  digraphs *I 8747  " ∫
+#  digraphs *S 8721  " ∑
+#  digraphs *V 8711  " ∇
+#  digraphs *s  963  " σ
+#  digraphs *v 8706  " ∂
+#  digraphs *.  183  " ·
+#  digraphs *= 8801  " ≡ 
+#  digraphs *~ 8776  " ≈
+  # }}}
 
-  " Math
-  digraphs *A 8704  " ∀
-  digraphs *E 8707  " ∃
-  digraphs *I 8747  " ∫
-  digraphs *S 8721  " ∑
-  digraphs *V 8711  " ∇
-  digraphs *s  963  " σ
-  digraphs *v 8706  " ∂
-  digraphs *.  183  " ·
-  digraphs *= 8801  " ≡ 
-  digraphs *~ 8776  " ≈
-" }}}
+# Colorscheme {{{
+  colorscheme rosepine_dawn
+  highlight! link Folded LineNr
+# }}}
 
-" Colorscheme {{{
-  colorscheme dracula
-  highlight! link Folded Comment
-" }}}
-
-
-
+# vim: fdm=marker shiftwidth=2

@@ -29,12 +29,12 @@ function precmd {
 
     # Are we in Git?
     if git rev-parse --is-inside-work-tree &>/dev/null; then
-        RPROMPT+='%F{red}git %f'
+        PROMPT+=$'%F{yellow}git%f '
     fi
-
+ 
     # Is Direnv active?
     if [ -n "$DIRENV_DIR" ]; then
-        RPROMPT+='%F{red}env %f'
+        PROMPT+=$'%F{yellow}env%f '
     fi
 
     # Two-line prompt.
