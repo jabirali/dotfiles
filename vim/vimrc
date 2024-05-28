@@ -3,7 +3,13 @@
 vim9script
 source $VIMRUNTIME/defaults.vim
 
+# Built-in packages {{{
+  packadd! matchit
+# packadd! comment
+# }}} 
+
 # Settings {{{
+  nnoremap <space> <nop>
   g:mapleader = " "
   g:maplocalleader = ","
 
@@ -13,6 +19,7 @@ source $VIMRUNTIME/defaults.vim
   set mouse=a
   set smoothscroll
   set display=lastline
+  set hidden
 
   set noshowcmd
   set noshowmode
@@ -24,6 +31,11 @@ source $VIMRUNTIME/defaults.vim
   set linebreak
   set breakindent
   set nofoldenable
+  set conceallevel=0
+  set breakindentopt=list:-1
+
+  set smartcase
+  set ignorecase
 
   set smarttab
   set expandtab
@@ -35,19 +47,28 @@ source $VIMRUNTIME/defaults.vim
 
   set shortmess+=I
   set fillchars+=eob:\ ,
-  set virtualedit=block
+      set virtualedit=block
   set wildoptions=pum
   set tildeop
 
   set spelllang=en_US,nb_NO
-
-  packadd! matchit
 # }}}
 
 # Package config {{{
   g:ale_floating_preview = 1
   g:ale_floating_window_border = ['│', '─', '┌', '┐', '┘', '└', '│', '─']
   g:ale_virtualtext_cursor = 0
+
+  g:pandoc#syntax#conceal#blacklist = [
+    'subscript',
+    'superscript',
+    'atx',
+    'codeblock_start',
+    'codeblock_delim',
+    'list',
+    'quotes',
+    'inlinecode',
+  ]
 
   g:FoldText_info = 0
 
@@ -122,16 +143,13 @@ source $VIMRUNTIME/defaults.vim
   # Miscellaneous
   # Plug 'lervag/wiki.vim'
   Plug 'vimwiki/vimwiki'
-  Plug 'tools-life/taskwiki'
+  # Plug 'tools-life/taskwiki'
   Plug 'sunaku/tmux-navigate'
 
   plug#end()
 # }}}
 
 # Keybindings {{{
-  # Leader key
-  nnoremap <space> <nop>
-
   # Tabs
   nnoremap <space>1 1gt
   nnoremap <space>2 2gt
@@ -143,9 +161,10 @@ source $VIMRUNTIME/defaults.vim
   nnoremap <space>8 8gt
   nnoremap <space>9 9gt
 
-  nnoremap <space>q <cmd>close<cr>
+  nnoremap <space>q <cmd>quit<cr>
+  nnoremap <space>w <cmd>close<cr>
   nnoremap <space>t <cmd>tabnew<cr>
-  nnoremap <space>w <cmd>write<cr>
+  nnoremap <space>s <cmd>write<cr>
 
   # Fuzzy finder
   nnoremap <space>b  :Buffers<cr>
@@ -199,7 +218,7 @@ source $VIMRUNTIME/defaults.vim
   # }}}
 
 # Colorscheme {{{
-  colorscheme rosepine_dawn
+  colorscheme rosepine_moon
   highlight! link Folded LineNr
 # }}}
 

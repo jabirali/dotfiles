@@ -1,12 +1,12 @@
 ;;; init-gui.el --- Setup the Graphical User Interface (GUI).
 
 ;;; Code:
-;; Turn off some default junk that I find distracting.
+;; Turn off distractions.
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (blink-cursor-mode -1)
 
-;; Turn on some GUI features that I like.
+;; Turn on tab support.
 (tab-bar-mode 1)
 
 ;; Make it easier to switch directly to a tab.
