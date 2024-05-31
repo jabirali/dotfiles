@@ -1,0 +1,21 @@
+[
+	// Terminals.
+	{ "keys": ["super+shift+t"], "command": "open_terminal" },
+	
+	// Window splits.
+	{ "keys": ["super+o"], "command": "focus_neighboring_group", },
+	{ "keys": ["super+shift+o"], "command": "move_to_neighboring_group", },
+
+	// Side bar.
+	{ "keys": ["super+b"], "command": "focus_side_bar" },
+	{ "keys": ["super+shift+b"], "command": "toggle_side_bar", },
+
+	// Native tabs.
+	{ "keys": ["super+t"], "command": "new_os_tab", },
+	{ "keys": ["super+ctrl+["], "command": "prev_os_tab", },
+	{ "keys": ["super+ctrl+]"], "command": "next_os_tab", },
+
+	// Tab handling.
+	// { "keys": ["ctrl+up"], "command": "prev_view", },
+	// { "keys": ["ctrl+down"], "command": "next_view", },
+]

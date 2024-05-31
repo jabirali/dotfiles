@@ -1,0 +1,24 @@
+{
+	"installed_packages":
+	[
+		"Catppuccin color schemes",
+		"Dracula Color Scheme",
+		"LSP",
+		"LSP-pyright",
+		"LSP-TexLab",
+		"MarkdownEditing",
+		"NeoVintageous",
+		"Package Control",
+		"PackageDev",
+		"Quarto",
+		"Sublitesse Color Scheme",
+		"Terminal",
+		"Theme - DAneo",
+		"Theme - Monokai Pro",
+		"Theme - Rose Pine",
+		"UnicodeMath",
+	],
+	"in_process_packages":
+	[
+	],
+}

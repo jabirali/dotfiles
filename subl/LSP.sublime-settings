@@ -1,0 +1,10 @@
+// Settings in here override those in "LSP/LSP.sublime-settings"
+{
+	"diagnostics_gutter_marker": "dot",
+	"show_multiline_diagnostics_highlights": false,
+	"document_highlight_style": "",
+	"diagnostics_highlight_style": {
+		"info": "",
+		"hint": ""
+	},
+}

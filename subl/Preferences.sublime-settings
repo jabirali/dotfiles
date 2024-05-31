@@ -1,0 +1,60 @@
+{
+	// Aesthetics.
+	"theme": "DAneo Origin.sublime-theme",
+	"color_scheme": "auto",
+	"font_face": "JetBrains Mono NL",
+	"font_options": ["no_italic"],
+	"font_size": 13,
+
+	// Minimalist interface.
+	"show_tab_close_buttons": false,
+	"show_new_tab_button": false,
+	"show_tabs_dropdown_button": false,
+	"show_scroll_tabs_buttons": false,
+	"auto_hide_tabs": false,
+	"auto_hide_status_bar": false,
+	"highlight_gutter": false,
+	"highlight_line_number": false,
+	"overlay_scroll_bars": "enabled",
+	"line_numbers": false,
+	"indent_guide_options": [],
+
+	// Minimal sidebar.
+	"show_sidebar_icons": false,
+	"show_sidebar_vcs_badges": false,
+	"show_sidebar_closed_dir_badges": false,
+	"show_sidebar_opened_dir_badges": false,
+	"show_sidebar_tracked_label_colors": false,
+	"show_sidebar_ignored_label_colors": true,
+	"show_sidebar_untracked_label_colors": true,
+
+	// Miscellaneous
+	"ignored_packages":
+	[
+		"Vintage",
+	],
+	"shift_tab_unindent": false,
+	"neovintageous_build_version": 13200,
+	"vintageous_use_super_keys": false,
+	"index_files": true,
+	"spell_check": true,
+	"added_words":
+	[
+		"env",
+		"usr",
+		"altermagnetic",
+		"interlayers",
+		"altermagnet",
+		"altermagnets",
+		"ipynb",
+		"Jupyter",
+		"Jupytext",
+	],
+	"ignored_words":
+	[
+		"π",
+
+	],
+	"dark_color_scheme": "Rosé Pine Moon.sublime-color-scheme",
+	"light_color_scheme": "Rosé Pine Dawn.sublime-color-scheme",
+}

@@ -1,0 +1,3 @@
+nnoremap K :LspHover<cr>
+nnoremap gd :LspSymbolDefinition<cr>
+nnoremap gr :LspSymbolReferences<cr>

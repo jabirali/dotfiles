@@ -1,0 +1,12 @@
+{
+	"variables": {
+	},
+	"globals": {
+        "gutter": "var(background)",
+        "gutter_foreground": "var(muted)",
+	},
+	"rules": [
+		{
+		},
+	],
+}
