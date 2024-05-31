@@ -20,17 +20,19 @@ source $VIMRUNTIME/defaults.vim
   set smoothscroll
   set display=lastline
   set hidden
+  set autochdir
 
   set noshowcmd
   set noshowmode
   set noruler
-  set number
-  set signcolumn=number
+  set nonumber
+  set signcolumn=no
 
   set nowrap
   set linebreak
   set breakindent
   set nofoldenable
+  set concealcursor=nv
   set conceallevel=0
   set breakindentopt=list:-1
 
@@ -47,11 +49,11 @@ source $VIMRUNTIME/defaults.vim
 
   set shortmess+=I
   set fillchars+=eob:\ ,
-      set virtualedit=block
+  set virtualedit=block
   set wildoptions=pum
   set tildeop
 
-  set spelllang=en_US,nb_NO
+  set spelllang=en,nb
 # }}}
 
 # Package config {{{
@@ -124,6 +126,7 @@ source $VIMRUNTIME/defaults.vim
 
   # IDE features
   Plug 'dense-analysis/ale'
+  Plug 'direnv/direnv.vim'
   Plug 'junegunn/fzf'
   Plug 'junegunn/fzf.vim'
   Plug 'sirver/ultisnips'
@@ -139,6 +142,7 @@ source $VIMRUNTIME/defaults.vim
   Plug 'jrudess/vim-foldtext'
   Plug 'vim/colorschemes'
   Plug 'dracula/vim'
+  Plug 'junegunn/goyo.vim'
 
   # Miscellaneous
   # Plug 'lervag/wiki.vim'
@@ -187,6 +191,9 @@ source $VIMRUNTIME/defaults.vim
   nmap s ys
   vmap s S
 
+  # Misc
+  nnoremap <C-BS> <C-w>
+
   # Digraphs
   # inoremap ;   <c-k>
   # inoremap ;;  <c-k>*
@@ -216,6 +223,12 @@ source $VIMRUNTIME/defaults.vim
 #  digraphs *= 8801  " ≡ 
 #  digraphs *~ 8776  " ≈
   # }}}
+
+# Autocommands {{{
+  # Focus mode.
+  autocmd vimenter * Goyo 80x100%
+  autocmd focusgained * Goyo 80x100%
+# }}}
 
 # Colorscheme {{{
   colorscheme rosepine_moon

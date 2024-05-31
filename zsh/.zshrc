@@ -72,11 +72,15 @@ alias ls="ls --color --human-readable --dereference --group-directories-first --
 alias matlab='matlab -nosplash -nodesktop'  # CLI mode
 alias wget='wget -e robots=off'  # Web scraping
 
+# Don't procrastinate.
+alias emacs="echo Don\'t you dare procrastinate!"
+
 # Intuitive commands
 alias queue="squeue -u jabirali"
 alias hours="cost -d"
 
 # Command abbreviations
+alias b="open \"bear://x-callback-url/create?title=$(date +%Y-%m-%d)&new_window=yes&edit=yes&tags=capture\""
 alias e="${=EDITOR}"
 alias f="tail -n 1024 -f"
 alias o="open"
@@ -139,5 +143,6 @@ alias gs="git status"
 alias gz="git stash"
 
 # Named directories
-hash -d c=~/Code
-hash -d d=~/Code/config
+for dir in ~/Code/*; do
+    hash -d "$(basename $dir)=$dir"
+done
