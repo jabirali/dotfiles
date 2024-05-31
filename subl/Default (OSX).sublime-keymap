@@ -18,4 +18,43 @@
 	// Tab handling.
 	// { "keys": ["ctrl+up"], "command": "prev_view", },
 	// { "keys": ["ctrl+down"], "command": "next_view", },
+
+	// Plugin: Copilot.
+	{ "keys": ["super+enter"], "command": "copilot_ask_completions", },
+	{
+	    "keys": ["tab"],
+	    "command": "copilot_next_completion",
+	    "context": [
+	        {
+	            "key": "copilot.is_on_completion"
+	        }
+	    ]
+	},
+	{
+	    "keys": ["shift+tab"],
+	    "command": "copilot_previous_completion",
+	    "context": [
+	        {
+	            "key": "copilot.is_on_completion"
+	        }
+	    ]
+	},
+	{
+	    "keys": ["enter"],
+	    "command": "copilot_accept_completion",
+	    "context": [
+	        {
+	            "key": "copilot.is_on_completion"
+	        }
+	    ]
+	},
+	{
+	    "keys": ["escape"],
+	    "command": "copilot_reject_completion",
+	    "context": [
+	        {
+	            "key": "copilot.is_on_completion"
+	        }
+	    ]
+	}
 ]

@@ -4,7 +4,7 @@
 	"color_scheme": "auto",
 	"font_face": "JetBrains Mono NL",
 	"font_options": ["no_italic"],
-	"font_size": 13,
+	"font_size": 12,
 
 	// Minimalist interface.
 	"show_tab_close_buttons": false,
