@@ -1,0 +1,963 @@
+#+title: Emacs configuration
+#+author: Jabir Ali Ouassou
+#+PROPERTY: header-args:emacs-lisp :tangle "init.el"
+
+This is my literate configuration file for Emacs. Most of my configuration assumes that I'm using Emacs v29+ on MacOS.
+
+* Installation
+** Mac port
+The "Mac port" provides the best integration with the MacOS platform, including full Retina (hiDPI) support and better trackpad integration.
+
+To build it from source (to get native compilation and a nicer icon):
+#+begin_src sh
+  brew tap railwaycat/emacsmacport
+  brew install emacs-mac --with-native-compilation --with-emacs-big-sur-icon --with-natural-title-bar
+#+end_src
+
+To install the pre-built version (less chance of failure and bugs):
+#+begin_src sh
+  brew tap railwaycat/emacsmacport
+  brew install --cask emacs-mac
+#+end_src
+
+** NS port
+The "NextStep port" is the official GNU Emacs release. I prefer the patched "Emacs Plus" version, which can be fetched via HomeBrew:
+#+begin_src sh
+  brew tap d12frosted/emacs-plus
+  brew install emacs-plus@30 --with-native-comp --with-nobu417-big-sur-icon 
+#+end_src
+
+On older versions of MacOS (Intel MacBooks), the best option is to fetch [[https://emacsformacosx.com/][the prebuilt version from emacsformacosx.com]].
+
+** Packages
+Before we install anything else, let's enable the community repositories and turn on native compilation of packages.
+#+begin_src emacs-lisp
+  (use-package use-package
+    :custom
+    (native-comp-async-report-warnings-errors nil)
+    (package-native-compile t)
+    ;; (use-package-always-demand t)
+    :config
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
+#+end_src
+
+Let's also prevent Emacs from littering my =init.el= config file with the cache from the package system, installed packages, etc.
+#+begin_src emacs-lisp :tangle "early-init.el"
+  (setq custom-file (concat user-emacs-directory "custom.el"))
+  (ignore-errors (load custom-file))
+#+end_src
+
+* Basic settings
+** Sane defaults
+Here's a hodgepodge of built-in Emacs settings. Many of them just try to get rid of anachronisms.
+#+begin_src emacs-lisp
+  (use-package emacs
+    :custom
+    (auto-save-default nil)
+    (default-input-method 'TeX)
+    (default-transient-input-method 'TeX)
+    (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
+    (frame-title-format "GNU Emacs")
+    (fringes-outside-margins t)
+    (inhibit-startup-message t)
+    (initial-major-mode 'org-mode)
+    (initial-scratch-message "")
+    (line-spacing 0.15)
+    (make-backup-files nil)
+    (message-truncate-lines t)
+    (ring-bell-function 'ignore)
+    (sentence-end-double-space nil)
+    (tab-width 4)
+    (truncate-lines t)
+    (use-short-answers t)
+    (xterm-set-window-title t)
+    :custom-face
+    (default ((t (:family "JetBrains Mono NL" :height 140))))
+    :bind
+    ("C-\\" . activate-transient-input-method)
+    ("<f5>" . sort-lines)
+    :config
+    ;; Don't indicate long or wrapped lines.
+    (set-display-table-slot standard-display-table 'truncation ? )
+    (set-display-table-slot standard-display-table 'wrap ? )
+    ;; Turn on some useful default modes.
+    (global-auto-revert-mode 1)
+    (recentf-mode 1)
+    (savehist-mode 1)
+    ;; Disable the annoying default modes.
+    (blink-cursor-mode -1)
+    (menu-bar-mode -1)
+    (when (display-graphic-p)
+      (fringe-mode 1)
+      (tooltip-mode -1)
+      (tool-bar-mode -1)
+      (scroll-bar-mode -1)))
+#+end_src
+
+Let's also increase the garbage collection threshold a bit. This makes Emacs stutter a bit less and speeds up the start-up process.
+#+begin_src emacs-lisp :tangle "early-init.el"
+  (setq gc-cons-threshold (* 128 1024 1024)
+        read-process-output-max (* 1024 1024))
+#+end_src
+** Environment variables
+This package corrects =$PATH= when Emacs is started from the GUI. This is needed to detect programs installed via HomeBrew.
+#+begin_src emacs-lisp
+  ;; (use-package exec-path-from-shell
+  ;;   :config
+  ;;   (exec-path-from-shell-initialize))
+#+end_src
+
+To install it on Emacs v29 (replace with =:vc= in Emacs v30):
+#+begin_src
+  (package-vc-install "https://github.com/purcell/exec-path-from-shell")
+#+end_src
+
+** Graphical interface
+Let's add some extra breathing room around the buffer text.
+#+begin_src emacs-lisp :tangle "early-init.el"
+  (setq-default left-margin-width 2
+                right-margin-width 2)
+#+end_src
+
+When using a tiling window manager, it's annoying when an app decides that it doesn't want to confirm to your "grid". Fix it.
+#+begin_src emacs-liso
+  (setopt frame-resize-pixelwise t)
+#+end_src
+
+I'm tired of manually disabling italics everywhere in Emacs (comments, keywords, etc.) each time I'm trying out new themes. Let's just disable italics globally instead, similarly to the good old monospace terminals.
+#+begin_src emacs-lisp
+  (set-face-italic-p 'italic nil)
+#+end_src
+
+** Terminal interface
+The "Kitty Keyboard Protocol" lets you use GUI keybindings in the TUI version of Emacs. Requires the Kitty terminal emulator.
+#+begin_src emacs-lisp
+  ;; (use-package kkp
+  ;;  :ensure t
+  ;;  :custom
+  ;;  (kkp-super-modifier 'meta)
+  ;;  :config
+  ;;  (global-kkp-mode +1))
+#+end_src
+
+These settings enable terminal mouse support and scrolling.
+#+begin_src emacs-lisp
+  ;; (setopt mouse-wheel-follow-mouse t)
+  ;; (setopt mouse-wheel-progressive-speed nil)
+  ;; (mouse-wheel-mode 1)
+  ;; (xterm-mouse-mode 1)
+#+end_src  
+
+This package lets Emacs interact with the system clipboard also when running in a terminal. Despite the name it works on both Linux and MacOS. However, note that so far, this doesn't appear to work with the new =yank-media= command from Emacs 29?
+#+begin_src emacs-lisp
+  (use-package xclip
+    :ensure t
+    :config
+    (xclip-mode 1))
+#+end_src
+
+Alternatively (osc-52, but doesn't wor?): 
+#+begin_src emacs-lisp
+  ;; (use-package clipetty
+  ;;   :ensure t
+  ;;   :hook (after-init . global-clipetty-mode))
+#+end_src
+
+
+
+  This package makes Evil-mode look a bit nicer when running in a terminal.
+  ,#+begin_src emacs-lisp
+    ;; (use-package evil-terminal-cursor-changer
+    ;;   :ensure t
+    ;;   :after evil
+    ;;   :config
+    ;;   (evil-terminal-cursor-changer-activate))
+#+end_src
+
+** Mouse and trackpad
+Enable actual smooth scrolling for high-precision trackpads and mice. Note that this package requires the Emacs Mac port; for the NS port, the best option is =pixel-scroll-precision-mode=.
+#+begin_src emacs-lisp :tangle no
+  (use-package ultra-scroll-mac
+    :ensure t
+    :if (eq window-system 'mac)
+    :init
+    (setq scroll-conservatively 101)
+    (setq scroll-margin 0) 
+    :config
+    (ultra-scroll-mac-mode 1))
+#+end_src
+
+To install it on Emacs v29 (replace with =:vc= in Emacs v30):
+#+begin_src
+ (package-vc-install "https://github.com/jdtsmith/ultra-scroll-mac.git")
+#+end_src
+
+It can be quite distracting when the mouse randomly highlights every little clickable thing. Let's just disable that.
+#+begin_src emacs-lisp
+  (setopt mouse-highlight nil)
+#+end_src
+  
+** Keyboard settings
+As an Evil user, I don't really need the Super key available. I do however need an easily accessible Meta key (e.g. for =M-RET= in Org-mode), and I do need an Option key (to type in Norwegian).
+#+begin_src emacs-lisp
+  (setopt mac-command-modifier 'meta)
+  (setopt mac-option-modifier 'option)
+#+end_src
+
+I regularly switch between ISO and ANSI style keyboards, which can be quite annoying since the backtick and tilde symbols keep moving around (and I use both of them a lot). Let's fix that.
+#+begin_src emacs-lisp
+  (define-key key-translation-map (kbd "§") (kbd "`"))
+  (define-key key-translation-map (kbd "±") (kbd "~"))
+#+end_src
+
+** Emacs server
+Run Emacs as a server. I chose to run it over TCP, because this lets me SSH forward the server to remote hosts. When I'm in a remote shell, I can then easily phone home via =emacsclient= to spawn new Tramp connections.
+#+begin_src emacs-lisp
+  (use-package server
+    :custom
+    (server-use-tcp t)
+    (server-port 1337)
+    :config
+    (server-mode 1))
+#+end_src
+
+* Vim keybindings
+First of all, let's enable the "Evil mode". As someone with a Vim background, this is more ergonomic for both my brain and my hands.
+#+begin_src emacs-lisp
+  (use-package evil
+    :ensure t
+    :custom
+    (evil-respect-visual-line-mode t)
+    (evil-undo-system 'undo-redo)
+    (evil-want-C-i-jump nil)
+    (evil-want-C-u-scroll t)
+    (evil-want-integration t)
+    (evil-want-keybinding nil)
+    :config
+    (evil-mode 1)
+    (define-key evil-motion-state-map (kbd "SPC") nil)
+    (define-key evil-motion-state-map (kbd "RET") nil)
+    (define-key evil-motion-state-map (kbd "TAB") nil))
+#+end_src
+
+Evil Collection is exactly what is sounds like: It makes Evil work in nearly every corner of Emacs.
+#+begin_src emacs-lisp
+    (use-package evil-collection
+      :ensure t
+      :after evil
+      :config
+      (evil-collection-init))
+#+end_src
+
+Let's improve some modes where Evil Collection is inadequate.
+#+begin_src emacs-lisp
+  (use-package evil-org
+    :ensure t
+    :after (evil org)
+    :hook (org-mode . evil-org-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package evil-org-agenda
+    :after evil-org
+    :config (evil-org-agenda-set-keys))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package evil-tex
+    :ensure t
+    :hook
+    (LaTeX-mode . evil-tex-mode))
+#+end_src
+
+Emacs ports of some useful Vim plugins.
+#+begin_src emacs-lisp
+  (use-package evil-surround
+    :ensure t
+    :config
+    (global-evil-surround-mode 1))
+#+end_src
+
+* Writing prose
+** Org-mode notes
+Org-mode is my favorite task and knowledge management system.  It's no understatement that Org-mode is the main reason I'm using Emacs at all (otherwise I'd probably be using Vim).
+#+begin_src emacs-lisp
+  (use-package org
+    :custom
+    (org-adapt-indentation nil)
+    (org-agenda-files (list org-directory))
+    (org-agenda-window-setup 'only-window)
+    (org-agenda-skip-deadline-if-done t)
+    (org-agenda-skip-scheduled-if-done t)
+    (org-agenda-span 'day)
+    (org-agenda-start-on-weekday nil)
+    (org-archive-location "::* Archive")
+    (org-babel-results-keyword "results")
+    (org-confirm-babel-evaluate nil)
+    (org-ctrl-k-protect-subtree t)
+    (org-directory "~/Sync/Org")
+    (org-fontify-quote-and-verse-blocks t)
+    (org-highlight-latex-and-related '(native latex script entities))
+    (org-image-actual-width '(400))
+    (org-pretty-entities t)
+    (org-pretty-entities-include-sub-superscripts nil)
+    (org-return-follows-link t)
+    (org-startup-folded 'fold)
+    (org-startup-indented t)
+    (org-tags-column -65)
+    (org-todo-keywords
+     '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+       (sequence "WAIT(w)" "HOLD(h)" "READ(r)" "IDEA(*)" "|" "NOTE(-)" "STOP(s)")))
+    :config
+    (setopt org-latex-src-block-backend 'engraved)
+    (setopt org-latex-engraved-theme 'ef-melissa-light)
+    (setopt org-latex-packages-alist '(("" "microtype" t)))
+    (setopt org-latex-hyperref-template "
+  \\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},
+   pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true}\n")
+    (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
+    (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
+#+end_src
+
+Enable drag-and-drop of images and documents into Org-mode.
+#+begin_src emacs-lisp :tangle no
+  (use-package org-download
+    :ensure t
+    :after org
+    :custom
+    (org-download-method 'directory)
+    (org-download-image-dir "assets")
+    (org-download-heading-lvl nil)
+    (org-download-timestamp "%Y%m%d%H%M%S")
+    :config
+    (defun +org-download-file-format (filename)
+      "Purely date-based naming of attachments."
+      (concat
+       (format-time-string org-download-timestamp)
+       "."
+       (file-name-extension filename)))
+    (setq org-download-file-format-function #'+org-download-file-format)
+    (setq org-download-annotate-function (lambda (_link) ""))
+    (org-download-enable)
+    :bind (:map org-mode-map
+                ("M-V" . org-download-clipboard))) 
+#+end_src
+
+Org Agenda needs some sectioning when it gets too long.
+#+begin_src emacs-lisp
+  (use-package org-super-agenda
+    :ensure t
+    :custom
+    (org-super-agenda-groups '((:auto-parent t)))
+    :config
+    (setq org-super-agenda-header-map (make-sparse-keymap))
+    (org-super-agenda-mode 1)) 
+#+end_src
+
+Org Agenda as a screensaver. Because I don't remember to check it when I'm busy, but that's exactly when I need to check it.
+#+begin_src emacs-lisp
+  (use-package idle-org-agenda
+    :ensure t
+    :after org-agenda
+    :custom
+    (idle-org-agenda-interval 3600)
+    :config
+    (idle-org-agenda-mode 1))
+#+end_src
+
+Export to every format via Pandoc. I especially appreciate that I can generate DOCX files with LaTeX-based equations.
+#+begin_src emacs-lisp
+  (use-package ox-pandoc
+    :ensure t) 
+#+end_src
+
+** MarkDown notes
+MarkDown is the lingua franca of mark-up languages, and its Emacs mode is best-in-class with the right switches toggled.
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+    :ensure t
+    :config
+    (setopt markdown-fontify-code-blocks-natively t)
+    (setopt markdown-enable-wiki-links t)
+    (setopt markdown-enable-math t))
+    ;; :hook
+    ;;(markdown-mode . cdlatex-mode)) 
+#+end_src
+
+** LaTeX documents
+First, let's install AUCTeX and set it up to sync with Skim. This is the de facto default LaTeX-mode for Emacs.
+#+begin_src emacs-lisp
+  (use-package tex
+    :ensure auctex
+    :custom
+    (font-latex-fontify-script nil)
+    (TeX-auto-save t)
+    (TeX-source-correlate-method 'synctex)
+    (TeX-source-correlate-mode t)
+    (TeX-source-correlate-start-server t)
+    (TeX-view-program-list '(("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
+    (TeX-view-program-selection '((output-pdf "Skim")))) 
+#+end_src
+
+CDLaTeX is one of the main reasons I love writing LaTeX in Emacs. It's very ergonomic and intuitive after you get used to it, and it works very well in both Org-mode and TeX-mode.
+#+begin_src emacs-lisp
+  (use-package cdlatex
+    :ensure t
+    :hook
+    ((TeX-mode . turn-on-cdlatex)
+     (org-mode . turn-on-org-cdlatex)))
+#+end_src
+
+I should eventually learn how to use RefTeX properly. For now, it's nearly a placeholder, but let's just keep it around.
+#+begin_src emacs-lisp
+  (use-package reftex
+    :ensure t
+    :after tex
+    :custom
+    (reftex-cite-format 'bibtex)
+    (reftex-enable-partial-scans t)
+    (reftex-plug-into-AUCTeX t)
+    (reftex-save-parse-info t)
+    (reftex-use-multiple-selection-buffers t)
+    :hook
+    (TeX-mode . turn-on-reftex)) 
+#+end_src
+
+Xenops-mode compiles TeX equations into SVG images for an in-buffer preview. Can be useful, perhaps more so in Org-mode than in LaTeX-mode.
+#+begin_src emacs-lisp
+  ;; (use-package xenops
+  ;;   :ensure t
+  ;;   :custom
+  ;;   (xenops-image-width 350)
+  ;;   :hook
+  ;;   (org-mode . xenops-mode)
+  ;;   (LaTeX-mode . xenops-mode)) 
+#+end_src
+
+** Spell checking
+Ispell is the traditional spell checker for Emacs. It supports many backends, but we here use the Hunspell backend since it (i) supports multi-language dictionary combinations, (ii) is supposed to be more accurate for many non-English languages, (iii) has become the de facto standard among other open-source apps (it is e.g. now the default spell checker in Firefox, LibreOffice, etc.). Note that on MacOS, you need to [[https://github.com/wooorm/dictionaries][download]] the appropriate dictionaries and extract them into =~/Library/Spelling=.
+#+begin_src emacs-lisp
+  (use-package ispell
+    :config
+    (setq ispell-program-name "hunspell")
+    (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
+    (setq ispell-dictionary "en_US,nb_NO")
+    (ispell-set-spellchecker-params)
+    (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
+#+end_src
+
+Flyspell is a built-in Emacs package that provides incremental as-you-write spell checking. Let's turn it on.
+#+begin_src emacs-lisp
+  (use-package flyspell
+    :hook
+    ((text-mode . flyspell-mode)
+     (prog-mode . flyspell-prog-mode)))
+#+end_src
+
+The default Flyspell interface and keybinding =C-c $= is not very ergonomic. Especially if you often have to add your own words to the personal dictionary. I'd rather use something based on =completing-read=, such that I can use e.g. Vertico for the correction interface.
+#+begin_src emacs-lisp
+  (use-package flyspell-correct
+    :ensure t
+    :after flyspell
+    :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+#+end_src
+
+** Line wrapping
+Visual-line-mode is pretty useful for the average document, but it looks very ugly without "adaptive wrap" turned on. The only reason I don't turn it on in Text-mode directly is that it would then end up in Org-mode as well, and it conflicts with =org-indent-mode=.
+#+begin_src emacs-lisp
+  (use-package adaptive-wrap
+    :ensure t
+    :hook
+    (text-mode . visual-line-mode)
+    (markdown-mode . adaptive-wrap-prefix-mode)
+    (latex-mode . adaptive-wrap-prefix-mode))
+#+end_src
+
+* Programming
+** General
+Eglot has been built into Emacs since v29. I've tried the alternatives Lsp-mode and Lsp-bridge, but so far Eglot is the solution that has been most "plug and play" and least buggy. It also seems to just work over Tramp connections if you install LSP servers remotely.
+#+begin_src emacs-lisp
+  (use-package eglot
+    :custom
+    (eldoc-echo-area-prefer-doc-buffer t)
+    (eldoc-echo-area-use-multiline-p nil)
+    :hook
+    (python-mode . +eglot-project-ensure)
+    :bind
+    ("<f2>" . eglot-rename))
+#+end_src
+
+Format-all is a decent package for automatically reformatting code on save. Emacs equivalent to part of Vim's ALE features.
+#+begin_src emacs-lisp
+  (use-package format-all
+    :ensure t
+    :hook
+    (python-mode . format-all-mode)
+    :config
+    (setq-default format-all-formatters
+                  '(("Python" (isort) (ruff) (black)))))
+#+end_src
+
+Treesitter provides, among other things, better and faster syntax highlighting and more structural editing possibilities.
+#+begin_src emacs-lisp
+  ;; (use-package treesit-auto
+  ;;   :ensure t
+  ;;   :custom
+  ;;   (treesit-auto-install 'prompt)
+  ;;   :config
+  ;;   (treesit-auto-add-to-auto-mode-alist 'all)
+  ;;   (global-treesit-auto-mode))
+#+end_src
+
+Github Copilot support for Emacs.
+#+begin_src emacs-lisp
+  ;; (use-package copilot
+  ;;   :vc (:url "https://github.com/copilot-emacs/copilot.el" :rev "main")
+  ;;   :custom
+  ;;   (copilot-idle-delay 1)
+  ;;   ;; :hook
+  ;;   ;; (prog-mode . copilot-mode)
+  ;;   :bind
+  ;;   (:map copilot-mode-map
+  ;;         ("M-RET" . copilot-accept-completion)
+  ;;         ("M-n"   . copilot-next-completion)
+  ;;         ("M-p"   . copilot-previous-completion)))
+#+end_src
+
+** Python
+First, let's load the built-in Python-mode.
+#+begin_src emacs-lisp
+  (use-package python
+    :custom
+    (python-indent-guess-indent-offset t)  
+    (python-indent-guess-indent-offset-verbose nil))
+#+end_src
+
+Jupyter-mode replaces the "Inferior Python" feature (=C-c C-p=). Notably, Jupyter-mode can capture Matplotlib plots and display them in Emacs buffers, which provides a similar interface as Spyder and VSCode for data visualization in Python. With my setup, pressing =C-c C-c= once in a Python buffer starts up the Jupyter kernel, and pressing =C-c C-c= more times after that then evaluates the current line or region.
+#+begin_src emacs-lisp
+    (use-package jupyter
+      :ensure t
+      :config
+      (defun jabirali/jupyter-python ()
+        (interactive)
+        (jupyter-run-repl "python3" "py" t)
+        (message "Jupyter kernel started!"))
+      :bind
+      (:map python-mode-map
+            ("C-c C-c" . jabirali/jupyter-python)))
+#+end_src
+
+Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continuous feedback.
+#+begin_src emacs-lisp
+  (use-package flymake-ruff
+    :ensure t
+    :hook
+    (python-mode . flymake-mode)
+    (python-mode . flymake-ruff-load))
+#+end_src
+
+** Julia
+#+begin_src emacs-lisp
+  (use-package julia-mode
+    :ensure t) 
+#+end_src
+
+** Matlab
+#+begin_src emacs-lisp
+  (use-package matlab
+    :ensure matlab-mode) 
+#+end_src
+
+* TODO Refactor in progress
+** Functions
+#+begin_src emacs-lisp
+  (defun jabirali/science-definition-lookup ()
+    "Look up a scientific definition using a ChatGPT wrapper."
+    (interactive)
+    (let* ((query (buffer-substring (region-beginning) (region-end)))
+           (encoded-query (url-encode-url query))
+           (search-url "https://chat.openai.com/g/g-Kihf3Sccx-science-definitions?q="))
+      (browse-url (concat search-url encoded-query))))
+
+  (bind-key "<f12>" #'jabirali/science-definition-lookup)
+#+end_src
+
+#+begin_src emacs-lisp
+    (defun +org-find-file ()
+      "Open one of my Org files (or create a new one)."
+      (interactive)
+      (let ((default-directory org-directory))
+        (find-file (completing-read "Org: " (directory-files "." nil "\\.org$")))))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun +eglot-project-ensure ()
+    "Enable Eglot iff the current buffer belongs to a project."
+    (if (project-current) (eglot-ensure)))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun +theme-override (&rest _)
+    "Override the current theme for a consistent and minimal look."
+    (let ((bg0 (face-attribute 'default :background))
+          (bg1 (face-attribute 'mode-line :background))
+          (bg2 (face-attribute 'mode-line :background))
+          (fg0 (face-attribute 'default :foreground))
+          (fg1 (face-attribute 'mode-line :foreground))
+          (fg2 (face-attribute 'mode-line-inactive :foreground)))
+      (set-face-attribute 'tab-bar nil :foreground bg2 :background bg2 :box `(:line-width 6 :color ,bg2))
+      (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg2 :box `(:line-width 6 :color ,bg2))
+      (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg2 :box `(:line-width 6 :color ,bg2))
+      (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
+      (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
+      (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
+      (set-face-attribute 'scroll-bar nil :foreground bg2 :background bg2)
+      (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)
+      (set-face-italic-p 'font-lock-comment-face nil)))
+
+  (advice-add 'load-theme :after #'+theme-override)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; (use-package spacious-padding
+  ;;   :ensure t
+  ;;   :config
+  ;;   (spacious-padding-mode 1))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun +url-handler-zotero (link)
+    "Open a zotero:// link in the Zotero desktop app."
+    (start-process "zotero_open" nil "open" (concat "zotero:" link)))
+#+end_src
+
+** Internal packages
+#+begin_src emacs-lisp
+  (use-package tab-bar
+    :custom
+    (tab-bar-close-button-show nil)
+    (tab-bar-format '(tab-bar-format-tabs))
+    (tab-bar-new-tab-choice "*scratch*")
+    (tab-bar-separator "  ")
+    (tab-bar-show t)
+    (tab-bar-tab-hints t)
+    :bind*
+    ("C-c [" . tab-bar-history-back)
+    ("C-c ]" . tab-bar-history-forward)
+    :config
+    ;; Rename new tabs interactively.
+    (defun jabirali/rename-tab (&rest _)
+      (call-interactively #'tab-bar-rename-tab))
+    (add-hook 'tab-bar-tab-post-open-functions #'jabirali/rename-tab)
+
+    ;; Enable the mode globally.
+    (tab-bar-mode 1)
+    (tab-bar-history-mode 1))
+#+end_src
+
+** External packages
+#+begin_src emacs-lisp
+  (use-package persistent-scratch
+    :after (org evil)
+    :ensure t
+    :config
+    (persistent-scratch-autosave-mode 1))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package ace-window
+    :ensure t
+    :config
+    (set-face-attribute 'aw-leading-char-face nil :height 1)
+    (defun +other-window-dwim ()
+      "Select either the minibuffer or an arbitrary visible window."
+      (interactive)
+      (if (active-minibuffer-window)
+          (select-window (active-minibuffer-window))
+        (call-interactively #'ace-window)))
+    :bind
+    ("M-o" . +other-window-dwim))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package company
+    :ensure t
+    :after eglot
+    :bind (:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
+    :hook (eglot-managed-mode . company-mode))
+#+end_src
+
+
+#+begin_src emacs-lisp
+  (use-package diredfl
+    :ensure t
+    :after dired
+    :config
+    (diredfl-global-mode 1))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package doom-modeline
+    :ensure t
+    :custom
+    (doom-modeline-bar-width 0.1)
+    (doom-modeline-buffer-encoding nil)
+    (doom-modeline-buffer-modification-icon nil)
+    (doom-modeline-env-enable-python nil)
+    (doom-modeline-icon nil)
+    (doom-modeline-modal nil)
+    (doom-modeline-position-line-format nil)
+    (doom-modeline-time nil)
+    (doom-modeline-workspace-name nil)
+    :config
+    (doom-modeline-mode 1))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package ef-themes
+    :ensure t
+    :config
+    (load-theme 'ef-melissa-light t))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package expand-region
+    :bind*
+    ("C-c RET" . er/expand-region)
+    :ensure t)
+#+end_src
+
+
+#+begin_src emacs-lisp
+  (use-package gnuplot
+    :ensure t)
+#+end_src 
+
+#+begin_src emacs-lisp
+  (use-package hl-todo
+    :ensure t
+    :hook
+    (prog-mode . hl-todo-mode))
+#+end_src
+
+#+begin_src emacs-lisp :tangle no
+  (use-package iedit
+    :ensure t) 
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package magit
+    :ensure t
+    :bind
+    (:map magit-status-mode-map ("SPC" . nil))
+    :custom
+    (magit-diff-refine-hunk 'all)
+    :config
+    (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+    (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
+    (keymap-set project-prefix-map "m" #'magit-project-status)) 
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; (use-package orderless
+  ;;   :ensure t
+  ;;   :custom
+  ;;   (completion-styles '(orderless basic))
+  ;;   (completion-category-overrides '((file (styles basic partial-completion))))) 
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; (use-package outshine
+  ;;   :ensure t
+  ;;   :hook
+  ;;   (prog-mode . outshine-mode)) 
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package prescient
+    :ensure t) 
+#+end_src
+
+#+begin_src emacs-lisp :tangle no
+  (use-package swiper
+    :ensure t
+    :bind
+    ("C-s" . swiper)) 
+#+end_src
+
+
+#+begin_src emacs-lisp
+  (use-package vertico
+    :ensure t
+    :config
+    (vertico-mode 1)
+    (vertico-mouse-mode 1)) 
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package vertico-directory
+    :after vertico
+    :bind (:map vertico-map
+                ("RET"   . vertico-directory-enter)
+                ("DEL"   . vertico-directory-delete-char)
+                ("M-DEL" . vertico-directory-delete-word))
+    :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)) 
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package vertico-prescient
+    :ensure t
+    :after (vertico prescient)
+    :config
+    (vertico-prescient-mode 1)) 
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :ensure t
+    :config
+    (which-key-mode 1)) 
+#+end_src
+
+#+begin_src emacs-lisp :tangle no
+  (use-package yasnippet
+    :ensure t
+    :config
+    (yas-global-mode 1)) 
+#+end_src
+
+** Global keybindings
+#+begin_src emacs-lisp
+  (use-package general
+    :ensure t
+    :after evil
+    :config
+    (general-evil-setup t)
+    (general-override-mode 1)
+    (general-create-definer gmap
+      :keymaps 'override
+      :states '(motion normal visual)
+      :prefix "SPC")
+    (general-create-definer lmap
+      :keymaps 'override
+      :states '(motion normal visual)
+      :prefix ","))
+#+end_src
+
+#+begin_src emacs-lisp
+  (mmap                                           ; Motion map
+    "^" 'dired-jump) 
+#+end_src
+
+#+begin_src emacs-lisp
+  (vmap                                           ; Visual map
+    "ii" 'er/expand-region) 
+#+end_src
+
+#+begin_src emacs-lisp
+  (gmap                                           ; Space menu
+    "SPC" '(execute-extended-command :which-key "cmd")
+    "1" '(tab-bar-select-tab :which-key "1")
+    "2" '(tab-bar-select-tab :which-key "2")
+    "3" '(tab-bar-select-tab :which-key "3")
+    "4" '(tab-bar-select-tab :which-key "4")
+    "5" '(tab-bar-select-tab :which-key "5")
+    "6" '(tab-bar-select-tab :which-key "6")
+    "7" '(tab-bar-select-tab :which-key "7")
+    "8" '(tab-bar-select-tab :which-key "8")
+    "9" '(tab-bar-select-tab :which-key "9")
+    "a" '(org-agenda :which-key "agenda")
+    "b" '(switch-to-buffer :which-key "buffer")
+    "d" '(dired-jump :which-key "dired")
+    "f" '(find-file :which-key "file")
+    "g" '(magit :which-key "git")
+    "h" `(,help-map :which-key "help")
+    "i" '(imenu :which-key "imenu")
+    "j" '(bookmark-jump :which-key "jump")
+    "k" '(kill-this-buffer :which-key "kill")
+    "n" `(,narrow-map :which-key "narrow")
+    "o" '(ace-window :which-key "other")
+    "p" `(,project-prefix-map :which-key "project")
+    "q" '(delete-window :which-key "quit window")
+    "Q" '(tab-close :which-key "quit tab")
+    "r" '(recentf :which-key "recent")
+    "s" '(save-buffer :which-key "save")
+    "t" '(tab-bar-new-tab :which-key "tab")
+    "w" `(,evil-window-map :which-key "window")
+    "y" '(clone-indirect-buffer-other-window :which-key "indirect")) 
+#+end_src
+
+
+#+begin_src emacs-lisp
+  (lmap                                           ; Major modes
+    "," (general-key "C-c C-c")
+    "a" (general-key "C-c C-a")
+    "b" (general-key "C-c C-b")
+    "c" (general-key "C-c C-c")
+    "d" (general-key "C-c C-d")
+    "e" (general-key "C-c C-e")
+    "f" (general-key "C-c C-f")
+    "g" (general-key "C-c C-g")
+    "h" (general-key "C-c C-h")
+    "i" (general-key "C-c C-i")
+    "j" (general-key "C-c C-j")
+    "k" (general-key "C-c C-k")
+    "l" (general-key "C-c C-l")
+    "m" (general-key "C-c C-m")
+    "n" (general-key "C-c C-n")
+    "o" (general-key "C-c C-o")
+    "p" (general-key "C-c C-p")
+    "q" (general-key "C-c C-q")
+    "r" (general-key "C-c C-r")
+    "s" (general-key "C-c C-s")
+    "t" (general-key "C-c C-t")
+    "u" (general-key "C-c C-u")
+    "v" (general-key "C-c C-v")
+    "w" (general-key "C-c C-w")
+    "x" (general-key "C-c C-x")
+    "y" (general-key "C-c C-y")
+    "z" (general-key "C-c C-z")) 
+#+end_src
+
+#+begin_src emacs-lisp
+  (lmap                                           ; Minor modes
+    "!"  (general-key "C-c !" )
+    "\"" (general-key "C-c \"")
+    "#"  (general-key "C-c #" )
+    "$"  (general-key "C-c $" )
+    "%"  (general-key "C-c %" )
+    "&"  (general-key "C-c &" )
+    "'"  (general-key "C-c '" )
+    "("  (general-key "C-c (" )
+    ")"  (general-key "C-c )" )
+    "*"  (general-key "C-c *" )
+    "+"  (general-key "C-c +" )
+    "-"  (general-key "C-c -" )
+    "."  (general-key "C-c ." )
+    "/"  (general-key "C-c /" )
+    ":"  (general-key "C-c :" )
+    ";"  (general-key "C-c ;" )
+    "<"  (general-key "C-c <" )
+    "="  (general-key "C-c =" )
+    ">"  (general-key "C-c >" )
+    "?"  (general-key "C-c ?" )
+    "@"  (general-key "C-c @" )
+    "["  (general-key "C-c [" )
+    "\\" (general-key "C-c \\")
+    "]"  (general-key "C-c ]" )
+    "^"  (general-key "C-c ^" )
+    "_"  (general-key "C-c _" )
+    "`"  (general-key "C-c `" )
+    "{"  (general-key "C-c {" )
+    "|"  (general-key "C-c |" )
+    "}"  (general-key "C-c }" )
+    "~"  (general-key "C-c ~" ))
+#+end_src
+
+* Tangle
+#+begin_src conf
+  Local Variables:
+  eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle)) nil t)
+  End:
+#+end_src
+  
