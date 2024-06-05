@@ -73,7 +73,7 @@ alias matlab='matlab -nosplash -nodesktop'  # CLI mode
 alias wget='wget -e robots=off'  # Web scraping
 
 # Don't procrastinate.
-alias emacs="echo Don\'t you dare procrastinate!"
+alias emacs="emacs -nw"
 
 # Intuitive commands
 alias queue="squeue -u jabirali"
@@ -146,3 +146,6 @@ alias gz="git stash"
 for dir in ~/Code/*; do
     hash -d "$(basename $dir)=$dir"
 done
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
