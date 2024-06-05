@@ -11,6 +11,7 @@
   (auto-save-default nil)
   (default-input-method 'TeX)
   (default-transient-input-method 'TeX)
+  (inhibit-startup-echo-area-message "jabirali")
   (dired-listing-switches "-hlLgG --group-directories-first --time-style=long-iso")
   (frame-title-format "GNU Emacs")
   (fringes-outside-margins t)
@@ -74,6 +75,12 @@
 ;; (use-package clipetty
 ;;   :ensure t
 ;;   :hook (after-init . global-clipetty-mode))
+
+;; (use-package evil-terminal-cursor-changer
+;;   :ensure t
+;;   :after evil
+;;   :config
+;;   (evil-terminal-cursor-changer-activate))
 
 (setopt mouse-highlight nil)
 
@@ -165,22 +172,6 @@
  pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true}\n")
   (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
   (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
-
-(use-package org-super-agenda
-  :ensure t
-  :custom
-  (org-super-agenda-groups '((:auto-parent t)))
-  :config
-  (setq org-super-agenda-header-map (make-sparse-keymap))
-  (org-super-agenda-mode 1))
-
-(use-package idle-org-agenda
-  :ensure t
-  :after org-agenda
-  :custom
-  (idle-org-agenda-interval 3600)
-  :config
-  (idle-org-agenda-mode 1))
 
 (use-package ox-pandoc
   :ensure t)
@@ -618,3 +609,5 @@
   "|"  (general-key "C-c |" )
   "}"  (general-key "C-c }" )
   "~"  (general-key "C-c ~" ))
+
+(message (format "Emacs init time: %s" (emacs-init-time)))
