@@ -226,8 +226,8 @@ source $VIMRUNTIME/defaults.vim
 
 # Autocommands {{{
   # Focus mode.
-  autocmd vimenter * Goyo 80x100%
-  autocmd focusgained * Goyo 80x100%
+  # autocmd vimenter * Goyo 80x100%
+  # autocmd focusgained * Goyo 80x100%
 # }}}
 
 # Colorscheme {{{

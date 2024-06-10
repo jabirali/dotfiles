@@ -7,7 +7,6 @@
 	{ "keys": ["super+shift+o"], "command": "move_to_neighboring_group", },
 
 	// Side bar.
-	{ "keys": ["super+b"], "command": "focus_side_bar" },
 	{ "keys": ["super+shift+b"], "command": "toggle_side_bar", },
 
 	// Native tabs.
