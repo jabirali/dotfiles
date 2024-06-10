@@ -2,11 +2,26 @@
 #+author: Jabir Ali Ouassou
 #+PROPERTY: header-args:emacs-lisp :tangle "init.el"
 
-This is my literate configuration file for Emacs. Most of my configuration assumes that I'm using Emacs v29+ on MacOS.
+* Tasks
+This section is for planned maintenance tasks for my Emacs config.
+
+** TODO Make a reproducible config
+- Store =package.el= packages (including =el= and =elc= files, excluding =eln=, =so=, =dylib= files) in my Git dotfiles repo. That way, the exact same package versions are used remotely as well.
+- Move to =straight.el= that supports lockfiles (via its =freeze= / =thaw= mechanism).
+- Move to =elpaca= that supports ultrafast parallelized bootstrap remotely.
+- Remove the =ensure t= flags if I do add all my packages to Git.
+
+** TODO Improve the performance
+I've already toggled on =defer= as default for =use-package=. Perhaps I can still do better, by e.g. making things toggle on =after-init-hook= that don't need usage immediately? Or reducing some =use-package= blocks to simple =setopt= if I don't actually need to use the package at boot? Etc?
+** TODO Consider better modifiers
+On Apple keyboards, a lower-left {Fn, Ctrl, Opt, Cmd} mapped to {Hyper, Super, Meta, Ctrl} makes sense.
+
+** TODO Make some =general.el= code into a module
+Especially the code that just remaps =C-c C-...= into =, ...= is well-suited for a module.
 
 * Installation
 ** Mac port
-The "Mac port" integrates best with MacOS, including full Retina (hiDPI) support and better trackpad integration. But if you use Emacs in a terminal, the NS port seems to work better.
+The "Mac port" integrates well with MacOS, including full Retina (hiDPI) support and better trackpad integration (=ultra-scroll-mac=). But if you use Emacs in a terminal, the NS port seems to work better.
 
 To build it from source (to get native compilation and a nicer icon):
 #+begin_src sh
@@ -15,30 +30,35 @@ To build it from source (to get native compilation and a nicer icon):
       --with-native-compilation --with-emacs-big-sur-icon --with-natural-title-bar
 #+end_src
 
-To install the pre-built version (less chance of failure and bugs):
+To install the pre-built version (slower but less chance of failure):
 #+begin_src sh
   brew tap railwaycat/emacsmacport
   brew install --cask emacs-mac
 #+end_src
 
 ** NS port
-The "NextStep port" is the official GNU Emacs release. I prefer the patched "Emacs Plus" version, which can be fetched via HomeBrew:
+The "NextStep port" is the official GNU Emacs release. This means that it's updated more often and more similar across OS versions. I prefer the patched "Emacs Plus" version, which can be fetched via HomeBrew:
 #+begin_src sh
   brew tap d12frosted/emacs-plus
   brew install emacs-plus@30 --with-native-comp --with-nobu417-big-sur-icon 
 #+end_src
 
-On older versions of MacOS (Intel MacBooks), the best option is to fetch [[https://emacsformacosx.com/][the prebuilt version from emacsformacosx.com]].
+On Intel MacBooks that can't (or shouldn't) run the latest versions of MacOS, the best option is to fetch the prebuilt version from [[https://emacsformacosx.com/][EmacsForMacOSX.com]]. That doesn't require compiling a bazillion dependencies.
 
-** Ubuntu
-My main server is currently running Ubuntu 24.04 LTS, which has Emacs 29.3 in the main repos.
+** Linux
+My main server is currently running Ubuntu LTS, which has Emacs 29.3 in the main repos.
 #+begin_src sh
   sudo apt install emacs
 #+end_src
-Note that there are several versions available (=emacs-pgtk=, =emacs-nox=, =emacs-lucid=, etc.). As long as I'm using it remotely over SSH, it doesn't really matter which version is installed.
+Note that there are several versions available (=emacs-pgtk=, =emacs-nox=, =emacs-lucid=, etc.). As long as I'm using it remotely over SSH, it doesn't really matter which of these versions is installed.
+
+In addition, I regularly work on HPC servers that have various outdated Emacs versions. In that case, an up-to-date version from =conda-forge= might be more useful than the pre-installed version. (Or use TRAMP, but that can be quite slow and occasionally confusing, depending on the server and what you're doing.)
+#+begin_src sh
+  conda install -n base -c conda-forge emacs
+#+end_src
 
 ** Packages
-Before we install anything else, let's enable the community repositories and turn on native compilation of packages.
+Before we install anything else, let's enable the community repositories and turn on native compilation.
 #+begin_src emacs-lisp
   (use-package use-package
     :custom
@@ -131,7 +151,7 @@ Let's add some extra breathing room around the buffer text.
 Let's remove the breathing room around the tab bar and mode line, however. Usually, it's too small too look nice anyway, and it makes the tab bar in particular look a bit "fake" somehow. Also, let's remove the window decorations, they look a bit weird in light mode in particular.
 #+begin_src emacs-lisp :tangle "early-init.el"
   (add-to-list 'default-frame-alist '(internal-border-width . 0))
-  (add-to-list 'default-frame-alist '(undecorated-round . t))
+  ;; (add-to-list 'default-frame-alist '(undecorated-round . t))
 #+end_src
 
 When using a tiling window manager, it's annoying when an app decides that it doesn't want to confirm to your "grid". Fix it.
@@ -490,7 +510,7 @@ Visual-line-mode is pretty useful for the average document, but it looks very ug
 
 * Programming
 ** General
-Eglot has been built into Emacs since v29. I've tried the alternatives Lsp-mode and Lsp-bridge, but so far Eglot is the solution that has been most "plug and play" and least buggy. It also seems to just work over Tramp connections if you install LSP servers remotely.
+Eglot has been built into Emacs since v29. I've tried the alternatives Lsp-mode and Lsp-bridge, but so far Eglot is the solution that has been most "plug and play" and least buggy. It also works over TRAMP if you install LSP servers remotely.
 #+begin_src emacs-lisp
   (use-package eglot
     :custom
@@ -502,15 +522,23 @@ Eglot has been built into Emacs since v29. I've tried the alternatives Lsp-mode 
     ("<f2>" . eglot-rename))
 #+end_src
 
+By default, Eglot tends to open documentation in another window. I prefer to have the documentation pop up at point, without disturbing my existing window configuration. Enter =eldoc-box=. (Unfortunately, it doesn't appear to work in TUI frames?)
+#+begin_src emacs-lisp
+  (use-package eldoc-box
+    :bind
+    ("<f1>" . eldoc-box-help-at-point))
+#+end_src
+
 Format-all is a decent package for automatically reformatting code on save. Emacs equivalent to part of Vim's ALE features.
 #+begin_src emacs-lisp
-  (use-package format-all
-    :ensure t
-    :hook
-    (python-mode . format-all-mode)
-    :config
-    (setq-default format-all-formatters
-                  '(("Python" (isort) (ruff) (black)))))
+    ;; (use-package format-all
+    ;;   :ensure t
+    ;;   :hook
+    ;;   (python-mode . format-all-mode)
+    ;;   :config
+    ;;   (setq-default format-all-formatters
+    ;;                 '(("Python" (isort) (ruff)))))
+    ;;                 ;; '(("Python" (isort) (ruff) (black)))))
 #+end_src
 
 Treesitter provides, among other things, better and faster syntax highlighting and more structural editing possibilities.
@@ -621,14 +649,15 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
           (fg1 (face-attribute 'mode-line :foreground))
           (fg2 (face-attribute 'mode-line-inactive :foreground)))
       (set-face-attribute 'tab-bar nil :foreground bg2 :background bg2 :box `(:line-width 6 :color ,bg2))
-      (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg2 :box `(:line-width 6 :color ,bg2))
+      (set-face-attribute 'tab-bar-tab nil :foreground fg2 :background bg2 :box `(:line-width 6 :color ,bg2) :weight 'bold)
       (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg2 :box `(:line-width 6 :color ,bg2))
       (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
       (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
       (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
       (set-face-attribute 'scroll-bar nil :foreground bg2 :background bg2)
       (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)
-      (set-face-italic-p 'font-lock-comment-face nil)))
+      (set-face-italic-p 'font-lock-comment-face nil)
+      (set-face-italic-p 'font-lock-builtin-face nil)))
 
   (advice-add 'load-theme :after #'+theme-override)
 #+end_src
@@ -661,9 +690,9 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
     ("C-c ]" . tab-bar-history-forward)
     :config
     ;; Rename new tabs interactively.
-    (defun jabirali/rename-tab (&rest _)
-      (call-interactively #'tab-bar-rename-tab))
-    (add-hook 'tab-bar-tab-post-open-functions #'jabirali/rename-tab)
+    ;; (defun jabirali/rename-tab (&rest _)
+    ;;   (call-interactively #'tab-bar-rename-tab))
+    ;; (add-hook 'tab-bar-tab-post-open-functions #'jabirali/rename-tab)
 
     ;; Enable the mode globally.
     (tab-bar-mode 1)

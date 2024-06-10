@@ -256,13 +256,18 @@
   :bind
   ("<f2>" . eglot-rename))
 
-(use-package format-all
-  :ensure t
-  :hook
-  (python-mode . format-all-mode)
-  :config
-  (setq-default format-all-formatters
-                '(("Python" (isort) (ruff) (black)))))
+(use-package eldoc-box
+  :bind
+  ("<f1>" . eldoc-box-help-at-point))
+
+;; (use-package format-all
+;;   :ensure t
+;;   :hook
+;;   (python-mode . format-all-mode)
+;;   :config
+;;   (setq-default format-all-formatters
+;;                 '(("Python" (isort) (ruff)))))
+;;                 ;; '(("Python" (isort) (ruff) (black)))))
 
 ;; (use-package treesit-auto
 ;;   :ensure t
@@ -341,14 +346,15 @@
         (fg1 (face-attribute 'mode-line :foreground))
         (fg2 (face-attribute 'mode-line-inactive :foreground)))
     (set-face-attribute 'tab-bar nil :foreground bg2 :background bg2 :box `(:line-width 6 :color ,bg2))
-    (set-face-attribute 'tab-bar-tab nil :foreground fg1 :background bg2 :box `(:line-width 6 :color ,bg2))
+    (set-face-attribute 'tab-bar-tab nil :foreground fg2 :background bg2 :box `(:line-width 6 :color ,bg2) :weight 'bold)
     (set-face-attribute 'tab-bar-tab-inactive nil :foreground fg2 :background bg2 :box `(:line-width 6 :color ,bg2))
     (set-face-attribute 'mode-line nil :background bg1 :box `(:line-width 6 :color ,bg1))
     (set-face-attribute 'mode-line-inactive nil :background bg1 :box `(:line-width 6 :color ,bg1))
     (set-face-attribute 'fringe nil :foreground bg0 :background bg0)
     (set-face-attribute 'scroll-bar nil :foreground bg2 :background bg2)
     (set-face-attribute 'vertical-border nil :foreground bg1 :background bg1)
-    (set-face-italic-p 'font-lock-comment-face nil)))
+    (set-face-italic-p 'font-lock-comment-face nil)
+    (set-face-italic-p 'font-lock-builtin-face nil)))
 
 (advice-add 'load-theme :after #'+theme-override)
 
@@ -374,9 +380,9 @@
   ("C-c ]" . tab-bar-history-forward)
   :config
   ;; Rename new tabs interactively.
-  (defun jabirali/rename-tab (&rest _)
-    (call-interactively #'tab-bar-rename-tab))
-  (add-hook 'tab-bar-tab-post-open-functions #'jabirali/rename-tab)
+  ;; (defun jabirali/rename-tab (&rest _)
+  ;;   (call-interactively #'tab-bar-rename-tab))
+  ;; (add-hook 'tab-bar-tab-post-open-functions #'jabirali/rename-tab)
 
   ;; Enable the mode globally.
   (tab-bar-mode 1)
