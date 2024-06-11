@@ -1,10 +1,13 @@
 (use-package use-package
   :custom
-  (native-comp-async-report-warnings-errors nil)
   (package-native-compile t)
-  ;; (use-package-always-demand t)
+  (native-comp-async-report-warnings-errors nil)
   :config
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
+
+(use-package no-littering
+  :config
+  (no-littering-theme-backups))
 
 (use-package emacs
   :custom
