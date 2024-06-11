@@ -178,7 +178,6 @@ I'm tired of manually disabling italics everywhere in Emacs (comments, keywords,
 The "Kitty Keyboard Protocol" lets you use GUI keybindings in the TUI version of Emacs. Requires the Kitty terminal emulator.
 #+begin_src emacs-lisp
   ;; (use-package kkp
-  ;;  :ensure t
   ;;  :custom
   ;;  (kkp-super-modifier 'meta)
   ;;  :config
@@ -196,7 +195,6 @@ These settings enable terminal mouse support and scrolling.
 This package lets Emacs interact with the system clipboard also when running in a terminal. Despite the name it works on both Linux and MacOS. However, note that so far, this doesn't appear to work with the new =yank-media= command from Emacs 29?
 #+begin_src emacs-lisp
   (use-package xclip
-    :ensure t
     :config
     (xclip-mode 1))
 #+end_src
@@ -204,7 +202,6 @@ This package lets Emacs interact with the system clipboard also when running in 
 Alternatively (osc-52, but doesn't wor?): 
 #+begin_src emacs-lisp
   ;; (use-package clipetty
-  ;;   :ensure t
   ;;   :hook (after-init . global-clipetty-mode))
 #+end_src
 
@@ -213,7 +210,6 @@ Alternatively (osc-52, but doesn't wor?):
 This package makes Evil-mode look a bit nicer when running in a terminal.
 #+begin_src emacs-lisp
   ;; (use-package evil-terminal-cursor-changer
-  ;;   :ensure t
   ;;   :after evil
   ;;   :config
   ;;   (evil-terminal-cursor-changer-activate))
@@ -223,7 +219,6 @@ This package makes Evil-mode look a bit nicer when running in a terminal.
 Enable actual smooth scrolling for high-precision trackpads and mice. Note that this package requires the Emacs Mac port; for the NS port, the best option is =pixel-scroll-precision-mode=.
 #+begin_src emacs-lisp :tangle no
   (use-package ultra-scroll-mac
-    :ensure t
     :if (eq window-system 'mac)
     :init
     (setq scroll-conservatively 101)
@@ -271,7 +266,6 @@ Run Emacs as a server. I chose to run it over TCP, because this lets me SSH forw
 First of all, let's enable the "Evil mode". As someone with a Vim background, this is more ergonomic for both my brain and my hands.
 #+begin_src emacs-lisp
   (use-package evil
-    :ensure t
     :custom
     (evil-respect-visual-line-mode t)
     (evil-undo-system 'undo-redo)
@@ -289,7 +283,6 @@ First of all, let's enable the "Evil mode". As someone with a Vim background, th
 Evil Collection is exactly what is sounds like: It makes Evil work in nearly every corner of Emacs.
 #+begin_src emacs-lisp
     (use-package evil-collection
-      :ensure t
       :after evil
       :config
       (evil-collection-init))
@@ -298,7 +291,6 @@ Evil Collection is exactly what is sounds like: It makes Evil work in nearly eve
 Let's improve some modes where Evil Collection is inadequate.
 #+begin_src emacs-lisp
   (use-package evil-org
-    :ensure t
     :after (evil org)
     :hook (org-mode . evil-org-mode))
 #+end_src
@@ -311,7 +303,6 @@ Let's improve some modes where Evil Collection is inadequate.
 
 #+begin_src emacs-lisp
   (use-package evil-tex
-    :ensure t
     :hook
     (LaTeX-mode . evil-tex-mode))
 #+end_src
@@ -319,7 +310,6 @@ Let's improve some modes where Evil Collection is inadequate.
 Emacs ports of some useful Vim plugins.
 #+begin_src emacs-lisp
   (use-package evil-surround
-    :ensure t
     :config
     (global-evil-surround-mode 1))
 #+end_src
@@ -373,7 +363,6 @@ Org-mode is my favorite task and knowledge management system.  It's no understat
 Enable drag-and-drop of images and documents into Org-mode.
 #+begin_src emacs-lisp :tangle no
   (use-package org-download
-    :ensure t
     :after org
     :custom
     (org-download-method 'directory)
@@ -397,7 +386,6 @@ Enable drag-and-drop of images and documents into Org-mode.
 Org Agenda needs some sectioning when it gets too long.
 #+begin_src emacs-lisp :tangle no
   (use-package org-super-agenda
-    :ensure t
     :custom
     (org-super-agenda-groups '((:auto-parent t)))
     :config
@@ -408,7 +396,6 @@ Org Agenda needs some sectioning when it gets too long.
 Org Agenda as a screensaver. Because I don't remember to check it when I'm busy, but that's exactly when I need to check it.
 #+begin_src emacs-lisp :tangle no
   (use-package idle-org-agenda
-    :ensure t
     :after org-agenda
     :custom
     (idle-org-agenda-interval 3600)
@@ -418,15 +405,13 @@ Org Agenda as a screensaver. Because I don't remember to check it when I'm busy,
 
 Export to every format via Pandoc. I especially appreciate that I can generate DOCX files with LaTeX-based equations.
 #+begin_src emacs-lisp
-  (use-package ox-pandoc
-    :ensure t) 
+  (use-package ox-pandoc)
 #+end_src
 
 ** TODO MarkDown notes
 MarkDown is the lingua franca of mark-up languages, and its Emacs mode is best-in-class with the right switches toggled.
 #+begin_src emacs-lisp
   (use-package markdown-mode
-    :ensure t
     :config
     (setopt markdown-fontify-code-blocks-natively t)
     (setopt markdown-enable-wiki-links t)
@@ -439,7 +424,6 @@ MarkDown is the lingua franca of mark-up languages, and its Emacs mode is best-i
 First, let's install AUCTeX and set it up to sync with Skim. This is the de facto default LaTeX-mode for Emacs.
 #+begin_src emacs-lisp
   (use-package tex
-    :ensure auctex
     :custom
     (font-latex-fontify-script nil)
     (TeX-auto-save t)
@@ -453,7 +437,6 @@ First, let's install AUCTeX and set it up to sync with Skim. This is the de fact
 CDLaTeX is one of the main reasons I love writing LaTeX in Emacs. It's very ergonomic and intuitive after you get used to it, and it works very well in both Org-mode and TeX-mode.
 #+begin_src emacs-lisp
   (use-package cdlatex
-    :ensure t
     :hook
     ((TeX-mode . turn-on-cdlatex)
      (org-mode . turn-on-org-cdlatex)))
@@ -462,7 +445,6 @@ CDLaTeX is one of the main reasons I love writing LaTeX in Emacs. It's very ergo
 I should eventually learn how to use RefTeX properly. For now, it's nearly a placeholder, but let's just keep it around.
 #+begin_src emacs-lisp
   (use-package reftex
-    :ensure t
     :after tex
     :custom
     (reftex-cite-format 'bibtex)
@@ -477,7 +459,6 @@ I should eventually learn how to use RefTeX properly. For now, it's nearly a pla
 Xenops-mode compiles TeX equations into SVG images for an in-buffer preview. Can be useful, perhaps more so in Org-mode than in LaTeX-mode.
 #+begin_src emacs-lisp
   ;; (use-package xenops
-  ;;   :ensure t
   ;;   :custom
   ;;   (xenops-image-width 350)
   ;;   :hook
@@ -508,7 +489,6 @@ Flyspell is a built-in Emacs package that provides incremental as-you-write spel
 The default Flyspell interface and keybinding =C-c $= is not very ergonomic. Especially if you often have to add your own words to the personal dictionary. I'd rather use something based on =completing-read=, such that I can use e.g. Vertico for the correction interface.
 #+begin_src emacs-lisp
   (use-package flyspell-correct
-    :ensure t
     :after flyspell
     :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
 #+end_src
@@ -517,7 +497,6 @@ The default Flyspell interface and keybinding =C-c $= is not very ergonomic. Esp
 Visual-line-mode is pretty useful for the average document, but it looks very ugly without "adaptive wrap" turned on. The only reason I don't turn it on in Text-mode directly is that it would then end up in Org-mode as well, and it conflicts with =org-indent-mode=.
 #+begin_src emacs-lisp
   (use-package adaptive-wrap
-    :ensure t
     :hook
     (text-mode . visual-line-mode)
     (markdown-mode . adaptive-wrap-prefix-mode)
@@ -548,7 +527,6 @@ By default, Eglot tends to open documentation in another window. I prefer to hav
 Format-all is a decent package for automatically reformatting code on save. Emacs equivalent to part of Vim's ALE features.
 #+begin_src emacs-lisp
     ;; (use-package format-all
-    ;;   :ensure t
     ;;   :hook
     ;;   (python-mode . format-all-mode)
     ;;   :config
@@ -560,7 +538,6 @@ Format-all is a decent package for automatically reformatting code on save. Emac
 Treesitter provides, among other things, better and faster syntax highlighting and more structural editing possibilities.
 #+begin_src emacs-lisp
   ;; (use-package treesit-auto
-  ;;   :ensure t
   ;;   :custom
   ;;   (treesit-auto-install 'prompt)
   ;;   :config
@@ -593,9 +570,8 @@ First, let's load the built-in Python-mode.
 #+end_src
 
 Jupyter-mode replaces the "Inferior Python" feature (=C-c C-p=). Notably, Jupyter-mode can capture Matplotlib plots and display them in Emacs buffers, which provides a similar interface as Spyder and VSCode for data visualization in Python. With my setup, pressing =C-c C-c= once in a Python buffer starts up the Jupyter kernel, and pressing =C-c C-c= more times after that then evaluates the current line or region.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
     (use-package jupyter
-      :ensure t
       :config
       (defun jabirali/jupyter-python ()
         (interactive)
@@ -609,7 +585,6 @@ Jupyter-mode replaces the "Inferior Python" feature (=C-c C-p=). Notably, Jupyte
 Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continuous feedback.
 #+begin_src emacs-lisp
   (use-package flymake-ruff
-    :ensure t
     :hook
     (python-mode . flymake-mode)
     (python-mode . flymake-ruff-load))
@@ -617,14 +592,12 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 
 ** TODO Julia
 #+begin_src emacs-lisp
-  (use-package julia-mode
-    :ensure t) 
+  (use-package julia-mode)
 #+end_src
 
 ** TODO Matlab
 #+begin_src emacs-lisp
-  (use-package matlab
-    :ensure matlab-mode) 
+  (use-package matlab)
 #+end_src
 
 * [0%] Refactor in progress
@@ -680,7 +653,6 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 
 #+begin_src emacs-lisp
   ;; (use-package spacious-padding
-  ;;   :ensure t
   ;;   :config
   ;;   (spacious-padding-mode 1))
 #+end_src
@@ -719,14 +691,12 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 #+begin_src emacs-lisp
   (use-package persistent-scratch
     :after (org evil)
-    :ensure t
     :config
     (persistent-scratch-autosave-mode 1))
 #+end_src
 
 #+begin_src emacs-lisp
   (use-package ace-window
-    :ensure t
     :config
     (set-face-attribute 'aw-leading-char-face nil :height 1)
     (defun +other-window-dwim ()
@@ -741,7 +711,6 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 
 #+begin_src emacs-lisp
   (use-package company
-    :ensure t
     :after eglot
     :bind (:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
     :hook (eglot-managed-mode . company-mode))
@@ -750,7 +719,6 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 
 #+begin_src emacs-lisp
   (use-package diredfl
-    :ensure t
     :after dired
     :config
     (diredfl-global-mode 1))
@@ -758,7 +726,6 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 
 #+begin_src emacs-lisp
   (use-package doom-modeline
-    :ensure t
     :custom
     (doom-modeline-bar-width 0.1)
     (doom-modeline-buffer-encoding nil)
@@ -775,7 +742,6 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 
 #+begin_src emacs-lisp
   (use-package ef-themes
-    :ensure t
     :config
     (load-theme 'ef-melissa-light t))
 #+end_src
@@ -788,25 +754,21 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 
 
 #+begin_src emacs-lisp
-  (use-package gnuplot
-    :ensure t)
+  (use-package gnuplot)
 #+end_src 
 
 #+begin_src emacs-lisp
   (use-package hl-todo
-    :ensure t
     :hook
     (prog-mode . hl-todo-mode))
 #+end_src
 
 #+begin_src emacs-lisp :tangle no
-  (use-package iedit
-    :ensure t) 
+  (use-package iedit)
 #+end_src
 
 #+begin_src emacs-lisp
   (use-package magit
-    :ensure t
     :bind
     (:map magit-status-mode-map ("SPC" . nil))
     :custom
@@ -819,7 +781,6 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 
 #+begin_src emacs-lisp
   ;; (use-package orderless
-  ;;   :ensure t
   ;;   :custom
   ;;   (completion-styles '(orderless basic))
   ;;   (completion-category-overrides '((file (styles basic partial-completion))))) 
@@ -827,19 +788,16 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 
 #+begin_src emacs-lisp
   ;; (use-package outshine
-  ;;   :ensure t
   ;;   :hook
   ;;   (prog-mode . outshine-mode)) 
 #+end_src
 
 #+begin_src emacs-lisp
-  (use-package prescient
-    :ensure t) 
+  (use-package prescient)
 #+end_src
 
 #+begin_src emacs-lisp :tangle no
   (use-package swiper
-    :ensure t
     :bind
     ("C-s" . swiper)) 
 #+end_src
@@ -847,7 +805,6 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 
 #+begin_src emacs-lisp
   (use-package vertico
-    :ensure t
     :config
     (vertico-mode 1)
     (vertico-mouse-mode 1)) 
@@ -865,7 +822,6 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 
 #+begin_src emacs-lisp
   (use-package vertico-prescient
-    :ensure t
     :after (vertico prescient)
     :config
     (vertico-prescient-mode 1)) 
@@ -873,14 +829,12 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 
 #+begin_src emacs-lisp
   (use-package which-key
-    :ensure t
     :config
     (which-key-mode 1)) 
 #+end_src
 
 #+begin_src emacs-lisp :tangle no
   (use-package yasnippet
-    :ensure t
     :config
     (yas-global-mode 1)) 
 #+end_src
@@ -888,7 +842,6 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 ** TODO Global keybindings
 #+begin_src emacs-lisp
   (use-package general
-    :ensure t
     :after evil
     :config
     (general-evil-setup t)

@@ -59,7 +59,6 @@
 (set-face-italic-p 'italic nil)
 
 ;; (use-package kkp
-;;  :ensure t
 ;;  :custom
 ;;  (kkp-super-modifier 'meta)
 ;;  :config
@@ -71,16 +70,13 @@
 ;; (xterm-mouse-mode 1)
 
 (use-package xclip
-  :ensure t
   :config
   (xclip-mode 1))
 
 ;; (use-package clipetty
-;;   :ensure t
 ;;   :hook (after-init . global-clipetty-mode))
 
 ;; (use-package evil-terminal-cursor-changer
-;;   :ensure t
 ;;   :after evil
 ;;   :config
 ;;   (evil-terminal-cursor-changer-activate))
@@ -101,7 +97,6 @@
   (server-mode 1))
 
 (use-package evil
-  :ensure t
   :custom
   (evil-respect-visual-line-mode t)
   (evil-undo-system 'undo-redo)
@@ -116,13 +111,11 @@
   (define-key evil-motion-state-map (kbd "TAB") nil))
 
 (use-package evil-collection
-  :ensure t
   :after evil
   :config
   (evil-collection-init))
 
 (use-package evil-org
-  :ensure t
   :after (evil org)
   :hook (org-mode . evil-org-mode))
 
@@ -131,12 +124,10 @@
   :config (evil-org-agenda-set-keys))
 
 (use-package evil-tex
-  :ensure t
   :hook
   (LaTeX-mode . evil-tex-mode))
 
 (use-package evil-surround
-  :ensure t
   :config
   (global-evil-surround-mode 1))
 
@@ -178,11 +169,9 @@
   (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
   (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
 
-(use-package ox-pandoc
-  :ensure t)
+(use-package ox-pandoc)
 
 (use-package markdown-mode
-  :ensure t
   :config
   (setopt markdown-fontify-code-blocks-natively t)
   (setopt markdown-enable-wiki-links t)
@@ -191,7 +180,6 @@
   ;;(markdown-mode . cdlatex-mode))
 
 (use-package tex
-  :ensure auctex
   :custom
   (font-latex-fontify-script nil)
   (TeX-auto-save t)
@@ -202,13 +190,11 @@
   (TeX-view-program-selection '((output-pdf "Skim"))))
 
 (use-package cdlatex
-  :ensure t
   :hook
   ((TeX-mode . turn-on-cdlatex)
    (org-mode . turn-on-org-cdlatex)))
 
 (use-package reftex
-  :ensure t
   :after tex
   :custom
   (reftex-cite-format 'bibtex)
@@ -220,7 +206,6 @@
   (TeX-mode . turn-on-reftex))
 
 ;; (use-package xenops
-;;   :ensure t
 ;;   :custom
 ;;   (xenops-image-width 350)
 ;;   :hook
@@ -241,12 +226,10 @@
    (prog-mode . flyspell-prog-mode)))
 
 (use-package flyspell-correct
-  :ensure t
   :after flyspell
   :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
 
 (use-package adaptive-wrap
-  :ensure t
   :hook
   (text-mode . visual-line-mode)
   (markdown-mode . adaptive-wrap-prefix-mode)
@@ -266,7 +249,6 @@
   ("<f1>" . eldoc-box-help-at-point))
 
 ;; (use-package format-all
-;;   :ensure t
 ;;   :hook
 ;;   (python-mode . format-all-mode)
 ;;   :config
@@ -275,7 +257,6 @@
 ;;                 ;; '(("Python" (isort) (ruff) (black)))))
 
 ;; (use-package treesit-auto
-;;   :ensure t
 ;;   :custom
 ;;   (treesit-auto-install 'prompt)
 ;;   :config
@@ -299,28 +280,14 @@
   (python-indent-guess-indent-offset t)  
   (python-indent-guess-indent-offset-verbose nil))
 
-(use-package jupyter
-  :ensure t
-  :config
-  (defun jabirali/jupyter-python ()
-    (interactive)
-    (jupyter-run-repl "python3" "py" t)
-    (message "Jupyter kernel started!"))
-  :bind
-  (:map python-mode-map
-        ("C-c C-c" . jabirali/jupyter-python)))
-
 (use-package flymake-ruff
-  :ensure t
   :hook
   (python-mode . flymake-mode)
   (python-mode . flymake-ruff-load))
 
-(use-package julia-mode
-  :ensure t)
+(use-package julia-mode)
 
-(use-package matlab
-  :ensure matlab-mode)
+(use-package matlab)
 
 (defun jabirali/science-definition-lookup ()
   "Look up a scientific definition using a ChatGPT wrapper."
@@ -364,7 +331,6 @@
 (advice-add 'load-theme :after #'+theme-override)
 
 ;; (use-package spacious-padding
-;;   :ensure t
 ;;   :config
 ;;   (spacious-padding-mode 1))
 
@@ -395,12 +361,10 @@
 
 (use-package persistent-scratch
   :after (org evil)
-  :ensure t
   :config
   (persistent-scratch-autosave-mode 1))
 
 (use-package ace-window
-  :ensure t
   :config
   (set-face-attribute 'aw-leading-char-face nil :height 1)
   (defun +other-window-dwim ()
@@ -413,19 +377,16 @@
   ("M-o" . +other-window-dwim))
 
 (use-package company
-  :ensure t
   :after eglot
   :bind (:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
   :hook (eglot-managed-mode . company-mode))
 
 (use-package diredfl
-  :ensure t
   :after dired
   :config
   (diredfl-global-mode 1))
 
 (use-package doom-modeline
-  :ensure t
   :custom
   (doom-modeline-bar-width 0.1)
   (doom-modeline-buffer-encoding nil)
@@ -440,7 +401,6 @@
   (doom-modeline-mode 1))
 
 (use-package ef-themes
-  :ensure t
   :config
   (load-theme 'ef-melissa-light t))
 
@@ -448,16 +408,13 @@
   :bind
   ("C-c SPC" . er/expand-region))
 
-(use-package gnuplot
-  :ensure t)
+(use-package gnuplot)
 
 (use-package hl-todo
-  :ensure t
   :hook
   (prog-mode . hl-todo-mode))
 
 (use-package magit
-  :ensure t
   :bind
   (:map magit-status-mode-map ("SPC" . nil))
   :custom
@@ -468,21 +425,17 @@
   (keymap-set project-prefix-map "m" #'magit-project-status))
 
 ;; (use-package orderless
-;;   :ensure t
 ;;   :custom
 ;;   (completion-styles '(orderless basic))
 ;;   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 ;; (use-package outshine
-;;   :ensure t
 ;;   :hook
 ;;   (prog-mode . outshine-mode))
 
-(use-package prescient
-  :ensure t)
+(use-package prescient)
 
 (use-package vertico
-  :ensure t
   :config
   (vertico-mode 1)
   (vertico-mouse-mode 1))
@@ -496,18 +449,15 @@
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
 (use-package vertico-prescient
-  :ensure t
   :after (vertico prescient)
   :config
   (vertico-prescient-mode 1))
 
 (use-package which-key
-  :ensure t
   :config
   (which-key-mode 1))
 
 (use-package general
-  :ensure t
   :after evil
   :config
   (general-evil-setup t)
