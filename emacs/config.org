@@ -49,13 +49,13 @@ The "NextStep port" is the official GNU Emacs release. This means that it's upda
 On Intel MacBooks that can't (or are too slow for) the latest version of MacOS, the best option is to fetch the prebuilt version from [[https://emacsformacosx.com/][EmacsForMacOSX.com]]. That way, you don't need to compile every single dependency.
 
 ** DONE Linux
-My main server is currently running Ubuntu LTS, which has a usable Emacs 29.3 in the main repos.
+On an up-to-date Ubuntu system, the newest major version of Emacs is usually in the main package repos:
 #+begin_src sh
   sudo apt install emacs
 #+end_src
 Note that there are several versions available (=emacs-pgtk=, =emacs-nox=, =emacs-lucid=, etc.). As long as I'm using it via SSH in a terminal, it doesn't really matter which of these versions is installed.
 
-In addition, I regularly work on HPC servers that have various outdated Emacs versions. In that case, an up-to-date version from =conda-forge= might be more useful than the pre-installed version. (Or use TRAMP, but that can be quite slow and occasionally confusing, depending on the server and what you're doing.)
+In addition, I regularly work on HPC servers that have various outdated Emacs versions. In that case, an up-to-date version from =conda-forge= might be more useful than the pre-installed version. (Or use TRAMP, but that can be slow and confusing, depending on the server and what you're doing there.)
 #+begin_src sh
   conda install -n base -c conda-forge emacs
 #+end_src
@@ -79,7 +79,7 @@ First of all, let's prevent Emacs from littering my =init.el= file with autogene
   (ignore-errors (load custom-file))
 #+end_src
 
-The =no-littering= package does a good job of keeping everything else where it should be.
+The =no-littering= package does a good job of keeping everything else out of the way.
 #+begin_src emacs-lisp
   (use-package no-littering
     :config
