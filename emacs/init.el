@@ -137,6 +137,8 @@
   :config
   (global-evil-surround-mode 1))
 
+(bind-key* "M-j" 'avy-goto-word-1)
+
 (use-package org
   :custom
   (org-adapt-indentation nil)
@@ -440,9 +442,8 @@
   (load-theme 'ef-melissa-light t))
 
 (use-package expand-region
-  :bind*
-  ("C-c RET" . er/expand-region)
-  :ensure t)
+  :bind
+  ("C-c SPC" . er/expand-region))
 
 (use-package gnuplot
   :ensure t)
@@ -616,4 +617,8 @@
   "}"  (general-key "C-c }" )
   "~"  (general-key "C-c ~" ))
 
-(message (format "Emacs init time: %s" (emacs-init-time)))
+(defun +init-time ()
+  "Print the Emacs start-up time in milliseconds."
+  (interactive)
+  (message (emacs-init-time "Emacs init time: %.2f s")))
+(add-hook 'emacs-startup-hook #'+init-time)

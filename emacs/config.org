@@ -19,9 +19,12 @@ On Apple keyboards, a lower-left {Fn, Ctrl, Opt, Cmd} mapped to {Hyper, Super, M
 ** TODO Make some =general.el= code into a module
 Especially the code that just remaps =C-c C-...= into =, ...= is well-suited for a module.
 
-* Installation
-** Mac port
-The "Mac port" integrates well with MacOS, including full Retina (hiDPI) support and better trackpad integration (=ultra-scroll-mac=). But if you use Emacs in a terminal, the NS port seems to work better.
+** TODO Look into =speed-rect=
+Makes rectangle selections more useful. See [[https://github.com/jdtsmith/speedrect]].
+
+* [100%] Installation
+** DONE Mac port
+The "Mac port" integrates well with MacOS, including full Retina (hiDPI) support and better trackpad integration (=ultra-scroll-mac=). But if you use Emacs in a terminal, the [[NS port]] seems to work better.
 
 To build it from source (to get native compilation and a nicer icon):
 #+begin_src sh
@@ -30,34 +33,35 @@ To build it from source (to get native compilation and a nicer icon):
       --with-native-compilation --with-emacs-big-sur-icon --with-natural-title-bar
 #+end_src
 
-To install the pre-built version (slower but less chance of failure):
+To install the pre-built version (slower but less chance of problems):
 #+begin_src sh
   brew tap railwaycat/emacsmacport
   brew install --cask emacs-mac
 #+end_src
 
-** NS port
+** DONE NS port
 The "NextStep port" is the official GNU Emacs release. This means that it's updated more often and more similar across OS versions. I prefer the patched "Emacs Plus" version, which can be fetched via HomeBrew:
 #+begin_src sh
   brew tap d12frosted/emacs-plus
   brew install emacs-plus@30 --with-native-comp --with-nobu417-big-sur-icon 
 #+end_src
 
-On Intel MacBooks that can't (or shouldn't) run the latest versions of MacOS, the best option is to fetch the prebuilt version from [[https://emacsformacosx.com/][EmacsForMacOSX.com]]. That doesn't require compiling a bazillion dependencies.
+On Intel MacBooks that can't (or are too slow for) the latest version of MacOS, the best option is to fetch the prebuilt version from [[https://emacsformacosx.com/][EmacsForMacOSX.com]]. That way, you don't need to compile every single dependency.
 
-** Linux
-My main server is currently running Ubuntu LTS, which has Emacs 29.3 in the main repos.
+** DONE Linux
+My main server is currently running Ubuntu LTS, which has a usable Emacs 29.3 in the main repos.
 #+begin_src sh
   sudo apt install emacs
 #+end_src
-Note that there are several versions available (=emacs-pgtk=, =emacs-nox=, =emacs-lucid=, etc.). As long as I'm using it remotely over SSH, it doesn't really matter which of these versions is installed.
+Note that there are several versions available (=emacs-pgtk=, =emacs-nox=, =emacs-lucid=, etc.). As long as I'm using it via SSH in a terminal, it doesn't really matter which of these versions is installed.
 
 In addition, I regularly work on HPC servers that have various outdated Emacs versions. In that case, an up-to-date version from =conda-forge= might be more useful than the pre-installed version. (Or use TRAMP, but that can be quite slow and occasionally confusing, depending on the server and what you're doing.)
 #+begin_src sh
   conda install -n base -c conda-forge emacs
 #+end_src
 
-** Packages
+* [0%] Basic settings
+** TODO Packages
 Before we install anything else, let's enable the community repositories and turn on native compilation.
 #+begin_src emacs-lisp
   (use-package use-package
@@ -75,8 +79,7 @@ Let's also prevent Emacs from littering my =init.el= config file with the cache 
   (ignore-errors (load custom-file))
 #+end_src
 
-* Basic settings
-** Sane defaults
+** TODO Sane defaults
 Here's a hodgepodge of built-in Emacs settings. Many of them just try to get rid of anachronisms.
 #+begin_src emacs-lisp
   (use-package emacs
@@ -128,7 +131,7 @@ Let's also increase the garbage collection threshold a bit. This makes Emacs stu
   (setq gc-cons-threshold (* 128 1024 1024)
         read-process-output-max (* 1024 1024))
 #+end_src
-** Environment variables
+** TODO Environment variables
 This package corrects =$PATH= when Emacs is started from the GUI. This is needed to detect programs installed via HomeBrew.
 #+begin_src emacs-lisp
   ;; (use-package exec-path-from-shell
@@ -141,7 +144,7 @@ To install it on Emacs v29 (replace with =:vc= in Emacs v30):
   (package-vc-install "https://github.com/purcell/exec-path-from-shell")
 #+end_src
 
-** Graphical interface
+** TODO Graphical interface
 Let's add some extra breathing room around the buffer text.
 #+begin_src emacs-lisp :tangle "early-init.el"
   (setq-default left-margin-width 2
@@ -164,7 +167,7 @@ I'm tired of manually disabling italics everywhere in Emacs (comments, keywords,
   (set-face-italic-p 'italic nil)
 #+end_src
 
-** Terminal interface
+** TODO Terminal interface
 The "Kitty Keyboard Protocol" lets you use GUI keybindings in the TUI version of Emacs. Requires the Kitty terminal emulator.
 #+begin_src emacs-lisp
   ;; (use-package kkp
@@ -209,7 +212,7 @@ This package makes Evil-mode look a bit nicer when running in a terminal.
   ;;   (evil-terminal-cursor-changer-activate))
 #+end_src
 
-** Mouse and trackpad
+** TODO Mouse and trackpad
 Enable actual smooth scrolling for high-precision trackpads and mice. Note that this package requires the Emacs Mac port; for the NS port, the best option is =pixel-scroll-precision-mode=.
 #+begin_src emacs-lisp :tangle no
   (use-package ultra-scroll-mac
@@ -232,7 +235,7 @@ It can be quite distracting when the mouse randomly highlights every little clic
   (setopt mouse-highlight nil)
 #+end_src
   
-** Keyboard settings
+** TODO Keyboard settings
 As an Evil user, I don't really need the Super key available. I do however need an easily accessible Meta key (e.g. for =M-RET= in Org-mode), and I do need an Option key (to type in Norwegian).
 #+begin_src emacs-lisp
   (setopt mac-command-modifier 'meta)
@@ -245,7 +248,7 @@ I regularly switch between ISO and ANSI style keyboards, which can be quite anno
   (define-key key-translation-map (kbd "±") (kbd "~"))
 #+end_src
 
-** Emacs server
+** TODO Emacs server
 Run Emacs as a server. I chose to run it over TCP, because this lets me SSH forward the server to remote hosts. When I'm in a remote shell, I can then easily phone home via =emacsclient= to spawn new Tramp connections.
 #+begin_src emacs-lisp
   (use-package server
@@ -256,7 +259,8 @@ Run Emacs as a server. I chose to run it over TCP, because this lets me SSH forw
     (server-mode 1))
 #+end_src
 
-* Vim keybindings
+* [0%] Keybindings
+** TODO Evil itself
 First of all, let's enable the "Evil mode". As someone with a Vim background, this is more ergonomic for both my brain and my hands.
 #+begin_src emacs-lisp
   (use-package evil
@@ -274,7 +278,7 @@ First of all, let's enable the "Evil mode". As someone with a Vim background, th
     (define-key evil-motion-state-map (kbd "RET") nil)
     (define-key evil-motion-state-map (kbd "TAB") nil))
 #+end_src
-
+** TODO Evil collection
 Evil Collection is exactly what is sounds like: It makes Evil work in nearly every corner of Emacs.
 #+begin_src emacs-lisp
     (use-package evil-collection
@@ -304,7 +308,7 @@ Let's improve some modes where Evil Collection is inadequate.
     :hook
     (LaTeX-mode . evil-tex-mode))
 #+end_src
-
+** TODO Evil extensions
 Emacs ports of some useful Vim plugins.
 #+begin_src emacs-lisp
   (use-package evil-surround
@@ -313,8 +317,13 @@ Emacs ports of some useful Vim plugins.
     (global-evil-surround-mode 1))
 #+end_src
 
-* Writing prose
-** Org-mode notes
+** TODO Global keybindings
+#+begin_src emacs-lisp
+  (bind-key* "M-j" 'avy-goto-word-1)
+#+end_src
+
+* [0%] Writing prose
+** TODO Org-mode notes
 Org-mode is my favorite task and knowledge management system.  It's no understatement that Org-mode is the main reason I'm using Emacs at all (otherwise I'd probably be using Vim).
 #+begin_src emacs-lisp
   (use-package org
@@ -406,7 +415,7 @@ Export to every format via Pandoc. I especially appreciate that I can generate D
     :ensure t) 
 #+end_src
 
-** MarkDown notes
+** TODO MarkDown notes
 MarkDown is the lingua franca of mark-up languages, and its Emacs mode is best-in-class with the right switches toggled.
 #+begin_src emacs-lisp
   (use-package markdown-mode
@@ -419,7 +428,7 @@ MarkDown is the lingua franca of mark-up languages, and its Emacs mode is best-i
     ;;(markdown-mode . cdlatex-mode)) 
 #+end_src
 
-** LaTeX documents
+** TODO LaTeX documents
 First, let's install AUCTeX and set it up to sync with Skim. This is the de facto default LaTeX-mode for Emacs.
 #+begin_src emacs-lisp
   (use-package tex
@@ -469,7 +478,7 @@ Xenops-mode compiles TeX equations into SVG images for an in-buffer preview. Can
   ;;   (LaTeX-mode . xenops-mode)) 
 #+end_src
 
-** Spell checking
+** TODO Spell checking
 Ispell is the traditional spell checker for Emacs. It supports many backends, but we here use the Hunspell backend since it (i) supports multi-language dictionary combinations, (ii) is supposed to be more accurate for many non-English languages, (iii) has become the de facto standard among other open-source apps (it is e.g. now the default spell checker in Firefox, LibreOffice, etc.). Note that on MacOS, you need to [[https://github.com/wooorm/dictionaries][download]] the appropriate dictionaries and extract them into =~/Library/Spelling=.
 #+begin_src emacs-lisp
   (use-package ispell
@@ -497,7 +506,7 @@ The default Flyspell interface and keybinding =C-c $= is not very ergonomic. Esp
     :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
 #+end_src
 
-** Line wrapping
+** TODO Line wrapping
 Visual-line-mode is pretty useful for the average document, but it looks very ugly without "adaptive wrap" turned on. The only reason I don't turn it on in Text-mode directly is that it would then end up in Org-mode as well, and it conflicts with =org-indent-mode=.
 #+begin_src emacs-lisp
   (use-package adaptive-wrap
@@ -508,8 +517,8 @@ Visual-line-mode is pretty useful for the average document, but it looks very ug
     (latex-mode . adaptive-wrap-prefix-mode))
 #+end_src
 
-* Programming
-** General
+* [0%] Programming
+** TODO General
 Eglot has been built into Emacs since v29. I've tried the alternatives Lsp-mode and Lsp-bridge, but so far Eglot is the solution that has been most "plug and play" and least buggy. It also works over TRAMP if you install LSP servers remotely.
 #+begin_src emacs-lisp
   (use-package eglot
@@ -567,7 +576,7 @@ Github Copilot support for Emacs.
   ;;         ("M-p"   . copilot-previous-completion)))
 #+end_src
 
-** Python
+** TODO Python
 First, let's load the built-in Python-mode.
 #+begin_src emacs-lisp
   (use-package python
@@ -599,20 +608,20 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
     (python-mode . flymake-ruff-load))
 #+end_src
 
-** Julia
+** TODO Julia
 #+begin_src emacs-lisp
   (use-package julia-mode
     :ensure t) 
 #+end_src
 
-** Matlab
+** TODO Matlab
 #+begin_src emacs-lisp
   (use-package matlab
     :ensure matlab-mode) 
 #+end_src
 
-* TODO Refactor in progress
-** Functions
+* [0%] Refactor in progress
+** TODO Functions
 #+begin_src emacs-lisp
   (defun jabirali/science-definition-lookup ()
     "Look up a scientific definition using a ChatGPT wrapper."
@@ -675,7 +684,7 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
     (start-process "zotero_open" nil "open" (concat "zotero:" link)))
 #+end_src
 
-** Internal packages
+** TODO Internal packages
 #+begin_src emacs-lisp
   (use-package tab-bar
     :custom
@@ -699,7 +708,7 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
     (tab-bar-history-mode 1))
 #+end_src
 
-** External packages
+** TODO External packages
 #+begin_src emacs-lisp
   (use-package persistent-scratch
     :after (org evil)
@@ -766,9 +775,8 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
 
 #+begin_src emacs-lisp
   (use-package expand-region
-    :bind*
-    ("C-c RET" . er/expand-region)
-    :ensure t)
+    :bind
+    ("C-c SPC" . er/expand-region))
 #+end_src
 
 
@@ -870,7 +878,7 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
     (yas-global-mode 1)) 
 #+end_src
 
-** Global keybindings
+** TODO Global keybindings
 #+begin_src emacs-lisp
   (use-package general
     :ensure t
@@ -998,14 +1006,20 @@ Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continu
     "~"  (general-key "C-c ~" ))
 #+end_src
 
-* Profiling
+* DONE Profiling
+It is a continuous project to keep Emacs fast and lean. Monitoring the start-up time is a good way to start, but I might consider adopting things like the [[https://github.com/jschaf/esup][Emacs Start Up Profiler]] if things get too much out of hand.
 #+begin_src emacs-lisp
-  (message (format "Emacs init time: %s" (emacs-init-time)))
+  (defun +init-time ()
+    "Print the Emacs start-up time in milliseconds."
+    (interactive)
+    (message (emacs-init-time "Emacs init time: %.2f s")))
+  (add-hook 'emacs-startup-hook #'+init-time)
 #+end_src
-* Tangle
-#+begin_src conf
+* DONE Tangle
+This little snippet of code ensures that every time I save my =config.org= notebook from within Emacs, it automatically exports the embedded code blocks to the appropriate files: =init.el=, =early-init.el=, etc.
+#+begin_src
   Local Variables:
-  eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle)) nil t)
+    eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle)) nil t)
   End:
 #+end_src
   
