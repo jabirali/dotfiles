@@ -8,4 +8,3 @@
               right-margin-width 2)
 
 (add-to-list 'default-frame-alist '(internal-border-width . 0))
-;; (add-to-list 'default-frame-alist '(undecorated-round . t))

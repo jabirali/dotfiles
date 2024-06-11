@@ -18,6 +18,7 @@ emacs/var
 emacs/etc
 emacs/custom.el
 emacs/eln-cache
+emacs/server
 
 # Python
 ipython/*/startup/README

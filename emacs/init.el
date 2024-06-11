@@ -52,10 +52,6 @@
     (tool-bar-mode -1)
     (scroll-bar-mode -1)))
 
-;; (use-package exec-path-from-shell
-;;   :config
-;;   (exec-path-from-shell-initialize))
-
 (set-face-italic-p 'italic nil)
 
 ;; (use-package kkp
@@ -72,14 +68,6 @@
 (use-package xclip
   :config
   (xclip-mode 1))
-
-;; (use-package clipetty
-;;   :hook (after-init . global-clipetty-mode))
-
-;; (use-package evil-terminal-cursor-changer
-;;   :after evil
-;;   :config
-;;   (evil-terminal-cursor-changer-activate))
 
 (setopt mouse-highlight nil)
 
@@ -169,7 +157,8 @@
   (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
   (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
 
-(use-package ox-pandoc)
+(use-package ox-pandoc
+  :if (executable-find "pandoc"))
 
 (use-package markdown-mode
   :config
@@ -194,25 +183,8 @@
   ((TeX-mode . turn-on-cdlatex)
    (org-mode . turn-on-org-cdlatex)))
 
-(use-package reftex
-  :after tex
-  :custom
-  (reftex-cite-format 'bibtex)
-  (reftex-enable-partial-scans t)
-  (reftex-plug-into-AUCTeX t)
-  (reftex-save-parse-info t)
-  (reftex-use-multiple-selection-buffers t)
-  :hook
-  (TeX-mode . turn-on-reftex))
-
-;; (use-package xenops
-;;   :custom
-;;   (xenops-image-width 350)
-;;   :hook
-;;   (org-mode . xenops-mode)
-;;   (LaTeX-mode . xenops-mode))
-
 (use-package ispell
+  :if (executable-find "hunspell")
   :config
   (setq ispell-program-name "hunspell")
   (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
@@ -221,6 +193,7 @@
   (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
 
 (use-package flyspell
+  :after ispell
   :hook
   ((text-mode . flyspell-mode)
    (prog-mode . flyspell-prog-mode)))
@@ -255,13 +228,6 @@
 ;;   (setq-default format-all-formatters
 ;;                 '(("Python" (isort) (ruff)))))
 ;;                 ;; '(("Python" (isort) (ruff) (black)))))
-
-;; (use-package treesit-auto
-;;   :custom
-;;   (treesit-auto-install 'prompt)
-;;   :config
-;;   (treesit-auto-add-to-auto-mode-alist 'all)
-;;   (global-treesit-auto-mode))
 
 ;; (use-package copilot
 ;;   :vc (:url "https://github.com/copilot-emacs/copilot.el" :rev "main")
@@ -424,15 +390,6 @@
   (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
   (keymap-set project-prefix-map "m" #'magit-project-status))
 
-;; (use-package orderless
-;;   :custom
-;;   (completion-styles '(orderless basic))
-;;   (completion-category-overrides '((file (styles basic partial-completion)))))
-
-;; (use-package outshine
-;;   :hook
-;;   (prog-mode . outshine-mode))
-
 (use-package prescient)
 
 (use-package vertico
@@ -488,7 +445,6 @@
   "7" '(tab-bar-select-tab :which-key "7")
   "8" '(tab-bar-select-tab :which-key "8")
   "9" '(tab-bar-select-tab :which-key "9")
-  "a" '(org-agenda :which-key "agenda")
   "b" '(switch-to-buffer :which-key "buffer")
   "d" '(dired-jump :which-key "dired")
   "f" '(find-file :which-key "file")
