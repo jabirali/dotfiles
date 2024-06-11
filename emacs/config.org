@@ -24,7 +24,7 @@ Makes rectangle selections more useful. See [[https://github.com/jdtsmith/speedr
 
 * [100%] Installation
 ** DONE Mac port
-The "Mac port" integrates well with MacOS, including full Retina (hiDPI) support and better trackpad integration (=ultra-scroll-mac=). But if you use Emacs in a terminal, the [[NS port]] seems to work better.
+The "Mac port" integrates well with MacOS, including full Retina support and better trackpad support. But it doesn't work as well as the [[NS port]] in the terminal and updates are usually slower.
 
 To build it from source (to get native compilation and a nicer icon):
 #+begin_src sh
@@ -49,13 +49,12 @@ The "NextStep port" is the official GNU Emacs release. This means that it's upda
 On Intel MacBooks that can't (or are too slow for) the latest version of MacOS, the best option is to fetch the prebuilt version from [[https://emacsformacosx.com/][EmacsForMacOSX.com]]. That way, you don't need to compile every single dependency.
 
 ** DONE Linux
-On an up-to-date Ubuntu system, the newest major version of Emacs is usually in the main package repos:
+On an up-to-date Ubuntu system, the newest major version is usually in the main repos:
 #+begin_src sh
   sudo apt install emacs
 #+end_src
-Note that there are several versions available (=emacs-pgtk=, =emacs-nox=, =emacs-lucid=, etc.). As long as I'm using it via SSH in a terminal, it doesn't really matter which of these versions is installed.
 
-In addition, I regularly work on HPC servers that have various outdated Emacs versions. In that case, an up-to-date version from =conda-forge= might be more useful than the pre-installed version. (Or use TRAMP, but that can be slow and confusing, depending on the server and what you're doing there.)
+On outdated servers, it might be better to fetch a recent build from =conda-forge=:
 #+begin_src sh
   conda install -n base -c conda-forge emacs
 #+end_src
@@ -975,6 +974,7 @@ It is a continuous project to keep Emacs fast and lean. Monitoring the start-up 
     (message (emacs-init-time "Emacs init time: %.2f s")))
   (add-hook 'emacs-startup-hook #'+init-time)
 #+end_src
+
 * DONE Tangle
 This little snippet of code ensures that every time I save my =config.org= notebook from within Emacs, it automatically exports the embedded code blocks to the appropriate files: =init.el=, =early-init.el=, etc.
 #+begin_src
