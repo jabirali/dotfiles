@@ -78,9 +78,9 @@
 (define-key key-translation-map (kbd "±") (kbd "~"))
 
 (use-package server
-  :custom
-  (server-use-tcp t)
-  (server-port 1337)
+  ;; :custom
+  ;;(server-use-tcp t)
+  ;;(server-port 1337)
   :config
   (server-mode 1))
 
@@ -139,6 +139,7 @@
   (org-highlight-latex-and-related '(native latex script entities))
   (org-image-actual-width '(400))
   (org-pretty-entities t)
+  ;;(org-use-sub-superscripts '{})
   (org-pretty-entities-include-sub-superscripts nil)
   (org-return-follows-link t)
   (org-startup-folded 'fold)
@@ -366,9 +367,13 @@
   :config
   (doom-modeline-mode 1))
 
-(use-package ef-themes
-  :config
-  (load-theme 'ef-melissa-light t))
+;; (use-package ef-themes
+;;   :config
+;;   (load-theme 'ef-melissa-light t))
+
+;; (use-package ef-themes
+;;   :config
+;;   (load-theme 'ef-melissa-light t))
 
 (use-package expand-region
   :bind
@@ -525,6 +530,45 @@
   "|"  (general-key "C-c |" )
   "}"  (general-key "C-c }" )
   "~"  (general-key "C-c ~" ))
+
+(defun my-customize-faces ()
+  "Customize all faces to be non-italic, use the default font family, and have the same font size."
+  (interactive)
+  (let ((default-height (face-attribute 'default :height)))
+    (mapcar
+     (lambda (face)
+       (when (facep face)
+         (set-face-attribute face nil :slant 'normal)
+         (set-face-attribute face nil :family 'unspecified)
+         (set-face-attribute face nil :height default-height)))
+     (face-list))
+    (set-face-attribute 'variable-pitch nil
+                        :inherit 'default
+                        :family 'unspecified
+                        :slant 'normal
+                        :height default-height)))
+
+(defun my-reapply-custom-faces (&rest _)
+  "Reapply custom faces after loading a theme."
+  (when my-custom-faces-mode
+    (my-customize-faces)))
+
+(define-minor-mode my-custom-faces-mode
+  "A minor mode to apply custom face settings."
+  :lighter " MyFaces"
+  :global t
+  (if my-custom-faces-mode
+      (progn
+        (my-customize-faces)
+        (advice-add 'load-theme :after #'my-reapply-custom-faces))
+    (advice-remove 'load-theme #'my-reapply-custom-faces)
+    (message "My custom faces mode disabled")))
+
+;; Enable the minor mode by default
+(my-custom-faces-mode 1)
+
+;; Use a nicer theme.
+(load-theme 'modus-operandi t)
 
 (defun +init-time ()
   "Print the Emacs start-up time in milliseconds."

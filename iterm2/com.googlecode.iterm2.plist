@@ -2415,6 +2415,8 @@
 	<false/>
 	<key>DisableWindowSizeSnap</key>
 	<true/>
+	<key>FunctionKey</key>
+	<integer>10</integer>
 	<key>GlobalKeyMap</key>
 	<dict>
 		<key>0x19-0x60000</key>
@@ -2570,6 +2572,8 @@
 	<true/>
 	<key>LeftCommand</key>
 	<integer>7</integer>
+	<key>LeftControl</key>
+	<integer>11</integer>
 	<key>LeftOption</key>
 	<integer>2</integer>
 	<key>NeverWarnAboutShortLivedSessions_D4403CEC-8A61-4CF1-B659-C9254EBE6EAB</key>
@@ -3418,7 +3422,7 @@
 			<key>Faint Text Alpha</key>
 			<real>0.5</real>
 			<key>Faint Text Alpha (Dark)</key>
-			<real>0.5</real>
+			<real>0.50442216981132071</real>
 			<key>Faint Text Alpha (Light)</key>
 			<real>0.5</real>
 			<key>Flashing Bell</key>
@@ -3584,7 +3588,7 @@
 			<key>Minimum Contrast</key>
 			<real>0.0</real>
 			<key>Minimum Contrast (Dark)</key>
-			<real>0.0</real>
+			<real>0.495983195754717</real>
 			<key>Minimum Contrast (Light)</key>
 			<real>0.0</real>
 			<key>Mouse Reporting</key>
@@ -3743,7 +3747,7 @@
 			<key>Use Custom Tab Title</key>
 			<false/>
 			<key>Use Italic Font</key>
-			<false/>
+			<true/>
 			<key>Use Non-ASCII Font</key>
 			<false/>
 			<key>Use Selected Text Color</key>
@@ -3769,7 +3773,7 @@
 			<key>Use libtickit protocol</key>
 			<false/>
 			<key>Vertical Spacing</key>
-			<real>1</real>
+			<real>1.05</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
@@ -3815,6 +3819,8 @@
 	<true/>
 	<key>RightCommand</key>
 	<integer>8</integer>
+	<key>RightControl</key>
+	<integer>12</integer>
 	<key>RightOption</key>
 	<integer>3</integer>
 	<key>SeparateStatusBarsPerPane</key>
@@ -3834,13 +3840,13 @@
 	<key>TabStyleWithAutomaticOption</key>
 	<integer>5</integer>
 	<key>TabViewType</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>TabsHaveCloseButton</key>
 	<false/>
 	<key>TerminalMargin</key>
-	<integer>24</integer>
+	<integer>8</integer>
 	<key>TerminalVMargin</key>
-	<integer>24</integer>
+	<integer>8</integer>
 	<key>UnderlineHyperlinks</key>
 	<false/>
 	<key>UseBorder</key>
