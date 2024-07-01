@@ -33,7 +33,7 @@ source $VIMRUNTIME/defaults.vim
   set breakindent
   set nofoldenable
   set concealcursor=nv
-  set conceallevel=0
+  set conceallevel=2
   set breakindentopt=list:-1
 
   set smartcase
@@ -82,6 +82,8 @@ source $VIMRUNTIME/defaults.vim
 
   g:vimtex_imaps_leader = ";"
   g:vimtex_mappings_prefix = "<localleader>"
+  g:vimtex_quickfix_enabled = 0
+  g:vimtex_view_method = 'skim'
 
   g:wiki_root = '/Users/jabirali/iCloud/Notes'
   g:wiki_zotero_root = '/Users/jabirali/Zotero'
@@ -224,15 +226,23 @@ source $VIMRUNTIME/defaults.vim
 #  digraphs *~ 8776  " ≈
   # }}}
 
-# Autocommands {{{
-  # Focus mode.
-  # autocmd vimenter * Goyo 80x100%
-  # autocmd focusgained * Goyo 80x100%
-# }}}
-
 # Colorscheme {{{
-  colorscheme rosepine_moon
-  highlight! link Folded LineNr
+  def g:ChangeBackground()
+    call system('defaults read -g AppleInterfaceStyle')
+    if v:shell_error == 1
+      # MacOS Light (0)
+      set background=light
+      colorscheme rosepine_dawn
+    else
+      # MacOS Dark (1) or Linux (127)
+      set background=dark
+      colorscheme rosepine_moon
+    endif
+    redraw!
+  enddef
+
+  autocmd OSAppearanceChanged * call g:ChangeBackground()
+  call g:ChangeBackground()
 # }}}
 
 # vim: fdm=marker shiftwidth=2
