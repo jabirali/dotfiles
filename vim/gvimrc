@@ -6,3 +6,5 @@ set guioptions=gme
 set guicursor+=a:blinkon0
 set guifont=JetBrains\ Mono\ NL:h13
 
+# Shell settings on Mac.
+set shellcmdflag=-l\ -c

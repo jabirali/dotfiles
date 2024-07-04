@@ -37,4 +37,6 @@ export LC_ALL="en_US.UTF-8"
 export BAT_STYLE="plain"
 export BAT_THEME="ansi"
 export DIRENV_LOG_FORMAT=
-export MPLBACKEND="module://itermplot"
+if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+    export MPLBACKEND="module://itermplot"
+fi

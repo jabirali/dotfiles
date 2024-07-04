@@ -1,5 +1,5 @@
 setlocal nonumber
-setlocal wrap
+"setlocal wrap
 
 setlocal foldmethod=expr
 setlocal foldexpr=vimtex#fold#level(v:lnum)

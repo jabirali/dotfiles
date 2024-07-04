@@ -5,7 +5,7 @@ source $VIMRUNTIME/defaults.vim
 
 # Built-in packages {{{
   packadd! matchit
-# packadd! comment
+  # packadd! comment
 # }}} 
 
 # Settings {{{
@@ -85,73 +85,88 @@ source $VIMRUNTIME/defaults.vim
   g:vimtex_quickfix_enabled = 0
   g:vimtex_view_method = 'skim'
 
-  g:wiki_root = '/Users/jabirali/iCloud/Notes'
+  g:wiki_root = '/Users/jabirali/Notes'
   g:wiki_zotero_root = '/Users/jabirali/Zotero'
   g:wiki_filetypes = ['md']
   g:wiki_link_extension = '.md'
-  g:wiki_mappings_local_journal = 
-  \ {
-  \  '<plug>(wiki-journal-prev)': '[f',
-  \  '<plug>(wiki-journal-next)': ']f',
-  \ }
-  g:wiki_journal = 
-  \ {
-  \   'root': '',
-  \   'name': 'journal',
-  \   'frequency': 'daily',
-  \   'date_format': {
-  \     'daily': '%Y-%m-%d',
-  \     'weekly': '%Y-W%W',
-  \   },
-  \ }
+  g:wiki_link_creation = {
+    'md': {
+      'link_type': 'wiki',
+      'url_extension': '',
+    }
+  }
+  g:wiki_mappings_local_journal = {
+    '<plug>(wiki-journal-prev)': '[f',
+    '<plug>(wiki-journal-next)': ']f',
+  }
+  g:wiki_journal = {
+    'root': '',
+    'name': 'journal',
+    'frequency': 'daily',
+    'date_format': {
+      'daily': '%Y-%m-%d',
+      'weekly': '%Y-W%W',
+    },
+  }
+
+  def g:WikiAssetPaste()
+    var date = strftime("%Y-%m-%d %H:%M:%S")
+    var path = g:wiki_root .. "/assets/" .. date .. ".png"
+    var link = '![' .. date .. '](' .. path .. ')'
+
+    system('pngpaste ' .. shellescape(path))
+    if v:shell_error == 0
+      append(line('.'), link)
+    else
+      echo "Failed to paste image!"
+    endif
+  enddef
+  nnoremap <space>p <cmd>call WikiAssetPaste()<cr>
 # }}}
 
 # Package management {{{
   plug#begin('~/.cache/vim/plug.vim')
-  Plug 'rose-pine/vim'
+    Plug 'rose-pine/vim'
 
-  # Keybindings
-  Plug 'tpope/vim-rsi'
-  Plug 'tpope/vim-surround'
-  Plug 'tpope/vim-commentary'
-  Plug 'tpope/vim-unimpaired'
-  Plug 'tpope/vim-speeddating'
-  Plug 'tpope/vim-repeat'
-  Plug 'kana/vim-textobj-user'
-  Plug 'kana/vim-textobj-entire'
-  Plug 'kana/vim-textobj-line'
-  Plug 'kana/vim-textobj-indent'
-  Plug 'kana/vim-textobj-syntax'
-  Plug 'wellle/targets.vim'
-  Plug 'rhysd/clever-f.vim'
-  Plug 'bronson/vim-visual-star-search'
+    # Keybindings
+    Plug 'tpope/vim-rsi'
+    Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-unimpaired'
+    Plug 'tpope/vim-speeddating'
+    Plug 'tpope/vim-repeat'
+    Plug 'kana/vim-textobj-user'
+    Plug 'kana/vim-textobj-entire'
+    Plug 'kana/vim-textobj-line'
+    Plug 'kana/vim-textobj-indent'
+    Plug 'kana/vim-textobj-syntax'
+    Plug 'wellle/targets.vim'
+    Plug 'rhysd/clever-f.vim'
+    Plug 'bronson/vim-visual-star-search'
 
-  # IDE features
-  Plug 'dense-analysis/ale'
-  Plug 'direnv/direnv.vim'
-  Plug 'junegunn/fzf'
-  Plug 'junegunn/fzf.vim'
-  Plug 'sirver/ultisnips'
+    # IDE features
+    Plug 'dense-analysis/ale'
+    Plug 'direnv/direnv.vim'
+    Plug 'junegunn/fzf'
+    Plug 'junegunn/fzf.vim'
+    Plug 'sirver/ultisnips'
 
-  # Language support
-  Plug 'kalekundert/vim-coiled-snake'
-  Plug 'vim-pandoc/vim-pandoc'
-  Plug 'vim-pandoc/vim-pandoc-syntax'
-  Plug 'lervag/vimtex'
+    # Language support
+    Plug 'kalekundert/vim-coiled-snake'
+    Plug 'vim-pandoc/vim-pandoc'
+    Plug 'vim-pandoc/vim-pandoc-syntax'
+    Plug 'lervag/vimtex'
 
-  # Aesthetics
-  Plug 'jeffkreeftmeijer/vim-dim'
-  Plug 'jrudess/vim-foldtext'
-  Plug 'vim/colorschemes'
-  Plug 'dracula/vim'
-  Plug 'junegunn/goyo.vim'
+    # Aesthetics
+    Plug 'jeffkreeftmeijer/vim-dim'
+    Plug 'jrudess/vim-foldtext'
+    Plug 'vim/colorschemes'
+    Plug 'dracula/vim'
+    Plug 'junegunn/goyo.vim'
 
-  # Miscellaneous
-  # Plug 'lervag/wiki.vim'
-  Plug 'vimwiki/vimwiki'
-  # Plug 'tools-life/taskwiki'
-  Plug 'sunaku/tmux-navigate'
-
+    # Miscellaneous
+    Plug 'lervag/wiki.vim'
+    Plug 'sunaku/tmux-navigate'
   plug#end()
 # }}}
 
@@ -182,7 +197,7 @@ source $VIMRUNTIME/defaults.vim
 
   # Package management
   nnoremap <space>e :edit ~/.vim/<cr>
-  nnoremap <space>p :source<bar>PlugInstall<cr>
+  # nnoremap <space>p :source<bar>PlugInstall<cr>
 
   # Personal wiki (todo/note/journal)
   #nnoremap <space>t :WikiIndex<cr>
@@ -224,7 +239,7 @@ source $VIMRUNTIME/defaults.vim
 #  digraphs *.  183  " ·
 #  digraphs *= 8801  " ≡ 
 #  digraphs *~ 8776  " ≈
-  # }}}
+# }}}
 
 # Colorscheme {{{
   def g:ChangeBackground()

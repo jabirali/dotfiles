@@ -1,6 +1,7 @@
 # ~/.zshrc: Configuration for interactive shells.
 
 # Load plugins.
+ANTIDOTE_HOME=~/.cache/zsh/plugins
 source $ANTIDOTE_HOME/antidote/antidote.zsh
 antidote load
 
@@ -68,14 +69,12 @@ alias exa='exa --group-directories-first --time-style=long-iso'
 alias grep="grep --color"
 alias ipython='TERM=linux ipython'  # ANSI colors
 alias less="less -R"
-alias ls="ls --color --human-readable --dereference --group-directories-first --time-style=long-iso --hyperlink=auto"
+alias ls="ls --color --human-readable --dereference --group-directories-first --time-style=long-iso" # --hyperlink=auto
 alias matlab='matlab -nosplash -nodesktop'  # CLI mode
 alias wget='wget -e robots=off'  # Web scraping
 
-# Don't procrastinate.
-alias emacs="emacs -nw"
-
 # Intuitive commands
+alias week="date +%Y-W%W"
 alias queue="squeue -u jabirali"
 alias hours="cost -d"
 
@@ -142,10 +141,11 @@ alias gP="git push"
 alias gs="git status"
 alias gz="git stash"
 
+alias fontembed="env gs -dNoOutputFonts -sDEVICE=pdfwrite -o embed.pdf"
+
 # Named directories
 for dir in ~/Code/*; do
     hash -d "$(basename $dir)=$dir"
 done
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
+# test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
