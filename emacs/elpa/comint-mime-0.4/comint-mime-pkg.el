@@ -1,0 +1,2 @@
+;; Generated package description from comint-mime.el  -*- no-byte-compile: t -*-
+(define-package "comint-mime" "0.4" "Display content of various MIME types in comint buffers" '((emacs "28.1")) :commit "9d4fe3694d1cb558e26cffb4f92f7d2ffc40498d" :authors '(("Augusto Stoffel" . "arstoffel@gmail.com")) :maintainer '("Augusto Stoffel" . "arstoffel@gmail.com") :keywords '("processes" "multimedia") :url "https://github.com/astoff/comint-mime")

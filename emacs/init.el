@@ -155,8 +155,29 @@
   (setopt org-latex-hyperref-template "
 \\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},
  pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true}\n")
-  (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (julia . t)
+     (python . t)))
   (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
+
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-completion-everywhere t)
+  (org-roam-directory (file-truename "~/Notes/Roam"))
+  :bind
+  ("C-c n l" . org-roam-buffer-toggle)
+  ("C-c n f" . org-roam-node-find)
+  ("C-c n g" . org-roam-graph)
+  ("C-c n i" . org-roam-node-insert)
+  ("C-c n c" . org-roam-capture)
+  ("C-c n j" . org-roam-dailies-capture-today)
+  ("C-c n d" . org-roam-dailies-find-date)
+  ("C-c n n" . org-roam-node-find)
+:config
+(org-roam-db-autosync-mode))
 
 (use-package ox-pandoc
   :if (executable-find "pandoc"))
@@ -245,7 +266,15 @@
 (use-package python
   :custom
   (python-indent-guess-indent-offset t)  
-  (python-indent-guess-indent-offset-verbose nil))
+  (python-indent-guess-indent-offset-verbose nil)
+  (python-shell-interpreter "ipython3")
+  (python-shell-interpreter-args "--simple-prompt --classic"))
+
+(use-package comint-mime
+  :custom
+  (comint-mime-prefer-svg t)
+  :hook
+  (inferior-python-mode . comint-mime-setup))
 
 (use-package flymake-ruff
   :hook
@@ -344,9 +373,14 @@
   ("M-o" . +other-window-dwim))
 
 (use-package company
-  :after eglot
-  :bind (:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
-  :hook (eglot-managed-mode . company-mode))
+  :bind*
+  ("M-i" . company-complete)
+  ;(:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
+  :custom
+  (completion-ignore-case t)
+  :config
+  (add-to-list 'company-backends 'company-capf)
+  (global-company-mode 1))
 
 (use-package diredfl
   :after dired
@@ -568,7 +602,7 @@
 (my-custom-faces-mode 1)
 
 ;; Use a nicer theme.
-(load-theme 'modus-operandi t)
+(load-theme 'modus-operandi-tinted t)
 
 (defun +init-time ()
   "Print the Emacs start-up time in milliseconds."

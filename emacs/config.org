@@ -22,6 +22,14 @@ Especially the code that just remaps =C-c C-...= into =, ...= is well-suited for
 ** TODO Look into =speed-rect=
 Makes rectangle selections more useful. See [[https://github.com/jdtsmith/speedrect]].
 
+* Why Emacs?
+Sometimes I ask myself the same question... I've been a Vim user since the mid-2000s, and regularly consider switching back since I haven't been able to completely let go of Vim. I've also been using other editors like VSCode on and off since ~2020, since it handles some things like data visualization and notebooks in a better way than either Emacs or Vim does. Moreover, maintaining a usable Emacs config takes some time and energy, since I don't find the default settings of either vanilla Emacs or Doom Emacs to be that usable. So why bother?
+
+Some of the answers that I keep returning to:
+- Org-mode :: I've tried plenty of note-taking apps over the years: Logseq, Obsidian, Bear, iA Writer, Apple Notes, Zim, Wiki.vim, etc. I still have yet to find anything as usable as Emacs Org-mode (although Logseq came close, and I happily used that for a while).
+- CDLaTeX :: Most snippet solutions are not as ergonomic as this. The VimTeX one comes close, but doesn't work in e.g. MarkDown contexts last I checked, which is one main place I do want it to work.
+- TRAMP :: I don't use it that much, but remote workflows is a definite strength of Emacs. If I just quickly need to e.g. copy-paste some code between remote hosts, it's way easier to go via Emacs.
+
 * [100%] Installation
 ** DONE Mac port
 The "Mac port" integrates well with MacOS, including full Retina support and better trackpad support. But it doesn't work as well as the [[NS port]] in the terminal and updates are usually slower.
@@ -39,10 +47,10 @@ To install the pre-built version (slower but less chance of problems):
   brew install --cask emacs-mac
 #+end_src
 
-After installation, we might want to get "Emacs Anywhere" running. I have no idea why the second line is needed, but after some trial and error that was the only way to get the right accessibility permissions.
+After installation, we might want to get [[https://github.com/zachcurry/emacs-anywhere][Emacs Anywhere]] running. I have no idea why the second line is needed, but after some trial and error that was the only way to get the right accessibility permissions. Remember to also bind Emacs Anywhere to a keybinding under System Preferences \rightarrow Keyboard Shortcuts.
 #+begin_src sh
   curl -fsSL https://raw.github.com/zachcurry/emacs-anywhere/master/install | bash
-  osascript -e 'tell application "System Events"' -e 'keystroke "echo hi"' -e end tell
+  osascript -e 'tell application "System Events"' -e 'keystroke "echo ..."' -e end tell
 #+end_src
 
 ** DONE NS port
@@ -282,7 +290,7 @@ Emacs ports of some useful Vim plugins.
   (bind-key* "M-j" 'avy-goto-word-1)
 #+end_src
 
-* [0%] Documentation
+* [0%] Writing
 ** TODO Org-mode notes
 Org-mode is my favorite task and knowledge management system.  It's no understatement that Org-mode is the main reason I'm using Emacs at all (otherwise I'd probably be using Vim).
 #+begin_src emacs-lisp
@@ -320,8 +328,31 @@ Org-mode is my favorite task and knowledge management system.  It's no understat
     (setopt org-latex-hyperref-template "
   \\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},
    pdfsubject={%d},\n pdfcreator={%c},\n pdflang={%L},\n colorlinks=true}\n")
-    (org-babel-do-load-languages 'org-babel-load-languages '((python . t)))
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (julia . t)
+       (python . t)))
     (org-link-set-parameters "zotero" :follow #'+url-handler-zotero))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package org-roam
+    :ensure t
+    :custom
+    (org-roam-completion-everywhere t)
+    (org-roam-directory (file-truename "~/Notes/Roam"))
+    :bind
+    ("C-c n l" . org-roam-buffer-toggle)
+    ("C-c n f" . org-roam-node-find)
+    ("C-c n g" . org-roam-graph)
+    ("C-c n i" . org-roam-node-insert)
+    ("C-c n c" . org-roam-capture)
+    ("C-c n j" . org-roam-dailies-capture-today)
+    ("C-c n d" . org-roam-dailies-find-date)
+    ("C-c n n" . org-roam-node-find)
+  :config
+  (org-roam-db-autosync-mode))
 #+end_src
 
 I used to use =org-download= to enable copy-paste and drag-and-drop of image attachments into Org files. That is no longer needed, thanks to the =yank-media= command introduced in recent Emacs versions.
@@ -405,7 +436,7 @@ Visual-line-mode is pretty useful for the average document, but it looks very ug
     (latex-mode . adaptive-wrap-prefix-mode))
 #+end_src
 
-* [50%] Programming
+* [50%] Coding
 ** TODO General
 Eglot has been built into Emacs since v29. I've tried the alternatives Lsp-mode and Lsp-bridge, but so far Eglot is the solution that has been most "plug and play" and least buggy. It also works over TRAMP if you install LSP servers remotely.
 #+begin_src emacs-lisp
@@ -458,7 +489,18 @@ First, let's load the built-in Python-mode.
   (use-package python
     :custom
     (python-indent-guess-indent-offset t)  
-    (python-indent-guess-indent-offset-verbose nil))
+    (python-indent-guess-indent-offset-verbose nil)
+    (python-shell-interpreter "ipython3")
+    (python-shell-interpreter-args "--simple-prompt --classic"))
+#+end_src
+
+The package Comint-mime lets us show Matplotlib plots directly in the Inferior Python buffer. Similarly to VSCode's "Interactive Python".
+#+begin_src emacs-lisp
+  (use-package comint-mime
+    :custom
+    (comint-mime-prefer-svg t)
+    :hook
+    (inferior-python-mode . comint-mime-setup))
 #+end_src
 
 Jupyter-mode replaces the "Inferior Python" feature (=C-c C-p=). Notably, Jupyter-mode can capture Matplotlib plots and display them in Emacs buffers, which provides a similar interface as Spyder and VSCode for data visualization in Python. With my setup, pressing =C-c C-c= once in a Python buffer starts up the Jupyter kernel, and pressing =C-c C-c= more times after that then evaluates the current line or region.
@@ -605,9 +647,14 @@ Syntax highlighting for Matlab files.
 
 #+begin_src emacs-lisp
   (use-package company
-    :after eglot
-    :bind (:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
-    :hook (eglot-managed-mode . company-mode))
+    :bind*
+    ("M-i" . company-complete)
+    ;(:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
+    :custom
+    (completion-ignore-case t)
+    :config
+    (add-to-list 'company-backends 'company-capf)
+    (global-company-mode 1))
 #+end_src
 
 
@@ -891,10 +938,10 @@ Here is some code generated by ChatGPT 4. I'll have to clean it up and can then 
   ;; Enable the minor mode by default
   (my-custom-faces-mode 1)
 #+end_src
-* TODO theming
+* TODO Theming
 #+begin_src emacs-lisp
   ;; Use a nicer theme.
-  (load-theme 'modus-operandi t)
+  (load-theme 'modus-operandi-tinted t)
 #+end_src
 * DONE Profiling
 It is a continuous project to keep Emacs fast and lean. Monitoring the start-up time is a good way to start, but I might consider adopting things like the [[https://github.com/jschaf/esup][Emacs Start Up Profiler]] if things get too much out of hand.

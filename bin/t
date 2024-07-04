@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+FILE="$HOME/Notes/Tasks.yaml"
+DATE="$(date +%Y-%m-%d)"
+
+echo -e "\t- $DATE \n" >> "$FILE"
+subl --project ~/Notes/notes.sublime-project "$FILE:999999"%
