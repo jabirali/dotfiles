@@ -134,12 +134,12 @@
   (org-babel-results-keyword "results")
   (org-confirm-babel-evaluate nil)
   (org-ctrl-k-protect-subtree t)
-  (org-directory "~/Sync/Org")
+  (org-directory "~/Notes")
   (org-fontify-quote-and-verse-blocks t)
   (org-highlight-latex-and-related '(native latex script entities))
   (org-image-actual-width '(400))
   (org-pretty-entities t)
-  ;;(org-use-sub-superscripts '{})
+  (org-use-sub-superscripts '{})
   (org-pretty-entities-include-sub-superscripts nil)
   (org-return-follows-link t)
   (org-startup-folded 'fold)
@@ -166,7 +166,7 @@
   :ensure t
   :custom
   (org-roam-completion-everywhere t)
-  (org-roam-directory (file-truename "~/Notes/Roam"))
+  (org-roam-directory (expand-file-name "roam" org-directory))
   :bind
   ("C-c n l" . org-roam-buffer-toggle)
   ("C-c n f" . org-roam-node-find)
@@ -178,6 +178,18 @@
   ("C-c n n" . org-roam-node-find)
 :config
 (org-roam-db-autosync-mode))
+
+(setopt org-id-method 'ts)
+(setopt org-id-ts-format "%Y%m%d%H%M%S")
+
+(defun org-attach-id-to-path (id)
+  "Store attachments as 'data/org-id/file' in 'org-roam-directory'."
+  (let ((attach-dir (expand-file-name "data" org-roam-directory)))
+    (unless (file-directory-p attach-dir)
+      (make-directory attach-dir t))
+    (expand-file-name id attach-dir)))
+
+(setopt org-attach-id-to-path-function-list '(org-attach-id-to-path))
 
 (use-package ox-pandoc
   :if (executable-find "pandoc"))
