@@ -27,7 +27,6 @@
   (ring-bell-function 'ignore)
   (sentence-end-double-space nil)
   (tab-width 4)
-  (truncate-lines t)
   (use-short-answers t)
   (xterm-set-window-title t)
   :custom-face
@@ -167,6 +166,7 @@
   :custom
   (org-roam-completion-everywhere t)
   (org-roam-directory (expand-file-name "roam" org-directory))
+  (org-roam-dailies-directory "../daily")
   :bind
   ("C-c n l" . org-roam-buffer-toggle)
   ("C-c n f" . org-roam-node-find)
@@ -174,17 +174,21 @@
   ("C-c n i" . org-roam-node-insert)
   ("C-c n c" . org-roam-capture)
   ("C-c n j" . org-roam-dailies-capture-today)
-  ("C-c n d" . org-roam-dailies-find-date)
+  ("C-c n d" . org-roam-dailies-goto-date)
   ("C-c n n" . org-roam-node-find)
 :config
 (org-roam-db-autosync-mode))
 
 (setopt org-id-method 'ts)
 (setopt org-id-ts-format "%Y%m%d%H%M%S")
+;; (setopt org-roam-capture-templates
+;;         '(("d" "default" plain "%?"
+;;                :target (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${title}")
+;;                :unnarrowed t)))
 
 (defun org-attach-id-to-path (id)
-  "Store attachments as 'data/org-id/file' in 'org-roam-directory'."
-  (let ((attach-dir (expand-file-name "data" org-roam-directory)))
+  "Store attachments as 'data/org-id/file' in 'org-directory'."
+  (let ((attach-dir (expand-file-name "data" org-directory)))
     (unless (file-directory-p attach-dir)
       (make-directory attach-dir t))
     (expand-file-name id attach-dir)))
@@ -236,11 +240,14 @@
   :after flyspell
   :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
 
+(setopt truncate-lines t)
+(use-package visual-line-mode
+  :hook (text-mode . visual-line-mode))
+
 (use-package adaptive-wrap
   :hook
-  (text-mode . visual-line-mode)
   (markdown-mode . adaptive-wrap-prefix-mode)
-  (latex-mode . adaptive-wrap-prefix-mode))
+  (LaTeX-mode . adaptive-wrap-prefix-mode))
 
 (use-package eglot
   :custom
@@ -503,7 +510,7 @@
   "h" `(,help-map :which-key "help")
   "i" '(imenu :which-key "imenu")
   "j" '(bookmark-jump :which-key "jump")
-  "k" '(kill-this-buffer :which-key "kill")
+  "k" '(kill-current-buffer :which-key "kill")
   "n" `(,narrow-map :which-key "narrow")
   "o" '(ace-window :which-key "other")
   "p" `(,project-prefix-map :which-key "project")

@@ -27,7 +27,7 @@ Sometimes I ask myself the same question... I've been a Vim user since the mid-2
 
 Some of the answers that I keep returning to:
 - Org-mode :: I've tried plenty of note-taking apps over the years: Logseq, Obsidian, Bear, iA Writer, Apple Notes, Zim, Wiki.vim, etc. I still have yet to find anything as usable as Emacs Org-mode (although Logseq came close, and I happily used that for a while).
-- CDLaTeX :: Most snippet solutions are not as ergonomic as this. The VimTeX one comes close, but doesn't work in e.g. MarkDown contexts last I checked, which is one main place I do want it to work.
+- CDLaTeX :: Most snippet solutions are not as ergonomic as this. The VimTeX one comes close, but doesn't work in e.g. MarkDown last I checked, which is one main place I do want it to work.
 - TRAMP :: I don't use it that much, but remote workflows is a definite strength of Emacs. If I just quickly need to e.g. copy-paste some code between remote hosts, it's way easier to go via Emacs.
 
 * [100%] Installation
@@ -124,7 +124,6 @@ Here's a hodgepodge of built-in Emacs settings. Many of them just try to get rid
     (ring-bell-function 'ignore)
     (sentence-end-double-space nil)
     (tab-width 4)
-    (truncate-lines t)
     (use-short-answers t)
     (xterm-set-window-title t)
     :custom-face
@@ -290,7 +289,7 @@ Emacs ports of some useful Vim plugins.
   (bind-key* "M-j" 'avy-goto-word-1)
 #+end_src
 
-* [0%] Writing
+* [20%] Writing
 ** TODO Org-mode notes
 Org-mode is my favorite task and knowledge management system.  It's no understatement that Org-mode is the main reason I'm using Emacs at all (otherwise I'd probably be using Vim).
 #+begin_src emacs-lisp
@@ -342,6 +341,7 @@ Org-mode is my favorite task and knowledge management system.  It's no understat
     :custom
     (org-roam-completion-everywhere t)
     (org-roam-directory (expand-file-name "roam" org-directory))
+    (org-roam-dailies-directory "../daily")
     :bind
     ("C-c n l" . org-roam-buffer-toggle)
     ("C-c n f" . org-roam-node-find)
@@ -349,7 +349,7 @@ Org-mode is my favorite task and knowledge management system.  It's no understat
     ("C-c n i" . org-roam-node-insert)
     ("C-c n c" . org-roam-capture)
     ("C-c n j" . org-roam-dailies-capture-today)
-    ("C-c n d" . org-roam-dailies-find-date)
+    ("C-c n d" . org-roam-dailies-goto-date)
     ("C-c n n" . org-roam-node-find)
   :config
   (org-roam-db-autosync-mode))
@@ -359,12 +359,16 @@ The following code provides the popular "Zettelkasten IDs" for Org-mode files in
 #+begin_src emacs-lisp
   (setopt org-id-method 'ts)
   (setopt org-id-ts-format "%Y%m%d%H%M%S")
+  ;; (setopt org-roam-capture-templates
+  ;;         '(("d" "default" plain "%?"
+  ;;                :target (file+head "%<%Y%m%d%H%M%S>.org" "#+title: ${title}")
+  ;;                :unnarrowed t)))
 #+end_src
 
 #+begin_src emacs-lisp
   (defun org-attach-id-to-path (id)
-    "Store attachments as 'data/org-id/file' in 'org-roam-directory'."
-    (let ((attach-dir (expand-file-name "data" org-roam-directory)))
+    "Store attachments as 'data/org-id/file' in 'org-directory'."
+    (let ((attach-dir (expand-file-name "data" org-directory)))
       (unless (file-directory-p attach-dir)
         (make-directory attach-dir t))
       (expand-file-name id attach-dir)))
@@ -443,14 +447,20 @@ The default Flyspell interface and keybinding =C-c $= is not very ergonomic. Esp
     :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
 #+end_src
 
-** TODO Line wrapping
-Visual-line-mode is pretty useful for the average document, but it looks very ugly without "adaptive wrap" turned on. The only reason I don't turn it on in Text-mode directly is that it would then end up in Org-mode as well, and it conflicts with =org-indent-mode=.
+** DONE Line wrapping
+I don't like line wrapping when editing code, but do want lines to wrap at word boundaries when editing documents. This does the job:
+#+begin_src emacs-lisp
+  (setopt truncate-lines t)
+  (use-package visual-line-mode
+    :hook (text-mode . visual-line-mode))
+#+end_src
+
+However, wrapped lines look ugly without =adaptive-wrap-prefix-mode=. This is a mode that basically indents wrapped lines, similarly to the =breakindentopt= settings in Vim. It conflicts with =org-indent-mode=, so I have to manually turn it on for TeX and MarkDown documents.
 #+begin_src emacs-lisp
   (use-package adaptive-wrap
     :hook
-    (text-mode . visual-line-mode)
     (markdown-mode . adaptive-wrap-prefix-mode)
-    (latex-mode . adaptive-wrap-prefix-mode))
+    (LaTeX-mode . adaptive-wrap-prefix-mode))
 #+end_src
 
 * [50%] Coding
@@ -829,7 +839,7 @@ Syntax highlighting for Matlab files.
     "h" `(,help-map :which-key "help")
     "i" '(imenu :which-key "imenu")
     "j" '(bookmark-jump :which-key "jump")
-    "k" '(kill-this-buffer :which-key "kill")
+    "k" '(kill-current-buffer :which-key "kill")
     "n" `(,narrow-map :which-key "narrow")
     "o" '(ace-window :which-key "other")
     "p" `(,project-prefix-map :which-key "project")
