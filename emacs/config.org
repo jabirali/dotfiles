@@ -231,9 +231,9 @@ Run Emacs as a server. I chose to run it over TCP, because this lets me SSH forw
     (server-mode 1))
 #+end_src
 
-* [0%] Keybindings
-** TODO Evil itself
-First of all, let's enable the "Evil mode". As someone with a Vim background, this is more ergonomic for both my brain and my hands.
+* [75%] Keybindings
+** DONE Evil-mode
+First of all, let's enable the "Evil mode". As someone with a Vim background, this is more ergonomic for both my brain and my hands. It's worth noting that =evil-respect-visual-line-mode= is quite important here, since it makes the document writing (TeX, Org, MarkDown) much easier.
 #+begin_src emacs-lisp
   (use-package evil
     :custom
@@ -249,35 +249,32 @@ First of all, let's enable the "Evil mode". As someone with a Vim background, th
     (define-key evil-motion-state-map (kbd "RET") nil)
     (define-key evil-motion-state-map (kbd "TAB") nil))
 #+end_src
-** TODO Evil collection
-Evil Collection is exactly what is sounds like: It makes Evil work in nearly every corner of Emacs. Note, I might later wish to look into =evil-collection-key-blacklist= to protect keybindings like =M-l= for lower-case word, =gj= to move one visual line down, etc. which I kinda like as they are in stock Evil.
+** DONE Evil collection
+Evil Collection is what is sounds like: It makes Evil work in nearly every corner of Emacs.
 #+begin_src emacs-lisp
   (use-package evil-collection
     :after evil
     :config
     (evil-collection-init))
 #+end_src
+Note: I might later wish to look into =evil-collection-key-blacklist= to protect keybindings that I don't want Evil to override.
 
-Let's improve some modes where Evil Collection is inadequate.
+Org-mode is not sufficiently well covered by Evil Collection, and requires an additional plugin to work as expected.
 #+begin_src emacs-lisp
   (use-package evil-org
     :after (evil org)
-    :hook (org-mode . evil-org-mode))
+    :hook
+    (org-mode . evil-org-mode))
 #+end_src
 
-#+begin_src emacs-lisp
-  (use-package evil-org-agenda
-    :after evil-org
-    :config (evil-org-agenda-set-keys))
-#+end_src
-
+LaTeX works fine without Evil integration, but =evil-tex= provides some sorely missed text objects from VimTeX. This lets me e.g. press =dsc= to "delete surrounding command", which I do all the time to remove special formatting from pieces of text.
 #+begin_src emacs-lisp
   (use-package evil-tex
     :hook
     (LaTeX-mode . evil-tex-mode))
 #+end_src
-** TODO Evil extensions
-Emacs ports of some useful Vim plugins.
+** DONE Evil extensions
+"Evil Surround" provides surround text objects. This lets me e.g. type =cs])= to change =[...]= to =(...)=.
 #+begin_src emacs-lisp
   (use-package evil-surround
     :config
@@ -289,7 +286,7 @@ Emacs ports of some useful Vim plugins.
   (bind-key* "M-j" 'avy-goto-word-1)
 #+end_src
 
-* [20%] Writing
+* [40%] Writing
 ** TODO Org-mode notes
 Org-mode is my favorite task and knowledge management system.  It's no understatement that Org-mode is the main reason I'm using Emacs at all (otherwise I'd probably be using Vim).
 #+begin_src emacs-lisp
@@ -418,15 +415,21 @@ CDLaTeX is one of the main reasons I love writing LaTeX in Emacs. It's very ergo
      (org-mode . turn-on-org-cdlatex)))
 #+end_src
 
-** TODO Spell checking
-Ispell is the traditional spell checker for Emacs. It supports many backends, but we here use the Hunspell backend since it (i) supports multi-language dictionary combinations, (ii) is supposed to be more accurate for many non-English languages, (iii) has become the de facto standard among other open-source apps (it is e.g. now the default spell checker in Firefox, LibreOffice, etc.). Note that on MacOS, you need to [[https://github.com/wooorm/dictionaries][download]] the appropriate dictionaries and extract them into =~/Library/Spelling=.
+** DONE Spell checking
+Ispell is a spell checker that is built into Emacs. It supports many different backends, but I use Hunspell:
+
+1. It supports multi-language dictionary combinations, so I can spellcheck my notes that tend to mix English and Norwegian;
+2. It is supposedly more accurate for non-English languages, although I haven't really put this to the test;
+3. It is the de facto standard backend in the open-source world, being used by e.g. LibreOffice, Firefox, and Chrome by default. 
+  
+Note that on MacOS, you need to [[https://github.com/wooorm/dictionaries][download]] the appropriate dictionaries and extract them into =~/Library/Spelling=. The config below assumes the files are named using locale codes like =en_US=.
 #+begin_src emacs-lisp
   (use-package ispell
     :if (executable-find "hunspell")
     :config
-    (setq ispell-program-name "hunspell")
-    (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
-    (setq ispell-dictionary "en_US,nb_NO")
+    (setopt ispell-program-name "hunspell")
+    (setopt ispell-dictionary "en_US,nb_NO")
+    (setopt ispell-personal-dictionary (concat user-emacs-directory "ispell"))
     (ispell-set-spellchecker-params)
     (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
 #+end_src
@@ -440,11 +443,13 @@ Flyspell is a built-in Emacs package that provides incremental as-you-write spel
      (prog-mode . flyspell-prog-mode)))
 #+end_src
 
-The default Flyspell interface and keybinding =C-c $= is not very ergonomic. Especially if you often have to add your own words to the personal dictionary. I'd rather use something based on =completing-read=, such that I can use e.g. Vertico for the correction interface.
+The default Flyspell interface and keybindings are not comfortable, especially if you frequently add words to your personal dictionary. I'd rather have an interface based on =completing-read= (e.g. =vertico=), and the package =flyspell-correct= solves this.
 #+begin_src emacs-lisp
   (use-package flyspell-correct
     :after flyspell
-    :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+    :bind
+    (:map flyspell-mode-map
+          ("C-;" . flyspell-correct-wrapper)))
 #+end_src
 
 ** DONE Line wrapping
@@ -466,7 +471,7 @@ However, wrapped lines look ugly without =adaptive-wrap-prefix-mode=. This is a 
     (org-roam-mode . adaptive-wrap-prefix-mode))
 #+end_src
 
-* [50%] Coding
+* [75%] Programming
 ** TODO General
 Eglot has been built into Emacs since v29. I've tried the alternatives Lsp-mode and Lsp-bridge, but so far Eglot is the solution that has been most "plug and play" and least buggy. It also works over TRAMP if you install LSP servers remotely.
 #+begin_src emacs-lisp
@@ -513,18 +518,21 @@ Github Copilot support for Emacs.
   ;;         ("M-p"   . copilot-previous-completion)))
 #+end_src
 
-** TODO Python
-First, let's load the built-in Python-mode.
+** DONE Python
+First, let's load the built-in Python-mode. The defaults mostly work fine, but there are two main things I want to fix:
+1. I want =C-c C-p= to use IPython instead of Python as the "Inferior Python" process;
+2. I want Emacs to stop complaining that it has to guess how Python files are indented.
 #+begin_src emacs-lisp
   (use-package python
-    :custom
-    (python-indent-guess-indent-offset t)  
-    (python-indent-guess-indent-offset-verbose nil)
-    (python-shell-interpreter "ipython3")
-    (python-shell-interpreter-args "--simple-prompt --classic"))
+    :config
+    (setopt python-indent-guess-indent-offset t)  
+    (setopt python-indent-guess-indent-offset-verbose nil)
+    (when (executable-find "ipython3")
+      (setopt python-shell-interpreter "ipython3")
+      (setopt python-shell-interpreter-args "--simple-prompt --classic")))
 #+end_src
 
-The package Comint-mime lets us show Matplotlib plots directly in the Inferior Python buffer. Similarly to VSCode's "Interactive Python".
+The package Comint-mime lets us show Matplotlib plots directly in Inferior Python buffers. This lets us replicate the "Interactive Python" workflow in e.g. VSCode, where one writes code in one split and sees the visual output in another split.
 #+begin_src emacs-lisp
   (use-package comint-mime
     :custom
@@ -533,22 +541,23 @@ The package Comint-mime lets us show Matplotlib plots directly in the Inferior P
     (inferior-python-mode . comint-mime-setup))
 #+end_src
 
-Jupyter-mode replaces the "Inferior Python" feature (=C-c C-p=). Notably, Jupyter-mode can capture Matplotlib plots and display them in Emacs buffers, which provides a similar interface as Spyder and VSCode for data visualization in Python. With my setup, pressing =C-c C-c= once in a Python buffer starts up the Jupyter kernel, and pressing =C-c C-c= more times after that then evaluates the current line or region.
-#+begin_src emacs-lisp :tangle no
-    (use-package jupyter
-      :config
-      (defun jabirali/jupyter-python ()
-        (interactive)
-        (jupyter-run-repl "python3" "py" t)
-        (message "Jupyter kernel started!"))
-      :bind
-      (:map python-mode-map
-            ("C-c C-c" . jabirali/jupyter-python)))
+This is the final piece of the "Interactive Python" workflow: Implementing support for "code cells", where parts of a script delimited by =# %%= markers can be navigated between and individually sent to the REPL.
+#+begin_src emacs-lisp
+  (use-package code-cells
+    :after python
+    :hook
+    (python-mode . code-cells-mode-maybe)
+    :bind
+    (:map code-cells-mode-map
+      ("M-p" . code-cells-backward-cell)
+      ("M-n" . code-cells-forward-cell)
+      ("M-RET" . code-cells-eval)))
 #+end_src
 
-Ruff is a pretty nice Python linter. Let's integrate it into Flymake for continuous feedback.
+Ruff is a fast and good Python linter. Integrate it into Flymake for continuous feedback if it's installed.
 #+begin_src emacs-lisp
   (use-package flymake-ruff
+    :if (executable-find "ruff")
     :hook
     (python-mode . flymake-mode)
     (python-mode . flymake-ruff-load))
@@ -566,8 +575,9 @@ Syntax highlighting for Matlab files.
   (use-package matlab)
 #+end_src
 
-* [%] Config files
-** YAML
+* [100%] Configuration
+** DONE YAML
+It's weird that Emacs doesn't include a basic =yaml-mode= by default, given how widespread it has been as a config format for the past two decades. However, this one seems to work fine.
 #+begin_src emacs-lisp
  (use-package yaml-mode) 
 #+end_src

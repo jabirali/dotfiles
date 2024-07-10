@@ -104,11 +104,8 @@
 
 (use-package evil-org
   :after (evil org)
-  :hook (org-mode . evil-org-mode))
-
-(use-package evil-org-agenda
-  :after evil-org
-  :config (evil-org-agenda-set-keys))
+  :hook
+  (org-mode . evil-org-mode))
 
 (use-package evil-tex
   :hook
@@ -224,9 +221,9 @@
 (use-package ispell
   :if (executable-find "hunspell")
   :config
-  (setq ispell-program-name "hunspell")
-  (setq ispell-personal-dictionary (concat user-emacs-directory "ispell"))
-  (setq ispell-dictionary "en_US,nb_NO")
+  (setopt ispell-program-name "hunspell")
+  (setopt ispell-dictionary "en_US,nb_NO")
+  (setopt ispell-personal-dictionary (concat user-emacs-directory "ispell"))
   (ispell-set-spellchecker-params)
   (ispell-hunspell-add-multi-dic "en_US,nb_NO"))
 
@@ -238,7 +235,9 @@
 
 (use-package flyspell-correct
   :after flyspell
-  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+  :bind
+  (:map flyspell-mode-map
+        ("C-;" . flyspell-correct-wrapper)))
 
 (setopt truncate-lines t)
 (use-package visual-line-mode
@@ -286,11 +285,12 @@
 ;;         ("M-p"   . copilot-previous-completion)))
 
 (use-package python
-  :custom
-  (python-indent-guess-indent-offset t)  
-  (python-indent-guess-indent-offset-verbose nil)
-  (python-shell-interpreter "ipython3")
-  (python-shell-interpreter-args "--simple-prompt --classic"))
+  :config
+  (setopt python-indent-guess-indent-offset t)  
+  (setopt python-indent-guess-indent-offset-verbose nil)
+  (when (executable-find "ipython3")
+    (setopt python-shell-interpreter "ipython3")
+    (setopt python-shell-interpreter-args "--simple-prompt --classic")))
 
 (use-package comint-mime
   :custom
@@ -298,7 +298,18 @@
   :hook
   (inferior-python-mode . comint-mime-setup))
 
+(use-package code-cells
+  :after python
+  :hook
+  (python-mode . code-cells-mode-maybe)
+  :bind
+  (:map code-cells-mode-map
+    ("M-p" . code-cells-backward-cell)
+    ("M-n" . code-cells-forward-cell)
+    ("M-RET" . code-cells-eval)))
+
 (use-package flymake-ruff
+  :if (executable-find "ruff")
   :hook
   (python-mode . flymake-mode)
   (python-mode . flymake-ruff-load))
