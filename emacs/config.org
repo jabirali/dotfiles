@@ -452,7 +452,9 @@ I don't like line wrapping when editing code, but do want lines to wrap at word 
 #+begin_src emacs-lisp
   (setopt truncate-lines t)
   (use-package visual-line-mode
-    :hook (text-mode . visual-line-mode))
+    :hook
+    (text-mode . visual-line-mode)
+    (org-roam-mode . visual-line-mode))
 #+end_src
 
 However, wrapped lines look ugly without =adaptive-wrap-prefix-mode=. This is a mode that basically indents wrapped lines, similarly to the =breakindentopt= settings in Vim. It conflicts with =org-indent-mode=, so I have to manually turn it on for TeX and MarkDown documents.
@@ -460,7 +462,8 @@ However, wrapped lines look ugly without =adaptive-wrap-prefix-mode=. This is a 
   (use-package adaptive-wrap
     :hook
     (markdown-mode . adaptive-wrap-prefix-mode)
-    (LaTeX-mode . adaptive-wrap-prefix-mode))
+    (LaTeX-mode . adaptive-wrap-prefix-mode)
+    (org-roam-mode . adaptive-wrap-prefix-mode))
 #+end_src
 
 * [50%] Coding
@@ -561,6 +564,12 @@ Syntax highlighting for Julia files.
 Syntax highlighting for Matlab files.
 #+begin_src emacs-lisp
   (use-package matlab)
+#+end_src
+
+* [%] Config files
+** YAML
+#+begin_src emacs-lisp
+ (use-package yaml-mode) 
 #+end_src
 
 * [0%] Refactor in progress

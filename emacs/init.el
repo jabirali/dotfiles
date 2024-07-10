@@ -242,12 +242,15 @@
 
 (setopt truncate-lines t)
 (use-package visual-line-mode
-  :hook (text-mode . visual-line-mode))
+  :hook
+  (text-mode . visual-line-mode)
+  (org-roam-mode . visual-line-mode))
 
 (use-package adaptive-wrap
   :hook
   (markdown-mode . adaptive-wrap-prefix-mode)
-  (LaTeX-mode . adaptive-wrap-prefix-mode))
+  (LaTeX-mode . adaptive-wrap-prefix-mode)
+  (org-roam-mode . adaptive-wrap-prefix-mode))
 
 (use-package eglot
   :custom
@@ -303,6 +306,8 @@
 (use-package julia-mode)
 
 (use-package matlab)
+
+(use-package yaml-mode)
 
 (defun jabirali/science-definition-lookup ()
   "Look up a scientific definition using a ChatGPT wrapper."
