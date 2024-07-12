@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+URL="$1"
+if [ -z "$URL" ]; then
+    echo "Missing link!"
+    exit 1
+fi
+
+PDF_SRC="${URL/abstract/pdf}"
+PDF_DST="$HOME/Downloads/$(basename "$URL").pdf"
+
+ssh pvv "curl $PDF_SRC || exit 1" > "$PDF_DST"
+open "$PDF_DST"
