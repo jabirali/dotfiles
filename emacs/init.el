@@ -108,6 +108,7 @@
   (org-mode . evil-org-mode))
 
 (use-package evil-tex
+  :after (evil tex)
   :hook
   (LaTeX-mode . evil-tex-mode))
 
@@ -118,7 +119,7 @@
 (bind-key* "M-j" 'avy-goto-word-1)
 
 (use-package org
-  :mode ("\\.org\\'" . org-mode)
+  :defer t
   :custom
   (org-adapt-indentation nil)
   (org-agenda-files (list org-directory))
@@ -197,13 +198,14 @@
   :if (executable-find "pandoc"))
 
 (use-package markdown-mode
-  :mode ("\\.md\\'" . markdown-mode)
+  :defer t
   :config
   (setopt markdown-fontify-code-blocks-natively t)
   (setopt markdown-enable-wiki-links t)
   (setopt markdown-enable-math t))
 
 (use-package tex
+  :defer t
   :custom
   (font-latex-fontify-script nil)
   (TeX-auto-save t)
@@ -285,7 +287,7 @@
 ;;         ("M-p"   . copilot-previous-completion)))
 
 (use-package python
-  :mode ("\\.py\\'" . python-mode)
+  :defer t
   :config
   (setopt python-indent-guess-indent-offset t)  
   (setopt python-indent-guess-indent-offset-verbose nil)
@@ -316,12 +318,13 @@
   (python-mode . flymake-ruff-load))
 
 (use-package julia-mode
-  :mode ("\\.jl\\'" . julia-mode))
+  :defer t)
 
 (use-package matlab
-  :mode ("\\.m\\'" . matlab-mode))
+  :defer t)
 
-(use-package yaml-mode)
+(use-package yaml-mode
+  :defer t)
 
 (defun jabirali/science-definition-lookup ()
   "Look up a scientific definition using a ChatGPT wrapper."
@@ -432,7 +435,8 @@
   :bind
   ("C-c SPC" . er/expand-region))
 
-(use-package gnuplot)
+(use-package gnuplot
+  :defer t)
 
 (use-package hl-todo
   :hook

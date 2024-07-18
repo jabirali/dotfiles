@@ -14,7 +14,7 @@ This section is for planned maintenance tasks for my Emacs config.
 ** TODO Improve the performance
 I've already toggled on =defer= as default for =use-package=. Perhaps I can still do better, by e.g. making things toggle on =after-init-hook= that don't need usage immediately? Or reducing some =use-package= blocks to simple =setopt= if I don't actually need to use the package at boot? Etc?
 
-It seems =use-package-report= helps a lot in debugging slow start-up times. Most of the times, it helps a lot to just enable deferred loading of packages: use =:mode= to load a mode when the first relevant file is opened, =:bind= to load it only when a relevant keybinding is pressed, and so on.
+It seems =use-package-report= helps a lot in debugging slow start-up times. Most of the times, it helps a lot to just enable deferred loading of packages: use =:mode= or =:defer t= to load a mode when the first relevant file is opened, =:bind= to load it only when a relevant keybinding is pressed, and so on.
 ** TODO Consider better modifiers
 On Apple keyboards, a lower-left {Fn, Ctrl, Opt, Cmd} mapped to {Hyper, Super, Meta, Ctrl} makes sense.
 
@@ -272,6 +272,7 @@ Org-mode is not sufficiently well covered by Evil Collection, and requires an ad
 LaTeX works fine without Evil integration, but =evil-tex= provides some sorely missed text objects from VimTeX. This lets me e.g. press =dsc= to "delete surrounding command", which I do all the time to remove special formatting from pieces of text.
 #+begin_src emacs-lisp
   (use-package evil-tex
+    :after (evil tex)
     :hook
     (LaTeX-mode . evil-tex-mode))
 #+end_src
@@ -293,7 +294,7 @@ LaTeX works fine without Evil integration, but =evil-tex= provides some sorely m
 Org-mode is my favorite task and knowledge management system.  It's no understatement that Org-mode is the main reason I'm using Emacs at all (otherwise I'd probably be using Vim).
 #+begin_src emacs-lisp
   (use-package org
-    :mode ("\\.org\\'" . org-mode)
+    :defer t
     :custom
     (org-adapt-indentation nil)
     (org-agenda-files (list org-directory))
@@ -388,7 +389,7 @@ Let's support Pandoc export. This is especially useful to generate DOCX files wi
 MarkDown is the lingua franca of mark-up languages, and the Emacs mode is great with the right settings.
 #+begin_src emacs-lisp
   (use-package markdown-mode
-    :mode ("\\.md\\'" . markdown-mode)
+    :defer t
     :config
     (setopt markdown-fontify-code-blocks-natively t)
     (setopt markdown-enable-wiki-links t)
@@ -399,6 +400,7 @@ MarkDown is the lingua franca of mark-up languages, and the Emacs mode is great 
 AUCTeX is the de facto default TeX mode for Emacs. Let's set it up to sync with Skim on MacOS.
 #+begin_src emacs-lisp
   (use-package tex
+    :defer t
     :custom
     (font-latex-fontify-script nil)
     (TeX-auto-save t)
@@ -526,7 +528,7 @@ First, let's load the built-in Python-mode. The defaults mostly work fine, but t
 2. I want Emacs to stop complaining that it has to guess how Python files are indented.
 #+begin_src emacs-lisp
   (use-package python
-    :mode ("\\.py\\'" . python-mode)
+    :defer t
     :config
     (setopt python-indent-guess-indent-offset t)  
     (setopt python-indent-guess-indent-offset-verbose nil)
@@ -570,21 +572,22 @@ Ruff is a fast and good Python linter. Integrate it into Flymake for continuous 
 Syntax highlighting for Julia files.
 #+begin_src emacs-lisp
   (use-package julia-mode
-    :mode ("\\.jl\\'" . julia-mode))
+    :defer t)
 #+end_src
 
 ** DONE Matlab
 Syntax highlighting for Matlab files.
 #+begin_src emacs-lisp
   (use-package matlab
-    :mode ("\\.m\\'" . matlab-mode))
+    :defer t)
 #+end_src
 
 * [100%] Configuration
 ** DONE YAML
 It's weird that Emacs doesn't include a basic =yaml-mode= by default, given how widespread it has been as a config format for the past two decades. However, this one seems to work fine.
 #+begin_src emacs-lisp
- (use-package yaml-mode) 
+  (use-package yaml-mode
+    :defer t) 
 #+end_src
 
 * [0%] Refactor in progress
@@ -754,7 +757,8 @@ I like this one, but it bogs down my startup time too much. Has to go.
 
 
 #+begin_src emacs-lisp
-  (use-package gnuplot)
+  (use-package gnuplot
+    :defer t)
 #+end_src 
 
 #+begin_src emacs-lisp
