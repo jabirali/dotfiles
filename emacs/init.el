@@ -91,11 +91,13 @@
   (evil-want-C-u-scroll t)
   (evil-want-integration t)
   (evil-want-keybinding nil)
+  :bind
+  (:map evil-motion-state-map
+        ("SPC" . nil)
+        ("RET" . nil)
+        ("TAB" . nil))
   :config
-  (evil-mode 1)
-  (define-key evil-motion-state-map (kbd "SPC") nil)
-  (define-key evil-motion-state-map (kbd "RET") nil)
-  (define-key evil-motion-state-map (kbd "TAB") nil))
+  (evil-mode 1))
 
 (use-package evil-collection
   :after evil
@@ -113,6 +115,7 @@
   (LaTeX-mode . evil-tex-mode))
 
 (use-package evil-surround
+  :after evil
   :config
   (global-evil-surround-mode 1))
 
@@ -312,6 +315,7 @@
     ("M-RET" . code-cells-eval)))
 
 (use-package flymake-ruff
+  :after python
   :if (executable-find "ruff")
   :hook
   (python-mode . flymake-mode)

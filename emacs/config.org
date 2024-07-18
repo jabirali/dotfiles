@@ -245,11 +245,13 @@ First of all, let's enable the "Evil mode". As someone with a Vim background, th
     (evil-want-C-u-scroll t)
     (evil-want-integration t)
     (evil-want-keybinding nil)
+    :bind
+    (:map evil-motion-state-map
+          ("SPC" . nil)
+          ("RET" . nil)
+          ("TAB" . nil))
     :config
-    (evil-mode 1)
-    (define-key evil-motion-state-map (kbd "SPC") nil)
-    (define-key evil-motion-state-map (kbd "RET") nil)
-    (define-key evil-motion-state-map (kbd "TAB") nil))
+    (evil-mode 1))
 #+end_src
 ** DONE Evil collection
 Evil Collection is what is sounds like: It makes Evil work in nearly every corner of Emacs.
@@ -280,6 +282,7 @@ LaTeX works fine without Evil integration, but =evil-tex= provides some sorely m
 "Evil Surround" provides surround text objects. This lets me e.g. type =cs])= to change =[...]= to =(...)=.
 #+begin_src emacs-lisp
   (use-package evil-surround
+    :after evil
     :config
     (global-evil-surround-mode 1))
 #+end_src
@@ -562,6 +565,7 @@ This is the final piece of the "Interactive Python" workflow: Implementing suppo
 Ruff is a fast and good Python linter. Integrate it into Flymake for continuous feedback if it's installed.
 #+begin_src emacs-lisp
   (use-package flymake-ruff
+    :after python
     :if (executable-find "ruff")
     :hook
     (python-mode . flymake-mode)
