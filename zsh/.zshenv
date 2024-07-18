@@ -1,12 +1,12 @@
 # ~/.zshenv: Zsh environment loaded by all shells.
 
+# Zsh path
+export ZDOTDIR=~/.config/zsh
+
 # Command path
 path=(
 	# Personal
 	~/.config/bin
-
-    # Doom
-    ~/.config/emacs/bin
 
 	# Python environments
 	/opt/intel/bin
