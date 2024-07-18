@@ -285,7 +285,7 @@
 ;;         ("M-p"   . copilot-previous-completion)))
 
 (use-package python
-  :mode ("\\.py\\'" . python-mode))
+  :mode ("\\.py\\'" . python-mode)
   :config
   (setopt python-indent-guess-indent-offset t)  
   (setopt python-indent-guess-indent-offset-verbose nil)
@@ -419,20 +419,6 @@
   :after dired
   :config
   (diredfl-global-mode 1))
-
-(use-package doom-modeline
-  :custom
-  (doom-modeline-bar-width 0.1)
-  (doom-modeline-buffer-encoding nil)
-  (doom-modeline-buffer-modification-icon nil)
-  (doom-modeline-env-enable-python nil)
-  (doom-modeline-icon nil)
-  (doom-modeline-modal nil)
-  (doom-modeline-position-line-format nil)
-  (doom-modeline-time nil)
-  (doom-modeline-workspace-name nil)
-  :config
-  (doom-modeline-mode 1))
 
 ;; (use-package ef-themes
 ;;   :config

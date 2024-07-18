@@ -526,6 +526,7 @@ First, let's load the built-in Python-mode. The defaults mostly work fine, but t
 2. I want Emacs to stop complaining that it has to guess how Python files are indented.
 #+begin_src emacs-lisp
   (use-package python
+    :mode ("\\.py\\'" . python-mode)
     :config
     (setopt python-indent-guess-indent-offset t)  
     (setopt python-indent-guess-indent-offset-verbose nil)
@@ -575,7 +576,8 @@ Syntax highlighting for Julia files.
 ** DONE Matlab
 Syntax highlighting for Matlab files.
 #+begin_src emacs-lisp
-  (use-package matlab)
+  (use-package matlab
+    :mode ("\\.m\\'" . matlab-mode))
 #+end_src
 
 * [100%] Configuration
@@ -715,7 +717,8 @@ I like this, but =use-package-report= flags it as the slowest part of my config.
     (diredfl-global-mode 1))
 #+end_src
 
-#+begin_src emacs-lisp
+I like this one, but it bogs down my startup time too much. Has to go.
+#+begin_src emacs-lisp :tangle no
   (use-package doom-modeline
     :custom
     (doom-modeline-bar-width 0.1)
