@@ -130,7 +130,7 @@
   (org-babel-results-keyword "results")
   (org-confirm-babel-evaluate nil)
   (org-ctrl-k-protect-subtree t)
-  (org-directory "~/Notes")
+  (org-directory "~/iCloud/Notes")
   (org-fontify-quote-and-verse-blocks t)
   (org-highlight-latex-and-related '(native latex script entities))
   (org-image-actual-width '(400))
