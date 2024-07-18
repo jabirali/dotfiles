@@ -13,6 +13,8 @@ This section is for planned maintenance tasks for my Emacs config.
 
 ** TODO Improve the performance
 I've already toggled on =defer= as default for =use-package=. Perhaps I can still do better, by e.g. making things toggle on =after-init-hook= that don't need usage immediately? Or reducing some =use-package= blocks to simple =setopt= if I don't actually need to use the package at boot? Etc?
+
+It seems =use-package-report= helps a lot in debugging slow start-up times. Most of the times, it helps a lot to just enable deferred loading of packages: use =:mode= to load a mode when the first relevant file is opened, =:bind= to load it only when a relevant keybinding is pressed, and so on.
 ** TODO Consider better modifiers
 On Apple keyboards, a lower-left {Fn, Ctrl, Opt, Cmd} mapped to {Hyper, Super, Meta, Ctrl} makes sense.
 
@@ -386,12 +388,11 @@ Let's support Pandoc export. This is especially useful to generate DOCX files wi
 MarkDown is the lingua franca of mark-up languages, and the Emacs mode is great with the right settings.
 #+begin_src emacs-lisp
   (use-package markdown-mode
+    :mode ("\\.md\\'" . markdown-mode)
     :config
     (setopt markdown-fontify-code-blocks-natively t)
     (setopt markdown-enable-wiki-links t)
     (setopt markdown-enable-math t))
-    ;; :hook
-    ;;(markdown-mode . cdlatex-mode)) 
 #+end_src
 
 ** TODO TeX documents

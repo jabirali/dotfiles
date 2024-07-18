@@ -197,12 +197,11 @@
   :if (executable-find "pandoc"))
 
 (use-package markdown-mode
+  :mode ("\\.md\\'" . markdown-mode)
   :config
   (setopt markdown-fontify-code-blocks-natively t)
   (setopt markdown-enable-wiki-links t)
   (setopt markdown-enable-math t))
-  ;; :hook
-  ;;(markdown-mode . cdlatex-mode))
 
 (use-package tex
   :custom
@@ -286,6 +285,7 @@
 ;;         ("M-p"   . copilot-previous-completion)))
 
 (use-package python
+  :mode ("\\.py\\'" . python-mode))
   :config
   (setopt python-indent-guess-indent-offset t)  
   (setopt python-indent-guess-indent-offset-verbose nil)
@@ -318,7 +318,8 @@
 (use-package julia-mode
   :mode ("\\.jl\\'" . julia-mode))
 
-(use-package matlab)
+(use-package matlab
+  :mode ("\\.m\\'" . matlab-mode))
 
 (use-package yaml-mode)
 
