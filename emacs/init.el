@@ -2,6 +2,7 @@
   :custom
   (package-native-compile t)
   (native-comp-async-report-warnings-errors nil)
+  (use-package-compute-statistics t)
   :config
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
@@ -19,7 +20,6 @@
   (frame-title-format "GNU Emacs")
   (fringes-outside-margins t)
   (inhibit-startup-message t)
-  (initial-major-mode 'org-mode)
   (initial-scratch-message "")
   (line-spacing 0.15)
   (make-backup-files nil)
@@ -118,6 +118,7 @@
 (bind-key* "M-j" 'avy-goto-word-1)
 
 (use-package org
+  :mode ("\\.org\\'" . org-mode)
   :custom
   (org-adapt-indentation nil)
   (org-agenda-files (list org-directory))
@@ -314,7 +315,8 @@
   (python-mode . flymake-mode)
   (python-mode . flymake-ruff-load))
 
-(use-package julia-mode)
+(use-package julia-mode
+  :mode ("\\.jl\\'" . julia-mode))
 
 (use-package matlab)
 
@@ -390,11 +392,6 @@
   (tab-bar-mode 1)
   (tab-bar-history-mode 1))
 
-(use-package persistent-scratch
-  :after (org evil)
-  :config
-  (persistent-scratch-autosave-mode 1))
-
 (use-package ace-window
   :config
   (set-face-attribute 'aw-leading-char-face nil :height 1)
@@ -455,14 +452,12 @@
   (prog-mode . hl-todo-mode))
 
 (use-package magit
-  :bind
-  (:map magit-status-mode-map ("SPC" . nil))
   :custom
   (magit-diff-refine-hunk 'all)
-  :config
-  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
-  (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
-  (keymap-set project-prefix-map "m" #'magit-project-status))
+  (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+  :bind
+  ("C-x g" . magit-status)
+  (:map magit-status-mode-map ("SPC" . nil)))
 
 (use-package prescient)
 

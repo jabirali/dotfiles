@@ -81,6 +81,7 @@ Before we install anything else, let's enable the community repositories and tur
     :custom
     (package-native-compile t)
     (native-comp-async-report-warnings-errors nil)
+    (use-package-compute-statistics t)
     :config
     (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 #+end_src
@@ -116,7 +117,6 @@ Here's a hodgepodge of built-in Emacs settings. Many of them just try to get rid
     (frame-title-format "GNU Emacs")
     (fringes-outside-margins t)
     (inhibit-startup-message t)
-    (initial-major-mode 'org-mode)
     (initial-scratch-message "")
     (line-spacing 0.15)
     (make-backup-files nil)
@@ -291,6 +291,7 @@ LaTeX works fine without Evil integration, but =evil-tex= provides some sorely m
 Org-mode is my favorite task and knowledge management system.  It's no understatement that Org-mode is the main reason I'm using Emacs at all (otherwise I'd probably be using Vim).
 #+begin_src emacs-lisp
   (use-package org
+    :mode ("\\.org\\'" . org-mode)
     :custom
     (org-adapt-indentation nil)
     (org-agenda-files (list org-directory))
@@ -566,7 +567,8 @@ Ruff is a fast and good Python linter. Integrate it into Flymake for continuous 
 ** DONE Julia
 Syntax highlighting for Julia files.
 #+begin_src emacs-lisp
-  (use-package julia-mode)
+  (use-package julia-mode
+    :mode ("\\.jl\\'" . julia-mode))
 #+end_src
 
 ** DONE Matlab
@@ -670,7 +672,8 @@ It's weird that Emacs doesn't include a basic =yaml-mode= by default, given how 
 #+end_src
 
 ** TODO External packages
-#+begin_src emacs-lisp
+I like this, but =use-package-report= flags it as the slowest part of my config. So time to disable it in the name of speed.
+#+begin_src emacs-lisp :tangle no
   (use-package persistent-scratch
     :after (org evil)
     :config
@@ -762,14 +765,12 @@ It's weird that Emacs doesn't include a basic =yaml-mode= by default, given how 
 
 #+begin_src emacs-lisp
   (use-package magit
-    :bind
-    (:map magit-status-mode-map ("SPC" . nil))
     :custom
     (magit-diff-refine-hunk 'all)
-    :config
-    (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
-    (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
-    (keymap-set project-prefix-map "m" #'magit-project-status)) 
+    (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+    :bind
+    ("C-x g" . magit-status)
+    (:map magit-status-mode-map ("SPC" . nil)))
 #+end_src
 
 #+begin_src emacs-lisp
