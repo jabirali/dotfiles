@@ -150,12 +150,6 @@ Here's a hodgepodge of built-in Emacs settings. Many of them just try to get rid
       (tool-bar-mode -1)
       (scroll-bar-mode -1)))
 #+end_src
-
-Let's also increase the garbage collection threshold a bit. This makes Emacs stutter a bit less and speeds up the start-up process.
-#+begin_src emacs-lisp :tangle "early-init.el"
-  (setq gc-cons-threshold (* 128 1024 1024)
-        read-process-output-max (* 1024 1024))
-#+end_src
 ** TODO Graphical interface
 Let's add some extra breathing room around the buffer text.
 #+begin_src emacs-lisp :tangle "early-init.el"
@@ -285,11 +279,6 @@ LaTeX works fine without Evil integration, but =evil-tex= provides some sorely m
     :after evil
     :config
     (global-evil-surround-mode 1))
-#+end_src
-
-** TODO Global keybindings
-#+begin_src emacs-lisp
-  (bind-key* "M-j" 'avy-goto-word-1)
 #+end_src
 
 * [40%] Writing
@@ -646,12 +635,6 @@ It's weird that Emacs doesn't include a basic =yaml-mode= by default, given how 
 #+end_src
 
 #+begin_src emacs-lisp
-  ;; (use-package spacious-padding
-  ;;   :config
-  ;;   (spacious-padding-mode 1))
-#+end_src
-
-#+begin_src emacs-lisp
   (defun +url-handler-zotero (link)
     "Open a zotero:// link in the Zotero desktop app."
     (start-process "zotero_open" nil "open" (concat "zotero:" link)))
@@ -682,14 +665,6 @@ It's weird that Emacs doesn't include a basic =yaml-mode= by default, given how 
 #+end_src
 
 ** TODO External packages
-I like this, but =use-package-report= flags it as the slowest part of my config. So time to disable it in the name of speed.
-#+begin_src emacs-lisp :tangle no
-  (use-package persistent-scratch
-    :after (org evil)
-    :config
-    (persistent-scratch-autosave-mode 1))
-#+end_src
-
 #+begin_src emacs-lisp
   (use-package ace-window
     :config
@@ -707,7 +682,7 @@ I like this, but =use-package-report= flags it as the slowest part of my config.
 #+begin_src emacs-lisp
   (use-package company
     :bind*
-    ("M-i" . company-complete)
+    ;;("M-i" . company-complete)
     ;(:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
     :custom
     (completion-ignore-case t)
@@ -716,7 +691,6 @@ I like this, but =use-package-report= flags it as the slowest part of my config.
     (global-company-mode 1))
 #+end_src
 
-
 #+begin_src emacs-lisp
   (use-package diredfl
     :after dired
@@ -724,41 +698,11 @@ I like this, but =use-package-report= flags it as the slowest part of my config.
     (diredfl-global-mode 1))
 #+end_src
 
-I like this one, but it bogs down my startup time too much. Has to go.
-#+begin_src emacs-lisp :tangle no
-  (use-package doom-modeline
-    :custom
-    (doom-modeline-bar-width 0.1)
-    (doom-modeline-buffer-encoding nil)
-    (doom-modeline-buffer-modification-icon nil)
-    (doom-modeline-env-enable-python nil)
-    (doom-modeline-icon nil)
-    (doom-modeline-modal nil)
-    (doom-modeline-position-line-format nil)
-    (doom-modeline-time nil)
-    (doom-modeline-workspace-name nil)
-    :config
-    (doom-modeline-mode 1))
-#+end_src
-
-#+begin_src emacs-lisp
-  ;; (use-package ef-themes
-  ;;   :config
-  ;;   (load-theme 'ef-melissa-light t))
-#+end_src
-
-#+begin_src emacs-lisp
-  ;; (use-package ef-themes
-  ;;   :config
-  ;;   (load-theme 'ef-melissa-light t))
-#+end_src
-
 #+begin_src emacs-lisp
   (use-package expand-region
     :bind
-    ("C-c SPC" . er/expand-region))
+    ("M-i" . er/expand-region))
 #+end_src
-
 
 #+begin_src emacs-lisp
   (use-package gnuplot
@@ -769,10 +713,6 @@ I like this one, but it bogs down my startup time too much. Has to go.
   (use-package hl-todo
     :hook
     (prog-mode . hl-todo-mode))
-#+end_src
-
-#+begin_src emacs-lisp :tangle no
-  (use-package iedit)
 #+end_src
 
 #+begin_src emacs-lisp
@@ -823,132 +763,6 @@ I like this one, but it bogs down my startup time too much. Has to go.
   (use-package yasnippet
     :config
     (yas-global-mode 1)) 
-#+end_src
-
-** TODO Global keybindings
-#+begin_src emacs-lisp
-  (use-package general
-    :after evil
-    :config
-    (general-evil-setup t)
-    (general-override-mode 1)
-    (general-create-definer gmap
-      :keymaps 'override
-      :states '(motion normal visual)
-      :prefix "SPC")
-    (general-create-definer lmap
-      :keymaps 'override
-      :states '(motion normal visual)
-      :prefix ","))
-#+end_src
-
-#+begin_src emacs-lisp
-  (mmap                                           ; Motion map
-    "^" 'dired-jump) 
-#+end_src
-
-#+begin_src emacs-lisp
-  (vmap                                           ; Visual map
-    "ii" 'er/expand-region) 
-#+end_src
-
-#+begin_src emacs-lisp
-  (gmap                                           ; Space menu
-    "SPC" '(execute-extended-command :which-key "cmd")
-    "1" '(tab-bar-select-tab :which-key "1")
-    "2" '(tab-bar-select-tab :which-key "2")
-    "3" '(tab-bar-select-tab :which-key "3")
-    "4" '(tab-bar-select-tab :which-key "4")
-    "5" '(tab-bar-select-tab :which-key "5")
-    "6" '(tab-bar-select-tab :which-key "6")
-    "7" '(tab-bar-select-tab :which-key "7")
-    "8" '(tab-bar-select-tab :which-key "8")
-    "9" '(tab-bar-select-tab :which-key "9")
-    "b" '(switch-to-buffer :which-key "buffer")
-    "d" '(dired-jump :which-key "dired")
-    "f" '(find-file :which-key "file")
-    "g" '(magit :which-key "git")
-    "h" `(,help-map :which-key "help")
-    "i" '(imenu :which-key "imenu")
-    "j" '(bookmark-jump :which-key "jump")
-    "k" '(kill-current-buffer :which-key "kill")
-    "n" `(,narrow-map :which-key "narrow")
-    "o" '(ace-window :which-key "other")
-    "p" `(,project-prefix-map :which-key "project")
-    "q" '(delete-window :which-key "quit window")
-    "Q" '(tab-close :which-key "quit tab")
-    "r" '(recentf :which-key "recent")
-    "s" '(save-buffer :which-key "save")
-    "t" '(tab-bar-new-tab :which-key "tab")
-    "w" `(,evil-window-map :which-key "window")
-    "y" '(clone-indirect-buffer-other-window :which-key "indirect")) 
-#+end_src
-
-
-#+begin_src emacs-lisp
-  (lmap                                           ; Major modes
-    "," (general-key "C-c C-c")
-    "a" (general-key "C-c C-a")
-    "b" (general-key "C-c C-b")
-    "c" (general-key "C-c C-c")
-    "d" (general-key "C-c C-d")
-    "e" (general-key "C-c C-e")
-    "f" (general-key "C-c C-f")
-    "g" (general-key "C-c C-g")
-    "h" (general-key "C-c C-h")
-    "i" (general-key "C-c C-i")
-    "j" (general-key "C-c C-j")
-    "k" (general-key "C-c C-k")
-    "l" (general-key "C-c C-l")
-    "m" (general-key "C-c C-m")
-    "n" (general-key "C-c C-n")
-    "o" (general-key "C-c C-o")
-    "p" (general-key "C-c C-p")
-    "q" (general-key "C-c C-q")
-    "r" (general-key "C-c C-r")
-    "s" (general-key "C-c C-s")
-    "t" (general-key "C-c C-t")
-    "u" (general-key "C-c C-u")
-    "v" (general-key "C-c C-v")
-    "w" (general-key "C-c C-w")
-    "x" (general-key "C-c C-x")
-    "y" (general-key "C-c C-y")
-    "z" (general-key "C-c C-z")) 
-#+end_src
-
-#+begin_src emacs-lisp
-  (lmap                                           ; Minor modes
-    "!"  (general-key "C-c !" )
-    "\"" (general-key "C-c \"")
-    "#"  (general-key "C-c #" )
-    "$"  (general-key "C-c $" )
-    "%"  (general-key "C-c %" )
-    "&"  (general-key "C-c &" )
-    "'"  (general-key "C-c '" )
-    "("  (general-key "C-c (" )
-    ")"  (general-key "C-c )" )
-    "*"  (general-key "C-c *" )
-    "+"  (general-key "C-c +" )
-    "-"  (general-key "C-c -" )
-    "."  (general-key "C-c ." )
-    "/"  (general-key "C-c /" )
-    ":"  (general-key "C-c :" )
-    ";"  (general-key "C-c ;" )
-    "<"  (general-key "C-c <" )
-    "="  (general-key "C-c =" )
-    ">"  (general-key "C-c >" )
-    "?"  (general-key "C-c ?" )
-    "@"  (general-key "C-c @" )
-    "["  (general-key "C-c [" )
-    "\\" (general-key "C-c \\")
-    "]"  (general-key "C-c ]" )
-    "^"  (general-key "C-c ^" )
-    "_"  (general-key "C-c _" )
-    "`"  (general-key "C-c `" )
-    "{"  (general-key "C-c {" )
-    "|"  (general-key "C-c |" )
-    "}"  (general-key "C-c }" )
-    "~"  (general-key "C-c ~" ))
 #+end_src
 
 * [0%] Custom modes
@@ -1002,8 +816,17 @@ Here is some code generated by ChatGPT 4. I'll have to clean it up and can then 
   ;; Use a nicer theme.
   (load-theme 'modus-operandi-tinted t)
 #+end_src
-* DONE Profiling
-It is a continuous project to keep Emacs fast and lean. Monitoring the start-up time is a good way to start, but I might consider adopting things like the [[https://github.com/jschaf/esup][Emacs Start Up Profiler]] if things get too much out of hand.
+* [66%] Finalization
+** TODO Garbage collection
+Let's prevent garbage collection during init, and go back to a sensible default afterwards. This speeds up the init process.
+#+begin_src emacs-lisp :tangle "early-init.el"
+  (setq gc-cons-threshold most-positive-fixnum)
+#+end_src
+#+begin_src emacs-lisp
+  (setq gc-cons-threshold (* 1024 1024))
+#+end_src
+** DONE Profiling
+It is a continuous project to keep Emacs fast and lean. Monitoring the start-up time is a good way to start:
 #+begin_src emacs-lisp
   (defun +init-time ()
     "Print the Emacs start-up time in milliseconds."
@@ -1011,8 +834,9 @@ It is a continuous project to keep Emacs fast and lean. Monitoring the start-up 
     (message (emacs-init-time "Emacs init time: %.2f s")))
   (add-hook 'emacs-startup-hook #'+init-time)
 #+end_src
+To get a more detailed breakdown of the startup time per package, see =M-x use-package-report RET= and consider deferring more packages. In the future, I might consider adopting something like the [[https://github.com/jschaf/esup][Emacs Start Up Profiler]] if things get too much out of hand.
 
-* DONE Tangle
+** DONE Tangle
 This little snippet of code ensures that every time I save my =config.org= notebook from within Emacs, it automatically exports the embedded code blocks to the appropriate files: =init.el=, =early-init.el=, etc.
 #+begin_src
   Local Variables:

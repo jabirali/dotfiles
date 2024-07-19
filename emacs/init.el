@@ -119,8 +119,6 @@
   :config
   (global-evil-surround-mode 1))
 
-(bind-key* "M-j" 'avy-goto-word-1)
-
 (use-package org
   :defer t
   :custom
@@ -371,10 +369,6 @@
 
 (advice-add 'load-theme :after #'+theme-override)
 
-;; (use-package spacious-padding
-;;   :config
-;;   (spacious-padding-mode 1))
-
 (defun +url-handler-zotero (link)
   "Open a zotero:// link in the Zotero desktop app."
   (start-process "zotero_open" nil "open" (concat "zotero:" link)))
@@ -414,7 +408,7 @@
 
 (use-package company
   :bind*
-  ("M-i" . company-complete)
+  ;;("M-i" . company-complete)
   ;(:map prog-mode-map ("<tab>" . company-indent-or-complete-common))
   :custom
   (completion-ignore-case t)
@@ -427,17 +421,9 @@
   :config
   (diredfl-global-mode 1))
 
-;; (use-package ef-themes
-;;   :config
-;;   (load-theme 'ef-melissa-light t))
-
-;; (use-package ef-themes
-;;   :config
-;;   (load-theme 'ef-melissa-light t))
-
 (use-package expand-region
   :bind
-  ("C-c SPC" . er/expand-region))
+  ("M-i" . er/expand-region))
 
 (use-package gnuplot
   :defer t)
@@ -478,118 +464,6 @@
   :config
   (which-key-mode 1))
 
-(use-package general
-  :after evil
-  :config
-  (general-evil-setup t)
-  (general-override-mode 1)
-  (general-create-definer gmap
-    :keymaps 'override
-    :states '(motion normal visual)
-    :prefix "SPC")
-  (general-create-definer lmap
-    :keymaps 'override
-    :states '(motion normal visual)
-    :prefix ","))
-
-(mmap                                           ; Motion map
-  "^" 'dired-jump)
-
-(vmap                                           ; Visual map
-  "ii" 'er/expand-region)
-
-(gmap                                           ; Space menu
-  "SPC" '(execute-extended-command :which-key "cmd")
-  "1" '(tab-bar-select-tab :which-key "1")
-  "2" '(tab-bar-select-tab :which-key "2")
-  "3" '(tab-bar-select-tab :which-key "3")
-  "4" '(tab-bar-select-tab :which-key "4")
-  "5" '(tab-bar-select-tab :which-key "5")
-  "6" '(tab-bar-select-tab :which-key "6")
-  "7" '(tab-bar-select-tab :which-key "7")
-  "8" '(tab-bar-select-tab :which-key "8")
-  "9" '(tab-bar-select-tab :which-key "9")
-  "b" '(switch-to-buffer :which-key "buffer")
-  "d" '(dired-jump :which-key "dired")
-  "f" '(find-file :which-key "file")
-  "g" '(magit :which-key "git")
-  "h" `(,help-map :which-key "help")
-  "i" '(imenu :which-key "imenu")
-  "j" '(bookmark-jump :which-key "jump")
-  "k" '(kill-current-buffer :which-key "kill")
-  "n" `(,narrow-map :which-key "narrow")
-  "o" '(ace-window :which-key "other")
-  "p" `(,project-prefix-map :which-key "project")
-  "q" '(delete-window :which-key "quit window")
-  "Q" '(tab-close :which-key "quit tab")
-  "r" '(recentf :which-key "recent")
-  "s" '(save-buffer :which-key "save")
-  "t" '(tab-bar-new-tab :which-key "tab")
-  "w" `(,evil-window-map :which-key "window")
-  "y" '(clone-indirect-buffer-other-window :which-key "indirect"))
-
-(lmap                                           ; Major modes
-  "," (general-key "C-c C-c")
-  "a" (general-key "C-c C-a")
-  "b" (general-key "C-c C-b")
-  "c" (general-key "C-c C-c")
-  "d" (general-key "C-c C-d")
-  "e" (general-key "C-c C-e")
-  "f" (general-key "C-c C-f")
-  "g" (general-key "C-c C-g")
-  "h" (general-key "C-c C-h")
-  "i" (general-key "C-c C-i")
-  "j" (general-key "C-c C-j")
-  "k" (general-key "C-c C-k")
-  "l" (general-key "C-c C-l")
-  "m" (general-key "C-c C-m")
-  "n" (general-key "C-c C-n")
-  "o" (general-key "C-c C-o")
-  "p" (general-key "C-c C-p")
-  "q" (general-key "C-c C-q")
-  "r" (general-key "C-c C-r")
-  "s" (general-key "C-c C-s")
-  "t" (general-key "C-c C-t")
-  "u" (general-key "C-c C-u")
-  "v" (general-key "C-c C-v")
-  "w" (general-key "C-c C-w")
-  "x" (general-key "C-c C-x")
-  "y" (general-key "C-c C-y")
-  "z" (general-key "C-c C-z"))
-
-(lmap                                           ; Minor modes
-  "!"  (general-key "C-c !" )
-  "\"" (general-key "C-c \"")
-  "#"  (general-key "C-c #" )
-  "$"  (general-key "C-c $" )
-  "%"  (general-key "C-c %" )
-  "&"  (general-key "C-c &" )
-  "'"  (general-key "C-c '" )
-  "("  (general-key "C-c (" )
-  ")"  (general-key "C-c )" )
-  "*"  (general-key "C-c *" )
-  "+"  (general-key "C-c +" )
-  "-"  (general-key "C-c -" )
-  "."  (general-key "C-c ." )
-  "/"  (general-key "C-c /" )
-  ":"  (general-key "C-c :" )
-  ";"  (general-key "C-c ;" )
-  "<"  (general-key "C-c <" )
-  "="  (general-key "C-c =" )
-  ">"  (general-key "C-c >" )
-  "?"  (general-key "C-c ?" )
-  "@"  (general-key "C-c @" )
-  "["  (general-key "C-c [" )
-  "\\" (general-key "C-c \\")
-  "]"  (general-key "C-c ]" )
-  "^"  (general-key "C-c ^" )
-  "_"  (general-key "C-c _" )
-  "`"  (general-key "C-c `" )
-  "{"  (general-key "C-c {" )
-  "|"  (general-key "C-c |" )
-  "}"  (general-key "C-c }" )
-  "~"  (general-key "C-c ~" ))
-
 (defun my-customize-faces ()
   "Customize all faces to be non-italic, use the default font family, and have the same font size."
   (interactive)
@@ -628,6 +502,8 @@
 
 ;; Use a nicer theme.
 (load-theme 'modus-operandi-tinted t)
+
+(setq gc-cons-threshold (* 1024 1024))
 
 (defun +init-time ()
   "Print the Emacs start-up time in milliseconds."
