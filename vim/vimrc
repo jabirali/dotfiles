@@ -143,10 +143,16 @@ plug#begin('~/.cache/vim/plug.vim')
 
   # IDE features
   Plug 'dense-analysis/ale'
-  Plug 'direnv/direnv.vim'
-  Plug 'junegunn/fzf'
-  Plug 'junegunn/fzf.vim'
-  # Plug 'sirver/ultisnips'
+  if executable('direnv')
+    Plug 'direnv/direnv.vim'
+  endif
+  if executable('fzf')
+    Plug 'junegunn/fzf'
+    Plug 'junegunn/fzf.vim'
+  endif
+  if has('python3')
+    Plug 'sirver/ultisnips'
+  endif
 
   # Language support
   Plug 'kalekundert/vim-coiled-snake'
