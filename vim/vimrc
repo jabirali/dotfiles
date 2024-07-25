@@ -1,4 +1,3 @@
-" ~/.vim/vimrc: Vim configuration file.
 " NOTE: Moving to ~/.config/vim/vimrc in Vim 9.1.x.
 vim9script
 source $VIMRUNTIME/defaults.vim
@@ -49,7 +48,7 @@ source $VIMRUNTIME/defaults.vim
 
   set shortmess+=I
   set fillchars+=eob:\ ,
-  set virtualedit=block
+    set virtualedit=block
   set wildoptions=pum
   set tildeop
 
@@ -125,49 +124,48 @@ source $VIMRUNTIME/defaults.vim
 # }}}
 
 # Package management {{{
-  plug#begin('~/.cache/vim/plug.vim')
-    Plug 'rose-pine/vim'
+plug#begin('~/.cache/vim/plug.vim')
+  # Keybindings
+  Plug 'tpope/vim-rsi'
+  Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-commentary'
+  Plug 'tpope/vim-unimpaired'
+  Plug 'tpope/vim-speeddating'
+  Plug 'tpope/vim-repeat'
+  Plug 'kana/vim-textobj-user'
+  Plug 'kana/vim-textobj-entire'
+  Plug 'kana/vim-textobj-line'
+  Plug 'kana/vim-textobj-indent'
+  Plug 'kana/vim-textobj-syntax'
+  Plug 'wellle/targets.vim'
+  Plug 'rhysd/clever-f.vim'
+  Plug 'bronson/vim-visual-star-search'
 
-    # Keybindings
-    Plug 'tpope/vim-rsi'
-    Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-commentary'
-    Plug 'tpope/vim-unimpaired'
-    Plug 'tpope/vim-speeddating'
-    Plug 'tpope/vim-repeat'
-    Plug 'kana/vim-textobj-user'
-    Plug 'kana/vim-textobj-entire'
-    Plug 'kana/vim-textobj-line'
-    Plug 'kana/vim-textobj-indent'
-    Plug 'kana/vim-textobj-syntax'
-    Plug 'wellle/targets.vim'
-    Plug 'rhysd/clever-f.vim'
-    Plug 'bronson/vim-visual-star-search'
+  # IDE features
+  Plug 'dense-analysis/ale'
+  Plug 'direnv/direnv.vim'
+  Plug 'junegunn/fzf'
+  Plug 'junegunn/fzf.vim'
+  # Plug 'sirver/ultisnips'
 
-    # IDE features
-    Plug 'dense-analysis/ale'
-    Plug 'direnv/direnv.vim'
-    Plug 'junegunn/fzf'
-    Plug 'junegunn/fzf.vim'
-    Plug 'sirver/ultisnips'
+  # Language support
+  Plug 'kalekundert/vim-coiled-snake'
+  Plug 'vim-pandoc/vim-pandoc'
+  Plug 'vim-pandoc/vim-pandoc-syntax'
+  Plug 'lervag/vimtex'
 
-    # Language support
-    Plug 'kalekundert/vim-coiled-snake'
-    Plug 'vim-pandoc/vim-pandoc'
-    Plug 'vim-pandoc/vim-pandoc-syntax'
-    Plug 'lervag/vimtex'
+  # Aesthetics
+  Plug 'rose-pine/vim'
+  Plug 'jeffkreeftmeijer/vim-dim'
+  Plug 'jrudess/vim-foldtext'
+  Plug 'vim/colorschemes'
+  Plug 'dracula/vim'
+  Plug 'junegunn/goyo.vim'
 
-    # Aesthetics
-    Plug 'jeffkreeftmeijer/vim-dim'
-    Plug 'jrudess/vim-foldtext'
-    Plug 'vim/colorschemes'
-    Plug 'dracula/vim'
-    Plug 'junegunn/goyo.vim'
-
-    # Miscellaneous
-    Plug 'lervag/wiki.vim'
-    Plug 'sunaku/tmux-navigate'
-  plug#end()
+  # Miscellaneous
+  Plug 'lervag/wiki.vim'
+  Plug 'sunaku/tmux-navigate'
+plug#end()
 # }}}
 
 # Keybindings {{{
@@ -217,28 +215,28 @@ source $VIMRUNTIME/defaults.vim
 
   # inoremap ;<space> ;<space>
   # inoremap ;<cr>    ;<cr>
-# }}}
+  # }}}
 
 # Digraphs {{{
-# Norwegian
-#  digraphs Ae 198 " Æ
-#  digraphs Oo 216 " Ø
-#  digraphs Aa 197 " Å
-#  digraphs ae 230 " æ
-#  digraphs oo 248 " ø
-#  digraphs aa 229 " å
-#
-#  # Math
-#  digraphs *A 8704  " ∀
-#  digraphs *E 8707  " ∃
-#  digraphs *I 8747  " ∫
-#  digraphs *S 8721  " ∑
-#  digraphs *V 8711  " ∇
-#  digraphs *s  963  " σ
-#  digraphs *v 8706  " ∂
-#  digraphs *.  183  " ·
-#  digraphs *= 8801  " ≡ 
-#  digraphs *~ 8776  " ≈
+  # Norwegian
+  #  digraphs Ae 198 " Æ
+  #  digraphs Oo 216 " Ø
+  #  digraphs Aa 197 " Å
+  #  digraphs ae 230 " æ
+  #  digraphs oo 248 " ø
+  #  digraphs aa 229 " å
+  #
+  #  # Math
+  #  digraphs *A 8704  " ∀
+  #  digraphs *E 8707  " ∃
+  #  digraphs *I 8747  " ∫
+  #  digraphs *S 8721  " ∑
+  #  digraphs *V 8711  " ∇
+  #  digraphs *s  963  " σ
+  #  digraphs *v 8706  " ∂
+  #  digraphs *.  183  " ·
+  #  digraphs *= 8801  " ≡ 
+  #  digraphs *~ 8776  " ≈
 # }}}
 
 # Colorscheme {{{

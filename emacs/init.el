@@ -65,6 +65,7 @@
 ;; (xterm-mouse-mode 1)
 
 (use-package xclip
+  :if (not (display-graphic-p))
   :config
   (xclip-mode 1))
 
@@ -82,6 +83,8 @@
   ;;(server-port 1337)
   :config
   (server-mode 1))
+
+(bind-key "C-c r" 'recentf)
 
 (use-package evil
   :custom

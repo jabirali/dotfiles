@@ -193,6 +193,7 @@ These settings enable terminal mouse support and scrolling.
 This package lets Emacs interact with the system clipboard also when running in a terminal. Despite the name it works on both Linux and MacOS. However, note that so far, this doesn't appear to work with the new =yank-media= command from Emacs 29?
 #+begin_src emacs-lisp
   (use-package xclip
+    :if (not (display-graphic-p))
     :config
     (xclip-mode 1))
 #+end_src
@@ -228,6 +229,10 @@ Run Emacs as a server. I chose to run it over TCP, because this lets me SSH forw
 #+end_src
 
 * [75%] Keybindings
+** TODO Global
+#+begin_src emacs-lisp
+  (bind-key "C-c r" 'recentf)
+#+end_src
 ** DONE Evil-mode
 First of all, let's enable the "Evil mode". As someone with a Vim background, this is more ergonomic for both my brain and my hands. It's worth noting that =evil-respect-visual-line-mode= is quite important here, since it makes the document writing (TeX, Org, MarkDown) much easier.
 #+begin_src emacs-lisp
